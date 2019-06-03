@@ -1,3 +1,9 @@
+## flutter demo
+![banner](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG68.jpeg)   
+![自定义组件](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG69.png)
+![GirdView](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG70.png)
+![列表](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG71.png)
+
 # flutter_720yun
 
 A new Flutter application.
