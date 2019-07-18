@@ -1,0 +1,4 @@
+*.js linguist-language=Dart 
+*.css linguist-language=Dart
+*.html linguist-language=Dart  
+*.Objective-C linguist-language=Dart 
