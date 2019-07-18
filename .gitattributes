@@ -1,3 +1,1 @@
-*.js linguist-language=Java
-*.css linguist-language=Java
-*.objective-c linguist-language=Java
+*.objective-c linguist-language=Dart
