@@ -12,7 +12,10 @@ import 'package:flutter_720yun/model/BannerModel.dart';
 import 'ChannelDatailPage.dart';
 import 'WorthAttentionPage.dart';
 
+
+final double count = window.devicePixelRatio;
 final double ScreenW = window.physicalSize.width;
+double contentSize = 0.0;
 
 class findpage extends StatefulWidget {
   @override
@@ -50,7 +53,7 @@ class _findpageState extends State<findpage> {
       network();
     }
     print(window.devicePixelRatio);// 设备像素比
-    print(window.physicalSize);// 获取屏幕尺寸
+    print(window.physicalSize.width);// 获取屏幕尺寸
   }
 
   /*
@@ -65,6 +68,8 @@ class _findpageState extends State<findpage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final double contentWidth = MediaQuery.of(context).size.width;
+    contentSize = MediaQuery.of(context).size.width;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('发现'),
@@ -74,10 +79,9 @@ class _findpageState extends State<findpage> {
             padding: EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
-//              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 BannerWidget(
-                    (ScreenW - 64) / 2 * 40 / 75,
+                    (contentWidth - 32) * 40 / 75,
                     bannerItems
                 ),
 //                HomeBanner(banners),
@@ -131,7 +135,6 @@ class _findpageState extends State<findpage> {
   }
   
   channelTap(channel data) {
-//    print(data.channelId);
     Navigator.push(context,
       new MaterialPageRoute(builder: (ctx){
         return new ChannelDetail(data.channelId, data.channelName);
@@ -349,8 +352,9 @@ class _findpageState extends State<findpage> {
           ],
         ),
         SizedBox(
-          height: 260,
-          child: Wrap(
+          height: (contentSize - 52) / 3 * 2 + 10,
+          child:
+          Wrap(
             spacing: 10,
             runSpacing: 10,
             children: followWidgets,
@@ -365,8 +369,7 @@ class _findpageState extends State<findpage> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-//            Image.network(followData[index].thumb,headers: headers,width: (window.physicalSize.width - 110)/6 ,height: (window.physicalSize.width - 110)/6,fit: BoxFit.cover,),
-            CachedNetworkImage(imageUrl: followData[index].thumb,httpHeaders: headers,width: (window.physicalSize.width - 110)/6,height: (window.physicalSize.width - 110)/6,fit:  BoxFit.cover,),
+            CachedNetworkImage(imageUrl: followData[index].thumb,httpHeaders: headers,width: (contentSize - 55) / 3,height: (contentSize - 55) / 3,fit:  BoxFit.cover,),
             Text("${followData[index].title}",style: TextStyle(fontSize: 12,color: Colors.white),)
           ],
         ),
@@ -427,11 +430,6 @@ class _findpageState extends State<findpage> {
     for (int i = 0;i < banners.length;i++){
       bannerItems.add(BannerItem.defaultBannerItem(banners[i].thumb));
     }
-
-
-//
-//    print(hotData);
-//    print(bannerItems);
     print(followWidgets);
     setState(() {
 

@@ -6,7 +6,7 @@ import 'package:flutter_720yun/model/DetailModel.dart';
 import 'package:flutter_720yun/model/WorthModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-final double ScreenW = window.physicalSize.width;
+double ScreenW = 0.0;
 var headers = {"Origin": "https://720yun.com","Referer": "https://720yun.com"};
 
 class WorthAttentionPage extends StatefulWidget {
@@ -46,6 +46,8 @@ class WorthAttentionPageState extends State<WorthAttentionPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    double contentSize = MediaQuery.of(context).size.width;
+    ScreenW = contentSize;
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
@@ -53,14 +55,14 @@ class WorthAttentionPageState extends State<WorthAttentionPage> {
             
           ],
           title: Text(widget.followData.title),
-          expandedHeight: (ScreenW - 160) / 2 * 40 / 75,
+          pinned: true,
+          expandedHeight: contentSize * 31.27 / 75,
           flexibleSpace: FlexibleSpaceBar(
             background:CachedNetworkImage(imageUrl:_headModel?.thumb ?? "" ,httpHeaders: headers,) // Image.network(_headModel?.thumb ?? ""  ,headers:headers,fit: BoxFit.cover,),
 //            titlePadding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
 //            centerTitle: false,
 //            title: Text( _headModel?.remark ?? "",textAlign: TextAlign.left,style: TextStyle(fontSize: 10,color: Colors.white),),
           ),
-          pinned: true,
           floating: false,
         ),
         SliverList(
@@ -81,12 +83,13 @@ class WorthAttentionPageState extends State<WorthAttentionPage> {
         Container(
           color: Colors.white,
           child: Row(
-             crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 flex:2,
-                child: Padding(padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
-                  child: ClipOval(
+                child: Padding(padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+                  child: ClipRRect(
+                    borderRadius:BorderRadius.circular(15.0),
                     child: Image.network(model.thumb,headers: headers,width: 30,height: 30,fit: BoxFit.cover,),
                   )
 //                  Container(decoration: BoxDecoration(
@@ -101,27 +104,31 @@ class WorthAttentionPageState extends State<WorthAttentionPage> {
               ),
               Expanded(
                 flex: 8,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 5,top: 1),
-                      child: Text(
+                child:
+                Padding(
+                  padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 5,top: 1),
+                        child: Text(
                           model.nickname,
                           style: TextStyle(fontSize: 12,
-                              color: Colors.black45,
+                            color: Colors.black45,
                             decoration: TextDecoration.none,
                           ),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 5),
-                      child: Text(model.remark,style: TextStyle(fontSize: 12,color: Colors.black45,decoration: TextDecoration.none,),softWrap: false,overflow: TextOverflow.ellipsis),
-                    )
-                  ],
-                ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(model.remark,style: TextStyle(fontSize: 12,color: Colors.black45,decoration: TextDecoration.none,),softWrap: false,overflow: TextOverflow.ellipsis),
+                      )
+                    ],
+                  ),
+                )
               ),
               Expanded(
                 flex: 2,
@@ -137,29 +144,32 @@ class WorthAttentionPageState extends State<WorthAttentionPage> {
         ),
         Container(
           color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Padding(padding: EdgeInsets.only(left: 10,right: 5),
-                child: CachedNetworkImage(imageUrl: model.products[0].thumb,httpHeaders: headers,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,), ////Image.network(model.products[0].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
-                ),
-              ),
+          child:
+            Padding(padding: EdgeInsets.only(left: 5,top: 5,right: 5,bottom: 5),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Padding(padding: EdgeInsets.only(left: 5,right: 5),
+                      child: CachedNetworkImage(imageUrl: model.products[0].thumb,httpHeaders: headers,height: (ScreenW - 40) / 3,width: (ScreenW - 40) / 3,), ////Image.network(model.products[0].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
+                    ),
+                  ),
 
-              Expanded(
-                flex: 1,
-                child: Padding(padding: EdgeInsets.only(left: 5,right: 5),
-                  child: CachedNetworkImage(imageUrl: model.products[1].thumb,httpHeaders: headers,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,),//Image.network(model.products[1].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Padding(padding: EdgeInsets.only(left: 5,right: 10),
-                  child: CachedNetworkImage(imageUrl: model.products[2].thumb,httpHeaders: headers,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,),//Image.network(model.products[2].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
-                ),
-              ),
-            ],
-          ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(padding: EdgeInsets.only(left: 5,right: 5),
+                      child: CachedNetworkImage(imageUrl: model.products[1].thumb,httpHeaders: headers,height: (ScreenW - 40) / 3,width: (ScreenW - 40) / 3,),//Image.network(model.products[1].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(padding: EdgeInsets.only(left: 5,right: 5),
+                      child: CachedNetworkImage(imageUrl: model.products[2].thumb,httpHeaders: headers,height: (ScreenW - 40) / 3,width: (ScreenW - 40) / 3,),//Image.network(model.products[2].thumb,height: (ScreenW - 84) / 6,width: (ScreenW - 84) / 6,headers: headers,fit: BoxFit.cover,),
+                    ),
+                  ),
+                ],
+              )
+            )
         )
       ],
     );

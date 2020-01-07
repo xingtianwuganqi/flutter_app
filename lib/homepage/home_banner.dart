@@ -49,8 +49,10 @@ class _BannerState extends State<HomeBanner> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final double contentWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: ScreenW * 40 / 75,
+      height: (contentWidth - 64) * 40 / 75,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
