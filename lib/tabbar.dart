@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'homepage/findpage.dart';
 import 'homepage/HomePage.dart';
 import 'homepage/MyPage.dart';
@@ -25,7 +26,7 @@ class tabbarState extends State<tabbar> {
     pages.add(HomePage());
     pages.add(findpage());
     pages.add(MessagePage());
-    pages.add(MyPage());
+    pages.add(LoginWidget());
   }
 
   @override
