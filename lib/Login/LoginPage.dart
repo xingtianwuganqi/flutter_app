@@ -29,7 +29,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   var _username = '';//密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
-
+  var _proSelect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
-      child: Text("真命天喵"),
+      child: Text("真命天喵",style: TextStyle(fontSize: 28,color: Colors.blue),),
     );
 
 
@@ -67,7 +67,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               focusNode: _focusNodeUserName,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: "用户名",
                 hintText: "请输入用户名",
                 prefixIcon: Icon(Icons.person),
 
@@ -76,10 +75,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                 _username = name;
               },
             ), TextFormField(
-              focusNode: _focusNodeUserName,
+              focusNode: _focusNodePassWord,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: "密码",
                 hintText: "请输入密码",
                 prefixIcon: Icon(Icons.person),
 
@@ -93,6 +91,60 @@ class _LoginWidgetState extends State<LoginWidget> {
       ),
     );
 
+    Widget loginBtn = new Container(
+      decoration: BoxDecoration(
+        color: Colors.blue,
+      ),
+      child: FlatButton(
+        textColor: Colors.blue,
+        child: Text("登录",style: TextStyle(color: Colors.white),),
+      ),
+      margin: EdgeInsets.only(left: 20,right: 20),
+    );
+
+    Widget registerArea = new Container(
+      margin: EdgeInsets.only(left: 20,right: 20),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          FlatButton(
+            child: Text('忘记密码？',style: TextStyle(fontSize: 12,color: Colors.blue),),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+
+            ),
+          ),
+          FlatButton(
+            child: Text('新用户注册',style: TextStyle(fontSize: 12,color: Colors.blue),),
+          )
+        ],
+      ),
+    );
+
+    Widget protocalArea = new Container(
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: _proSelect ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+            iconSize:20,
+            onPressed: (){
+              setState(() {
+                _proSelect = !_proSelect;
+              });
+            },
+          ),
+          Text('阅读并同意用户协议、隐私协议',
+            style: TextStyle(fontSize: 12,color: Colors.blue),
+          ),
+        ],
+      )
+    );
+
+
     return new Scaffold(
         appBar: new AppBar(
             title: Text('登录')
@@ -104,10 +156,16 @@ class _LoginWidgetState extends State<LoginWidget> {
           },
           child: new ListView(
             children: <Widget>[
-              new SizedBox(height: 80),
+              new SizedBox(height: 60),
               logoWidget,
-              new SizedBox(height: 70),
+              new SizedBox(height: 60),
               inputTextArea,
+              new SizedBox(height: 30),
+              loginBtn,
+              new SizedBox(height: 1),
+              registerArea,
+              new SizedBox(height: 30,),
+              protocalArea,
             ],
           ),
         )
@@ -117,7 +175,22 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 
 
-
+class ColorsUtil {
+  /// 十六进制颜色，
+  /// hex, 十六进制值，例如：0xffffff,
+  /// alpha, 透明度 [0.0,1.0]
+  static Color hexColor(int hex,{double alpha = 1}){
+    if (alpha < 0){
+      alpha = 0;
+    }else if (alpha > 1){
+      alpha = 1;
+    }
+    return Color.fromRGBO((hex & 0xFF0000) >> 16 ,
+        (hex & 0x00FF00) >> 8,
+        (hex & 0x0000FF) >> 0,
+        alpha);
+  }
+}
 
 
 
