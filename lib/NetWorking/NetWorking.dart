@@ -8,13 +8,7 @@ class NetWorking {
 
   static Future get(String url,{Map<String,dynamic> params}) async{
     try {
-      Options options = Options();
-      options.headers =  {
-        "App-Key": "aUWCj8QTNX2REohWFEawgioK6LBwm72W",
-        "Referer": "https://720yun.com",
-        "Origin":"https://720yun.com"
-      };
-      var response = await dio.get(url,queryParameters: params,options: options);
+      var response = await dio.get(url,queryParameters: params);
       return response.data;
     }catch (e){
       return  e;
@@ -23,7 +17,7 @@ class NetWorking {
 
   static Future post(String url, {Map<String,dynamic> params}) async {
     try {
-      var response = await dio.post(url,queryParameters: params);
+      var response = await dio.post(url,data:params);
       return response.data;
     }catch(e) {
       return e;

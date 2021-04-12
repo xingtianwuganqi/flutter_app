@@ -10,26 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.debug.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.release.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.debug.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.release.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/path_provider/path_provider.debug.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/path_provider/path_provider.release.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/sqflite/sqflite.debug.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/sqflite/sqflite.release.xcconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/Login/LoginPage.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/Login/LoginTest.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-regular-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-solid-900.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/Login/UserModel.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/NetWorking/Encryption.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/App.framework/App" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/App" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/AssetManifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/AssetManifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/FontManifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/FontManifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/kernel_blob.bin" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/App.framework/flutter_assets/kernel_blob.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Manifest.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Manifest.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/tabbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tabbar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Login/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Login/LoginPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,15 +80,6 @@
     </task>
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
@@ -109,30 +92,38 @@
       <screen x="0" y="25" width="1440" height="821" />
     </state>
     <state x="308" y="194" key="AndroidCreateResourceDirectoryDialog/0.25.1440.821@0.25.1440.821" timestamp="1616078984058" />
-    <state width="1398" height="52" key="GridCell.Tab.0.bottom" timestamp="1616082262792">
+    <state width="1133" height="296" key="GridCell.Tab.0.bottom" timestamp="1618243708566">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1398" height="52" key="GridCell.Tab.0.bottom/0.25.1440.821@0.25.1440.821" timestamp="1616082262792" />
-    <state width="1398" height="52" key="GridCell.Tab.0.center" timestamp="1616082262786">
+    <state width="1133" height="296" key="GridCell.Tab.0.bottom/0.25.1440.821@0.25.1440.821" timestamp="1618243708566" />
+    <state width="1133" height="296" key="GridCell.Tab.0.center" timestamp="1618243708565">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1398" height="52" key="GridCell.Tab.0.center/0.25.1440.821@0.25.1440.821" timestamp="1616082262786" />
-    <state width="1398" height="52" key="GridCell.Tab.0.left" timestamp="1616082262785">
+    <state width="1133" height="296" key="GridCell.Tab.0.center/0.25.1440.821@0.25.1440.821" timestamp="1618243708565" />
+    <state width="1133" height="296" key="GridCell.Tab.0.left" timestamp="1618243708565">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1398" height="52" key="GridCell.Tab.0.left/0.25.1440.821@0.25.1440.821" timestamp="1616082262785" />
-    <state width="1398" height="52" key="GridCell.Tab.0.right" timestamp="1616082262791">
+    <state width="1133" height="296" key="GridCell.Tab.0.left/0.25.1440.821@0.25.1440.821" timestamp="1618243708565" />
+    <state width="1133" height="296" key="GridCell.Tab.0.right" timestamp="1618243708565">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="1398" height="52" key="GridCell.Tab.0.right/0.25.1440.821@0.25.1440.821" timestamp="1616082262791" />
+    <state width="1133" height="296" key="GridCell.Tab.0.right/0.25.1440.821@0.25.1440.821" timestamp="1618243708565" />
     <state x="221" y="71" key="SettingsEditor" timestamp="1615999590215">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
     <state x="221" y="71" key="SettingsEditor/0.25.1440.821@0.25.1440.821" timestamp="1615999590215" />
-    <state width="300" height="173" key="javadoc.popup.new" timestamp="1616085004671">
+    <state x="545" y="190" width="615" height="490" key="find.popup" timestamp="1618243718891">
       <screen x="0" y="25" width="1440" height="821" />
     </state>
-    <state width="300" height="173" key="javadoc.popup.new/0.25.1440.821@0.25.1440.821" timestamp="1616085004671" />
+    <state x="545" y="190" width="615" height="490" key="find.popup/0.25.1440.821@0.25.1440.821" timestamp="1618243718891" />
+    <state width="300" height="98" key="javadoc.popup.new" timestamp="1618245221883">
+      <screen x="0" y="25" width="1440" height="821" />
+    </state>
+    <state width="300" height="98" key="javadoc.popup.new/0.25.1440.821@0.25.1440.821" timestamp="1618245221883" />
+    <state x="660" y="170" width="670" height="676" key="search.everywhere.popup" timestamp="1616428318399">
+      <screen x="0" y="25" width="1440" height="821" />
+    </state>
+    <state x="660" y="170" width="670" height="676" key="search.everywhere.popup/0.25.1440.821@0.25.1440.821" timestamp="1616428318399" />
   </component>
   <component name="masterDetails">
     <states>

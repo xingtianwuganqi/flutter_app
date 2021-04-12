@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_720yun/Login/UserModel.dart';
 import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/NetWorking/Encryption.dart';
+// import 'package:flutter_720yun/Login/UserModel.dart'
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -30,22 +33,37 @@ class _LoginWidgetState extends State<LoginWidget> {
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = false;
+  UserInfoModel _userModel;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginNetWorking();
+  }
+
+  Future<Null> loginNetWorking() async {
+    final password = generateMD5("123456");
+    final url = "http://127.0.0.1:8000/api/v1/login/";
+    final dic = {"phoneNum": "13689242201","password":"123456","phone_type":"iPhone 7"};
+
+    var data = await NetWorking.post(url,params: dic);
+    print(data);
+    if (data["code"] == 200) {
+      var model = data["data"];
+      var userModel = UserInfoModel.fromJson(model);
+      print(model);
+      _userModel = userModel;
+      print(_userModel.phone_number);
+    }
+
+    // setState(() {
+    //
+    // });
+  }
+  @override
   Widget build(BuildContext context) {
-    ////     ScreenUtil.instance = ScreenUtil(width:750,height:1334)..init(context);
-    //设置尺寸（填写设计中设备的屏幕尺寸）如果设计基于360dp * 690dp的屏幕
-    // ScreenUtil.init(
-    //     BoxConstraints(
-    //         maxWidth: MediaQuery.of(context).size.width,
-    //         maxHeight: MediaQuery.of(context).size.height),
-    //     designSize: Size(360, 690),
-    //     allowFontScaling: false,
-    //     orientation: Orientation.portrait);
-    // ScreenUtilInit(
-    //   designSize: Size(750,1334),
-    //   allowFontScaling:false,
-    // );
+ 
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
@@ -98,6 +116,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       child: FlatButton(
         textColor: Colors.blue,
         child: Text("登录",style: TextStyle(color: Colors.white),),
+        onPressed: loginNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
     );
@@ -170,6 +189,8 @@ class _LoginWidgetState extends State<LoginWidget> {
         ],
       )
     );
+
+
 
 
     return new Scaffold(
