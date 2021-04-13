@@ -43,10 +43,10 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   Future<Null> loginNetWorking() async {
-    final password = generateMD5("123456");
-    final url = "http://127.0.0.1:8000/api/v1/login/";
-    final dic = {"phoneNum": "13689242201","password":"123456","phone_type":"iPhone 7"};
-
+    // final password = generateMD5("123456");
+    final url = "https://test.rxswift.cn/api/v1/login/";
+    final dic = {"phoneNum": "13689242201","password":generateMD5("123456"),"phone_type":"iPhone 7"};
+    print(dic);
     var data = await NetWorking.post(url,params: dic);
     print(data);
     if (data["code"] == 200) {
@@ -67,7 +67,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
-      child: Text("真命天喵",style: TextStyle(fontSize: 28,color: Colors.blue),),
+      child: Text("喜乐排行",style: TextStyle(fontSize: 28,color: Colors.blue),),
     );
 
 
