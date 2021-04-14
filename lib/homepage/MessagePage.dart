@@ -31,15 +31,33 @@ class MessagePageState extends State<MessagePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
+    
+    Widget messageItem(String name) {
+      return new Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 10,right: 10),
+        child: new Column(
+          children: <Widget>[
+            ListTile(
+              title: Text(name),
+              leading: Icon(Icons.email),
+              trailing: Icon(Icons.keyboard_arrow_right),
+            ),
+            new Divider(height: .0,),
+          ],
+        ),
+      );
+    }
+    
+     
     return Scaffold(
       appBar: AppBar(
         title: Text("消息"),
       ),
       body: ListView.builder (
-          padding: EdgeInsets.all(10.0),
           itemCount: names.length,
-//            itemExtent: 70,
+           // itemExtent: 60,
             itemBuilder: (context,index) {
               if (names[index] == loadingTag) {
                 return new Container(
@@ -48,18 +66,7 @@ class MessagePageState extends State<MessagePage> {
                   child: Text("没有更多了",style: TextStyle(color: Colors.grey ),),
                 );
               }else{
-                return new Container(
-                  child: new Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(names[index]),
-                        leading: icons[index],
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                      ),
-                      new Divider(height: .0,),
-                    ],
-                  ),
-                );
+                return messageItem(names[index]);
               }
             },
         ),
