@@ -4,6 +4,7 @@ import 'homepage/findpage.dart';
 import 'homepage/HomePage.dart';
 import 'homepage/MyPage.dart';
 import 'homepage/MessagePage.dart';
+import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 
 class tabbar extends StatefulWidget {
 
@@ -26,7 +27,7 @@ class tabbarState extends State<tabbar> {
     pages.add(HomePage());
     pages.add(findpage());
     pages.add(MessagePage());
-    pages.add(LoginWidget());
+    pages.add(UserInfoWidget());
   }
 
   @override

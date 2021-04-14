@@ -20,15 +20,13 @@ class MessagePageState extends State<MessagePage> {
   static const loadingTag = "##loading##";
 
 
-  List<String> names = ["获得的赞","收到的评论","收到的说一说","被收藏的作品","我的粉丝","系统消息",loadingTag];
+  List<String> names = ["系统消息","点赞","收藏","评论"];
 
   List<Icon> icons = <Icon>[
     Icon(Icons.message),
     Icon(Icons.school),
-    Icon(Icons.list),
-    Icon(Icons.business),
-    Icon(Icons.home),
-    Icon(Icons.add)
+    Icon(Icons.video_collection_rounded),
+    Icon(Icons.comment_bank_rounded),
   ];
 
   @override

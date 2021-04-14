@@ -1,37 +1,34 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_720yun/Login/RegisterPage.dart';
-import 'package:flutter_720yun/Login/UserModel.dart';
-import 'dart:ui';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_720yun/NetWorking/NetWorking.dart';
-import 'package:flutter_720yun/NetWorking/Encryption.dart';
-import '../Common/ColorPage.dart';
+import '../Login/UserModel.dart';
+import '../NetWorking/NetWorking.dart';
+import '../NetWorking/Encryption.dart';
 
-class LoginWidget extends StatefulWidget {
+class RegisterWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _LoginWidgetState();
+    return _RegisterState();
   }
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _RegisterState extends State<RegisterWidget> {
 
   //焦点
   FocusNode _focusNodeUserName = new FocusNode();
   FocusNode _focusNodePassWord = new FocusNode();
+  FocusNode _focusNodeConfirm  = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _userPswdController = new TextEditingController();
+  TextEditingController _confirmController  = new TextEditingController();
 
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  var _password = '';//用户名
-  var _username = '';//密码
+  var _password = '';//密码
+  var _username = '';//用户名
+  var _confirm  = '';// 确认密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = false;
@@ -41,13 +38,22 @@ class _LoginWidgetState extends State<LoginWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loginNetWorking();
+    // loginNetWorking();
 
+    startSet();
+
+  }
+
+  void startSet() {
     _focusNodeUserName.addListener(() {
       _focusNodeListener();
     });
 
     _focusNodePassWord.addListener(() {
+      _focusNodeListener();
+    });
+
+    _focusNodeConfirm.addListener(() {
       _focusNodeListener();
     });
 
@@ -71,17 +77,13 @@ class _LoginWidgetState extends State<LoginWidget> {
 
     });
 
+    _confirmController.addListener(() {
+      print(_confirmController.text);
+      _confirm = _confirmController.text;
+    });
   }
 
-  void dispose() {
-    // TODO: implement dispose
-    // 移除焦点监听
-    _focusNodeUserName.removeListener(_focusNodeListener);
-    _focusNodePassWord.removeListener(_focusNodeListener);
-    _userNameController.dispose();
-    _userPswdController.dispose();
-    super.dispose();
-  }
+
 
   Future<Null> loginNetWorking() async {
     print(_username);
@@ -124,7 +126,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
- 
+
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
@@ -143,30 +145,30 @@ class _LoginWidgetState extends State<LoginWidget> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
-              focusNode: _focusNodeUserName,
-              controller: _userNameController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: "请输入用户名",
-                prefixIcon: Icon(Icons.person),
-                //尾部添加清除按钮
-                suffixIcon:(_isShowClear)
-                    ? IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: (){
-                    // 清空输入框内容
-                    _userNameController.clear();
-                  },
-                )
-                    : null ,
-              ),
-              onSaved: (String name) {
-                _username = name;
-              },
-            // 校验用户名（不能为空）
-              validator: (v) {
-              return v.trim().isNotEmpty ? null : "请输入正确的用户名";
-              }
+                focusNode: _focusNodeUserName,
+                controller: _userNameController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请输入用户名",
+                  prefixIcon: Icon(Icons.person),
+                  //尾部添加清除按钮
+                  suffixIcon:(_isShowClear)
+                      ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: (){
+                      // 清空输入框内容
+                      _userNameController.clear();
+                    },
+                  )
+                      : null ,
+                ),
+                onSaved: (String name) {
+                  _username = name;
+                },
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入正确的用户名";
+                }
             ), TextFormField(
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
@@ -175,20 +177,47 @@ class _LoginWidgetState extends State<LoginWidget> {
                 hintText: "请输入密码",
                 prefixIcon: Icon(Icons.person),
                 suffixIcon: (_isShowPwd) ? IconButton(icon: Icon(Icons.panorama_fish_eye),
-                  onPressed: (){
-                    setState(() {
-                      _isShowPwd = !_isShowPwd;
-                    });
-                  }
+                    onPressed: (){
+                      setState(() {
+                        _isShowPwd = !_isShowPwd;
+                      });
+                    }
                 ): null,
               ),
               onSaved: (String name) {
                 _password = name;
               },
-          // 校验用户名（不能为空）
+              // 校验用户名（不能为空）
               validator: (v) {
                 return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
               },
+            ),TextFormField(
+                focusNode: _focusNodeConfirm,
+                controller: _confirmController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请再次输入密码",
+                  prefixIcon: Icon(Icons.person),
+                  //尾部添加清除按钮
+                  suffixIcon:(_isShowClear)
+                      ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: (){
+                      // 清空输入框内容
+                      setState(() {
+                        // _isShowPwd = !_isShowPwd;
+                      });
+                    },
+                  )
+                      : null ,
+                ),
+                onSaved: (String name) {
+                  _username = name;
+                },
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入正确的";
+                }
             )
           ],
         ),
@@ -208,81 +237,26 @@ class _LoginWidgetState extends State<LoginWidget> {
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
     );
-    
-    Widget rescueWidget = new Container(
-      margin: EdgeInsets.only(left: 20,right: 20),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Image(image:
-                NetworkImage(
-                  "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2151136234,3513236673&fm=26&gp=0.jpg"
-                ),
-                width: 36,
-                height: 36
-              ),
-              Text(
-                "昵称",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-
-    Widget registerArea = new Container(
-      margin: EdgeInsets.only(left: 20,right: 20),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          TextButton(
-            child: Text('忘记密码？',style: TextStyle(fontSize: 12,color: Colors.blue),),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-
-            ),
-          ),
-          TextButton(
-            child: Text('新用户注册',style: TextStyle(fontSize: 12,color: Colors.blue),),
-            onPressed: () {
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context){
-                    return RegisterWidget();
-                  })
-              );
-            },
-          )
-        ],
-      ),
-    );
 
     Widget protocalArea = new Container(
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            icon: _proSelect ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
-            iconSize:20,
-            onPressed: (){
-              setState(() {
-                _proSelect = !_proSelect;
-              });
-            },
-          ),
-          Text('阅读并同意用户协议、隐私协议',
-            style: TextStyle(fontSize: 12,color: Colors.blue),
-          ),
-        ],
-      )
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: _proSelect ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+              iconSize:20,
+              onPressed: (){
+                setState(() {
+                  _proSelect = !_proSelect;
+                });
+              },
+            ),
+            Text('阅读并同意用户协议、隐私协议',
+              style: TextStyle(fontSize: 12,color: Colors.blue),
+            ),
+          ],
+        )
     );
 
 
@@ -305,29 +279,11 @@ class _LoginWidgetState extends State<LoginWidget> {
               inputTextArea,
               new SizedBox(height: 30),
               loginBtn,
-              new SizedBox(height: 1),
-              registerArea,
               new SizedBox(height: 30,),
               protocalArea,
-              new SizedBox(height: 30,),
-              rescueWidget,
             ],
           ),
         )
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
