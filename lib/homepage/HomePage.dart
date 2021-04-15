@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,8 +18,21 @@ class _HomePageState extends State<HomePage> {
         title: new Text('首页'),
       ),
       body: new Center(
-        child: Icon(Icons.home,size: 130.0,color: Colors.blue,),
+        child:  PageView(
+          children: [
+            Center(
+              child: Text('测试1'),
+            ),
+            Center(
+              child: Text('测试2'),
+            ),
+            Center(
+              child: Text('测试3'),
+            )
+          ],
+        )
       ),
     );
   }
 }
+

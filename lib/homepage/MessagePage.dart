@@ -55,9 +55,15 @@ class MessagePageState extends State<MessagePage> {
       appBar: AppBar(
         title: Text("消息"),
       ),
-      body: ListView.builder (
-          itemCount: names.length,
-           // itemExtent: 60,
+      body:
+      RefreshIndicator(
+          onRefresh: () async {
+            // 开始刷新
+            print('begin refresh');
+          },
+          child:ListView.builder (
+            itemCount: names.length,
+            // itemExtent: 60,
             itemBuilder: (context,index) {
               if (names[index] == loadingTag) {
                 return new Container(
@@ -69,7 +75,8 @@ class MessagePageState extends State<MessagePage> {
                 return messageItem(names[index]);
               }
             },
-        ),
+          )
+      )
     );
   }
 }

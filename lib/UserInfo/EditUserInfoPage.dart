@@ -48,11 +48,14 @@ class EditUserWidgetState extends State<EditUserWidget> {
         padding: EdgeInsets.only(left: 16,top: 10,right: 16,bottom: 5),
         child: Column(
           children: [
-            Image(
-              width: 80,
-              height: 80,
-              image: NetworkImage('https://sf1-ttcdn-tos.pstatp.com/img/user-avatar/add95ad13fff807eab5a62ac8a5b60cf~300x300.image'),
-              fit: BoxFit.fitWidth,
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: NetworkImage("https://tva1.sinaimg.cn/large/006y8mN6gy1g7aa03bmfpj3069069mx8.jpg"),
+              child: Container(
+                alignment: Alignment(0, .5),
+                width: 60,
+                height: 60,
+              ),
             ),
             Padding(padding: EdgeInsets.only(top: 15,bottom: 15),
               child: Text("点击更换头像",style: TextStyle(fontSize: 14),),
@@ -109,6 +112,13 @@ class EditUserWidgetState extends State<EditUserWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('编辑个人信息'),
+        actions: [
+          TextButton(
+              onPressed: () {
+
+              },
+              child: Text('保存',style: TextStyle(color: Colors.white,fontSize: 16),))
+        ],
       ),
       body:new GestureDetector(
         onTap: () {
