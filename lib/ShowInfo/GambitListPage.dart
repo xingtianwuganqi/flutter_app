@@ -45,7 +45,7 @@ class GambitListState extends State<GambitListWidget> {
               trailing:  Icon(Icons.keyboard_arrow_right),
             );
           }
-      ),
+        ),
       )
     );
   }

@@ -87,11 +87,9 @@ class _LoginWidgetState extends State<LoginWidget> {
     print(_username);
     print(_password);
     if (_username.length == 0)  {
-      print('========');
       return;
     }
     if (_password.length == 0)  {
-      print('--------');
       return;
     }
     final url = "https://test.rxswift.cn/api/v1/login/";

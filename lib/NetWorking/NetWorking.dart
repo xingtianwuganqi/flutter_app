@@ -20,6 +20,16 @@ class NetWorking {
       var response = await dio.post(url,data:params);
       return response.data;
     }catch(e) {
+      print(e);
+      return e;
+    }
+  }
+
+  static Future formDataPost(String url, FormData formData) async {
+    try {
+      var response = await dio.post(url,data: formData);
+      return response.data;
+    }catch(e){
       return e;
     }
   }

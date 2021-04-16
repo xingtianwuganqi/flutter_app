@@ -1,4 +1,10 @@
+// import 'dart:html';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/ShowInfo/Models.dart';
+import '../NetWorking/NetWorking.dart';
+
 
 class ShowInfoListWidget extends StatefulWidget {
   @override
@@ -10,13 +16,23 @@ class ShowInfoListWidget extends StatefulWidget {
 
 class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProviderStateMixin {
 
+
+  List<ShowInfoModel> showInfoLists = [];
+
   @override
   void initState() {
     super.initState();
     // 创建Controller
+    showInfoListNetWroking();
   }
 
-  Widget showInfoItem() {
+  Widget showInfoItem(ShowInfoModel data) {
+
+    List<Container> imgWidgets = data.imgs.map((e) => Container(
+      child: Image.network(e),
+    ));
+
+
     return Container(
       child: Column(
         children: [
@@ -26,7 +42,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
               children: [
                 CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage("https://tva1.sinaimg.cn/large/006y8mN6gy1g7aa03bmfpj3069069mx8.jpg"),
+                  backgroundImage: NetworkImage(data.user.avator),
                   child: Container(
                     alignment: Alignment(0, .5),
                     width: 30,
@@ -37,8 +53,8 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
                   padding: EdgeInsets.only(left: 10),
                   child: Column(
                     children: [
-                      Text('昵称',style: TextStyle(color: Colors.black,fontSize: 14),overflow: TextOverflow.ellipsis),
-                      Text('时间',style: TextStyle(color: Colors.black12,fontSize: 12),overflow: TextOverflow.ellipsis)
+                      Text(data.user.name,style: TextStyle(color: Colors.black,fontSize: 14),overflow: TextOverflow.ellipsis),
+                      Text(data.create_time,style: TextStyle(color: Colors.black12,fontSize: 12),overflow: TextOverflow.ellipsis)
                     ],
                   )),
                 Expanded(
@@ -54,24 +70,14 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width,
             child: PageView(
-              children: [
-                Center(
-                  child: Text('测试1'),
-                ),
-                Center(
-                  child: Text('测试2'),
-                ),
-                Center(
-                  child: Text('测试3'),
-                )
-              ],
+              children: imgWidgets,
             ),
           ),
           // instraction
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,top: 10,right: 10,bottom: 0),
-            child: Text('文本的对齐方式；可以选择左对齐、右对齐还是居中。注意，对齐的参考系是Text widget本身。本例中虽然是指定了居中对齐，但因为Text文本内容宽度不足一行，Text的宽度和文本内容长度相等，那么这时指定对齐方式是没有意义的，只有Text宽度大于文本内容长度时指定此属性才有意义。下面我们指定一个较长的字符串',
+            child: Text(data.instruction,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 14,color: Colors.black),
@@ -88,14 +94,14 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
             ),
           ),
           // 点赞，收藏，评论
-          commentWidget(),
+          commentWidget(data),
           Divider(thickness: 10,color: Colors.grey[100],)
         ],
       ),
     );
   }
 
-  Widget commentWidget() {
+  Widget commentWidget(ShowInfoModel data) {
     return Container(
       height: 40,
       child: Row(
@@ -103,21 +109,21 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text('点赞'),
+                label: Text(data.likes_num > 0 ? data.likes_num.toString() : "点赞"),
                 onPressed: (){},
               )
           ),
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text('收藏'),
+                label: Text(data.collection_num > 0 ? data.collection_num.toString() : "收藏"),
                 onPressed: (){},
               )
           ),
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text('评论'),
+                label: Text(data.commNum > 0 ? data.commNum.toString() : "收藏"),
                 onPressed: (){},
               )
           ),
@@ -130,11 +136,36 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-          itemCount: 10,
+          itemCount: showInfoLists.length,
           itemBuilder: (context, index) {
-            return showInfoItem();
+            var data = showInfoLists[index];
+            return showInfoItem(data);
           }
       ),
     );
+  }
+
+
+  Future<Null> showInfoListNetWroking() async {
+    final url = 'https://test.rxswift.cn/api/v1/showinfolist/';
+    final dic = {"page": 1,"size": 10};
+    FormData formData = FormData.fromMap(dic);
+
+    ///创建Map 封装参数
+    var data = await NetWorking.formDataPost(url, formData);
+    print(data);
+    if (data['code'] == 200) {
+      List<ShowInfoModel> datas = [];
+      var models = data['data'];
+      for (int i = 0;i < models.length; i++ ){
+        datas.add(new ShowInfoModel.fromJson(models[i]));
+      }
+      showInfoLists = datas;
+      setState(() {
+
+      });
+    }else{
+
+    }
   }
 }
