@@ -1,9 +1,4 @@
-## flutter demo
-（demo中接口只做学习使用，不可做其他用途）
-![banner](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG34.jpeg)
-![自定义组件](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG33.jpeg)
-![GirdView](https://github.com/xingtianwuganqi/flutter_app/blob/master/WechatIMG35.jpeg)
+## flutter_petrescue
+Flutter版真命天喵（开发中...）
+真命天喵APP是一款帮宠物找领养和送养的APP，iOS端已上架， 欢迎下载使用，下载地址,欢迎提问题提bug,希望可以为更多的宠物找到一个温暖的家。
 
-# flutter_720yun
-
-A new Flutter application.
