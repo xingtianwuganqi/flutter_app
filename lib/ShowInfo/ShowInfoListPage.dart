@@ -1,5 +1,4 @@
 // import 'dart:html';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/ShowInfo/Models.dart';
@@ -14,7 +13,10 @@ class ShowInfoListWidget extends StatefulWidget {
   }
 }
 
-class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProviderStateMixin {
+class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliveClientMixin {
+  //导航栏切换时保持原有状态
+  @override
+  bool get wantKeepAlive => true;
 
 
   List<ShowInfoModel> showInfoLists = [];
@@ -23,38 +25,43 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
   void initState() {
     super.initState();
     // 创建Controller
+    // double width =MediaQuery.of(context).size.width;
+    // print(width);
     showInfoListNetWroking();
   }
 
   Widget showInfoItem(ShowInfoModel data) {
 
-    List<Container> imgWidgets = data.imgs.map((e) => Container(
-      child: Image.network(e),
+    var imgWidgets = data.imgs.map((e) => Container(
+      child: Image.network('http://img.rxswift.cn/' + e),
     ));
 
 
     return Container(
       child: Column(
         children: [
+          /// 个人信息
           Container(
-            padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
+            padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 15,
-                  backgroundImage: NetworkImage(data.user.avator),
+                  radius: 20,
+                  backgroundImage: NetworkImage(((data.user.avator ?? "").length > (0)) ? ('http://img.rxswift.cn/' + data.user.avator) : ''),
                   child: Container(
                     alignment: Alignment(0, .5),
-                    width: 30,
-                    height: 30,
+                    width: 40,
+                    height: 40,
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.user.name,style: TextStyle(color: Colors.black,fontSize: 14),overflow: TextOverflow.ellipsis),
-                      Text(data.create_time,style: TextStyle(color: Colors.black12,fontSize: 12),overflow: TextOverflow.ellipsis)
+                      Text(data.user.username ?? "",style: TextStyle(color: Colors.black,fontSize: 14),overflow: TextOverflow.ellipsis),
+                      Padding(padding: EdgeInsets.all(3)),
+                      Text(data.create_time ?? "",style: TextStyle(color: Colors.black12,fontSize: 12),overflow: TextOverflow.ellipsis)
                     ],
                   )),
                 Expanded(
@@ -65,25 +72,25 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
               ],
             ),
           ),
+          /// pageView
           Container(
-            color: Colors.blue,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width,
             child: PageView(
-              children: imgWidgets,
+              children: imgWidgets.toList(),
             ),
           ),
-          // instraction
+          /// instraction
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,top: 10,right: 10,bottom: 0),
-            child: Text(data.instruction,
+            child: Text(data.instruction ?? "",
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 14,color: Colors.black),
             ),
           ),
-          // 评论
+          /// 评论
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,top: 10,right: 15),
@@ -93,7 +100,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
               style: TextStyle(fontSize: 14,color: Colors.black),
             ),
           ),
-          // 点赞，收藏，评论
+          /// 点赞，收藏，评论
           commentWidget(data),
           Divider(thickness: 10,color: Colors.grey[100],)
         ],
@@ -109,21 +116,21 @@ class ShowInfoListState extends State<ShowInfoListWidget> with SingleTickerProvi
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text(data.likes_num > 0 ? data.likes_num.toString() : "点赞"),
+                label: Text((data.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞"),
                 onPressed: (){},
               )
           ),
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text(data.collection_num > 0 ? data.collection_num.toString() : "收藏"),
+                label: Text((data.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏"),
                 onPressed: (){},
               )
           ),
           Expanded(
               child: TextButton.icon(
                 icon:Icon(Icons.panorama),
-                label: Text(data.commNum > 0 ? data.commNum.toString() : "收藏"),
+                label: Text((data.commNum ?? 0) > (0) ? data.commNum.toString() : "收藏"),
                 onPressed: (){},
               )
           ),

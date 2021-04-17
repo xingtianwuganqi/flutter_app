@@ -1,6 +1,6 @@
 
 class UserInfoModel {
-  final String name;
+  final String username;
   final String avator;
   final String token;
   final String phone_number;
@@ -10,7 +10,7 @@ class UserInfoModel {
   final String wx_id;
 
   UserInfoModel({
-    this.name,
+    this.username,
     this.avator,
     this.token,
     this.phone_number,
@@ -22,7 +22,7 @@ class UserInfoModel {
 
   factory UserInfoModel.fromJson(Map<String,dynamic> json){
     return UserInfoModel(
-      name: json["name"],
+        username: json["username"],
       avator: json["avator"],
       token: json["token"],
       phone_number: json["phone_number"],

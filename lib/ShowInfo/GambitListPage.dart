@@ -10,7 +10,12 @@ class GambitListWidget extends StatefulWidget {
   }
 }
 
-class GambitListState extends State<GambitListWidget> {
+class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveClientMixin{
+
+  //导航栏切换时保持原有状态
+  @override
+  bool get wantKeepAlive => true;
+
 
   List<GambitModel> gambitList = [];
 
