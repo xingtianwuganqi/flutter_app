@@ -2,12 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/Login/RegisterPage.dart';
-import 'package:flutter_720yun/Login/UserModel.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/NetWorking/Encryption.dart';
-import '../Common/ColorPage.dart';
+import '../Common/CommonPage.dart';
 
 class LoginWidget extends StatefulWidget {
   @override

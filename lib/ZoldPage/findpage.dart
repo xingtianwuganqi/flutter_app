@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../NetWorking/NetWorking.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter_720yun/model/ChannelModel.dart';
+import 'package:flutter_720yun/ZoldPage/ChannelModel.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'Banner.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'home_banner.dart';
-import 'package:flutter_720yun/model/BannerModel.dart';
+import 'package:flutter_720yun/ZoldPage/BannerModel.dart';
 import 'ChannelDatailPage.dart';
 import 'WorthAttentionPage.dart';
 

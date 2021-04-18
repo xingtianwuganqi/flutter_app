@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import '../NetWorking/NetWorking.dart';
+import 'package:dio/dio.dart';
+
 
 class SearchPageWidget extends StatefulWidget {
   @override
@@ -9,6 +13,9 @@ class SearchPageWidget extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPageWidget> {
+
+  bool isSearch = false;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -32,5 +39,14 @@ class SearchPageState extends State<SearchPageWidget> {
       )
       ,
     );
+  }
+
+  Future<Null> searchKeyWordsNetworking() async {
+    final url = NetWorkingConfig.baseUrl() + "/api/v1/searchkeywords/";
+    // FormData formData = FormData.fromMap(map)
+    var data = await NetWorking.post(url);
+    if (data['code'] == 200) {
+      print(data);
+    }
   }
 }

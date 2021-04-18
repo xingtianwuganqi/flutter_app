@@ -1,4 +1,4 @@
-import '../Login/UserModel.dart';
+import 'UserModel.dart';
 class HomePageModel {
   final  int topic_id;
   final  String content;

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
@@ -7,16 +6,15 @@ import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
 
-class HomePage extends StatefulWidget {
+class TopicDetailWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _HomePageState();
+    return new TopicDetailState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
-
+class TopicDetailState extends State<TopicDetailWidget> {
 
   List<HomePageModel> homeModels = [];
 
@@ -33,16 +31,16 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           CircleAvatar(
-            radius: 18,
+            radius: 20,
             backgroundImage: NetworkImage("http://img.rxswift.cn/" + data.userInfo.avator),
             child: Container(
-              alignment: Alignment(0, 0),
-              width: 36,
-              height: 36,
+              alignment: Alignment(0, .5),
+              width: 40,
+              height: 40,
             ),
           ),
           Container(
-            alignment: Alignment.centerLeft,
+              alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(left: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,8 +79,8 @@ class _HomePageState extends State<HomePage> {
       if (data.tagInfos.isNotEmpty) {
         tags = data.tagInfos.map((e) => Container(
           decoration: BoxDecoration(
-            color: ColorsUtil.fromEnmu(ColorEnum.system),
-            borderRadius: BorderRadius.all(Radius.circular(3.0))
+              color: ColorsUtil.fromEnmu(ColorEnum.system),
+              borderRadius: BorderRadius.all(Radius.circular(3.0))
           ),
           padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
           child: Text(e.tag_name ?? "",
@@ -138,10 +136,10 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         padding: EdgeInsets.only(right: 5,bottom: 5),
                         child: Image.network(
-                          'http://img.rxswift.cn/' + data.imgs[0],
-                          fit:BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity
+                            'http://img.rxswift.cn/' + data.imgs[0],
+                            fit:BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity
                           // width: (MediaQuery.of(context).size.width - 100) / 2,
                           // height: 120,
                         ),
@@ -152,9 +150,9 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(left:5,bottom: 5),
                       child: Image.network(
                           'http://img.rxswift.cn/' + data.imgs[1],
-                        fit:BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity
+                          fit:BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity
                       ),
 
                     )
@@ -164,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child:
+                child:
                 Container(
                   child: Row(
                     children: [
@@ -175,8 +173,8 @@ class _HomePageState extends State<HomePage> {
                           child: Image.network(
                               'http://img.rxswift.cn/' + data.imgs[2],
                               fit:BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity
+                              width: double.infinity,
+                              height: double.infinity
                             // height: 120,
                           ),
                         ),
@@ -186,9 +184,9 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.only(left:5,top: 5),
                             child: Image.network(
                                 'http://img.rxswift.cn/' + data.imgs[3],
-                              fit:BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity
+                                fit:BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity
                               // height: 120,
 
                             ),
@@ -202,94 +200,94 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }else if (data.imgs?.length == 3) {
-    return Container(
-      padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
-      // width: MediaQuery.of(context).size.width - 65,
-      height: 170,
-      child: Row(
-        children: [
-          Expanded(
-            child:
-             Container(
+      return Container(
+        padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
+        // width: MediaQuery.of(context).size.width - 65,
+        height: 170,
+        child: Row(
+          children: [
+            Expanded(
+              child:
+              Container(
                 padding: EdgeInsets.only(right: 5),
                 child: Image.network(
                     'http://img.rxswift.cn/' + data.imgs[0],
-                  fit:BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity
+                    fit:BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity
                 ),
               ),
-          ),
-          Expanded(
-              child:
-              Container(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child:
-                      Container(
-                        padding: EdgeInsets.only(left:5,bottom: 5),
-                        child: Image.network(
-                            'http://img.rxswift.cn/' + data.imgs[1],
-                          fit:BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity
+            ),
+            Expanded(
+                child:
+                Container(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child:
+                        Container(
+                          padding: EdgeInsets.only(left:5,bottom: 5),
+                          child: Image.network(
+                              'http://img.rxswift.cn/' + data.imgs[1],
+                              fit:BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left:5,top: 5),
-                          child: Image.network(
-                              'http://img.rxswift.cn/' + data.imgs[2],
-                            fit:BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity
-                          ),
-                        )
-                    )
-                  ],
-                ),
-              )
-          )
-        ],
-      ),
-    );
+                      Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(left:5,top: 5),
+                            child: Image.network(
+                                'http://img.rxswift.cn/' + data.imgs[2],
+                                fit:BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity
+                            ),
+                          )
+                      )
+                    ],
+                  ),
+                )
+            )
+          ],
+        ),
+      );
     }else if (data.imgs.length == 2) {
-    return Container(
+      return Container(
 
-      padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
-      // width: MediaQuery.of(context).size.width - 65,
-      height: 170,
-      child: Row(
-        children: [
-          Expanded(
-            child:
-            Container(
-              padding: EdgeInsets.only(right: 5),
-              child: Image.network(
-                  'http://img.rxswift.cn/' + data.imgs[0],
-                fit:BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity
+        padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
+        // width: MediaQuery.of(context).size.width - 65,
+        height: 170,
+        child: Row(
+          children: [
+            Expanded(
+              child:
+              Container(
+                padding: EdgeInsets.only(right: 5),
+                child: Image.network(
+                    'http://img.rxswift.cn/' + data.imgs[0],
+                    fit:BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child:
-            Container(
-              padding: EdgeInsets.only(left: 5),
-              child: Image.network(
-                  'http://img.rxswift.cn/' + data.imgs[1],
-                fit:BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity
+            Expanded(
+              child:
+              Container(
+                padding: EdgeInsets.only(left: 5),
+                child: Image.network(
+                    'http://img.rxswift.cn/' + data.imgs[1],
+                    fit:BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
     }else if (data.imgs?.length == 1) {
       return Container(
         padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
@@ -297,9 +295,9 @@ class _HomePageState extends State<HomePage> {
         height: 170,
         child: Image.network(
             'http://img.rxswift.cn/' + data.imgs[0],
-          fit:BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity
+            fit:BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity
         ),
       );
     }
@@ -313,7 +311,7 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(
           fontSize: FontUtil.fs(FontSize.content),
           color: ColorsUtil.fromEnmu(ColorEnum.desc),
-      ),
+        ),
       ),
     );
   }
@@ -371,28 +369,28 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          ),
-          padding: EdgeInsets.only(left: 20,right: 20),
-          width: double.infinity,
-          height: 40,
-          child:TextButton(
-            child: Text('搜索'),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return SearchPageWidget();
-              }));
-            },
-          ),
-        )
+          title: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            ),
+            padding: EdgeInsets.only(left: 20,right: 20),
+            width: double.infinity,
+            height: 40,
+            child:TextButton(
+              child: Text('搜索'),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return SearchPageWidget();
+                }));
+              },
+            ),
+          )
       ),
       body: ListView.builder(
-        itemCount: homeModels.length,
+          itemCount: homeModels.length,
           itemBuilder: (context,index) {
-           var data = homeModels[index];
+            var data = homeModels[index];
             return homePageItemWidget(data);
           }
       ),
@@ -400,7 +398,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Null> homePageListNetWroking() async {
-    final url = NetWorkingConfig.baseUrl() +  '/api/v1/topiclist/';
+    final url = 'https://test.rxswift.cn/api/v1/topiclist/';
     final dic = {"page": 1,"size": 10};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_720yun/model/BannerModel.dart';
+import 'package:flutter_720yun/ZoldPage/BannerModel.dart';
 import 'dart:ui';
 
 final double ScreenW = window.physicalSize.width;

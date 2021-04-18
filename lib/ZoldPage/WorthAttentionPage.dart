@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
-import 'package:flutter_720yun/model/ChannelModel.dart';
+import 'package:flutter_720yun/ZoldPage/ChannelModel.dart';
 import 'dart:ui';
-import 'package:flutter_720yun/model/DetailModel.dart';
-import 'package:flutter_720yun/model/WorthModel.dart';
+import 'package:flutter_720yun/ZoldPage/DetailModel.dart';
+import 'package:flutter_720yun/ZoldPage/WorthModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 double ScreenW = 0.0;

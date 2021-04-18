@@ -1,7 +1,8 @@
 // import 'dart:html';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_720yun/ShowInfo/Models.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/model/ShowModel.dart';
 import '../NetWorking/NetWorking.dart';
 
 
@@ -59,9 +60,19 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.user.username ?? "",style: TextStyle(color: Colors.black,fontSize: 14),overflow: TextOverflow.ellipsis),
+                      Text(data.user.username ?? "",
+                          style: TextStyle(
+                            color: ColorsUtil.fromEnmu(ColorEnum.title),
+                            fontSize: FontUtil.fs(FontSize.title),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                      ),
                       Padding(padding: EdgeInsets.all(3)),
-                      Text(data.create_time ?? "",style: TextStyle(color: Colors.black12,fontSize: 12),overflow: TextOverflow.ellipsis)
+                      Text(data.create_time ?? "",
+                          style: TextStyle(
+                              color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                              fontSize: 12),
+                          overflow: TextOverflow.ellipsis)
                     ],
                   )),
                 Expanded(
@@ -87,17 +98,22 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
             child: Text(data.instruction ?? "",
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 14,color: Colors.black),
+                style: TextStyle(
+                    fontSize: FontUtil.fs(FontSize.content),
+                    color: ColorsUtil.fromEnmu(ColorEnum.content)),
             ),
           ),
           /// 评论
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,top: 10,right: 15),
-            child: Text('添加评论',
+            child: Text('添加评论...',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 14,color: Colors.black),
+              style: TextStyle(
+                  fontSize: FontUtil.fs(FontSize.desc),
+                  color: ColorsUtil.fromEnmu(ColorEnum.desc)
+              ),
             ),
           ),
           /// 点赞，收藏，评论
@@ -154,7 +170,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
 
 
   Future<Null> showInfoListNetWroking() async {
-    final url = 'https://test.rxswift.cn/api/v1/showinfolist/';
+    final url = NetWorkingConfig.baseUrl() + '/api/v1/showinfolist/';
     final dic = {"page": 1,"size": 10};
     FormData formData = FormData.fromMap(dic);
 

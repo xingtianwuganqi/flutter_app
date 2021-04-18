@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_720yun/ShowInfo/Models.dart';
+import 'package:flutter_720yun/model/ShowModel.dart';
 import '../NetWorking/NetWorking.dart';
+import '../Common/CommonPage.dart';
 
 class GambitListWidget extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
   }
 
   Future<Null> GambitListNetWroking() async {
-    final url = 'https://test.rxswift.cn/api/v1/gambitlist/';
+    final url = NetWorkingConfig.baseUrl() + '/api/v1/gambitlist/';
     var data = await NetWorking.post(url);
     print(data);
     if (data['code'] == 200) {

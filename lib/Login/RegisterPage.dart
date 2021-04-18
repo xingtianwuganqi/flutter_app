@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Login/UserModel.dart';
+import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
 

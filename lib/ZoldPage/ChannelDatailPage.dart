@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
-import 'package:flutter_720yun/model/DetailModel.dart';
+import 'package:flutter_720yun/ZoldPage/DetailModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ChannelDetail extends StatefulWidget {
