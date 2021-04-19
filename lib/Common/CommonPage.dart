@@ -1,4 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Login/LoginPage.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+class UserManager {
+  // 工厂模式
+  factory UserManager() =>_getInstance();
+  static UserManager get instance => _getInstance();
+  static UserManager _instance;
+
+  UserManager._internal() {
+  // 初始化
+
+  }
+
+  static UserManager _getInstance() {
+    if (_instance == null) {
+      _instance = new UserManager._internal();
+    }
+    return _instance;
+  }
+
+  UserInfoModel userInfo;
+  String get token => userInfo?.token ?? "";
+  bool get isLogin => (userInfo?.token?.length ?? 0) > 0;
+
+  void getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString('userInfo');
+    Map json = jsonDecode(data);
+    userInfo = UserInfoModel.fromJson(json);
+  }
+
+  void saveUerInfo(UserInfoModel data) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonStringA = jsonEncode(data.toJson());
+    prefs.setString("userInfo", jsonStringA);
+    userInfo = data;
+  }
+
+  void logout() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+}
+
+lazyAuthToDoThings(context, obj) async{
+  if (UserManager.instance.isLogin) {
+    await obj();
+  }else{
+    await Navigator.push(context, MaterialPageRoute(builder: (context){
+      return LoginWidget();
+    }));
+  }
+}
 
 class NetWorkingConfig {
   static final UrlConfig urlConfig = UrlConfig.test;

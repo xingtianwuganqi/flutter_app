@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
 // import 'homepage/findpage.dart';
 import 'homepage/HomePage.dart';
@@ -29,6 +30,8 @@ class tabbarState extends State<tabbar> {
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage());
     pages.add(UserInfoWidget());
+
+    UserManager.instance.getUserInfo();
   }
 
   @override

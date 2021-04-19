@@ -92,17 +92,20 @@ class _LoginWidgetState extends State<LoginWidget> {
     if (_password.length == 0)  {
       return;
     }
-    final url = "https://test.rxswift.cn/api/v1/login/";
+    final url = NetWorkingConfig.baseUrl() + '/api/v1/login/';
     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
-    print(dic);
     var data = await NetWorking.post(url,params: dic);
+    print(_password);
+    print(generateMD5(_password));
     print(data);
     if (data["code"] == 200) {
       var model = data["data"];
       var userModel = UserInfoModel.fromJson(model);
-      print(model);
       _userModel = userModel;
-      print(_userModel.phone_number);
+      UserManager.instance.userInfo = userModel;
+      UserManager.instance.saveUerInfo(userModel);
+      /// 登录成功
+      Navigator.pop(context);
     }
   }
 
@@ -206,33 +209,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
     );
-    
-    Widget rescueWidget = new Container(
-      margin: EdgeInsets.only(left: 20,right: 20),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Image(image:
-                NetworkImage(
-                  "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2151136234,3513236673&fm=26&gp=0.jpg"
-                ),
-                width: 36,
-                height: 36
-              ),
-              Text(
-                "昵称",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+
 
     Widget registerArea = new Container(
       margin: EdgeInsets.only(left: 20,right: 20),
@@ -308,7 +285,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               new SizedBox(height: 30,),
               protocalArea,
               new SizedBox(height: 30,),
-              rescueWidget,
             ],
           ),
         )

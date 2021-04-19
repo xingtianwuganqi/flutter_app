@@ -33,10 +33,14 @@ class UserInfoModel {
       );
   }
 
-// Map<String,dynamic> toJson() =>
-// <String,dynamic> {
-// "name": name,
-// "id" : id,
-// "url" : url
-// };
+  Map<String,dynamic> toJson() => <String,dynamic> {
+    "username": username,
+    "avator" : avator,
+    "token" : token,
+    'phone_number': phone_number,
+    'email':email,
+    'create_time': create_time,
+    'id':id,
+    'wx_id': wx_id,
+  };
 }
