@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
           ),
           padding: EdgeInsets.only(left: 20,right: 20),
           width: double.infinity,
-          height: 40,
+          height: 35,
           child:TextButton(
             child: Text('搜索'),
             onPressed: () {

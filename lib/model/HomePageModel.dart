@@ -80,3 +80,20 @@ class TagModel {
     );
   }
 }
+
+class SearchKeyWordModel {
+  final int id;
+  final String keyword;
+
+  SearchKeyWordModel({
+    this.id,
+    this.keyword,
+  });
+
+  factory SearchKeyWordModel.fromJson(Map<String,dynamic> json){
+    return SearchKeyWordModel(
+      id: json['id'],
+      keyword: json['keyword'],
+    );
+  }
+}
