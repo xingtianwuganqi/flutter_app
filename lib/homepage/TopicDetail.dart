@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_720yun/homepage/SearchPage.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
+import 'HomePage.dart';
 
 class TopicDetailWidget extends StatefulWidget {
 
@@ -49,36 +49,39 @@ class TopicDetailState extends State<TopicDetailWidget> {
               height: 40,
             ),
           ),
-          Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data.userInfo.username ?? "",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: ColorsUtil.fromEnmu(ColorEnum.title),
-                          fontSize: FontUtil.fs(FontSize.title)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                  ),
-                  Padding(padding: EdgeInsets.all(3)),
-                  Text((data.address_info ?? "") + (data.create_time ?? ""),
-                      style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                          fontSize: FontUtil.fs(FontSize.desc)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                  )
-                ],
-              )),
           Expanded(
               child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(data.userInfo.username ?? "",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: ColorsUtil.fromEnmu(ColorEnum.title),
+                            fontSize: FontUtil.fs(FontSize.title)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Padding(padding: EdgeInsets.all(3)),
+                      Text((data.address_info ?? "") + (data.create_time ?? ""),
+                          style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                              fontSize: FontUtil.fs(FontSize.desc)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                    ],
+                  )
+              ),
+          ),
+          Container(
+            width: 30,
+            child: IconButton(icon: Icon(Icons.more_horiz_outlined,
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+            ), onPressed: (){}),
+          )
 
-              )),
-          IconButton(icon: Icon(Icons.more_horiz_outlined,
-            color: ColorsUtil.fromEnmu(ColorEnum.content),
-          ), onPressed: (){}),
         ],
       ),
     );
@@ -92,6 +95,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     if (data.tagInfos != null ) {
       if (data.tagInfos.isNotEmpty) {
         tags = data.tagInfos.map((e) => Container(
+
           decoration: BoxDecoration(
               color: ColorsUtil.fromEnmu(ColorEnum.system),
               borderRadius: BorderRadius.all(Radius.circular(3.0))
@@ -112,7 +116,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
           // 标签
           Container(
             // ignore: null_aware_before_operator
-            padding: EdgeInsets.only(left: 60,right: 15,top: 2,bottom: 2),
+            padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
             height: tags.length > 0 ? 26 : 3,
             child: Row(
@@ -120,7 +124,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 60,right: 10,top: 5,bottom: 5),
+            padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
             alignment: Alignment.centerLeft,
             child: Text(data.content ?? '',
               maxLines: 7,
@@ -153,9 +157,14 @@ class TopicDetailState extends State<TopicDetailWidget> {
       return [];
     }else{
       List<Widget> data = [];
-      var imgWidgets = model.imgs?.map((e) => Expanded(child: CachedNetworkImage(
-        imageUrl:  NetWorkingConfig.imgBaseUrl + e,
-      )))?.toList();
+      var imgWidgets = model.imgs?.map(
+              (e) =>
+              Container(
+                padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                child: CachedNetworkImage(
+                  imageUrl:  NetWorkingConfig.imgBaseUrl + e,
+                ),
+              ))?.toList();
       data.add(userInfoWidget(homeModel));
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;
@@ -173,9 +182,40 @@ class TopicDetailState extends State<TopicDetailWidget> {
           title: Text('详情',)
       ),
       body:
-      // Text('')
-      ListView(
-        children: imageWidgets(homeModel),
+      SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              Expanded(
+                  child: ListView(
+                    children: imageWidgets(homeModel),
+                  )
+              ),
+              Container(
+                child: Column(
+                  children: [
+                      Container(
+                          color: ColorsUtil.fromEnmu(ColorEnum.system),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width - 30,
+                          child: TextButton(
+                            child: Text('点击获取联系方式',
+                              style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                                  color: Colors.white),
+                            ),
+                            onPressed: () {
+
+                            },
+                          ),
+                        ),
+
+                    commentWidget(15,context,homeModel),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       )
     );
   }

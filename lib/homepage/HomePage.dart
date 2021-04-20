@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -56,6 +58,17 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          lazyAuthToDoThings(context, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return ReleaseTopicPage();
+            }));
+          });
+        },
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
       body: EasyRefresh(
         header: MaterialHeader(),
         footer: MaterialFooter(
@@ -65,7 +78,16 @@ class _HomePageState extends State<HomePage> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return homePageItemWidget(context, data);
+            return  GestureDetector(
+              behavior: HitTestBehavior.opaque,
+                child: homePageItemWidget(context, data),
+              onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TopicDetailWidget(topicId: data.topic_id);
+                  }));
+              },
+            );
+
           }
         ),
         firstRefresh: isFirstLoad,
@@ -118,24 +140,26 @@ class _HomePageState extends State<HomePage> {
 
 /// UI
 Widget homePageItemWidget(BuildContext context, HomePageModel data) {
-  return GestureDetector(
-    child: Container(
+  return
+    // GestureDetector(
+    // child:
+    Container(
       child: Column(
         children: [
           userInfoWidget(data),
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
-          commentWidget(context, data),
+          commentWidget(60, context, data),
           Divider(height: 1,),
         ],
       ),
-    ),
-    onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context){
-        return TopicDetailWidget(topicId: data.topic_id);
-      }));
-    },
+    // ),
+    // onTap: () {
+    //   Navigator.push(context, MaterialPageRoute(builder: (context){
+    //     return TopicDetailWidget(topicId: data.topic_id);
+    //   }));
+    // },
   );
 }
 
@@ -249,26 +273,23 @@ Widget imagesWidget(HomePageModel data) {
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.only(right: 2.5,bottom: 2.5),
-                      child: Image.network(
-                          'http://img.rxswift.cn/' + data.imgs[0],
-                          fit:BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity
-                        // width: (MediaQuery.of(context).size.width - 100) / 2,
-                        // height: 120,
+                      child: CachedNetworkImage(
+                        imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
                       ),
                     ),
                   ),
                   Expanded(child:
                   Container(
                     padding: EdgeInsets.only(left:2.5,bottom: 2.5),
-                    child: Image.network(
-                        'http://img.rxswift.cn/' + data.imgs[1],
-                        fit:BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity
+                    child: CachedNetworkImage(
+                      imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
                     ),
-
                   )
                   )
                 ],
@@ -284,25 +305,22 @@ Widget imagesWidget(HomePageModel data) {
                       child:
                       Container(
                         padding: EdgeInsets.only(right:2.5,top: 2.5),
-                        child: Image.network(
-                            'http://img.rxswift.cn/' + data.imgs[2],
-                            fit:BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity
-                          // height: 120,
+                        child: CachedNetworkImage(
+                          imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                       ),
                     ),
                     Expanded(
                         child: Container(
                           padding: EdgeInsets.only(left:2.5,top: 2.5),
-                          child: Image.network(
-                              'http://img.rxswift.cn/' + data.imgs[3],
-                              fit:BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity
-                            // height: 120,
-
+                          child: CachedNetworkImage(
+                            imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
                           ),
                         )
                     )
@@ -324,11 +342,11 @@ Widget imagesWidget(HomePageModel data) {
             child:
             Container(
               padding: EdgeInsets.only(right: 5),
-              child: Image.network(
-                  'http://img.rxswift.cn/' + data.imgs[0],
-                  fit:BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity
+              child: CachedNetworkImage(
+                imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
           ),
@@ -341,22 +359,22 @@ Widget imagesWidget(HomePageModel data) {
                       child:
                       Container(
                         padding: EdgeInsets.only(left:2.5,bottom: 2.5),
-                        child: Image.network(
-                            'http://img.rxswift.cn/' + data.imgs[1],
-                            fit:BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity
+                        child: CachedNetworkImage(
+                          imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                       ),
                     ),
                     Expanded(
                         child: Container(
                           padding: EdgeInsets.only(left:2.5,top: 2.5),
-                          child: Image.network(
-                              'http://img.rxswift.cn/' + data.imgs[2],
-                              fit:BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity
+                          child: CachedNetworkImage(
+                            imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
                           ),
                         )
                     )
@@ -379,11 +397,11 @@ Widget imagesWidget(HomePageModel data) {
             child:
             Container(
               padding: EdgeInsets.only(right: 2.5),
-              child: Image.network(
-                  'http://img.rxswift.cn/' + data.imgs[0],
-                  fit:BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity
+              child: CachedNetworkImage(
+                imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
           ),
@@ -391,11 +409,11 @@ Widget imagesWidget(HomePageModel data) {
             child:
             Container(
               padding: EdgeInsets.only(left: 2.5),
-              child: Image.network(
-                  'http://img.rxswift.cn/' + data.imgs[1],
-                  fit:BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity
+              child: CachedNetworkImage(
+                imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
           ),
@@ -407,11 +425,11 @@ Widget imagesWidget(HomePageModel data) {
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       // width: MediaQuery.of(context).size.width - 65,
       height: 170,
-      child: Image.network(
-          'http://img.rxswift.cn/' + data.imgs[0],
-          fit:BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity
+      child: CachedNetworkImage(
+        imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
       ),
     );
   }
@@ -430,16 +448,16 @@ Widget addressWidget(HomePageModel data) {
   );
 }
 
-Widget commentWidget(BuildContext context, HomePageModel data) {
+Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
   return Container(
-    padding: EdgeInsets.only(left: 60,right: 15),
+    padding: EdgeInsets.only(left: leftNum,right: 15),
     height: 40,
     child: Row(
       children: [
         Expanded(
             child: TextButton.icon(
               icon:Icon(Icons.panorama),
-              label: Text((data.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞"),
+              label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞"),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
                   print('is login');
@@ -450,14 +468,14 @@ Widget commentWidget(BuildContext context, HomePageModel data) {
         Expanded(
             child: TextButton.icon(
               icon:Icon(Icons.panorama),
-              label: Text((data.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏"),
+              label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏"),
               onPressed: (){},
             )
         ),
         Expanded(
             child: TextButton.icon(
               icon:Icon(Icons.panorama),
-              label: Text((data.commNum ?? 0) > (0) ? data.commNum.toString() : "收藏"),
+              label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "收藏"),
               onPressed: (){},
             )
         ),
