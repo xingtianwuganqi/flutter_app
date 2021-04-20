@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../Common/CommonPage.dart';
 class MessagePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -19,6 +21,7 @@ class MessagePageState extends State<MessagePage> {
 
   static const loadingTag = "##loading##";
 
+  var isFirstLoad = true;
 
   List<String> names = ["系统消息","点赞","收藏","评论"];
 
@@ -40,7 +43,10 @@ class MessagePageState extends State<MessagePage> {
         child: new Column(
           children: <Widget>[
             ListTile(
-              title: Text(name),
+              title:Container(
+                transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                  child: Text(name,style: TextStyle(fontSize: 14,color: Colors.black)),
+                ),
               leading: Icon(Icons.email),
               trailing: Icon(Icons.keyboard_arrow_right),
             ),
@@ -55,28 +61,26 @@ class MessagePageState extends State<MessagePage> {
       appBar: AppBar(
         title: Text("消息"),
       ),
-      body:
-      RefreshIndicator(
-          onRefresh: () async {
-            // 开始刷新
-            print('begin refresh');
+      body: EasyRefresh(
+        header: MaterialHeader(),
+        footer: MaterialFooter(
+          enableInfiniteLoad: false,
+        ),
+        firstRefresh: isFirstLoad,
+        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+        emptyWidget: null,
+        child:ListView.builder (
+          itemCount: names.length,
+          // itemExtent: 60,
+          itemBuilder: (context,index) {
+            return messageItem(names[index]);
           },
-          child:ListView.builder (
-            itemCount: names.length,
-            // itemExtent: 60,
-            itemBuilder: (context,index) {
-              if (names[index] == loadingTag) {
-                return new Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  alignment: Alignment.center,
-                  child: Text("没有更多了",style: TextStyle(color: Colors.grey ),),
-                );
-              }else{
-                return messageItem(names[index]);
-              }
-            },
-          )
-      )
+        ),
+        onRefresh: () async {
+          // 开始刷新
+          // await GambitListNetWroking();
+        }
+      ),
     );
   }
 }

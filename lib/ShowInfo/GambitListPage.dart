@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../Common/CommonPage.dart';
 
@@ -17,6 +19,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
   @override
   bool get wantKeepAlive => true;
 
+  var isFirstLoad = true;
 
   List<GambitModel> gambitList = [];
 
@@ -30,11 +33,15 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          // 开始刷新
-          GambitListNetWroking();
-        },
+      body:
+      EasyRefresh(
+        header: MaterialHeader(),
+        footer: MaterialFooter(
+          enableInfiniteLoad: false,
+        ),
+        firstRefresh: isFirstLoad,
+        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+        emptyWidget: null,
         child: ListView.builder(
           itemCount: gambitList.length,
           itemExtent: 50,
@@ -46,13 +53,15 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
                 transform: Matrix4.translationValues(-25, 0.0, 0.0),
                 child: Text(data.descript,style: TextStyle(fontSize: 14,color: Colors.black)),
               ),
-              // Text(data.descript,style: TextStyle(fontSize: 14,color: Colors.black)),
-                //
               trailing:  Icon(Icons.keyboard_arrow_right),
             );
           }
         ),
-      )
+        onRefresh: () async {
+          // 开始刷新
+          await GambitListNetWroking();
+        },
+      ),
     );
   }
 
@@ -68,10 +77,10 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
       }
       gambitList = datas;
       setState(() {
-
+        isFirstLoad = false;
       });
     }else{
-
+      isFirstLoad = false;
     }
   }
 }

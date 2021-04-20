@@ -18,7 +18,7 @@ class HomePageModel {
   final  int user;
   final  List<TagModel> tagInfos;
   final  String contact_info;
-  final  int getedcontact;
+  final  bool getedcontact;
 
   HomePageModel({
     this.topic_id,

@@ -19,7 +19,10 @@ class SettingPageWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 10,right: 10),
             child: ListTile(
-                title: Text(data.title),
+                title: Container(
+                  transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                  child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
+                ),
                 leading: Icon(Icons.email),
                 trailing: Icon(Icons.keyboard_arrow_right)
             ),
@@ -31,7 +34,10 @@ class SettingPageWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 10,right: 10),
             child: ListTile(
-                title: Text(data.title),
+                title: Container(
+                    transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                    child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
+                  ),
                 leading: Icon(Icons.email),
                 trailing: Icon(Icons.keyboard_arrow_right)
             ),

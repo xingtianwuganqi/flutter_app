@@ -3,6 +3,9 @@ import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UserManager {
   // 工厂模式
@@ -66,8 +69,12 @@ class NetWorkingConfig {
         return 'https://test.rxswift.cn';
       case UrlConfig.local:
         return 'http://127.0.0.1:8000';
+      default:
+        return '';
     }
   }
+
+  static String get imgBaseUrl => 'http://img.rxswift.cn/';
 }
 
 enum UrlConfig {
@@ -161,7 +168,5 @@ enum FontSize {
    desc,
    small,
 }
-
-
 
 

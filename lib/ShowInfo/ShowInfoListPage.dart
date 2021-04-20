@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 
 
@@ -19,6 +21,8 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   @override
   bool get wantKeepAlive => true;
 
+  var isFirstLoad = true;
+  var page = 1;
 
   List<ShowInfoModel> showInfoLists = [];
 
@@ -28,7 +32,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
     // 创建Controller
     // double width =MediaQuery.of(context).size.width;
     // print(width);
-    showInfoListNetWroking();
+    showInfoListNetWroking(1);
   }
 
   Widget showInfoItem(ShowInfoModel data) {
@@ -158,37 +162,57 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-          itemCount: showInfoLists.length,
-          itemBuilder: (context, index) {
-            var data = showInfoLists[index];
-            return showInfoItem(data);
-          }
-      ),
+      body:
+        EasyRefresh(
+          header: MaterialHeader(),
+          footer: MaterialFooter(
+              enableInfiniteLoad: false,
+          ),
+          firstRefresh: isFirstLoad,
+          firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+          emptyWidget: null,
+          child: ListView.builder(
+              itemCount: showInfoLists.length,
+              itemBuilder: (context, index) {
+                var data = showInfoLists[index];
+                return showInfoItem(data);
+              }
+          ),
+          onRefresh: () async {
+            showInfoListNetWroking(1);
+          },
+          onLoad: () async {
+            showInfoListNetWroking(page);
+          },
+        ),
     );
   }
 
 
-  Future<Null> showInfoListNetWroking() async {
+  Future<Null> showInfoListNetWroking(num) async {
+    page = num;
     final url = NetWorkingConfig.baseUrl() + '/api/v1/showinfolist/';
-    final dic = {"page": 1,"size": 10};
+    final dic = {"page": page,"size": 10};
     FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
     var data = await NetWorking.formDataPost(url, formData);
-    print(data);
+
     if (data['code'] == 200) {
       List<ShowInfoModel> datas = [];
       var models = data['data'];
       for (int i = 0;i < models.length; i++ ){
         datas.add(new ShowInfoModel.fromJson(models[i]));
       }
-      showInfoLists = datas;
+      page > 1 ? showInfoLists += datas : showInfoLists = datas;
+      if (models.length > 0) {
+        page += 1;
+      }
       setState(() {
-
+        isFirstLoad = false;
       });
     }else{
-
+      isFirstLoad = false;
     }
   }
 }
