@@ -38,7 +38,8 @@ class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProvi
             controller: _tabController,
             tabs: tabs.map((e) => Tab(text: e)).toList(),
           ),
-        )
+        ),
+        elevation: 0.5,
       ),
       body: TabBarView(
         controller: _tabController,

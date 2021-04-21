@@ -60,6 +60,7 @@ class MessagePageState extends State<MessagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("消息"),
+        elevation: 0.5,
       ),
       body: EasyRefresh(
         header: MaterialHeader(),

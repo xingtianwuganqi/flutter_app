@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 
@@ -134,6 +135,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
             floating: false,
             stretch: true,
             expandedHeight: 150.0,
+            backgroundColor: ColorsUtil.hexColor(0xffa500),
+            shadowColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(
               background: UserInfoWidget()
             ),

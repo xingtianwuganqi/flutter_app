@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'tabbar.dart';
 import 'dart:ui';
 
@@ -9,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        // primarySwatch:  Colors.blue,
+        primaryColor: Colors.white,
+        // 使用 Scaffold 构件的页面，统一设置背景颜色
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: tabbar(),
       routes: {
