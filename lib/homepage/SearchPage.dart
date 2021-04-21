@@ -56,40 +56,63 @@ class SearchPageState extends State<SearchPageWidget> {
       child: Row(
         children: [
           Expanded(child: Container(
+            alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
               color: Colors.grey[100],
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
-            padding: EdgeInsets.only(left: 20,right: 20),
+            padding: EdgeInsets.only(left: 20,right: 0),
             height: 35,
-            child:TextField(
-              controller: _searchController,
-              focusNode: _focusNodeSearchKey,
-              textInputAction: TextInputAction.search,
-              onSubmitted: (value) {
-                beginSearch();
-              },
+            child:
+              Row(
+                children: [
+                  Expanded(child:
+                    TextField(
+                    controller: _searchController,
+                    focusNode: _focusNodeSearchKey,
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (value) {
+                      beginSearch();
+                    },
 
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: '请输入搜索关键字',
-                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc).withOpacity(0.5), fontSize: 14.0),
-                //尾部添加清除按钮
-                suffixIcon:(isShowClear)
-                    ? IconButton(
-                  icon: Icon(Icons.clear),
-                  /// 点击清除按钮
-                  onPressed: (){
-                    // 清空输入框内容
-                    homeModels = [];
-                    _searchController.clear();
-                    setState(() {
+                    decoration: InputDecoration.collapsed(
+                      border: InputBorder.none,
+                      hintText: '请输入搜索关键字',
+                      hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc).withOpacity(0.5), fontSize: 14.0),
 
-                    });
-                  },
-                ): null ,
-              ),
-            ),
+                      //尾部添加清除按钮
+                      // suffixIcon:(isShowClear)
+                      //     ? IconButton(
+                      //   icon: Icon(Icons.clear),
+                      //   /// 点击清除按钮
+                      //   onPressed: (){
+                      //     // 清空输入框内容
+                      //     homeModels = [];
+                      //     _searchController.clear();
+                      //     setState(() {
+                      //
+                      //     });
+                      //   },
+                      // ): null ,
+                    ),
+                  ),
+                  ),Container(
+                    child: (isShowClear)
+                        ? IconButton(
+                      icon: Icon(Icons.clear,color: Colors.black26,),
+                      /// 点击清除按钮
+                      onPressed: (){
+                        // 清空输入框内容
+                        homeModels = [];
+                        _searchController.clear();
+                        setState(() {
+
+                        });
+                      },
+                    ): null
+                    ),
+                ],
+              )
           ),
           ),
           TextButton(onPressed: () {

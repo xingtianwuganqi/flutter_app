@@ -163,6 +163,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data) {
   );
 }
 
+/// 用户信息
 Widget userInfoWidget(HomePageModel data) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),

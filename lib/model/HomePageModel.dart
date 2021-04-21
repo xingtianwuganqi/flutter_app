@@ -97,3 +97,27 @@ class SearchKeyWordModel {
     );
   }
 }
+
+/*
+struct ReleasePhotoModel: HandyJSON, Equatable {
+
+var image: UIImage?
+var isAdd: Bool = false // 是不是添加的图片
+var progress: Float = 0
+var complete: Bool = false
+var photoKey: String = "\(Tool.shared.getTime())/\(String.et.random(ofLength: 8)).jpeg"
+var photoUrl: String = ""
+
+static func == (lhs: Self, rhs: Self) -> Bool {
+return lhs.photoKey == rhs.photoKey
+}
+}
+ */
+
+class ReleasePhotoModel {
+  bool isAdd = false;
+  double progress = 0.0;
+  bool complete = false;
+  String photoKey = '';
+  String photoUrl = '';
+}
