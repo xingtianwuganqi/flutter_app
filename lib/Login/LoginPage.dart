@@ -265,7 +265,8 @@ class _LoginWidgetState extends State<LoginWidget> {
 
     return new Scaffold(
         appBar: new AppBar(
-            title: Text('登录')
+            title: Text('登录'),
+          elevation: 0.5,
         ),
         body: new GestureDetector(
           onTap: () {

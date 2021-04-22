@@ -1,3 +1,5 @@
+import 'package:multi_image_picker/multi_image_picker.dart';
+
 import 'UserModel.dart';
 class HomePageModel {
   final  int topic_id;
@@ -120,4 +122,14 @@ class ReleasePhotoModel {
   bool complete = false;
   String photoKey = '';
   String photoUrl = '';
+  Asset image;
+
+  ReleasePhotoModel({
+    this.isAdd,
+    this.progress,
+    this.complete,
+    this.photoKey,
+    this.photoUrl,
+    this.image
+  });
 }

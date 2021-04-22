@@ -48,8 +48,9 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.only(left: 20,right: 20),
           width: double.infinity,
           height: 35,
-          child:TextButton(
-            child: Text('搜索'),
+          child:TextButton.icon(
+            icon: Image.asset('assets/icons/icon_wx_search.png'),
+            label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
                 return SearchPageWidget();
@@ -60,6 +61,10 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.5,
       ),
       floatingActionButton: FloatingActionButton(
+        child: IconButton(
+          icon: Image.asset('assets/icons/icon_home_write.png'),
+        ),
+        backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
         onPressed: (){
           lazyAuthToDoThings(context, (){
             Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -68,7 +73,6 @@ class _HomePageState extends State<HomePage> {
           });
         },
         tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
       body: EasyRefresh(
         header: MaterialHeader(),
@@ -277,6 +281,9 @@ Widget imagesWidget(HomePageModel data) {
                       padding: EdgeInsets.only(right: 2.5,bottom: 2.5),
                       child: CachedNetworkImage(
                         imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                        placeholder: (context,url) => Container(
+                          color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                        ),
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
@@ -288,6 +295,9 @@ Widget imagesWidget(HomePageModel data) {
                     padding: EdgeInsets.only(left:2.5,bottom: 2.5),
                     child: CachedNetworkImage(
                       imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                      placeholder: (context,url) => Container(
+                        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                      ),
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
@@ -309,6 +319,9 @@ Widget imagesWidget(HomePageModel data) {
                         padding: EdgeInsets.only(right:2.5,top: 2.5),
                         child: CachedNetworkImage(
                           imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                          placeholder: (context,url) => Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          ),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
@@ -321,6 +334,9 @@ Widget imagesWidget(HomePageModel data) {
                           child: CachedNetworkImage(
                             imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],
                             fit: BoxFit.cover,
+                            placeholder: (context,url) => Container(
+                              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                            ),
                             width: double.infinity,
                             height: double.infinity,
                           ),
@@ -346,6 +362,9 @@ Widget imagesWidget(HomePageModel data) {
               padding: EdgeInsets.only(right: 5),
               child: CachedNetworkImage(
                 imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                placeholder: (context,url) => Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                ),
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -363,6 +382,9 @@ Widget imagesWidget(HomePageModel data) {
                         padding: EdgeInsets.only(left:2.5,bottom: 2.5),
                         child: CachedNetworkImage(
                           imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                          placeholder: (context,url) => Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          ),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
@@ -374,6 +396,9 @@ Widget imagesWidget(HomePageModel data) {
                           padding: EdgeInsets.only(left:2.5,top: 2.5),
                           child: CachedNetworkImage(
                             imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                            placeholder: (context,url) => Container(
+                              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                            ),
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
@@ -401,6 +426,9 @@ Widget imagesWidget(HomePageModel data) {
               padding: EdgeInsets.only(right: 2.5),
               child: CachedNetworkImage(
                 imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                placeholder: (context,url) => Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                ),
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -413,6 +441,9 @@ Widget imagesWidget(HomePageModel data) {
               padding: EdgeInsets.only(left: 2.5),
               child: CachedNetworkImage(
                 imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                placeholder: (context,url) => Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                ),
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
@@ -429,6 +460,9 @@ Widget imagesWidget(HomePageModel data) {
       height: 170,
       child: CachedNetworkImage(
         imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+        placeholder: (context,url) => Container(
+          color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        ),
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,

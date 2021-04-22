@@ -135,22 +135,32 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
         children: [
           Expanded(
               child: TextButton.icon(
-                icon:Icon(Icons.panorama),
-                label: Text((data.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞"),
+                icon:Image.asset('assets/icons/icon_zan_un.png'),
+                label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
+                  style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                ),
+                onPressed: (){
+                  lazyAuthToDoThings(context, (){
+                    print('is login');
+                  });
+                },
+              )
+          ),
+          Expanded(
+              child: TextButton.icon(
+                icon:Image.asset('assets/icons/icon_collection_un.png'),
+                label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
+                  style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                ),
                 onPressed: (){},
               )
           ),
           Expanded(
               child: TextButton.icon(
-                icon:Icon(Icons.panorama),
-                label: Text((data.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏"),
-                onPressed: (){},
-              )
-          ),
-          Expanded(
-              child: TextButton.icon(
-                icon:Icon(Icons.panorama),
-                label: Text((data.commNum ?? 0) > (0) ? data.commNum.toString() : "收藏"),
+                icon:Image.asset('assets/icons/icon_sh_commen.png'),
+                label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
+                  style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                ),
                 onPressed: (){},
               )
           ),

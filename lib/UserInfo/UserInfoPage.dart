@@ -23,15 +23,15 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
   String titleStr = "";
 
   List<UserPageModel> listData = [
-    UserPageModel('icon', '浏览记录'),
-    UserPageModel('icon', '我的发布'),
-    UserPageModel('icon', '我的收藏'),
+    UserPageModel('assets/icons/icon_view_hist.png', '浏览记录'),
+    UserPageModel('assets/icons/icon_mi_publish.png', '我的发布'),
+    UserPageModel('assets/icons/icon_mi_collection.png', '我的收藏'),
     // UserPageModel('icon', "empty"),
-    UserPageModel('icon', '检测更新'),
-    UserPageModel('icon', '应用评分'),
-    UserPageModel('icon', '用户协议'),
-    UserPageModel('icon', '隐私政策'),
-    UserPageModel('icon', '关于我们'),
+    UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
+    UserPageModel('assets/icons/icon_mi_pf.png', '应用评分'),
+    UserPageModel('assets/icons/icon_mi_collection.png', '用户协议'),
+    UserPageModel('assets/icons/icon_mi_collection.png', '隐私政策'),
+    UserPageModel('assets/icons/icon_mi_about.png', '关于我们'),
   ];
 
   ScrollController _scrollController = ScrollController();
@@ -67,7 +67,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 transform: Matrix4.translationValues(-25, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
-              leading: Icon(Icons.email),
+              leading: Image.asset(data.icon),
               trailing: Icon(Icons.keyboard_arrow_right)
           ),
         ),
@@ -82,7 +82,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                   transform: Matrix4.translationValues(-25, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
-                leading: Icon(Icons.email),
+                leading: Image.asset(data.icon),
                 trailing: Icon(Icons.keyboard_arrow_right)
             ),
           ),
@@ -106,14 +106,14 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           child: ListTile(
               leading: CircleAvatar(
                 radius: 25,
-                backgroundImage: NetworkImage("https://tva1.sinaimg.cn/large/006y8mN6gy1g7aa03bmfpj3069069mx8.jpg"),
+                backgroundImage: UserManager.instance.isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "")) : AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
                     width: 50,
                     height: 50,
                 ),
               ),
-              title: Text('昵称'),
+              title: UserManager.instance.isLogin ? Text(UserManager.instance.userInfo.username ?? "",style: TextStyle(fontSize: 16,color: Colors.white),) : Text('注册/登录',style: TextStyle(fontSize: 16,color: Colors.white),),
               trailing: Icon(Icons.keyboard_arrow_right)
           ),
         ),

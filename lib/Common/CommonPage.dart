@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
@@ -30,10 +32,15 @@ class UserManager {
   bool get isLogin => (userInfo?.token?.length ?? 0) > 0;
 
   void getUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString('userInfo');
-    Map json = jsonDecode(data);
-    userInfo = UserInfoModel.fromJson(json);
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String data = prefs.getString('userInfo');
+      Map json = jsonDecode(data);
+      userInfo = UserInfoModel.fromJson(json);
+    }catch(e){
+
+    }
+
   }
 
   void saveUerInfo(UserInfoModel data) async{
@@ -169,4 +176,16 @@ enum FontSize {
    small,
 }
 
+
+class ToolConfig {
+  static String random({int length=8}) {
+    String alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    int strlenght = length; /// 生成的字符串固定长度
+    String left = '';
+    for (var i = 0; i < strlenght; i++) {
+      left = left + alphabet[Random().nextInt(alphabet.length)];
+    }
+    return left;
+  }
+}
 

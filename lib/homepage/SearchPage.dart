@@ -204,6 +204,7 @@ class SearchPageState extends State<SearchPageWidget> {
       appBar: AppBar(
         title: seachBarWidget(),
         automaticallyImplyLeading: false,
+        elevation: 0.5,
       ),
       body: GestureDetector(
         onTap: () {

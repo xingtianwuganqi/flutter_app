@@ -163,6 +163,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
                 padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                 child: CachedNetworkImage(
                   imageUrl:  NetWorkingConfig.imgBaseUrl + e,
+                  placeholder: (context,url) => Container(
+                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  ),
                 ),
               ))?.toList();
       data.add(userInfoWidget(homeModel));
@@ -179,7 +182,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-          title: Text('详情',)
+          title: Text('详情',),
+        elevation: 0.5,
       ),
       body:
       SafeArea(

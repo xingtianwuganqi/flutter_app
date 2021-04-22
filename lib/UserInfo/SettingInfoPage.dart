@@ -67,7 +67,7 @@ class SettingPageWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("设置"),
-
+        elevation: 0.5,
       ),
       body: ListView.builder(
         itemBuilder: (context,index){

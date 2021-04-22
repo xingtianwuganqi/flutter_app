@@ -119,6 +119,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
               },
               child: Text('保存',style: TextStyle(color: Colors.white,fontSize: 16),))
         ],
+        elevation: 0.5,
       ),
       body:new GestureDetector(
         onTap: () {

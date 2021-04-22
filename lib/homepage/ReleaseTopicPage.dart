@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class ReleaseTopicPage extends StatefulWidget {
   @override
@@ -13,9 +14,20 @@ class ReleaseTopicPage extends StatefulWidget {
 
 class ReleaseTopicState extends State<ReleaseTopicPage> {
 
+
+
   List<TagModel> tags = [];
   FocusNode _contentFocusNode = FocusNode();
   FocusNode _phoneFocusNode = FocusNode();
+  List<ReleasePhotoModel> _releasePhones = [
+    ReleasePhotoModel(
+      isAdd: true,
+      progress: 0.0,
+      complete: false,
+      photoKey: '',
+      photoUrl: '',
+      image: null
+  )];
 
   OverlayEntry overlayEntry;
 
@@ -50,6 +62,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('发布送养信息'),
+        elevation: 0.5,
       ),
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
@@ -63,7 +76,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                 child: tags.length > 0 ? tagsWidget() : TextButton(
                     onPressed: () {
 
-                    }, child: Text('添加标签 >',style: TextStyle(fontSize: 15,color: ColorsUtil.fromEnmu(ColorEnum.system)))),
+                    }, child: Text('添加标签 >',style: TextStyle(fontSize: 15,
+                    color: ColorsUtil.fromEnmu(ColorEnum.system)),
+                  textAlign: TextAlign.left,)),
               ),
               Expanded(
                   child: TextField(
@@ -74,59 +89,10 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
                   )
               ),
-              Container(
-                height: 100,
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemCount:3,
-                    itemBuilder: (context,index){
-                      return Container(
-                        // width: 20,
-                        // height: 20,
-                        color: Colors.blue,
-                      );
-                    }),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
-                ),
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: 5,bottom: 5),
-                height: 50,
-                padding: EdgeInsets.only(left: 10),
-                child:TextField(
-                  focusNode: _phoneFocusNode,
-                  decoration: InputDecoration.collapsed(
-                    hintText: '请输入联系方式',
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
-                ),
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: 5,bottom: 5),
-                height: 50,
-                child: TextButton(
-                  child: Text('请选择地区',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-                  onPressed: () {
-
-                  },
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 10,top: 5),
-                child: Text('禁止出现商业广告，低俗，色情，暴力，具有侮辱性语言或与宠物无关的内容，违规者帖子会被删除',style: TextStyle(fontSize: 15,color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-              ),
+              photosWidget(),
+              phoneWidget(),
+              addressWidget(),
+              bottomRemindText()
             ],
           ),
         ),
@@ -156,6 +122,134 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     }else{
       return [];
     }
+  }
+
+  Widget photosWidget() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 10),
+      height: _releasePhones.length > 3 ? ((MediaQuery.of(context).size.width - 50) / 3 + 10) * 2 : (MediaQuery.of(context).size.width - 50) / 3 + 10,
+      child: GridView.builder(
+          physics: new NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+          ),
+          itemCount:_releasePhones.length,
+          itemBuilder: (context,index){
+            var item = _releasePhones[index];
+            if (item.isAdd) {
+              return GestureDetector(
+                child: Container(
+                  // width: 20,
+                  // height: 20,
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  child: Image.asset('assets/icons/icon_hw_navi_add.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                onTap: () async {
+                  await loadAssets();
+                },
+              );
+            }else{
+              return Container(
+                child:
+                AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+              );
+            }
+
+          }),
+    );
+  }
+
+  Widget phoneWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+      ),
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(top: 5,bottom: 5),
+      height: 50,
+      padding: EdgeInsets.only(left: 10),
+      child:TextField(
+        focusNode: _phoneFocusNode,
+        decoration: InputDecoration.collapsed(
+          hintText: '请输入联系方式',
+        ),
+      ),
+    );
+  }
+
+  Widget addressWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+      ),
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(top: 5,bottom: 5),
+      height: 50,
+      child: TextButton(
+        child: Text('请选择地区',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
+        onPressed: () {
+
+        },
+      ),
+    );
+  }
+
+  Widget bottomRemindText() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 10,top: 5),
+      child: Text('禁止出现商业广告，低俗，色情，暴力，具有侮辱性语言或与宠物无关的内容，违规者帖子会被删除',
+        style: TextStyle(
+            fontSize: 15,
+            color: ColorsUtil.fromEnmu(ColorEnum.desc)),
+      ),
+    );
+  }
+
+  Future<void> loadAssets() async {
+    if (_releasePhones.length > 6) {
+      return;
+    }
+    List<Asset> resultList = [];
+    String error = 'No Error Dectected';
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 7 - _releasePhones.length,
+        enableCamera: false,
+        selectedAssets: resultList,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+            actionBarColor: "#abcdef",
+            actionBarTitle: "App",
+            allViewTitle: "All Photos",
+            useDetailsView: false,
+            selectCircleStrokeColor: "#000000",
+            startInAllView: true),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+      print(error);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      var photos = resultList.map((e) => ReleasePhotoModel(
+        isAdd: false,
+        progress: 0.0,
+        complete: false,
+        photoUrl: DateTime.now().millisecondsSinceEpoch.toString() + '/' + ToolConfig.random() + '.png',
+        photoKey: '',
+        image: e
+      ));
+      _releasePhones.insertAll(0, photos);
+    });
   }
 
   showOverlay(BuildContext context) {
