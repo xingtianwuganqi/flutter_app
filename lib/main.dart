@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         // 使用 Scaffold 构件的页面，统一设置背景颜色
         scaffoldBackgroundColor: Colors.white,
+        splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
+        highlightColor: Colors.transparent,
       ),
       home: tabbar(),
       routes: {
