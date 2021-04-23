@@ -315,9 +315,9 @@ class _LoginWidgetState extends State<LoginWidget> {
           },
           child: new ListView(
             children: <Widget>[
-              new SizedBox(height: 60),
+              new SizedBox(height: 40),
               logoWidget,
-              new SizedBox(height: 60),
+              new SizedBox(height: 40),
               inputTextArea,
               new SizedBox(height: 30),
               loginBtn,
