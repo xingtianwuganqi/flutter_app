@@ -33,7 +33,7 @@ class _RegisterState extends State<RegisterWidget> {
   var _confirm  = '';// 确认密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
-  var _proSelect = false;
+  var _proSelect = true;
   UserInfoModel _userModel;
 
   @override

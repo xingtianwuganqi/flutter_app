@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/UserInfo/RescuePublishPage.dart';
 import 'package:flutter_720yun/UserInfo/ShowPublishPage.dart';
 
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+
 class UserCollectionWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +26,7 @@ class UserCollectionState extends State<UserCollectionWidget> {
           width: 120,
           height: 44,
           child: TabBar(
+            indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
             controller: _tabController,
             tabs: tabs.map((e) => Tab(text: e)).toList(),
           ),

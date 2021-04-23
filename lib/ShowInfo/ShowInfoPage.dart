@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoListPage.dart';
 import '../ShowInfo/GambitListPage.dart';
+import '../Common/CommonPage.dart';
 class ShowInfoPageWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -35,6 +36,7 @@ class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProvi
           width: 120,
           height: 44,
           child: TabBar(
+            indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
             controller: _tabController,
             tabs: tabs.map((e) => Tab(text: e)).toList(),
           ),

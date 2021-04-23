@@ -6,6 +6,11 @@ import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 
 import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
 
 class UserInfoWidget extends StatefulWidget {
   @override
@@ -72,7 +77,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
               leading: Image.asset(data.icon),
-              trailing: Icon(Icons.keyboard_arrow_right)
+              trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
           ),
         ),
           Divider(thickness: 10.0,color: Colors.grey[100],)
@@ -84,10 +89,10 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
             child: ListTile(
                 title: Container(
                   transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                  child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
+                  child: Text(data.title,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
                 ),
                 leading: Image.asset(data.icon),
-                trailing: Icon(Icons.keyboard_arrow_right)
+                trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
             ),
           ),
           Divider(height: .0,)];
@@ -101,7 +106,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           ),
         ),
         onTap: () {
-
+          didClickAction(data);
         },
       );
     }
@@ -122,8 +127,9 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                     height: 50,
                 ),
               ),
-              title: UserManager.instance.isLogin ? Text(UserManager.instance.userInfo.username ?? "",style: TextStyle(fontSize: 16,color: Colors.white),) : Text('注册/登录',style: TextStyle(fontSize: 16,color: Colors.white),),
-              trailing: Icon(Icons.keyboard_arrow_right)
+              title: UserManager.instance.isLogin ? Text(UserManager.instance.userInfo.username ?? "",
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),) : Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),),
+              trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
           ),
         ),
         onTap: () {
@@ -194,17 +200,17 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
 
   void didClickAction(UserPageModel data) {
     if (data.title == '浏览记录') {
-      lazyAuthToDoThings(context, () {
+      // lazyAuthToDoThings(context, () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return BrowseListWidget();
         }));
-      });
+      // });
     }else if (data.title == '我的发布') {
-      lazyAuthToDoThings(context, () {
+      // lazyAuthToDoThings(context, () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return UserPublishWidget();
         }));
-      });
+      // });
     }else if (data.title == '我的收藏') {
 
     }

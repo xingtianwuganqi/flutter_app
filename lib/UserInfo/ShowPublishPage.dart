@@ -8,7 +8,12 @@ class ShowPublishWidget extends StatefulWidget {
   }
 }
 
-class ShowPublishState extends State<ShowPublishWidget> {
+class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveClientMixin {
+
+  //导航栏切换时保持原有状态
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

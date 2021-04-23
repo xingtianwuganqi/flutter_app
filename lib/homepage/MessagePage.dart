@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
+import '../Common/CommonPage.dart';
 class MessagePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,33 +28,33 @@ class MessagePageState extends State<MessagePage> {
   static const loadingTag = "##loading##";
 
   var isFirstLoad = true;
-
-  List<String> names = ["系统消息","点赞","收藏","评论"];
-
-  List<Icon> icons = <Icon>[
-    Icon(Icons.message),
-    Icon(Icons.school),
-    Icon(Icons.video_collection_rounded),
-    Icon(Icons.comment_bank_rounded),
+  
+  List<MessagePageModel> datas = [
+    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '系统消息'),
+    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '点赞'),
+    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '收藏'),
+    MessagePageModel(icon: 'assets/icons/icon_message_com.png',name: '评论'),
   ];
 
   @override
   Widget build(BuildContext context) {
     
     
-    Widget messageItem(String name) {
+    Widget messageItem(MessagePageModel model) {
       return new Container(
         color: Colors.white,
         padding: EdgeInsets.only(left: 10,right: 10),
         child: new Column(
           children: <Widget>[
             ListTile(
-              title:Container(
-                transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                  child: Text(name,style: TextStyle(fontSize: 14,color: Colors.black)),
+              title:
+              // Text(model.name,style: TextStyle(fontSize: 14,color: Colors.black)),
+              Container(
+                transform: Matrix4.translationValues(-5, 0.0, 0.0),
+                  child: Text(model.name,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
                 ),
-              leading: Icon(Icons.email),
-              trailing: Icon(Icons.keyboard_arrow_right),
+              leading: Image.asset(model.icon),
+              trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
             ),
             new Divider(height: .0,),
           ],
@@ -71,10 +77,11 @@ class MessagePageState extends State<MessagePage> {
         firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
         emptyWidget: null,
         child:ListView.builder (
-          itemCount: names.length,
+          itemCount: datas.length,
+          itemExtent: 60,
           // itemExtent: 60,
           itemBuilder: (context,index) {
-            return messageItem(names[index]);
+            return messageItem(datas[index]);
           },
         ),
         onRefresh: () async {
@@ -84,4 +91,14 @@ class MessagePageState extends State<MessagePage> {
       ),
     );
   }
+}
+
+class MessagePageModel {
+  final String icon;
+  final String name;
+  
+  MessagePageModel({
+    this.icon,
+    this.name
+  });
 }
