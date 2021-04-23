@@ -34,7 +34,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   var _username = '';//密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
-  var _proSelect = false;
+  var _proSelect = true;
   UserInfoModel _userModel;
 
   @override
@@ -84,8 +84,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   Future<Null> loginNetWorking() async {
-    print(_username);
-    print(_password);
+    if (!_proSelect) {
+      return ;
+    }
     if (_username.length == 0)  {
       return;
     }
@@ -129,7 +130,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
-      child: Text("喜乐排行",style: TextStyle(fontSize: 28,color: Colors.blue),),
+      child: Text("真命天喵",style: TextStyle(fontSize: 28,color: ColorsUtil.fromEnmu(ColorEnum.system),fontWeight: FontWeight.w700,fontStyle: FontStyle.italic)),
     );
 
 
@@ -149,7 +150,14 @@ class _LoginWidgetState extends State<LoginWidget> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "请输入用户名",
-                prefixIcon: Icon(Icons.person),
+                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)), //Image.asset('assets/icons/icon_login_phone.png')
                 //尾部添加清除按钮
                 suffixIcon:(_isShowClear)
                     ? IconButton(
@@ -173,8 +181,15 @@ class _LoginWidgetState extends State<LoginWidget> {
               controller: _userPswdController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "请输入密码",
-                prefixIcon: Icon(Icons.person),
+                hintText: "请输入6位或6位以上密码",
+                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
                 suffixIcon: (_isShowPwd) ? IconButton(icon: Icon(Icons.panorama_fish_eye),
                   onPressed: (){
                     setState(() {
@@ -198,13 +213,13 @@ class _LoginWidgetState extends State<LoginWidget> {
 
     Widget loginBtn = new Container(
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: ColorsUtil.fromEnmu(ColorEnum.system),
       ),
       child: TextButton(
-        child: Text("注册并登录",style: TextStyle(color: Colors.white),),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blue),
-        ),
+        child: Text("登录",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
+        // style: ButtonStyle(
+        //   backgroundColor: MaterialStateProperty.all(Colors.blue),
+        // ),
         onPressed: loginNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
@@ -217,7 +232,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           TextButton(
-            child: Text('忘记密码？',style: TextStyle(fontSize: 12,color: Colors.blue),),
+            child: Text('忘记密码？',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
           ),
           Expanded(
             flex: 1,
@@ -226,7 +241,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ),
           TextButton(
-            child: Text('新用户注册',style: TextStyle(fontSize: 12,color: Colors.blue),),
+            child: Text('新用户注册',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
             onPressed: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context){
@@ -245,7 +260,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           IconButton(
-            icon: _proSelect ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+            icon: _proSelect ? Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) : Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
             iconSize:20,
             onPressed: (){
               setState(() {
@@ -253,8 +268,33 @@ class _LoginWidgetState extends State<LoginWidget> {
               });
             },
           ),
-          Text('阅读并同意用户协议、隐私协议',
-            style: TextStyle(fontSize: 12,color: Colors.blue),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "阅读并同意",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                ),
+                TextSpan(
+                  text: "用户协议、",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
+          // 设置点击事件
+                  recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+
+                    },
+                ),
+                TextSpan(
+                  text: "隐私协议",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
+                  // 设置点击事件
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+
+                    },
+                ),
+              ],
+            ),
           ),
         ],
       )

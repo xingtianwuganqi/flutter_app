@@ -29,8 +29,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     // UserPageModel('icon', "empty"),
     UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
     UserPageModel('assets/icons/icon_mi_pf.png', '应用评分'),
-    UserPageModel('assets/icons/icon_mi_collection.png', '用户协议'),
-    UserPageModel('assets/icons/icon_mi_collection.png', '隐私政策'),
+    UserPageModel('assets/icons/icon_mi_xy.png', '用户协议'),
+    UserPageModel('assets/icons/icon_pravicy.png', '隐私政策'),
     UserPageModel('assets/icons/icon_mi_about.png', '关于我们'),
   ];
 

@@ -130,6 +130,8 @@ class ColorsUtil {
         return ColorsUtil.hexColor(0x515151);
       case ColorEnum.urlColor:
         return ColorsUtil.hexColor(0x4169E1);
+      case ColorEnum.iconColor:
+        return ColorsUtil.hexColor(0x707070);
       default:
         return ColorsUtil.hexColor(0x000000);
     }
@@ -146,6 +148,7 @@ enum ColorEnum {
   defIcon,
   tabbar,
   urlColor,
+  iconColor
 }
 
 /// 字体大小

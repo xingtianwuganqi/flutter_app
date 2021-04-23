@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
+import '../Common/CommonPage.dart';
 
 class RegisterWidget extends StatefulWidget {
   @override
@@ -130,7 +132,7 @@ class _RegisterState extends State<RegisterWidget> {
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
-      child: Text("喜乐排行",style: TextStyle(fontSize: 28,color: Colors.blue),),
+      child: Text("真命天喵",style: TextStyle(fontSize: 28,color: ColorsUtil.fromEnmu(ColorEnum.system),fontWeight: FontWeight.w700,fontStyle: FontStyle.italic),),
     );
 
 
@@ -150,7 +152,14 @@ class _RegisterState extends State<RegisterWidget> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "请输入用户名",
-                  prefixIcon: Icon(Icons.person),
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   //尾部添加清除按钮
                   suffixIcon:(_isShowClear)
                       ? IconButton(
@@ -175,7 +184,14 @@ class _RegisterState extends State<RegisterWidget> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "请输入密码",
-                prefixIcon: Icon(Icons.person),
+                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                ),
+                prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                 suffixIcon: (_isShowPwd) ? IconButton(icon: Icon(Icons.panorama_fish_eye),
                     onPressed: (){
                       setState(() {
@@ -197,7 +213,14 @@ class _RegisterState extends State<RegisterWidget> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "请再次输入密码",
-                  prefixIcon: Icon(Icons.person),
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   //尾部添加清除按钮
                   suffixIcon:(_isShowClear)
                       ? IconButton(
@@ -226,13 +249,10 @@ class _RegisterState extends State<RegisterWidget> {
 
     Widget loginBtn = new Container(
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: ColorsUtil.fromEnmu(ColorEnum.system),
       ),
       child: TextButton(
-        child: Text("注册并登录",style: TextStyle(color: Colors.white),),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blue),
-        ),
+        child: Text("注册并登录",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
         onPressed: loginNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
@@ -244,7 +264,7 @@ class _RegisterState extends State<RegisterWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
-              icon: _proSelect ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+              icon: _proSelect ? Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) : Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
               iconSize:20,
               onPressed: (){
                 setState(() {
@@ -252,8 +272,33 @@ class _RegisterState extends State<RegisterWidget> {
                 });
               },
             ),
-            Text('阅读并同意用户协议、隐私协议',
-              style: TextStyle(fontSize: 12,color: Colors.blue),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: "阅读并同意",
+                    style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  ),
+                  TextSpan(
+                    text: "用户协议、",
+                    style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
+                    // 设置点击事件
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+
+                      },
+                  ),
+                  TextSpan(
+                    text: "隐私协议",
+                    style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
+                    // 设置点击事件
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+
+                      },
+                  ),
+                ],
+              ),
             ),
           ],
         )
@@ -264,7 +309,7 @@ class _RegisterState extends State<RegisterWidget> {
 
     return new Scaffold(
         appBar: new AppBar(
-            title: Text('登录'),
+            title: Text('注册'),
           elevation: 0.5,
         ),
         body: new GestureDetector(
