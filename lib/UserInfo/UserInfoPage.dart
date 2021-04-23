@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
+import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
+
+import '../Common/CommonPage.dart';
 
 class UserInfoWidget extends StatefulWidget {
   @override
@@ -27,8 +31,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     UserPageModel('assets/icons/icon_mi_publish.png', '我的发布'),
     UserPageModel('assets/icons/icon_mi_collection.png', '我的收藏'),
     // UserPageModel('icon', "empty"),
-    UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
-    UserPageModel('assets/icons/icon_mi_pf.png', '应用评分'),
+    // UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
+    // UserPageModel('assets/icons/icon_mi_pf.png', '应用评分'),
     UserPageModel('assets/icons/icon_mi_xy.png', '用户协议'),
     UserPageModel('assets/icons/icon_pravicy.png', '隐私政策'),
     UserPageModel('assets/icons/icon_mi_about.png', '关于我们'),
@@ -88,12 +92,17 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           ),
           Divider(height: .0,)];
       }
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(left: 0,right: 0),
-        child: Column(
-          children: datas
+      return GestureDetector(
+        child: Container(
+          color: Colors.white,
+          padding: EdgeInsets.only(left: 0,right: 0),
+          child: Column(
+              children: datas
+          ),
         ),
+        onTap: () {
+
+        },
       );
     }
 
@@ -181,6 +190,24 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       //           }
       //         }),
       // );
+  }
+
+  void didClickAction(UserPageModel data) {
+    if (data.title == '浏览记录') {
+      lazyAuthToDoThings(context, () {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return BrowseListWidget();
+        }));
+      });
+    }else if (data.title == '我的发布') {
+      lazyAuthToDoThings(context, () {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return UserPublishWidget();
+        }));
+      });
+    }else if (data.title == '我的收藏') {
+
+    }
   }
 }
 
