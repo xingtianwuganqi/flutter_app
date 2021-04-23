@@ -66,29 +66,7 @@ lazyAuthToDoThings(context, obj) async{
   }
 }
 
-class NetWorkingConfig {
-  static final UrlConfig urlConfig = UrlConfig.test;
-  static String baseUrl() {
-    switch (urlConfig) {
-      case UrlConfig.formal:
-        return 'https://rescue.rxswift.cn';
-      case UrlConfig.test:
-        return 'https://test.rxswift.cn';
-      case UrlConfig.local:
-        return 'http://127.0.0.1:8000';
-      default:
-        return '';
-    }
-  }
 
-  static String get imgBaseUrl => 'http://img.rxswift.cn/';
-}
-
-enum UrlConfig {
-  formal,
-  test,
-  local
-}
 
 /// 颜色
 class ColorsUtil {

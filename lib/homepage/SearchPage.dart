@@ -216,7 +216,7 @@ class SearchPageState extends State<SearchPageWidget> {
   }
 
   Future<Null> searchKeyWordsNetworking() async {
-    final url = NetWorkingConfig.baseUrl() + "/api/v1/searchkeywords/";
+    final url = NetWorkingConfig.path(NetPath.searchkeyword);
     // FormData formData = FormData.fromMap(map)
     var data = await NetWorking.get(url);
     if (data['code'] == 200) {
@@ -233,7 +233,7 @@ class SearchPageState extends State<SearchPageWidget> {
     if (keyword.length == 0) {
       return;
     }
-    final url = NetWorkingConfig.baseUrl() + "/api/v1/search/";
+    final url = NetWorkingConfig.path(NetPath.search);
     FormData formData = FormData.fromMap({'keyword': keyword});
     var data = await NetWorking.formDataPost(url, formData);
     if (data['code'] == 200) {

@@ -201,7 +201,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
 
   Future<Null> showInfoListNetWroking(num) async {
     page = num;
-    final url = NetWorkingConfig.baseUrl() + '/api/v1/showinfolist/';
+    final url = NetWorkingConfig.path(NetPath.showInfoList);
     final dic = {"page": page,"size": 10};
     FormData formData = FormData.fromMap(dic);
 

@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<Null> homePageListNetWroking(int num) async {
     page = num;
-    final url = NetWorkingConfig.baseUrl() +  '/api/v1/topiclist/';
+    final url = NetWorkingConfig.path(NetPath.topiclist);
     final dic = {"page": page,"size": 10};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数

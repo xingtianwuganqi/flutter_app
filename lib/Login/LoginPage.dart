@@ -93,7 +93,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     if (_password.length == 0)  {
       return;
     }
-    final url = NetWorkingConfig.baseUrl() + '/api/v1/login/';
+    final url = NetWorkingConfig.path(NetPath.login);
     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
     var data = await NetWorking.post(url,params: dic);
     print(_password);

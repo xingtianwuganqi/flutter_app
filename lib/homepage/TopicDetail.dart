@@ -225,7 +225,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
   }
 
   Future<Null> homePageListNetWroking() async {
-    final url = NetWorkingConfig.baseUrl() + '/api/v1/topicdetail/';
+    final url = NetWorkingConfig.path(NetPath.topicdetail);
     final dic = {"topic_id": widget.topicId,"token": UserManager.instance.token ?? ""};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数

@@ -26,12 +26,12 @@ class tabbarState extends State<tabbar> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    /// 先读取数据
+    UserManager.instance.getUserInfo();
     pages.add(HomePage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage());
     pages.add(UserInfoWidget());
-
-    UserManager.instance.getUserInfo();
   }
 
   @override

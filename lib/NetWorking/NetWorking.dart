@@ -34,3 +34,59 @@ class NetWorking {
     }
   }
 }
+
+class NetWorkingConfig {
+  static final UrlConfig urlConfig = UrlConfig.test;
+  static String baseUrl() {
+    switch (urlConfig) {
+      case UrlConfig.formal:
+        return 'https://rescue.rxswift.cn';
+      case UrlConfig.test:
+        return 'https://test.rxswift.cn';
+      case UrlConfig.local:
+        return 'http://127.0.0.1:8000';
+      default:
+        return '';
+    }
+  }
+  static String get imgBaseUrl => 'http://img.rxswift.cn/';
+
+  static String path(NetPath path) {
+    var baseUrl = NetWorkingConfig.baseUrl();
+    switch (path) {
+      case NetPath.login:
+        return baseUrl + '/api/v1/login/';
+      case NetPath.register:
+        return baseUrl + '/api/v1/register/';
+      case NetPath.topiclist:
+        return baseUrl + '/api/v1/topiclist/';
+      case NetPath.gambitlist:
+        return baseUrl + '/api/v1/gambitlist/';
+      case NetPath.topicdetail:
+        return baseUrl + '/api/v1/topicdetail/';
+      case NetPath.search:
+        return baseUrl + '/api/v1/search/';
+      case NetPath.searchkeyword:
+        return baseUrl + '/api/v1/searchkeywords/';
+      case NetPath.showInfoList:
+        return baseUrl + '/api/v1/showinfolist/';
+    }
+  }
+}
+
+enum UrlConfig {
+  formal,
+  test,
+  local
+}
+
+enum NetPath {
+  login,
+  register,
+  topiclist,
+  gambitlist,
+  topicdetail,
+  search,
+  searchkeyword,
+  showInfoList
+}

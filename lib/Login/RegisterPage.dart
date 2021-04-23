@@ -98,7 +98,7 @@ class _RegisterState extends State<RegisterWidget> {
       print('--------');
       return;
     }
-    final url = "https://test.rxswift.cn/api/v1/login/";
+    final url = NetWorkingConfig.path(NetPath.login);
     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
     print(dic);
     var data = await NetWorking.post(url,params: dic);

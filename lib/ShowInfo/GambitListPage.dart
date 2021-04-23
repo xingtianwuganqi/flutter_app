@@ -66,7 +66,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
   }
 
   Future<Null> GambitListNetWroking() async {
-    final url = NetWorkingConfig.baseUrl() + '/api/v1/gambitlist/';
+    final url = NetWorkingConfig.path(NetPath.gambitlist);
     var data = await NetWorking.post(url);
     print(data);
     if (data['code'] == 200) {

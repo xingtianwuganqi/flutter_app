@@ -4,13 +4,7 @@ import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
-
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
+import '../NetWorking/NetWorking.dart';
 
 class UserInfoWidget extends StatefulWidget {
   @override
