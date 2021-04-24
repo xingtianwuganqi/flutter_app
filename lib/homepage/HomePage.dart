@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
@@ -97,14 +96,9 @@ class _HomePageState extends State<HomePage> {
         ),
         firstRefresh: isFirstLoad,
         firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: homeModels.length > 0 ? null : Center(
-          child: TextButton(
-            child: Text('  暂无数据\n请点击重试'),
-            onPressed: () async {
-              await homePageListNetWroking(1);
-            },
-          ),
-        ),
+        emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
+          homePageListNetWroking(1);
+        }),
         onRefresh:() async {
           await homePageListNetWroking(1);
         },

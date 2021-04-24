@@ -170,3 +170,44 @@ class ToolConfig {
   }
 }
 
+/// 无参数
+// typedef ActionNoParam = void Function();
+
+// ignore: must_be_immutable
+class EmptyPage extends StatelessWidget {
+  String title;
+  String desc;
+  Function() obj;
+  EmptyPage(this.obj,{this.title='暂无数据',this.desc='请点击重试'});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+      child: GestureDetector(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(title,style: TextStyle(
+                color: ColorsUtil.fromEnmu(ColorEnum.content),
+                fontSize: FontUtil.fs(FontSize.content),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Text(desc,style: TextStyle(
+                color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                fontSize: FontUtil.fs(FontSize.desc),
+              ),
+              ),
+            ],
+          ),
+        ),
+        onTap: () {
+          obj();
+        },
+      )
+    );
+  }
+}
+

@@ -70,6 +70,20 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/searchkeywords/';
       case NetPath.showInfoList:
         return baseUrl + '/api/v1/showinfolist/';
+      case NetPath.authcollection:
+        return baseUrl + '/api/v1/authcollection/';
+      case NetPath.authpublish:
+        return baseUrl + '/api/v1/authpublishlist/';
+      case NetPath.suggestion:
+        return baseUrl + '/api/v1/suggestion/';
+      case NetPath.authpublishshowinfo:
+        return baseUrl + '/api/v1/authpublishshowinfo/';
+      case NetPath.authcollectionshowinfo:
+        return baseUrl + '/api/v1/authcollectionshowinfo/';
+      case NetPath.authhistorylist:
+        return baseUrl + '/api/v1/authhistorylist/';
+      default:
+        return "";
     }
   }
 }
@@ -88,5 +102,11 @@ enum NetPath {
   topicdetail,
   search,
   searchkeyword,
-  showInfoList
+  showInfoList,
+  authpublish,
+  authcollection,
+  suggestion,
+  authpublishshowinfo,
+  authcollectionshowinfo,
+  authhistorylist,
 }
