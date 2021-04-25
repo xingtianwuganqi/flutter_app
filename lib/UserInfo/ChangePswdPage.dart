@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 
 class ChangePswdWidget extends StatefulWidget {
   @override
@@ -16,7 +18,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
   FocusNode _confirmPswd = FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _orginController = new TextEditingController();
+  TextEditingController _originController = new TextEditingController();
   TextEditingController _pswdController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
 
@@ -94,10 +96,10 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
                   ),
-                  suffixIcon: _orginController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
+                  suffixIcon: _originController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _orginController.text = null;
+                          _originController.text = null;
                         });
                       }
                   ): null,
@@ -132,7 +134,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   suffixIcon: _pswdController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _orginController.text = null;
+                          _pswdController.text = null;
                         });
                       }
                   ): null,
@@ -167,7 +169,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   suffixIcon: _confirmController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _orginController.text = null;
+                          _confirmController.text = null;
                         });
                       }
                   ): null,
@@ -188,6 +190,30 @@ class ChangePswdState extends State<ChangePswdWidget> {
       )
     );
   }
+
+  Future<Null> changePswdNetworking() async {
+    if (_originController.text.length == 0) {
+      return;
+    }
+    if (_pswdController.text.length > 0) {
+      return;
+    }
+    if (_confirmController.text.length > 0) {
+      return;
+    }
+    final url = NetWorkingConfig.path(NetPath.changePswd);
+    final dic = {'origin_pswd':_originController.text,'password': _pswdController.text,'confirm_pswd': _confirmController.text,'token': UserManager.instance.token};
+    FormData formData = FormData.fromMap(dic);
+    var data = await NetWorking.formDataPost(url, formData);
+    if (data['code'] == 200) {
+      /// 成功
+    }else{
+      /// 失败
+
+    }
+  }
+
+
 }
 
 /*
