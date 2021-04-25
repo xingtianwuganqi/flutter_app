@@ -82,6 +82,9 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/authcollectionshowinfo/';
       case NetPath.authhistorylist:
         return baseUrl + '/api/v1/authhistorylist/';
+      case NetPath.changePswd:
+        return baseUrl + '/api/v1/updatetokenpassword/';
+        
       default:
         return "";
     }
@@ -109,4 +112,5 @@ enum NetPath {
   authpublishshowinfo,
   authcollectionshowinfo,
   authhistorylist,
+  changePswd,
 }

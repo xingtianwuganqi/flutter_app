@@ -1,5 +1,6 @@
 
 import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_720yun/model/ShowModel.dart';
 
 class UserInfoModel {
   final String username;
@@ -103,6 +104,46 @@ class AuthHistoryModel {
       history_id: json['history_id'],
       topic_id: json['topic_id'],
       topicInfo: HomePageModel.fromJson(json['topicInfo'])
+    );
+  }
+}
+
+class AuthCollectRescueModel {
+  final int collection_id;
+  final int topic_id;
+  final HomePageModel topicInfo;
+
+  AuthCollectRescueModel({
+    this.collection_id,
+    this.topic_id,
+    this.topicInfo
+  });
+
+  factory AuthCollectRescueModel.fromJson(Map<String,dynamic> json) {
+    return AuthCollectRescueModel(
+        collection_id: json['collection_id'],
+        topic_id: json['topic_id'],
+        topicInfo: HomePageModel.fromJson(json['topicInfo'])
+    );
+  }
+}
+
+class AuthCollectShowInfoModel {
+  final int showcollect_id;
+  final int topic_id;
+  final ShowInfoModel showInfo;
+
+  AuthCollectShowInfoModel({
+    this.showcollect_id,
+    this.topic_id,
+    this.showInfo
+  });
+
+  factory AuthCollectShowInfoModel.fromJson(Map<String,dynamic> json) {
+    return AuthCollectShowInfoModel(
+        showcollect_id: json['showcollect_id'],
+        topic_id: json['topic_id'],
+        showInfo: ShowInfoModel.fromJson(json['showInfo'])
     );
   }
 }

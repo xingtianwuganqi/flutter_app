@@ -1,0 +1,198 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+
+class ChangePswdWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ChangePswdState();
+  }
+}
+
+class ChangePswdState extends State<ChangePswdWidget> {
+
+  FocusNode _originPswd = FocusNode();
+  FocusNode _password   = FocusNode();
+  FocusNode _confirmPswd = FocusNode();
+
+  //用户名输入框控制器，此控制器可以监听用户名输入框操作
+  TextEditingController _orginController = new TextEditingController();
+  TextEditingController _pswdController = new TextEditingController();
+  TextEditingController _confirmController = new TextEditingController();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _originPswd.addListener(() {
+      _focusNodeListener();
+    });
+
+    _password.addListener(() {
+      _focusNodeListener();
+    });
+
+    _confirmPswd.addListener(() {
+      _focusNodeListener();
+    });
+
+  }
+
+  //   // 监听焦点
+  Future<Null> _focusNodeListener() async{
+    if(_originPswd.hasFocus){
+      // 取消密码框的焦点状态
+      _password.unfocus();
+      _confirmPswd.unfocus();
+    }
+    if (_password.hasFocus) {
+      // 取消用户名框焦点状态
+      _originPswd.unfocus();
+      _confirmPswd.unfocus();
+    }
+    if (_confirmPswd.hasFocus) {
+      // 取消用户名框焦点状态
+      _originPswd.unfocus();
+      _password.unfocus();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("修改密码"),
+        elevation: 0.5,
+        actions: [
+          TextButton(
+              onPressed: () {
+
+              },
+              child: Text('保存',style: TextStyle(color: Colors.white,fontSize: 16),))
+        ],
+      ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          children: [
+            Container(
+              height: 50,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              child: TextFormField(
+                focusNode: _originPswd,
+                controller: null,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请输入原密码",
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  suffixIcon: _orginController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
+                      onPressed: (){
+                        setState(() {
+                          _orginController.text = null;
+                        });
+                      }
+                  ): null,
+                ),
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                },
+              ),
+            ),
+            Container(
+              height: 0.5,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              color: ColorsUtil.fromEnmu(ColorEnum.defIcon) ,
+            ),
+            Container(
+              height: 50,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              child: TextFormField(
+                focusNode: _password,
+                controller: _pswdController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请输入新密码（不少于6位）",
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  suffixIcon: _pswdController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
+                      onPressed: (){
+                        setState(() {
+                          _orginController.text = null;
+                        });
+                      }
+                  ): null,
+                ),
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                },
+              ),
+            ),
+            Container(
+              height: 0.5,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              color: ColorsUtil.fromEnmu(ColorEnum.defIcon) ,
+            ),
+            Container(
+              height: 50,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              child: TextFormField(
+                focusNode: _confirmPswd,
+                controller: _confirmController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请确认新密码",
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
+                  ),
+                  suffixIcon: _confirmController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
+                      onPressed: (){
+                        setState(() {
+                          _orginController.text = null;
+                        });
+                      }
+                  ): null,
+                ),
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                },
+              ),
+            ),
+          ],
+        ),
+        onTap: () {
+          _originPswd.unfocus();
+          _password.unfocus();
+          _confirmPswd.unfocus();
+        },
+      )
+    );
+  }
+}
+
+/*
+dic["token"] = UserManager.shared.token
+            dic["origin_pswd"] = origin
+            dic["password"] = newPswd
+            dic["confirm_pswd"] = confirm
+ */

@@ -3,19 +3,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoListPage.dart';
 
-class ShowPublishWidget extends StatefulWidget {
+class ShowCollectWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return ShowPublishState();
+    return ShowCollectState();
   }
 }
 
-class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveClientMixin {
+class ShowCollectState extends State<ShowCollectWidget> with AutomaticKeepAliveClientMixin {
 
   //导航栏切换时保持原有状态
   @override
@@ -23,7 +24,7 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
 
   var page = 1;
   var isFirstLoad = true;
-  List<ShowInfoModel> showInfoLists = [];
+  List<AuthCollectShowInfoModel> showInfoLists = [];
 
   @override
   void initState() {
@@ -43,21 +44,21 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
         firstRefresh: isFirstLoad,
         firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
         emptyWidget: showInfoLists.length > 0 ? null :
-          EmptyPage((){
-            showInfoListNetWroking(1);
-          },title: '暂无发布',desc: '快去发布秀宠吧'),
+        EmptyPage((){
+          showCollectListNetWroking(1);
+        },title: '暂无数据',desc: '快去收藏秀宠吧'),
         child: ListView.builder(
             itemCount: showInfoLists.length,
             itemBuilder: (context, index) {
               var data = showInfoLists[index];
-              return showInfoItem(context,data);
+              return showInfoItem(context,data.showInfo);
             }
         ),
         onRefresh: () async {
-          await showInfoListNetWroking(1);
+          await showCollectListNetWroking(1);
         },
         onLoad: () async {
-          await showInfoListNetWroking(page);
+          await showCollectListNetWroking(page);
         },
       ),
     );
@@ -65,20 +66,22 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
 
 
 
-  Future<Null> showInfoListNetWroking(num) async {
+  Future<Null> showCollectListNetWroking(num) async {
     page = num;
-    final url = NetWorkingConfig.path(NetPath.authpublishshowinfo);
+    final url = NetWorkingConfig.path(NetPath.authcollectionshowinfo);
     final dic = {"page": page,"size": 10,'token': UserManager.instance.token};
     FormData formData = FormData.fromMap(dic);
 
+    print('show request');
+    print(dic);
     ///创建Map 封装参数
     var data = await NetWorking.formDataPost(url, formData);
     print(data);
     if (data['code'] == 200) {
-      List<ShowInfoModel> datas = [];
+      List<AuthCollectShowInfoModel> datas = [];
       var models = data['data'];
       for (int i = 0;i < models.length; i++ ){
-        datas.add(new ShowInfoModel.fromJson(models[i]));
+        datas.add(new AuthCollectShowInfoModel.fromJson((models[i])));
       }
       page > 1 ? showInfoLists += datas : showInfoLists = datas;
       if (models.length > 0) {

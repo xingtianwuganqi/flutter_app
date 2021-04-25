@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/UserInfo/ChangePswdPage.dart';
 import '../UserInfo/UserInfoPage.dart';
 class SettingPageWidget extends StatelessWidget {
 
@@ -23,7 +24,7 @@ class SettingPageWidget extends StatelessWidget {
                   transform: Matrix4.translationValues(-25, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
-                leading: Icon(Icons.email),
+                leading: Image.asset('assets/icons/icon_setting_fk.png'),
                 trailing: Icon(Icons.keyboard_arrow_right)
             ),
           ),
@@ -38,7 +39,7 @@ class SettingPageWidget extends StatelessWidget {
                     transform: Matrix4.translationValues(-25, 0.0, 0.0),
                     child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                   ),
-                leading: Icon(Icons.email),
+                leading: Image.asset('assets/icons/icon_setting_pswd.png'),
                 trailing: Icon(Icons.keyboard_arrow_right)
             ),
           ),
@@ -68,10 +69,26 @@ class SettingPageWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text("设置"),
         elevation: 0.5,
+
       ),
       body: ListView.builder(
         itemBuilder: (context,index){
-            return settingWidget(datas[index]);
+          var data = datas[index];
+            return GestureDetector(
+              child: settingWidget(data),
+              onTap: () {
+                if (data.title == "修改密码"){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return new ChangePswdWidget();
+                  }));
+                }else if (data.title == '意见反馈'){
+
+                }else{
+                  /// 退出登录
+
+                }
+              },
+            );
         },
         itemCount: 3,
       ),

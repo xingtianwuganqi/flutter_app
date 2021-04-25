@@ -173,6 +173,7 @@ class ToolConfig {
 /// 无参数
 // typedef ActionNoParam = void Function();
 
+/// 空白页
 // ignore: must_be_immutable
 class EmptyPage extends StatelessWidget {
   String title;
@@ -210,4 +211,7 @@ class EmptyPage extends StatelessWidget {
     );
   }
 }
-
+/// 第一次加载的widget
+Widget FirstLoadWidget() {
+  return SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,);
+}

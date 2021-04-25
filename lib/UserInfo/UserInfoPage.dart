@@ -3,6 +3,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
+import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 import '../NetWorking/NetWorking.dart';
 
@@ -206,7 +207,11 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         }));
       // });
     }else if (data.title == '我的收藏') {
-
+// lazyAuthToDoThings(context, () {
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return UserCollectionWidget();
+      }));
+      // });
     }
   }
 }

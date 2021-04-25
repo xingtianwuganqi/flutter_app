@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_720yun/homepage/TopicDetail.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
 import '../model/UserModel.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_720yun/homepage/HomePage.dart';
+
 class BrowseListWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -14,13 +19,12 @@ class BrowseListWidget extends StatefulWidget {
 class BrowseListState extends State<BrowseListWidget> {
   var page = 1;
   bool isFirstLoad = true;
-  List<AuthHistoryModel> homeModels = [];
+  List<AuthHistoryModel> hisModels = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    authHistoryNetWroking(1);
   }
 
   @override
@@ -31,11 +35,37 @@ class BrowseListState extends State<BrowseListWidget> {
         title: Text('浏览记录'),
         elevation: 0.5,
       ),
-      body: ListView.builder(
-        itemCount: homeModels.length,
-          itemBuilder: (context,index){
-            return Text('$index');
-          }),
+      body: EasyRefresh(
+        header: MaterialHeader(),
+        footer: MaterialFooter(
+          enableInfiniteLoad:false,
+        ),
+        firstRefresh: isFirstLoad,
+        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+        emptyWidget: hisModels.length > 0 ? null : EmptyPage((){
+          authHistoryNetWroking(1);
+        }),
+        child:ListView.builder(
+            itemCount: hisModels.length,
+            itemBuilder: (context,index){
+              var data = hisModels[index];
+              return  GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: homePageItemWidget(context, data.topicInfo),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TopicDetailWidget(topicId: data.topicInfo.topic_id);
+                  }));
+                },
+              );
+            }),
+        onRefresh: () async {
+          await authHistoryNetWroking(1);
+        },
+        onLoad: () async {
+          await authHistoryNetWroking(page);
+        },
+      )
     );
   }
 
@@ -55,7 +85,7 @@ class BrowseListState extends State<BrowseListWidget> {
       for (int i = 0;i < models.length; i++ ){
         datas.add(new AuthHistoryModel.fromJson(models[i]));
       }
-      page > 1 ? homeModels += datas : homeModels = datas;
+      page > 1 ? hisModels += datas : hisModels = datas;
 
       if (models.length > 0) {
         page += 1;
