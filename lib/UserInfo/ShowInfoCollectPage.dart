@@ -75,23 +75,27 @@ class ShowCollectState extends State<ShowCollectWidget> with AutomaticKeepAliveC
     print('show request');
     print(dic);
     ///创建Map 封装参数
-    var data = await NetWorking.formDataPost(url, formData);
-    print(data);
-    if (data['code'] == 200) {
-      List<AuthCollectShowInfoModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new AuthCollectShowInfoModel.fromJson((models[i])));
-      }
-      page > 1 ? showInfoLists += datas : showInfoLists = datas;
-      if (models.length > 0) {
-        page += 1;
-      }
-      setState(() {
+    await NetWorking.formDataPost(url, formData,(data){
+      print(data);
+      if (data['code'] == 200) {
+        List<AuthCollectShowInfoModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new AuthCollectShowInfoModel.fromJson((models[i])));
+        }
+        page > 1 ? showInfoLists += datas : showInfoLists = datas;
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
+          isFirstLoad = false;
+        });
+      }else{
         isFirstLoad = false;
-      });
-    }else{
-      isFirstLoad = false;
-    }
+      }
+    },(error){
+
+    });
+
   }
 }

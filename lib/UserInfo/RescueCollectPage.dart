@@ -85,24 +85,28 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
     print('resuce request');
     print(url);
     print(dic);
-    var data = await NetWorking.formDataPost(url, formData);
-    print(data);
-    if (data['code'] == 200) {
-      isFirstLoad = false;
-      List<AuthCollectRescueModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new AuthCollectRescueModel.fromJson(models[i]));
-      }
-      page > 1 ? homeModels += datas : homeModels = datas;
-      if (models.length > 0) {
-        page += 1;
-      }
-      setState(() {
+    await NetWorking.formDataPost(url, formData,(data){
+      print(data);
+      if (data['code'] == 200) {
+        isFirstLoad = false;
+        List<AuthCollectRescueModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new AuthCollectRescueModel.fromJson(models[i]));
+        }
+        page > 1 ? homeModels += datas : homeModels = datas;
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
 
-      });
-    }else{
-      isFirstLoad = false;
-    }
+        });
+      }else{
+        isFirstLoad = false;
+      }
+    },(error){
+
+    });
+
   }
 }

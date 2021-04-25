@@ -67,20 +67,23 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
 
   Future<Null> GambitListNetWroking() async {
     final url = NetWorkingConfig.path(NetPath.gambitlist);
-    var data = await NetWorking.post(url);
-    print(data);
-    if (data['code'] == 200) {
-      List<GambitModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new GambitModel.fromJson(models[i]));
-      }
-      gambitList = datas;
-      setState(() {
+    await NetWorking.post(url, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        List<GambitModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new GambitModel.fromJson(models[i]));
+        }
+        gambitList = datas;
+        setState(() {
+          isFirstLoad = false;
+        });
+      }else{
         isFirstLoad = false;
-      });
-    }else{
-      isFirstLoad = false;
-    }
+      }
+    }, (error) {
+
+    });
   }
 }

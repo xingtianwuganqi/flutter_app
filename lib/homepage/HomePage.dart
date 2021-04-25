@@ -116,24 +116,28 @@ class _HomePageState extends State<HomePage> {
     final dic = {"page": page,"size": 10};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
-    var data = await NetWorking.formDataPost(url, formData);
-    if (data['code'] == 200) {
-      isFirstLoad = false;
-      List<HomePageModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new HomePageModel.fromJson(models[i]));
-      }
-      page > 1 ? homeModels += datas : homeModels = datas;
-      if (models.length > 0) {
-        page += 1;
-      }
-      setState(() {
+    await NetWorking.formDataPost(url, formData,(data){
+      if (data['code'] == 200) {
+        isFirstLoad = false;
+        List<HomePageModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new HomePageModel.fromJson(models[i]));
+        }
+        page > 1 ? homeModels += datas : homeModels = datas;
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
 
-      });
-    }else{
-      isFirstLoad = false;
-    }
+        });
+      }else{
+        isFirstLoad = false;
+      }
+    },(error){
+
+    });
+
   }
 }
 

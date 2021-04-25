@@ -95,19 +95,27 @@ class _LoginWidgetState extends State<LoginWidget> {
     }
     final url = NetWorkingConfig.path(NetPath.login);
     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
-    var data = await NetWorking.post(url,params: dic);
+
     print(_password);
     print(generateMD5(_password));
-    print(data);
-    if (data["code"] == 200) {
-      var model = data["data"];
-      var userModel = UserInfoModel.fromJson(model);
-      _userModel = userModel;
-      UserManager.instance.userInfo = userModel;
-      UserManager.instance.saveUerInfo(userModel);
-      /// 登录成功
-      Navigator.pop(context);
-    }
+    await NetWorking.post(url, (data) {
+      print(data);
+      if (data["code"] == 200) {
+        var model = data["data"];
+        var userModel = UserInfoModel.fromJson(model);
+        _userModel = userModel;
+        UserManager.instance.userInfo = userModel;
+        UserManager.instance.saveUerInfo(userModel);
+        /// 登录成功
+        Navigator.pop(context);
+      }else{
+        /// 登录失败
+      }
+    }, (error) {
+
+    },params: dic);
+
+
   }
 
   //   // 监听焦点

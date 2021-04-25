@@ -218,14 +218,18 @@ class SearchPageState extends State<SearchPageWidget> {
   Future<Null> searchKeyWordsNetworking() async {
     final url = NetWorkingConfig.path(NetPath.searchkeyword);
     // FormData formData = FormData.fromMap(map)
-    var data = await NetWorking.get(url);
-    if (data['code'] == 200) {
-      var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();
-      datas = keywords;
-      setState(() {
+    await NetWorking.get(url, (data) {
+      if (data['code'] == 200) {
+        var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();
+        datas = keywords;
+        setState(() {
 
-      });
-    }
+        });
+      }
+    }, (error) {
+      // 失败
+    });
+
   }
 
   Future<Null> searchActionNetworking() async {
@@ -235,20 +239,24 @@ class SearchPageState extends State<SearchPageWidget> {
     }
     final url = NetWorkingConfig.path(NetPath.search);
     FormData formData = FormData.fromMap({'keyword': keyword});
-    var data = await NetWorking.formDataPost(url, formData);
-    if (data['code'] == 200) {
-      List<HomePageModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new HomePageModel.fromJson(models[i]));
+    await NetWorking.formDataPost(url, formData,(data){
+      if (data['code'] == 200) {
+        List<HomePageModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new HomePageModel.fromJson(models[i]));
+        }
+        homeModels = datas;
+        setState(() {
+
+        });
+      }else{
+
       }
-      homeModels = datas;
-      setState(() {
+    },(error){
 
-      });
-    }else{
+    });
 
-    }
   }
 
 

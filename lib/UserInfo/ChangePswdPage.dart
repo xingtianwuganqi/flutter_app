@@ -204,13 +204,17 @@ class ChangePswdState extends State<ChangePswdWidget> {
     final url = NetWorkingConfig.path(NetPath.changePswd);
     final dic = {'origin_pswd':_originController.text,'password': _pswdController.text,'confirm_pswd': _confirmController.text,'token': UserManager.instance.token};
     FormData formData = FormData.fromMap(dic);
-    var data = await NetWorking.formDataPost(url, formData);
-    if (data['code'] == 200) {
-      /// 成功
-    }else{
-      /// 失败
+    await NetWorking.formDataPost(url, formData,(data){
+      if (data['code'] == 200) {
+        /// 成功
+      }else{
+        /// 失败
 
-    }
+      }
+    },(error){
+
+    });
+
   }
 
 

@@ -76,23 +76,27 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
     FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
-    var data = await NetWorking.formDataPost(url, formData);
-    if (data['code'] == 200) {
-      List<ShowInfoModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new ShowInfoModel.fromJson(models[i]));
-      }
-      page > 1 ? showInfoLists += datas : showInfoLists = datas;
-      if (models.length > 0) {
-        page += 1;
-      }
-      setState(() {
+    await NetWorking.formDataPost(url, formData,(data){
+      if (data['code'] == 200) {
+        List<ShowInfoModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new ShowInfoModel.fromJson(models[i]));
+        }
+        page > 1 ? showInfoLists += datas : showInfoLists = datas;
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
+          isFirstLoad = false;
+        });
+      }else{
         isFirstLoad = false;
-      });
-    }else{
-      isFirstLoad = false;
-    }
+      }
+    },(error){
+
+    });
+
   }
 }
 

@@ -101,15 +101,20 @@ class _RegisterState extends State<RegisterWidget> {
     final url = NetWorkingConfig.path(NetPath.login);
     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
     print(dic);
-    var data = await NetWorking.post(url,params: dic);
-    print(data);
-    if (data["code"] == 200) {
-      var model = data["data"];
-      var userModel = UserInfoModel.fromJson(model);
-      print(model);
-      _userModel = userModel;
-      print(_userModel.phone_number);
-    }
+    await NetWorking.post(url, (data) {
+      print(data);
+      if (data["code"] == 200) {
+        var model = data["data"];
+        var userModel = UserInfoModel.fromJson(model);
+        print(model);
+        _userModel = userModel;
+        print(_userModel.phone_number);
+      }
+    }, (error) {
+      /// 登录失败
+
+    },params: dic);
+
   }
 
   //   // 监听焦点

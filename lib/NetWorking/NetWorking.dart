@@ -4,33 +4,35 @@ import 'dart:async';
 
 Dio dio = new Dio();
 
+typedef SuccessCallBack = void Function(dynamic data);
+typedef FailureCallBack = void Function(dynamic error);
+
 class NetWorking {
 
-  static Future get(String url,{Map<String,dynamic> params}) async{
+  static Future get(String url,SuccessCallBack successBack,FailureCallBack failBack,{Map<String,dynamic> params}) async{
     try {
       var response = await dio.get(url,queryParameters: params);
-      return response.data;
+      successBack(response.data);
     }catch (e){
-      return  e;
+      failBack(e);
     }
   }
 
-  static Future post(String url, {Map<String,dynamic> params}) async {
+  static Future post(String url,SuccessCallBack successBack,FailureCallBack failBack,{Map<String,dynamic> params}) async {
     try {
       var response = await dio.post(url,data:params);
-      return response.data;
+      successBack(response.data);
     }catch(e) {
-      print(e);
-      return e;
+      failBack(e);
     }
   }
 
-  static Future formDataPost(String url, FormData formData) async {
+  static Future formDataPost(String url, FormData formData,SuccessCallBack successBack,FailureCallBack failBack) async {
     try {
       var response = await dio.post(url,data: formData);
-      return response.data;
+      successBack(response.data);
     }catch(e){
-      return e;
+      failBack(e);
     }
   }
 }

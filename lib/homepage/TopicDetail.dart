@@ -229,18 +229,22 @@ class TopicDetailState extends State<TopicDetailWidget> {
     final dic = {"topic_id": widget.topicId,"token": UserManager.instance.token ?? ""};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
-    var data = await NetWorking.formDataPost(url, formData);
-    print(data);
-    if (data['code'] == 200) {
-      var model = data['data'];
-      homeModel = HomePageModel.fromJson(model);
-      print(homeModel.imgs);
-      setState(() {
+    await NetWorking.formDataPost(url, formData,(data){
+      print(data);
+      if (data['code'] == 200) {
+        var model = data['data'];
+        homeModel = HomePageModel.fromJson(model);
+        print(homeModel.imgs);
+        setState(() {
 
-      });
-    }else{
+        });
+      }else{
 
-    }
+      }
+    },(error){
+
+    });
+
   }
 }
 

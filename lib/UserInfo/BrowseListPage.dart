@@ -77,24 +77,28 @@ class BrowseListState extends State<BrowseListWidget> {
     FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
-    var data = await NetWorking.formDataPost(url, formData);
-    print(data);
-    if (data['code'] == 200) {
-      List<AuthHistoryModel> datas = [];
-      var models = data['data'];
-      for (int i = 0;i < models.length; i++ ){
-        datas.add(new AuthHistoryModel.fromJson(models[i]));
-      }
-      page > 1 ? hisModels += datas : hisModels = datas;
+    await NetWorking.formDataPost(url, formData,(data){
+      print(data);
+      if (data['code'] == 200) {
+        List<AuthHistoryModel> datas = [];
+        var models = data['data'];
+        for (int i = 0;i < models.length; i++ ){
+          datas.add(new AuthHistoryModel.fromJson(models[i]));
+        }
+        page > 1 ? hisModels += datas : hisModels = datas;
 
-      if (models.length > 0) {
-        page += 1;
-      }
-      setState(() {
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
+          isFirstLoad = false;
+        });
+      }else{
         isFirstLoad = false;
-      });
-    }else{
-      isFirstLoad = false;
-    }
+      }
+    },(error){
+
+    });
+
   }
 }
