@@ -91,12 +91,6 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   border: InputBorder.none,
                   hintText: "请输入原密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
                   suffixIcon: _originController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
@@ -123,12 +117,6 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   border: InputBorder.none,
                   hintText: "请输入新密码（不少于6位）",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
                   suffixIcon: _pswdController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
@@ -155,12 +143,6 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   border: InputBorder.none,
                   hintText: "请确认新密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.mark),width: 0.5),
-                  ),
                   suffixIcon: _confirmController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
