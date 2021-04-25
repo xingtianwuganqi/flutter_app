@@ -73,7 +73,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
               onPressed: () {
 
               },
-              child: Text('保存',style: TextStyle(color: Colors.white,fontSize: 16),))
+              child: Text('保存',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content)),))
         ],
       ),
       body: GestureDetector(
@@ -83,11 +83,12 @@ class ChangePswdState extends State<ChangePswdWidget> {
             Container(
               height: 50,
               padding: EdgeInsets.only(left: 15,right: 15),
-              child: TextFormField(
+              child: TextField(
                 focusNode: _originPswd,
                 controller: null,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
+                  border: InputBorder.none,
                   hintText: "请输入原密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
@@ -104,10 +105,6 @@ class ChangePswdState extends State<ChangePswdWidget> {
                       }
                   ): null,
                 ),
-                // 校验用户名（不能为空）
-                validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
-                },
               ),
             ),
             Container(
@@ -118,11 +115,12 @@ class ChangePswdState extends State<ChangePswdWidget> {
             Container(
               height: 50,
               padding: EdgeInsets.only(left: 15,right: 15),
-              child: TextFormField(
+              child: TextField(
                 focusNode: _password,
                 controller: _pswdController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
+                  border: InputBorder.none,
                   hintText: "请输入新密码（不少于6位）",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
@@ -139,10 +137,6 @@ class ChangePswdState extends State<ChangePswdWidget> {
                       }
                   ): null,
                 ),
-                // 校验用户名（不能为空）
-                validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
-                },
               ),
             ),
             Container(
@@ -153,11 +147,12 @@ class ChangePswdState extends State<ChangePswdWidget> {
             Container(
               height: 50,
               padding: EdgeInsets.only(left: 15,right: 15),
-              child: TextFormField(
+              child: TextField(
                 focusNode: _confirmPswd,
                 controller: _confirmController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
+                  border: InputBorder.none,
                   hintText: "请确认新密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
@@ -174,11 +169,12 @@ class ChangePswdState extends State<ChangePswdWidget> {
                       }
                   ): null,
                 ),
-                // 校验用户名（不能为空）
-                validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
-                },
               ),
+            ),
+            Container(
+              height: 0.5,
+              padding: EdgeInsets.only(left: 15,right: 15),
+              color: ColorsUtil.fromEnmu(ColorEnum.defIcon) ,
             ),
           ],
         ),

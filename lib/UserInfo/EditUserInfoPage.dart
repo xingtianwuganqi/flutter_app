@@ -2,8 +2,11 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 
 class EditUserWidget extends StatefulWidget {
+  
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -30,6 +33,10 @@ class EditUserWidgetState extends State<EditUserWidget> {
     _nicknameController.addListener(() {
       print(_nicknameController.text);
     });
+
+    if (UserManager.instance.isLogin) {
+      _nicknameController.text = UserManager.instance.userInfo.username;
+    }
   }
 
   //   // 监听焦点
@@ -44,28 +51,35 @@ class EditUserWidgetState extends State<EditUserWidget> {
   Widget build(BuildContext context) {
     
     Widget headWidget() {
-      return new Container(
-        padding: EdgeInsets.only(left: 16,top: 10,right: 16,bottom: 5),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage("https://tva1.sinaimg.cn/large/006y8mN6gy1g7aa03bmfpj3069069mx8.jpg"),
-              child: Container(
-                alignment: Alignment(0, .5),
-                width: 60,
-                height: 60,
+      return GestureDetector(
+        child: new Container(
+          padding: EdgeInsets.only(left: 16,top: 10,right: 16,bottom: 5),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.white,
+                backgroundImage: UserManager.instance.isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator): Image.asset('assets/icons/icon_plh.png'),
+                child: Container(
+                  alignment: Alignment(0, .5),
+                  width: 60,
+                  height: 60,
+                ),
               ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 15,bottom: 15),
-              child: Text("点击更换头像",style: TextStyle(fontSize: 14),),
-            ),
-            Container(
-              height: 0.5,
-              color: Colors.black12,
-            )
-          ],
+              Padding(padding: EdgeInsets.only(top: 15,bottom: 15),
+                child: Text("点击更换头像",style: TextStyle(fontSize: 14),),
+              ),
+              Container(
+                height: 0.5,
+                color: Colors.black12,
+              )
+            ],
+          ),
         ),
+        onTap: () {
+          /// 点击更换头型
+
+        },
       );
     }
 
@@ -117,7 +131,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
               onPressed: () {
 
               },
-              child: Text('保存',style: TextStyle(color: Colors.white,fontSize: 16),))
+              child: Text('保存',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content)),))
         ],
         elevation: 0.5,
       ),

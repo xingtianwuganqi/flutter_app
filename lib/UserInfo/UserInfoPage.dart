@@ -115,6 +115,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           child: ListTile(
               leading: CircleAvatar(
                 radius: 25,
+                backgroundColor: Colors.white,
                 backgroundImage: UserManager.instance.isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "")) : AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
@@ -128,9 +129,11 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           ),
         ),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return new EditUserWidget();
-          }));
+          lazyAuthToDoThings(context, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return new EditUserWidget();
+            }));
+          });
         },
       );
     }
