@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/homepage/MessageListPage.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
@@ -30,10 +31,10 @@ class MessagePageState extends State<MessagePage> {
   var isFirstLoad = true;
   
   List<MessagePageModel> datas = [
-    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '系统消息'),
-    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '点赞'),
-    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '收藏'),
-    MessagePageModel(icon: 'assets/icons/icon_message_com.png',name: '评论'),
+    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '系统消息',type: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '点赞',type: 1),
+    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '收藏',type: 2),
+    MessagePageModel(icon: 'assets/icons/icon_message_com.png',name: '评论',type: 3),
   ];
 
   @override
@@ -43,7 +44,7 @@ class MessagePageState extends State<MessagePage> {
     Widget messageItem(MessagePageModel model) {
       return new Container(
         color: Colors.white,
-        padding: EdgeInsets.only(left: 10,right: 10),
+        padding: EdgeInsets.only(left: 10,right: 0),
         child: new Column(
           children: <Widget>[
             ListTile(
@@ -56,7 +57,7 @@ class MessagePageState extends State<MessagePage> {
               leading: Image.asset(model.icon),
               trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
             ),
-            new Divider(height: .0,),
+            new Divider(height: 0.5,indent: 70,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),),
           ],
         ),
       );
@@ -81,7 +82,19 @@ class MessagePageState extends State<MessagePage> {
           itemExtent: 60,
           // itemExtent: 60,
           itemBuilder: (context,index) {
-            return messageItem(datas[index]);
+            var data = datas[index];
+            return GestureDetector(
+              child: messageItem(datas[index]),
+              onTap: () {
+                if (data.type != 0) {
+                  lazyAuthToDoThings(context, () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) {
+                      return MessageListWidget(data.name, data.type);
+                    }));
+                  });
+                }
+              },
+            );
           },
         ),
         onRefresh: () async {
@@ -96,9 +109,10 @@ class MessagePageState extends State<MessagePage> {
 class MessagePageModel {
   final String icon;
   final String name;
-  
+  final int type;
   MessagePageModel({
     this.icon,
-    this.name
+    this.name,
+    this.type,
   });
 }

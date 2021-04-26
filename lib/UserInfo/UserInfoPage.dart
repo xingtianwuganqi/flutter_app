@@ -91,7 +91,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
             ),
           ),
-          Divider(height: .0,)];
+          new Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),),
+        ];
       }
       return GestureDetector(
         child: Container(

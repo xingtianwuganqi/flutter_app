@@ -100,6 +100,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
               color: ColorsUtil.fromEnmu(ColorEnum.system),
               borderRadius: BorderRadius.all(Radius.circular(3.0))
           ),
+          margin: EdgeInsets.only(right: 10),
           padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
           child: Text(e.tag_name ?? "",
             style: TextStyle(

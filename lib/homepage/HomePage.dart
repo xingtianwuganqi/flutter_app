@@ -224,6 +224,7 @@ Widget textInfoWidget(HomePageModel data) {
             color: ColorsUtil.fromEnmu(ColorEnum.system),
             borderRadius: BorderRadius.all(Radius.circular(3.0))
         ),
+        margin: EdgeInsets.only(right: 10),
         padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
         child: Text(e.tag_name ?? "",
           style: TextStyle(
@@ -252,6 +253,7 @@ Widget textInfoWidget(HomePageModel data) {
           alignment: Alignment.centerLeft,
           child: Text(data.content ?? '',
             maxLines: 7,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
               color: ColorsUtil.fromEnmu(ColorEnum.content),
@@ -264,7 +266,7 @@ Widget textInfoWidget(HomePageModel data) {
 }
 
 Widget imagesWidget(HomePageModel data) {
-  if (data.imgs?.length > 4) {
+  if (data.imgs?.length >= 4) {
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       height: 170,
@@ -457,7 +459,7 @@ Widget imagesWidget(HomePageModel data) {
       // width: MediaQuery.of(context).size.width - 65,
       height: 170,
       child: CachedNetworkImage(
-        imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+        imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
         placeholder: (context,url) => Container(
           color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
         ),

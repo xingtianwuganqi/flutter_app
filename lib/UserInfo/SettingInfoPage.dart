@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/ChangePswdPage.dart';
 import '../UserInfo/UserInfoPage.dart';
+import 'package:provider/provider.dart';
+
 class SettingPageWidget extends StatelessWidget {
 
   List<UserPageModel> datas = [
@@ -71,9 +74,11 @@ class SettingPageWidget extends StatelessWidget {
         elevation: 0.5,
 
       ),
-      body: ListView.builder(
-        itemBuilder: (context,index){
-          var data = datas[index];
+      body: Container(
+        color: Colors.grey[100],
+        child: ListView.builder(
+          itemBuilder: (context,index){
+            var data = datas[index];
             return GestureDetector(
               child: settingWidget(data),
               onTap: () {
@@ -85,13 +90,15 @@ class SettingPageWidget extends StatelessWidget {
 
                 }else{
                   /// 退出登录
-
+                  UserManager.instance.logout();
+                  Provider.of<UserProviderModel>(context, listen: false).user = null;
                 }
               },
             );
-        },
-        itemCount: 3,
-      ),
+          },
+          itemCount: 3,
+        ),
+      )
     );
   }
 }

@@ -48,16 +48,21 @@ class UserManager {
 
   void saveUerInfo(UserInfoModel data) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonStringA = jsonEncode(data.toJson());
-    prefs.setString("userInfo", jsonStringA);
-    print('jsonStringA');
-    print(jsonStringA);
-    userInfo = data;
+    if (data != null) {
+      String jsonStringA = jsonEncode(data.toJson());
+      prefs.setString("userInfo", jsonStringA);
+      print('jsonStringA');
+      print(jsonStringA);
+      userInfo = data;
+    }else{
+      return;
+    }
   }
 
   void logout() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    UserManager.instance.userInfo = null;
   }
 }
 

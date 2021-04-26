@@ -60,10 +60,11 @@ enum NetPath {
   authhistorylist,
   changePswd,
   updateUserInfo,
+  authorMessage,
 }
 
 class NetWorkingConfig {
-  static final UrlConfig urlConfig = UrlConfig.test;
+  static final UrlConfig urlConfig = UrlConfig.formal;
   static String baseUrl() {
     switch (urlConfig) {
       case UrlConfig.formal:
@@ -113,6 +114,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/updatetokenpassword/';
       case NetPath.updateUserInfo:
         return baseUrl + '/api/v1/updateuserinfo/';
+      case NetPath.authorMessage:
+        return baseUrl + '/api/v1/authmessage/';
       default:
         return "";
     }

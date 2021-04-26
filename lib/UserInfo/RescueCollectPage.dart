@@ -65,7 +65,7 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
           firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
           emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
             loadRescueCollectList(1);
-          },title: '暂无发布',desc: '快去发布送养吧'),
+          },title: '暂无发布',desc: '快去收藏领养吧'),
           onRefresh:() async {
             await loadRescueCollectList(1);
           },
