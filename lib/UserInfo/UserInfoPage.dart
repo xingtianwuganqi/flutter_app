@@ -5,6 +5,7 @@ import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
+import 'package:provider/provider.dart';
 import '../NetWorking/NetWorking.dart';
 
 class UserInfoWidget extends StatefulWidget {
@@ -31,7 +32,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     UserPageModel('assets/icons/icon_mi_publish.png', '我的发布'),
     UserPageModel('assets/icons/icon_mi_collection.png', '我的收藏'),
     // UserPageModel('icon', "empty"),
-    // UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
+    UserPageModel('assets/icons/icon_mi_upload.png', '检测更新'),
     // UserPageModel('assets/icons/icon_mi_pf.png', '应用评分'),
     UserPageModel('assets/icons/icon_mi_xy.png', '用户协议'),
     UserPageModel('assets/icons/icon_pravicy.png', '隐私政策'),
@@ -116,14 +117,14 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.white,
-                backgroundImage: UserManager.instance.isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "")) : AssetImage('assets/icons/icon_plh.png'),
+                backgroundImage: context.watch<UserProviderModel>().isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "")) : AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
                     width: 50,
                     height: 50,
                 ),
               ),
-              title: UserManager.instance.isLogin ? Text(UserManager.instance.userInfo.username ?? "",
+              title: context.watch<UserProviderModel>().isLogin ? Text(UserManager.instance.userInfo.username ?? "",
                 style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),) : Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),),
               trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
           ),
@@ -139,7 +140,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     }
 
     return Material(
-      child: CustomScrollView(
+      child:
+      CustomScrollView(
         // controller: _scrollController,
         slivers: [
           SliverAppBar(
@@ -175,46 +177,27 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         ],
       ),
     );
-      // Scaffold(
-      //   appBar: AppBar(
-      //     title: Text("我的"),
-      //   ),
-      //   body:   ListView.builder(
-      //       // itemExtent: 60,
-      //         itemCount: listData.length,
-      //         // ignore: missing_return
-      //         itemBuilder: (context,index) {
-      //           if (listData[index].title == 'empty') {
-      //             return Container(
-      //               height: 10,
-      //               color: Colors.transparent,
-      //             );
-      //           }else{
-      //             return titleCell(listData[index]);
-      //           }
-      //         }),
-      // );
   }
 
   void didClickAction(UserPageModel data) {
     if (data.title == '浏览记录') {
-      // lazyAuthToDoThings(context, () {
+      lazyAuthToDoThings(context, () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return BrowseListWidget();
         }));
-      // });
+      });
     }else if (data.title == '我的发布') {
-      // lazyAuthToDoThings(context, () {
+      lazyAuthToDoThings(context, () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return UserPublishWidget();
         }));
-      // });
+      });
     }else if (data.title == '我的收藏') {
-// lazyAuthToDoThings(context, () {
-      Navigator.push(context, MaterialPageRoute(builder: (context){
-        return UserCollectionWidget();
-      }));
-      // });
+      lazyAuthToDoThings(context, () {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return UserCollectionWidget();
+        }));
+      });
     }
   }
 }

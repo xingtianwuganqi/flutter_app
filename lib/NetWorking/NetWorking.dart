@@ -37,6 +37,31 @@ class NetWorking {
   }
 }
 
+enum UrlConfig {
+  formal,
+  test,
+  local
+}
+
+enum NetPath {
+  login,
+  register,
+  topiclist,
+  gambitlist,
+  topicdetail,
+  search,
+  searchkeyword,
+  showInfoList,
+  authpublish,
+  authcollection,
+  suggestion,
+  authpublishshowinfo,
+  authcollectionshowinfo,
+  authhistorylist,
+  changePswd,
+  updateUserInfo,
+}
+
 class NetWorkingConfig {
   static final UrlConfig urlConfig = UrlConfig.test;
   static String baseUrl() {
@@ -86,33 +111,11 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/authhistorylist/';
       case NetPath.changePswd:
         return baseUrl + '/api/v1/updatetokenpassword/';
-        
+      case NetPath.updateUserInfo:
+        return baseUrl + '/api/v1/updateuserinfo/';
       default:
         return "";
     }
   }
 }
 
-enum UrlConfig {
-  formal,
-  test,
-  local
-}
-
-enum NetPath {
-  login,
-  register,
-  topiclist,
-  gambitlist,
-  topicdetail,
-  search,
-  searchkeyword,
-  showInfoList,
-  authpublish,
-  authcollection,
-  suggestion,
-  authpublishshowinfo,
-  authcollectionshowinfo,
-  authhistorylist,
-  changePswd,
-}

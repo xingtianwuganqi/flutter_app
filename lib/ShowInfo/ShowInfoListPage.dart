@@ -137,7 +137,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Padding(padding: EdgeInsets.all(3)),
-                      Text(data.create_time ?? "",
+                      Text( ToolConfig.timeT(data.create_time) ?? "",
                           style: TextStyle(
                               color: ColorsUtil.fromEnmu(ColorEnum.desc),
                               fontSize: 12),

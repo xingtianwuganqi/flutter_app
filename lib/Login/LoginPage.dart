@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/NetWorking/Encryption.dart';
+import 'package:provider/provider.dart';
 import '../Common/CommonPage.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -104,8 +105,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         var model = data["data"];
         var userModel = UserInfoModel.fromJson(model);
         _userModel = userModel;
-        UserManager.instance.userInfo = userModel;
-        UserManager.instance.saveUerInfo(userModel);
+        Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
         /// 登录成功
         Navigator.pop(context);
       }else{

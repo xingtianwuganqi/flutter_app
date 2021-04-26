@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
@@ -8,6 +8,8 @@ import 'dart:convert';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+
 
 class UserManager {
   // 工厂模式
@@ -31,14 +33,15 @@ class UserManager {
   String get token => userInfo?.token ?? "";
   bool get isLogin => (userInfo?.token?.length ?? 0) > 0;
 
-  void getUserInfo() async {
+  Future getUserInfo() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String data = prefs.getString('userInfo');
       Map json = jsonDecode(data);
       userInfo = UserInfoModel.fromJson(json);
     }catch(e){
-
+      print('error');
+      print(e);
     }
 
   }
@@ -47,6 +50,8 @@ class UserManager {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jsonStringA = jsonEncode(data.toJson());
     prefs.setString("userInfo", jsonStringA);
+    print('jsonStringA');
+    print(jsonStringA);
     userInfo = data;
   }
 
@@ -55,6 +60,41 @@ class UserManager {
     prefs.clear();
   }
 }
+
+// class ProfileChangeNotifier extends ChangeNotifier {
+//   UserInfoModel get _userInfo => UserManager.instance.userInfo;
+//
+//   @override
+//   void notifyListeners() {
+//     // Global.saveProfile(); //保存Profile变更
+//     super.notifyListeners(); //通知依赖的Widget更新
+//   }
+// }
+
+class UserProviderModel extends ChangeNotifier  {
+  UserInfoModel _user;
+  UserProviderModel(this._user);
+  UserInfoModel get user => _user;
+  bool get isLogin => (_user?.token?.length ?? 0) > 0;
+  set user(UserInfoModel value) {
+    _user = value;
+    UserManager.instance.userInfo = _user;
+    UserManager.instance.saveUerInfo(_user);
+    print('_user');
+    print(_user);
+    notifyListeners();
+  }
+}
+
+// class ProfileChangeNotifier extends ChangeNotifier {
+//   Profile get _profile => Global.profile;
+//
+//   @override
+//   void notifyListeners() {
+//     Global.saveProfile(); //保存Profile变更
+//     super.notifyListeners(); //通知依赖的Widget更新
+//   }
+// }
 
 lazyAuthToDoThings(context, obj) async{
   if (UserManager.instance.isLogin) {
@@ -136,7 +176,7 @@ class FontUtil {
       case FontSize.big:
         return 20.0;
       case FontSize.title:
-        return 17.0;
+        return 16.0;
       case FontSize.content:
         return 15.0;
       case FontSize.desc:
@@ -167,6 +207,40 @@ class ToolConfig {
       left = left + alphabet[Random().nextInt(alphabet.length)];
     }
     return left;
+  }
+
+  /*
+  var d1 = new DateTime(2018, 10, 1);
+var d2 = new DateTime(2018, 10, 10);
+var difference = d1.difference(d2);
+print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
+
+   */
+  static String timeT(String time) {
+    if (time.length > 19 ) {
+      // var d1 = new DateTime(2021,4,10,10,17,25);
+      var d1 = DateTime.now();
+      var d2 = DateTime.parse(time);
+      var difference = d1.difference(d2);
+      var firstTime = DateTime.parse(time).toString().substring(0,19);
+      if (difference.inDays > 2) {
+        return firstTime;
+      }else if (difference.inDays > 1) {
+        return '前天' + firstTime.substring(10);
+      }else if (difference.inDays > 0) {
+        return '昨天' + firstTime.substring(10);
+      }else if (difference.inHours > 0) {
+        return '${difference.inHours}小时前';
+      }else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes}分钟前';
+      }else if (difference.inSeconds > 0) {
+        return '${difference.inSeconds}秒前';
+      }else{
+        return firstTime;
+      }
+    }else{
+      return time;
+    }
   }
 }
 

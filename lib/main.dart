@@ -1,38 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
+import 'package:provider/single_child_widget.dart';
 import 'tabbar.dart';
-import 'dart:ui';
+import 'package:provider/provider.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-void main() => runApp(MyApp());
+// void main() => UserManager.instance.getUserInfo().then((e) => runApp(MyApp()));
+
+
+void main() {
+  /// 可以在程序run之前就读取二进制文件
+  WidgetsFlutterBinding.ensureInitialized();
+  UserManager.instance.getUserInfo().then((value) =>
+     runApp(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context)=>UserProviderModel(UserManager.instance.userInfo))
+            ],
+            child: MyApp()
+          )
+      )
+  );
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        // primarySwatch:  Colors.blue,
-        primaryColor: Colors.white,
-        // 使用 Scaffold 构件的页面，统一设置背景颜色
-        scaffoldBackgroundColor: Colors.white,
-        splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
-        highlightColor: Colors.transparent,
-      ),
-      home: tabbar(),
-      routes: {
+          title: '',
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            // primarySwatch:  Colors.blue,
+            primaryColor: Colors.white,
+            // 使用 Scaffold 构件的页面，统一设置背景颜色
+            scaffoldBackgroundColor: Colors.white,
+            splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
+            highlightColor: Colors.transparent,
+          ),
+          home: tabbar(),
+          builder: EasyLoading.init(),
+          routes: {
 
-      },
+          },
     );
+
+    // return MaterialApp(
+    //   title: '',
+    //   theme: ThemeData(
+    //     // This is the theme of your application.
+    //     //
+    //     // Try running your application with "flutter run". You'll see the
+    //     // application has a blue toolbar. Then, without quitting the app, try
+    //     // changing the primarySwatch below to Colors.green and then invoke
+    //     // "hot reload" (press "r" in the console where you ran "flutter run",
+    //     // or simply save your changes to "hot reload" in a Flutter IDE).
+    //     // Notice that the counter didn't reset back to zero; the application
+    //     // is not restarted.
+    //     // primarySwatch:  Colors.blue,
+    //     primaryColor: Colors.white,
+    //     // 使用 Scaffold 构件的页面，统一设置背景颜色
+    //     scaffoldBackgroundColor: Colors.white,
+    //     splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
+    //     highlightColor: Colors.transparent,
+    //   ),
+    //   home: tabbar(),
+    //   builder: EasyLoading.init(),
+    //   routes: {
+    //
+    //   },
+    // );
   }
 }
 

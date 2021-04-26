@@ -34,6 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_spinkit: ^5.0.0
   multi_image_picker: ^4.8.0
+  provider: 5.0.0
 
 dev_dependencies:
   flutter_test:
