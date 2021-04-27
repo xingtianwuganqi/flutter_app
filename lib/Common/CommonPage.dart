@@ -37,13 +37,14 @@ class UserManager {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String data = prefs.getString('userInfo');
-      Map json = jsonDecode(data);
-      userInfo = UserInfoModel.fromJson(json);
+      if (data != null) {
+        Map json = jsonDecode(data);
+        userInfo = UserInfoModel.fromJson(json);
+      }
     }catch(e){
       print('error');
       print(e);
     }
-
   }
 
   void saveUerInfo(UserInfoModel data) async{

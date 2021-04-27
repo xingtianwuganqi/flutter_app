@@ -44,7 +44,7 @@ class MessagePageState extends State<MessagePage> {
     Widget messageItem(MessagePageModel model) {
       return new Container(
         color: Colors.white,
-        padding: EdgeInsets.only(left: 10,right: 0),
+        padding: EdgeInsets.only(left: 5,right: 0),
         child: new Column(
           children: <Widget>[
             ListTile(

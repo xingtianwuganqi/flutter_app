@@ -47,6 +47,7 @@ class MessageListState extends State<MessageListWidget> {
           
         }),
         child: ListView.builder(
+          itemCount: msgList.length,
             itemBuilder: (context,index){
               return Text('');
             }),
@@ -71,9 +72,16 @@ class MessageListState extends State<MessageListWidget> {
     final dic = {'page': page,'size': 10,'token': UserManager.instance.token,'msg_type': widget.msgType};
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
       if (data['code'] == 200) {
         var models = data['data'];
-        var items = (models as List)?.map((e) => MessageListModel.fromJson(e));
+        // var items = (models as List)?.map((e) => MessageListModel.fromJson(e));
+        List<MessageListModel> items = [];
+        for (int i = 0;i < models.length;i ++) {
+          items.add(MessageListModel.fromJson(models[i]));
+        }
+        print('items');
+        print(items);
         page > 1 ? msgList += items : msgList = items;
         if (items.length > 0) {
           page += 1;

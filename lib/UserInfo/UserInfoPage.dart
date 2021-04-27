@@ -66,10 +66,10 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       if (data.title == "我的收藏"){
         datas = [
           Padding(
-          padding: EdgeInsets.only(left: 10,right: 10),
+          padding: EdgeInsets.only(left: 5,right: 5),
           child: ListTile(
               title: Container(
-                transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                transform: Matrix4.translationValues(-20, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
               leading: Image.asset(data.icon),
@@ -81,10 +81,10 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       }else{
         datas = [
           Padding(
-            padding: EdgeInsets.only(left: 10,right: 10),
+            padding: EdgeInsets.only(left: 5,right: 5),
             child: ListTile(
                 title: Container(
-                  transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                  transform: Matrix4.translationValues(-20, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
                 ),
                 leading: Image.asset(data.icon),
@@ -113,7 +113,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         child: Container(
           color: Colors.black12,
           alignment: Alignment(0, .7),
-          padding: EdgeInsets.only(left: 15,right: 12),
+          padding: EdgeInsets.only(left: 10,right: 6),
           child: ListTile(
               leading: CircleAvatar(
                 radius: 25,

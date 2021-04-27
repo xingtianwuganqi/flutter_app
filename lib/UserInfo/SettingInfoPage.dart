@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/ChangePswdPage.dart';
+import 'package:flutter_720yun/UserInfo/SuggestionPage.dart';
+import 'package:flutter_720yun/homepage/HomePage.dart';
 import '../UserInfo/UserInfoPage.dart';
 import 'package:provider/provider.dart';
 
@@ -21,10 +23,10 @@ class SettingPageWidget extends StatelessWidget {
       if (data.title == "意见反馈"){
         arrs = [
           Padding(
-            padding: EdgeInsets.only(left: 10,right: 10),
+            padding: EdgeInsets.only(left: 5,right: 5),
             child: ListTile(
                 title: Container(
-                  transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                  transform: Matrix4.translationValues(-20, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                 ),
                 leading: Image.asset('assets/icons/icon_setting_fk.png'),
@@ -36,10 +38,10 @@ class SettingPageWidget extends StatelessWidget {
       }else{
         arrs = [
           Padding(
-            padding: EdgeInsets.only(left: 10,right: 10),
+            padding: EdgeInsets.only(left: 5,right: 5),
             child: ListTile(
                 title: Container(
-                    transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                    transform: Matrix4.translationValues(-20, 0.0, 0.0),
                     child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
                   ),
                 leading: Image.asset('assets/icons/icon_setting_pswd.png'),
@@ -87,11 +89,16 @@ class SettingPageWidget extends StatelessWidget {
                     return new ChangePswdWidget();
                   }));
                 }else if (data.title == '意见反馈'){
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return new SuggesstionWidget();
+                  }));
                 }else{
                   /// 退出登录
                   UserManager.instance.logout();
                   Provider.of<UserProviderModel>(context, listen: false).user = null;
+                  // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context){
+                  //   return TabBar();
+                  // }), (route) => false);
                 }
               },
             );
