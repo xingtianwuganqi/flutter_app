@@ -27,7 +27,7 @@ class MessageListModel {
   final int msg_id;
   final UserInfoModel from_info;
   final UserInfoModel to_info;
-  final int is_read;
+  final bool is_read;
   final HomePageModel topicInfo;
   final ShowInfoModel showInfo;
   final ReplyListModel replyInfo;
@@ -60,10 +60,10 @@ class MessageListModel {
       from_info: UserInfoModel.fromJson(json['from_info']),
       to_info: UserInfoModel.fromJson(json['to_info']),
       is_read: json['is_read'],
-      topicInfo: HomePageModel.fromJson(json['topicInfo']),
-      showInfo: ShowInfoModel.fromJson(json['showInfo']),
-      replyInfo: ReplyListModel.fromJson(json['replyInfo']),
-      commentInfo: CommentListModel.fromJson(json['commentInfo']),
+      topicInfo: json['topicInfo'] != null ? HomePageModel.fromJson(json['topicInfo']) : null,
+      showInfo: json['showInfo'] != null ? ShowInfoModel.fromJson(json['showInfo']) : null,
+      replyInfo: json['replyInfo'] != null ? ReplyListModel.fromJson(json['replyInfo']) : null,
+      commentInfo: json['commentInfo'] != null ? CommentListModel.fromJson(json['commentInfo']) : null,
       reply_type: json['reply_type'],
       reply_id: json['reply_id']
     );
@@ -121,9 +121,9 @@ class CommentListModel {
       topic_type: json['topic_type'],
       content: json['content'],
       from_uid: json['from_uid'],
-      replys: (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
-      showReply: (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
-      userInfo: UserInfoModel.fromJson(json['userInfo']),
+      replys: json['replys'] == null ? null : (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
+      showReply: json['showReply'] == null ? null :  (json['showReply'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
+      userInfo:  json['userInfo'] == null ? null : UserInfoModel.fromJson(json['userInfo']),
       reply_count: json['reply_count'],
       next_page: json['next_page'],
     );
@@ -178,8 +178,8 @@ class ReplyListModel {
       content: json['content'],
       from_uid: json['from_uid'],
       to_uid: json['to_uid'],
-      fromInfo: UserInfoModel.fromJson(json['fromInfo']),
-      toInfo: UserInfoModel.fromJson(json['toInfo']),
+      fromInfo: json['fromInfo'] == null ? null : UserInfoModel.fromJson(json['fromInfo']),
+      toInfo: json['toInfo'] == null ? null : UserInfoModel.fromJson(json['toInfo']),
       create_time: json['create_time'],
     );
   }

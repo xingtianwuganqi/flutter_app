@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ChangePswdWidget extends StatefulWidget {
   @override
@@ -185,12 +186,16 @@ class ChangePswdState extends State<ChangePswdWidget> {
     await NetWorking.formDataPost(url, formData,(data){
       if (data['code'] == 200) {
         /// 成功
+        EasyLoading.showToast('修改成功');
+        Future.delayed(Duration(seconds: 2), (){
+          Navigator.of(context).pop();
+        });
       }else{
         /// 失败
-
+        EasyLoading.showToast('修改失败');
       }
     },(error){
-
+      EasyLoading.showToast('请求失败');
     });
 
   }

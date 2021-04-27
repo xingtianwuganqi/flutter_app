@@ -48,7 +48,7 @@ class HomePageModel {
     return HomePageModel(
       topic_id: json['topic_id'],
       content: json['content'],
-      userInfo: UserInfoModel.fromJson(json['userInfo']),
+      userInfo: json['userInfo'] != null ? UserInfoModel.fromJson(json['userInfo']) : null,
       imgs: (json['imgs'] as List)?.map((e) => e as String)?.toList(),
       create_time: json['create_time'],
       update_time: json['update_time'],
@@ -60,7 +60,7 @@ class HomePageModel {
       getedcontact: json['getedcontact'],
       commNum: json['commNum'],
       address_info: json['address_info'],
-      tagInfos: (json['tagInfos'] as List)?.map((e) => TagModel.fromJson(e)).toList(),
+      tagInfos: json['tagInfos']== null ? null : (json['tagInfos'] as List)?.map((e) => TagModel.fromJson(e)).toList(),
     );
   }
 

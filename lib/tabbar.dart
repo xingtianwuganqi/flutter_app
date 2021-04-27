@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
-// import 'homepage/findpage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'homepage/HomePage.dart';
-// import 'homepage/MyPage.dart';
 import 'homepage/MessagePage.dart';
 import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
@@ -26,6 +27,9 @@ class tabbarState extends State<tabbar> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _loadConfig();
+
     pages.add(HomePage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage());
@@ -84,4 +88,33 @@ class tabbarState extends State<tabbar> {
       _selectedIndex = index;
     });
   }
+
+
+  void _loadConfig() {
+
+    if (NetWorkingConfig.urlConfig == UrlConfig.formal) {
+      Printer.enable = true;
+    }else{
+      Printer.enable = true;
+    }
+
+    EasyLoading.instance
+      ..displayDuration = const Duration(milliseconds: 1500)
+      ..indicatorType = EasyLoadingIndicatorType.ring
+      ..loadingStyle = EasyLoadingStyle.dark
+      ..indicatorSize = 40.0
+      ..radius = 10.0
+      ..progressColor = ColorsUtil.fromEnmu(ColorEnum.system)
+      ..backgroundColor = Colors.green
+      ..indicatorColor = ColorsUtil.fromEnmu(ColorEnum.system)
+      ..lineWidth = 3
+      ..toastPosition = EasyLoadingToastPosition.bottom
+    // ..textColor = Colors.yellow
+      ..maskColor = Colors.blue.withOpacity(0.5)
+      ..userInteractions = true
+      ..dismissOnTap = false;
+    // ..customAnimation = CustomAnimation();
+  }
+
+
 }
