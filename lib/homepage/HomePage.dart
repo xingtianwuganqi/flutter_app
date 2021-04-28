@@ -359,7 +359,7 @@ Widget imagesWidget(HomePageModel data) {
           Expanded(
             child:
             Container(
-              padding: EdgeInsets.only(right: 5),
+              padding: EdgeInsets.only(right: 2.5),
               child: CachedNetworkImage(
                 imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
                 placeholder: (context,url) => Container(
