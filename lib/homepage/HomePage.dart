@@ -254,6 +254,7 @@ Widget textInfoWidget(HomePageModel data) {
           child: Text(data.content ?? '',
             maxLines: 7,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.justify,
             style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
               color: ColorsUtil.fromEnmu(ColorEnum.content),
