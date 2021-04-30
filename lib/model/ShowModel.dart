@@ -4,11 +4,18 @@ class GambitModel {
   final String descript;
   final int id;
   final int selected;
+  final String create_time;
+  final int review_type;
 
-  GambitModel({this.descript, this.id, this.selected});
+  GambitModel({this.descript, this.id, this.selected,this.create_time,this.review_type});
 
   factory GambitModel.fromJson(Map<String, dynamic> json) {
-    return GambitModel(descript: json['descript'], id: json['id'], selected: 0);
+    return GambitModel(descript: json['descript'],
+        id: json['id'],
+        selected: 0,
+        create_time: json['create_time'],
+        review_type: json['review_type'],
+    );
   }
 }
 
@@ -27,6 +34,7 @@ class ShowInfoModel {
   final String create_time;
   // final commentInfo: CommentListModel?
   // final commentAttr: NSAttributedString?
+  final GambitModel gambit_type;
   final int commNum;
 
   ShowInfoModel(
@@ -42,6 +50,7 @@ class ShowInfoModel {
       this.liked,
       this.collectioned,
       this.create_time,
+      this.gambit_type,
       this.commNum});
 
   factory ShowInfoModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +67,7 @@ class ShowInfoModel {
         liked: json['liked'],
         collectioned: json['collectioned'],
         create_time: json['create_time'],
+        gambit_type: json['gambit_type'] != null ? GambitModel.fromJson(json['gambit_type']): null,
         commNum: json['commNum']);
   }
 }

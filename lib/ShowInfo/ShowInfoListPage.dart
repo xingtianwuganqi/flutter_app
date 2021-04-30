@@ -3,9 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import '../NetWorking/NetWorking.dart';
 
 
@@ -90,6 +93,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, formData,(data){
       if (data['code'] == 200) {
+        Printer.printMapJsonLog(data);
         List<ShowInfoModel> datas = [];
         var models = data['data'];
         for (int i = 0;i < models.length; i++ ){
@@ -129,7 +133,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: data.user.avator != null ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator): ,
+                backgroundImage: (data.user.avator != null && data.user.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator): AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 40,
@@ -163,6 +167,47 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
               IconButton(icon: Icon(Icons.more_horiz_outlined), onPressed: (){}),
             ],
           ),
+        ),
+        /// 话题
+        Container(
+          height: data.gambit_type != null ? 38 : 1,
+          alignment: Alignment.centerLeft,
+          child:data.gambit_type == null ? null : Row(
+            mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 0,bottom: 10),
+                  padding: EdgeInsets.only(left: 10,right: 10),
+                  height: 28 ,//data.gambit_type != null ? 24 : 2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(14.0)),
+                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset('assets/icons/icon_show_gb.png',width: 16,height: 16,),
+                      Padding(padding: EdgeInsets.only(left: 6)),
+                      Text((data.gambit_type != null && (data.gambit_type?.descript?.length ?? 0) > 0) ? data.gambit_type.descript:'',
+                        style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+                          color: ColorsUtil.fromEnmu(ColorEnum.system),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return ShowInfoSingleWidget(gambitId: data.gambit_type.id);
+                  }));
+                },
+              ),
+            ],
+          )
         ),
         /// pageView
         Container(

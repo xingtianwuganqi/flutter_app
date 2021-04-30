@@ -41,7 +41,7 @@ class MessageListState extends State<MessageListWidget> {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(((data.from_info.avator ?? "").length > (0)) ? (NetWorkingConfig.imgBaseUrl + data.from_info.avator) : ''),
+              backgroundImage: (data.from_info.avator != null && data.from_info.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.from_info.avator) : AssetImage('assets/icons/icon_plh.png'),
               child: Container(
                 alignment: Alignment(0, .5),
                 width: 40,

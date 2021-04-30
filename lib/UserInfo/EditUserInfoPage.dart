@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
@@ -59,7 +60,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.white,
-                backgroundImage: UserManager.instance.isLogin ? NetworkImage(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator): Image.asset('assets/icons/icon_plh.png'),
+                backgroundImage: UserManager.instance.isLogin ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator): Image.asset('assets/icons/icon_plh.png'),
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 60,

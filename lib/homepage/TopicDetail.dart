@@ -42,7 +42,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: NetworkImage("http://img.rxswift.cn/" + data.userInfo.avator),
+            backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator): AssetImage('assets/icons/icon_plh.png'),
             child: Container(
               alignment: Alignment(0, .5),
               width: 40,
@@ -50,11 +50,13 @@ class TopicDetailState extends State<TopicDetailWidget> {
             ),
           ),
           Expanded(
-              child: Container(
+              child:
+              Container(
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 10,right: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(data.userInfo.username ?? "",
                         textAlign: TextAlign.left,
@@ -65,22 +67,22 @@ class TopicDetailState extends State<TopicDetailWidget> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Padding(padding: EdgeInsets.all(3)),
-                      Text((data.address_info ?? "") + (data.create_time ?? ""),
+                      Text((data.address_info ?? "") + "  " + (ToolConfig.timeT(data.create_time)),// ?? "")
                           style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
                               fontSize: FontUtil.fs(FontSize.desc)),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                     ],
                   )
               ),
           ),
-          Container(
-            width: 30,
-            child: IconButton(icon: Icon(Icons.more_horiz_outlined,
-              color: ColorsUtil.fromEnmu(ColorEnum.content),
-            ), onPressed: (){}),
-          )
+          // Container(
+          //   width: 30,
+          //   child: IconButton(icon: Icon(Icons.more_horiz_outlined,
+          //     color: ColorsUtil.fromEnmu(ColorEnum.content),
+          //   ), onPressed: (){}),
+          // )
 
         ],
       ),

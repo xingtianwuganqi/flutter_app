@@ -137,7 +137,7 @@ class ColorsUtil {
       case ColorEnum.system:
         return ColorsUtil.hexColor(0xffa500);
       case ColorEnum.title:
-        return ColorsUtil.hexColor(0x000000);
+        return ColorsUtil.hexColor(0x111111);
       case ColorEnum.content:
         return ColorsUtil.hexColor(0x292929);
       case ColorEnum.note:
@@ -185,6 +185,8 @@ class FontUtil {
         return 16.0;
       case FontSize.content:
         return 15.0;
+      case FontSize.mark:
+        return 14.0;
       case FontSize.desc:
         return 13.0;
       case FontSize.small:
@@ -196,11 +198,12 @@ class FontUtil {
 }
 
 enum FontSize {
-   big,
-   title,
-   content,
-   desc,
-   small,
+  big,
+  title,
+  content,
+  mark,
+  desc,
+  small,
 }
 
 

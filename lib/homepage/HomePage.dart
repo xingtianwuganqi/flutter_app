@@ -174,36 +174,56 @@ Widget userInfoWidget(HomePageModel data) {
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundImage: NetworkImage("http://img.rxswift.cn/" + data.userInfo.avator),
+          backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?  CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator) : AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, 0),
             width: 36,
             height: 36,
           ),
         ),
-        Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(data.userInfo.username ?? "",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: ColorsUtil.fromEnmu(ColorEnum.title),
-                        fontSize: FontUtil.fs(FontSize.title)),
-                    overflow: TextOverflow.ellipsis),
-                Padding(padding: EdgeInsets.all(3)),
-                Text(ToolConfig.timeT(data.create_time) ?? "",
-                    style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                        fontSize: FontUtil.fs(FontSize.desc)),
-                    overflow: TextOverflow.ellipsis)
-              ],
-            )),
+        // Container(
+        //     alignment: Alignment.centerLeft,
+        //     padding: EdgeInsets.only(left: 10),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Text(data.userInfo.username ?? "",
+        //             textAlign: TextAlign.left,
+        //             style: TextStyle(
+        //                 color: ColorsUtil.fromEnmu(ColorEnum.title),
+        //                 fontSize: FontUtil.fs(FontSize.title)),
+        //             overflow: TextOverflow.ellipsis),
+        //         Padding(padding: EdgeInsets.all(3)),
+        //         Text(ToolConfig.timeT(data.create_time) ?? "",
+        //             style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
+        //                 fontSize: FontUtil.fs(FontSize.desc)),
+        //             overflow: TextOverflow.ellipsis)
+        //       ],
+        //     )),
         Expanded(
             child: Container(
-
-            )),
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(data.userInfo.username ?? "",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: ColorsUtil.fromEnmu(ColorEnum.content),
+                            fontWeight: FontWeight.w500,
+                            fontSize: FontUtil.fs(FontSize.title)),
+                        overflow: TextOverflow.ellipsis),
+                    Padding(padding: EdgeInsets.all(3)),
+                    Text(ToolConfig.timeT(data.create_time) ?? "",
+                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                            fontSize: FontUtil.fs(FontSize.desc)),
+                        overflow: TextOverflow.ellipsis)
+                  ],
+                )
+            ),
+        ),
         IconButton(icon: Icon(Icons.more_horiz_outlined,
           color: ColorsUtil.fromEnmu(ColorEnum.content),
         ), onPressed: (){}),
@@ -478,8 +498,8 @@ Widget addressWidget(HomePageModel data) {
     alignment: Alignment.centerLeft,
     child: Text(data.address_info,
       style: TextStyle(
-        fontSize: FontUtil.fs(FontSize.content),
-        color: ColorsUtil.fromEnmu(ColorEnum.desc),
+        fontSize: FontUtil.fs(FontSize.mark),
+        color: ColorsUtil.fromEnmu(ColorEnum.mark),
       ),
     ),
   );
@@ -495,8 +515,10 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_zan_un.png'),
               label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
-              ),
+                style: TextStyle(
+                  fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),              ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
                   print('is login');
@@ -508,7 +530,10 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_collection_un.png'),
               label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                style: TextStyle(
+                  fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),
               ),
               onPressed: (){},
             )
@@ -517,7 +542,10 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_sh_commen.png'),
               label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                style: TextStyle(
+                  fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),
               ),
               onPressed: (){},
             )

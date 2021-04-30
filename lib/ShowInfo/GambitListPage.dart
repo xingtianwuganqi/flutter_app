@@ -51,7 +51,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
               leading: Image.asset('assets/icons/icon_show_gb.png'),
               title: Container(
                 transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                child: Text(data.descript,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                child: Text(data.descript != null ? data.descript : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
               ),
               trailing:  Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
             );
