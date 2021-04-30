@@ -1,4 +1,5 @@
 // import 'dart:html';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
@@ -9,6 +10,11 @@ import '../NetWorking/NetWorking.dart';
 
 
 class ShowInfoListWidget extends StatefulWidget {
+  final int showId;
+  final int gambitId;
+
+  ShowInfoListWidget({this.showId,this.gambitId});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -72,7 +78,13 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   Future<Null> showInfoListNetWroking(num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.showInfoList);
-    final dic = {"page": page,"size": 10,'token': UserManager.instance.token};
+    final dic = {
+      "page": page,
+      "size": 10,
+      'token': UserManager.instance.token,
+      'show_id': widget.showId,
+      'gambit_id': widget.gambitId
+    };
     FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
@@ -103,7 +115,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
 Widget showInfoItem(BuildContext context, ShowInfoModel data) {
 
   var imgWidgets = data.imgs.map((e) => Container(
-    child: Image.network('http://img.rxswift.cn/' + e),
+    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,)
   ));
 
 
@@ -117,7 +129,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(((data.user.avator ?? "").length > (0)) ? ('http://img.rxswift.cn/' + data.user.avator) : ''),
+                backgroundImage: data.user.avator != null ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator): ,
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 40,

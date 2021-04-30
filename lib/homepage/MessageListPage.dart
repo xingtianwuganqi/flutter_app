@@ -3,9 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/ShowInfo/ShowInfoListPage.dart';
+import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import '../model/MessageModel.dart';
+import 'TopicDetail.dart';
 class MessageListWidget extends StatefulWidget {
 
   final String title;
@@ -239,7 +242,23 @@ class MessageListState extends State<MessageListWidget> {
           itemCount: msgList.length,
             itemBuilder: (context,index){
             var data = msgList[index];
-              return messageList(data);
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: messageList(data),
+                onTap: () {
+                  if (data.showInfo != null) {
+                    /// 跳转到秀宠
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ShowInfoSingleWidget(showId: data.showInfo.show_id);
+                      }));
+                  }else{
+                    /// 跳转到领养
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return TopicDetailWidget(topicId:data.topicInfo.topic_id);
+                    }));
+                  }
+                },
+              );
             }),
         onRefresh: () async{
           await messageListNetworking(1);
