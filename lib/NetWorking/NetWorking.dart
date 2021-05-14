@@ -61,6 +61,8 @@ enum NetPath {
   changePswd,
   updateUserInfo,
   authorMessage,
+  violations,
+  report,
 }
 
 class NetWorkingConfig {
@@ -116,6 +118,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/updateuserinfo/';
       case NetPath.authorMessage:
         return baseUrl + '/api/v1/authmessage/';
+      case NetPath.violations:
+        return baseUrl + '/api/v1/violations/';
+      case NetPath.report:
+        return baseUrl + '/api/v1/report/';
       default:
         return "";
     }

@@ -11,6 +11,7 @@ import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
 import '../Login/LoginPage.dart';
+import '../UserInfo/ViolationsListPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -149,7 +150,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data) {
     Container(
       child: Column(
         children: [
-          userInfoWidget(data),
+          userInfoWidget(context,data),
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
@@ -167,7 +168,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data) {
 }
 
 /// 用户信息
-Widget userInfoWidget(HomePageModel data) {
+Widget userInfoWidget(BuildContext context, HomePageModel data) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
@@ -226,7 +227,11 @@ Widget userInfoWidget(HomePageModel data) {
         ),
         IconButton(icon: Icon(Icons.more_horiz_outlined,
           color: ColorsUtil.fromEnmu(ColorEnum.content),
-        ), onPressed: (){}),
+        ), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return ViolationsListWidget();
+          }));
+        }),
       ],
     ),
   );
