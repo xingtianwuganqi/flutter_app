@@ -130,7 +130,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
             alignment: Alignment.centerLeft,
             child: Text(data.content ?? '',
-              maxLines: 7,
+              maxLines: null,
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),

@@ -161,7 +161,9 @@ class MessageListState extends State<MessageListWidget> {
                         child: Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 6,bottom: 10,left: 10,right: 10),
-                          child: Text(data.topicInfo.content ?? '',maxLines: tags.length > 0 ? 2 : 3,),
+                          child: Text(data.topicInfo.content ?? '',maxLines: tags.length > 0 ? 2 : 3,
+                           overflow: TextOverflow.ellipsis,
+                          ),
                         )
                     )
                   ],
@@ -186,7 +188,9 @@ class MessageListState extends State<MessageListWidget> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
-                  child: Text((data.showInfo.instruction != null) ? data.showInfo.instruction : '' ,maxLines: 3,),
+                  child: Text((data.showInfo.instruction != null) ? data.showInfo.instruction : '' ,maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 )
             )
           ],

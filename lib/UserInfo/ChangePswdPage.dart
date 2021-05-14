@@ -74,7 +74,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
               onPressed: () {
                 _saveClick();
               },
-              child: Text('保存',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content)),))
+              child: Text('保存',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),fontSize: FontUtil.fs(FontSize.content)),))
         ],
       ),
       body: GestureDetector(
