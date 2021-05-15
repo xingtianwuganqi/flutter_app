@@ -147,3 +147,34 @@ class AuthCollectShowInfoModel {
     );
   }
 }
+
+
+class ViolationModel {
+  final int id;
+  final String vio_name ;
+  bool selected;
+
+  ViolationModel({
+    this.id,
+    this.vio_name,
+    this.selected,
+  });
+
+  factory ViolationModel.fromJson(Map<String,dynamic> json) {
+    return ViolationModel(
+      id: json['id'],
+      vio_name: json['vio_name'],
+      selected: false
+    );
+  }
+}
+
+///# 1.领养举报 2.领养评论 3.领养回复 4.秀宠举报 5.秀宠评论 6.秀宠回复
+enum Report_type {
+  rescue_page, // 1
+  rescue_comment, // 2
+  rescue_reply,// 3
+  show_page,// 4
+  show_comment,// 5
+  show_reply,// 6
+}

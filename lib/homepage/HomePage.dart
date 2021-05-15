@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
@@ -228,9 +229,11 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
         IconButton(icon: Icon(Icons.more_horiz_outlined,
           color: ColorsUtil.fromEnmu(ColorEnum.content),
         ), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return ViolationsListWidget();
-          }));
+          lazyAuthToDoThings(context, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
+            }));
+          });
         }),
       ],
     ),
@@ -540,7 +543,11 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),
               ),
-              onPressed: (){},
+              onPressed: (){
+                lazyAuthToDoThings(context, (){
+
+                });
+              },
             )
         ),
         Expanded(
@@ -552,7 +559,11 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),
               ),
-              onPressed: (){},
+              onPressed: (){
+                lazyAuthToDoThings(context, (){
+
+                });
+              },
             )
         ),
       ],
