@@ -63,6 +63,7 @@ enum NetPath {
   authorMessage,
   violations,
   report,
+  commentList,
 }
 
 class NetWorkingConfig {
@@ -122,6 +123,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/violations/';
       case NetPath.report:
         return baseUrl + '/api/v1/report/';
+      case NetPath.commentList:
+        return baseUrl + '/api/v1/commentlist/';
       default:
         return "";
     }

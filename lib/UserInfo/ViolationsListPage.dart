@@ -158,7 +158,11 @@ class ViolationListState extends State<ViolationsListWidget> {
     for (int i = 0; i < dataSource.length; i ++) {
       var model = dataSource[i];
       if (i == index) {
-        model.selected = true;
+        if (model.selected == true) {
+          model.selected = false;
+        }else{
+          model.selected = true;
+        }
       }else{
         model.selected = false;
       }

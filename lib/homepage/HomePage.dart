@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_720yun/Comment/CommentPage.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
+import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -227,13 +229,38 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
             ),
         ),
         IconButton(icon: Icon(Icons.more_horiz_outlined,
-          color: ColorsUtil.fromEnmu(ColorEnum.content),
+          color: ColorsUtil.fromEnmu(ColorEnum.mark),
         ), onPressed: (){
-          lazyAuthToDoThings(context, (){
-            Navigator.push(context, MaterialPageRoute(builder: (context){
-              return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
-            }));
-          });
+          showModalBottomSheet(
+            context: context,
+            builder: (context){
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: 150,
+                color: Colors.white,
+                child: ListView(
+                  children: [
+                    TextButton(onPressed: (){
+
+                    }, child: Text('屏蔽/拉黑')),
+                    Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                    TextButton(onPressed: (){
+                      Navigator.pop(context);
+                      lazyAuthToDoThings(context, (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
+                        }));
+                      });
+                    }, child: Text('投诉举报')),
+                    Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                    TextButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, child: Text('取消'))
+                  ],
+                ),
+              );
+            },
+          );
         }),
       ],
     ),
@@ -561,7 +588,20 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context){
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        color: Colors.white,
+                        child: CommentWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,)
+                      );
+                    },
+                  );
+                  // Navigator.push(context, MaterialPageRoute(builder: (context){
+                  //   return CommentWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,);
+                  // }));
                 });
               },
             )
