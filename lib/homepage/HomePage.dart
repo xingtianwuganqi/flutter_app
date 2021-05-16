@@ -242,7 +242,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
                   children: [
                     TextButton(onPressed: (){
 
-                    }, child: Text('屏蔽/拉黑')),
+                    }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                     Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                     TextButton(onPressed: (){
                       Navigator.pop(context);
@@ -251,11 +251,11 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
                           return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
                         }));
                       });
-                    }, child: Text('投诉举报')),
+                    }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                     Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                     TextButton(onPressed: (){
                       Navigator.pop(context);
-                    }, child: Text('取消'))
+                    }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                   ],
                 ),
               );
@@ -590,10 +590,11 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
                 lazyAuthToDoThings(context, (){
                   showModalBottomSheet(
                     context: context,
+                    isScrollControlled: true,
                     builder: (context){
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
                         child: CommentWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,)
                       );

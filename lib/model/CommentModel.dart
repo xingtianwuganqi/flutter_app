@@ -42,13 +42,13 @@ class CommentInfoModel {
       create_time: json['create_time'],
       topic_id: json['topic_id'],
       topic_type: json['topic_type'],
-      content: json['content'],
+      content: json['content'] as String,
       from_uid: json['from_uid'],
-      replys: (json['replys'] as List).map((e) => ReplyListModel.fromJson(e)),
-      isOpend: json['reply_count'] > json['replys'].length ? false : true,
-      showReply: (json['replys'] as List).map((e) => ReplyListModel.fromJson(e)),
+      replys: (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e))?.toList(),//
+      isOpend: (json['reply_count'] ?? 0) > json['replys'].length ? false : true,
+      showReply: [],
       userInfo: UserInfoModel.fromJson(json['userInfo']),
-      reply_count: json['reply_count'],
+      reply_count: json['reply_count'] ?? 0,
       next_page: 2,
     );
   }
@@ -99,4 +99,16 @@ class ReplyListModel {
 enum CommentType {
    topic_comment, // 1
    show_comment  // 2
+}
+
+class ComRepListModel {
+  int type;
+  final CommentInfoModel commentModel;
+  final ReplyListModel replyModel;
+
+  ComRepListModel({
+    this.type,
+    this.commentModel,
+    this.replyModel
+  });
 }
