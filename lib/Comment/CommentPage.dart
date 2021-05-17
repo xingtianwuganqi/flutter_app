@@ -28,6 +28,9 @@ class CommentState extends State<CommentWidget> {
   int _page = 1;
   List<ComRepListModel> listData = [];
   bool _firstRefresh = true;
+  FocusNode _focusNode;
+  TextEditingController _comController;
+
   
   @override
   void initState() {
@@ -53,23 +56,7 @@ class CommentState extends State<CommentWidget> {
         emptyWidget: listData.length > 0 ? null : EmptyPage((){
           commentListNetWorking(1);
         }),
-        child: ListView.builder(
-            itemBuilder: (context,index) {
-              var data = listData[index];
-              if (data.type == 1) {
-                return Container(
-                  child: commentCell(data),
-                );
-              }else if (data.type == 2){
-                return Container(
-                  child: replyCell(data),
-                );
-              }else{
-                return moreItemCell();
-              }
-            },
-          itemCount: listData.length,
-        ),
+        child: listViewWidget(),
         onRefresh: () async {
           await commentListNetWorking(1);
         },
@@ -77,6 +64,63 @@ class CommentState extends State<CommentWidget> {
           await commentListNetWorking(_page);
         },
       ),
+    );
+  }
+
+  Widget listViewWidget() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemBuilder: (context,index) {
+        var data = listData[index];
+        if (data.type == 1) {
+          return Container(
+            child: commentCell(data),
+          );
+        }else if (data.type == 2){
+          return Container(
+            child: replyCell(data),
+          );
+        }else{
+          return moreItemCell();
+        }
+      },
+      itemCount: listData.length,
+    );
+  }
+
+  Widget sliverListView() {
+    return SliverList(delegate: SliverChildBuilderDelegate((content, index) {
+      var data = listData[index];
+      if (data.type == 1) {
+        return Container(
+          child: commentCell(data),
+        );
+      }else if (data.type == 2){
+        return Container(
+          child: replyCell(data),
+        );
+      }else{
+        return moreItemCell();
+      }
+    }, childCount: listData.length));
+  }
+
+  Widget inputWidget() {
+    return Container(
+        child: TextField(maxLines: 1,
+          focusNode: _focusNode,
+          controller: _comController,
+          decoration: InputDecoration(
+            hintText: "请输入评论",
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+          ),
+          style: TextStyle(fontSize: 15),
+        )
     );
   }
 
