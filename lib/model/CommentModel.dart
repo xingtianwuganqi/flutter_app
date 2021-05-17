@@ -112,3 +112,14 @@ class ComRepListModel {
     this.replyModel
   });
 }
+
+enum ComTapType {
+  comment,
+  reply
+}
+
+class ComTapTypeInfo {
+  ComTapType tapType;
+  String name;
+  ComTapTypeInfo({this.tapType,this.name});
+}

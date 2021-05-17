@@ -596,7 +596,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
-                        child: CommentWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,)
+                        child: CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,),
                       );
                     },
                   );

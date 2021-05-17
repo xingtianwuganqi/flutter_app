@@ -64,6 +64,7 @@ enum NetPath {
   violations,
   report,
   commentList,
+  pushComment, // 发表评论
 }
 
 class NetWorkingConfig {
@@ -125,6 +126,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/report/';
       case NetPath.commentList:
         return baseUrl + '/api/v1/commentlist/';
+      case NetPath.pushComment:
+        return baseUrl + '/api/v1/commentaction/';
       default:
         return "";
     }

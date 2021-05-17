@@ -3,17 +3,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../model/CommentModel.dart';
 
-class CommentWidget extends StatefulWidget {
+class CommentInfoWidget extends StatefulWidget {
 
   CommentType commentType;
   int topicId;
-  
-  CommentWidget({Key key,@required this.commentType,@required this.topicId}): super(key:key);
+  int toUid;
+
+  CommentInfoWidget({Key key,@required this.commentType,@required this.topicId,@required this.toUid}): super(key:key);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,22 +24,45 @@ class CommentWidget extends StatefulWidget {
   }
 }
 
-class CommentState extends State<CommentWidget> {
+class CommentState extends State<CommentInfoWidget> {
 
   List<CommentInfoModel> dataSource = [];
   int _page = 1;
   List<ComRepListModel> listData = [];
   bool _firstRefresh = true;
-  FocusNode _focusNode;
-  TextEditingController _comController;
+  FocusNode _focusNode = FocusNode();
+  TextEditingController _comController = TextEditingController();
 
+  /// 点击的类型
+  ComTapTypeInfo _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // _focusNode.addListener(() {
+    //   _focusNodeListener();
+    // });
   }
 
+  void dispose() {
+    // TODO: implement dispose
+    // 移除焦点监听
+    // _focusNode.removeListener(_focusNodeListener);
+    _comController.dispose();
+    super.dispose();
+  }
+
+
+  //   // 监听焦点
+  // Future<Null> _focusNodeListener() async{
+  //   if(_focusNode.hasFocus){
+  //     print("用户名框获取焦点");
+  //     // 取消密码框的焦点状态
+  //     _focusNode.unfocus();
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,26 +71,59 @@ class CommentState extends State<CommentWidget> {
         title: Text('评论'),
         elevation: 0.5,
       ),
-      body: EasyRefresh(
-        header: MaterialHeader(),
-        footer: MaterialFooter(
-            enableInfiniteLoad:false
+      body: SafeArea(
+        child: GestureDetector(
+          child: columnWidget(),
+          onTap: (){
+            if(_focusNode.hasFocus)  {
+              _focusNode.unfocus();
+
+              setState(() {
+                _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+              });
+            }
+          },
         ),
-        firstRefresh: _firstRefresh,
-        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: listData.length > 0 ? null : EmptyPage((){
-          commentListNetWorking(1);
-        }),
-        child: listViewWidget(),
-        onRefresh: () async {
-          await commentListNetWorking(1);
-        },
-        onLoad: () async{
-          await commentListNetWorking(_page);
-        },
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
+
+  Widget columnWidget() {
+    return Column(
+      children: [
+        Expanded(
+            child: Container(
+              child: refreshView(),
+            )
+        ),
+        inputWidget()
+      ],
+    );
+  }
+
+
+  Widget refreshView() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+          enableInfiniteLoad:false
+      ),
+      firstRefresh: _firstRefresh,
+      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: listData.length > 0 ? null : EmptyPage((){
+        commentListNetWorking(1);
+      }),
+      child: listViewWidget(),
+      onRefresh: () async {
+        await commentListNetWorking(1);
+      },
+      onLoad: () async{
+        await commentListNetWorking(_page);
+      },
+    );
+  }
+
 
   Widget listViewWidget() {
     return ListView.builder(
@@ -107,20 +165,47 @@ class CommentState extends State<CommentWidget> {
 
   Widget inputWidget() {
     return Container(
-        child: TextField(maxLines: 1,
-          focusNode: _focusNode,
-          controller: _comController,
-          decoration: InputDecoration(
-            hintText: "请输入评论",
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        height: 50,
+        child: Row(
+          children: [
+            Expanded(
+              child:
+              Container(
+                margin: EdgeInsets.all(10),
+                decoration: new BoxDecoration(
+                  //背景
+                  color: Colors.white,
+                  //设置四周圆角 角度
+                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                  //设置四周边框
+                  // border: new Border.all(width: 1, color: Colors.red),
+                ),
+                child: TextField(maxLines: 1,
+                  style: TextStyle(fontSize: 15,textBaseline: TextBaseline.alphabetic),
+                  focusNode: _focusNode,
+                  controller: _comController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: _tapType.name,
+                    // enabledBorder: UnderlineInputBorder(
+                    //   borderSide: BorderSide(color: Colors.transparent),
+                    // ),
+                    // focusedBorder: UnderlineInputBorder(
+                    //   borderSide: BorderSide(color: Colors.transparent),
+                    // ),
+                  ),
+
+                ),
+              ),
             ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-            ),
-          ),
-          style: TextStyle(fontSize: 15),
+            TextButton(onPressed: (){
+              pushCommentNetworking();
+            }, child: Text('发送',
+              style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),))
+          ],
         )
+
     );
   }
 
@@ -196,6 +281,68 @@ class CommentState extends State<CommentWidget> {
     }
 
   }
+
+  /// 发表评论
+  Future<Null> pushCommentNetworking() async{
+
+    if (_comController.text.length == 0) {
+      EasyLoading.showToast("请输入评论");
+      return;
+    }
+
+    int commentType = 1;
+    switch (widget.commentType) {
+      case CommentType.topic_comment:
+        commentType = 1;
+        break;
+      case CommentType.show_comment:
+        commentType = 2;
+        break;
+      default:
+        commentType = 1;
+        break;
+    };
+    final url = NetWorkingConfig.path(NetPath.pushComment);
+    final dic = {
+      'token': UserManager.instance.token,
+      'content': _comController.text,
+      'topic_id': widget.topicId,
+      'topic_type': commentType,
+      'from_uid': UserManager.instance.userInfo.id,
+      'to_uid': widget.toUid
+    };
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print('data');
+      print(data);
+      if (data['code'] == 200) {
+        EasyLoading.showToast('发表成功');
+        /// 刷新数据
+        var json = data['data'];
+        var model = CommentInfoModel.fromJson(json);
+        addPushCommentInfo(model);
+      }else{
+        EasyLoading.showToast('发表失败');
+      }
+    }, (error) {
+      EasyLoading.showToast('发表失败');
+
+    });
+  }
+
+  void addPushCommentInfo(CommentInfoModel model) {
+    dataSource.insert(0, model);
+    listData = [];
+    for (int i = 0;i < dataSource.length; i++){
+      commentListData(dataSource[i]);
+    }
+     setState(() {
+      // 清空输入框
+      _focusNode.unfocus();
+      _comController.clear();
+      _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+    });
+  }
   
   Widget commentCell(ComRepListModel model) {
     return Container(
@@ -247,6 +394,15 @@ class CommentState extends State<CommentWidget> {
             ],
           ),
         ),
+        onTap: () {
+          // 点击评论
+          FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
+          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel.userInfo.username}");
+          setState(() {
+
+          });
+        },
+        // behavior: HitTestBehavior.opaque,
       ),
     );
   }
@@ -315,6 +471,16 @@ class CommentState extends State<CommentWidget> {
             ],
           ),
         ),
+        onTap: () {
+          // 点击回复
+          FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
+          /// 点击了回复
+          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel.fromInfo.username}");
+          setState(() {
+
+          });
+        },
+        // behavior: HitTestBehavior.opaque,
       ),
     );
   }
