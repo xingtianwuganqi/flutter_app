@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 
+import 'CommentModel.dart';
 import 'UserModel.dart';
 /*
 struct MessageListModel: HandyJSON {
@@ -31,7 +32,7 @@ class MessageListModel {
   final HomePageModel topicInfo;
   final ShowInfoModel showInfo;
   final ReplyListModel replyInfo;
-  final CommentListModel commentInfo;
+  final CommentInfoModel commentInfo;
   final int reply_type;
   final int reply_id;
 
@@ -63,7 +64,7 @@ class MessageListModel {
       topicInfo: json['topicInfo'] != null ? HomePageModel.fromJson(json['topicInfo']) : null,
       showInfo: json['showInfo'] != null ? ShowInfoModel.fromJson(json['showInfo']) : null,
       replyInfo: json['replyInfo'] != null ? ReplyListModel.fromJson(json['replyInfo']) : null,
-      commentInfo: json['commentInfo'] != null ? CommentListModel.fromJson(json['commentInfo']) : null,
+      commentInfo: json['commentInfo'] != null ? CommentInfoModel.fromJson(json['commentInfo']) : null,
       reply_type: json['reply_type'],
       reply_id: json['reply_id']
     );
@@ -86,102 +87,102 @@ struct CommentListModel: HandyJSON {
     var next_page: Int = 2
  */
 
-class CommentListModel {
-  final int comment_id;
-  final String create_time;
-  final int topic_id;
-  final int topic_type;
-  final String content;
-  final int from_uid;
-  final List<ReplyListModel> replys;
-  final List<ReplyListModel> showReply;
-  final UserInfoModel userInfo;
-  final int reply_count;
-  final int next_page;
-
-  CommentListModel({
-    this.comment_id,
-    this.create_time,
-    this.topic_id,
-    this.topic_type,
-    this.content,
-    this.from_uid,
-    this.replys,
-    this.showReply,
-    this.userInfo,
-    this.reply_count,
-    this.next_page,
-  });
-
-  factory CommentListModel.fromJson(Map<String,dynamic> json) {
-    return CommentListModel(
-      comment_id: json['comment_id'],
-      create_time: json['create_time'],
-      topic_id: json['topic_id'],
-      topic_type: json['topic_type'],
-      content: json['content'],
-      from_uid: json['from_uid'],
-      replys: json['replys'] == null ? null : (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
-      showReply: json['showReply'] == null ? null :  (json['showReply'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
-      userInfo:  json['userInfo'] == null ? null : UserInfoModel.fromJson(json['userInfo']),
-      reply_count: json['reply_count'],
-      next_page: json['next_page'],
-    );
-  }
-}
-
-/*
-struct ReplyListModel: HandyJSON {
-    var id: Int?
-    var comment_id : Int?
-    var reply_id : Int? // #表示回复目标的 id，如果 reply_type 是 comment 的话，那么 reply_id ＝ commit_id，如果 reply_type 是 reply 的话，这表示这条回复的父回复。
-    var reply_type : Int? // #表示回复的类型，因为回复可以是针对评论的回复（comment），也可以是针对回复的回复（reply）， 通过这个字段来区分两种情景。
-    var content : String?
-    var from_uid : Int?
-    var to_uid : Int?
-    var fromInfo: UserInfoModel?
-    var toInfo: UserInfoModel?
-    var create_time: String?
-
- */
-class ReplyListModel {
-  final int id;
-  final int comment_id;
-  final int reply_id;
-  final int reply_type;
-  final String content;
-  final int from_uid;
-  final int to_uid;
-  final UserInfoModel fromInfo;
-  final UserInfoModel toInfo;
-  final String create_time;
-
-  ReplyListModel({
-    this.id,
-    this.comment_id,
-    this.reply_id,
-    this.reply_type,
-    this.content,
-    this.from_uid,
-    this.to_uid,
-    this.fromInfo,
-    this.toInfo,
-    this.create_time
-  });
-
-  factory ReplyListModel.fromJson(Map<String,dynamic> json) {
-    return ReplyListModel(
-      id: json['id'],
-      comment_id: json['comment_id'],
-      reply_id: json['reply_id'],
-      reply_type: json['reply_type'],
-      content: json['content'],
-      from_uid: json['from_uid'],
-      to_uid: json['to_uid'],
-      fromInfo: json['fromInfo'] == null ? null : UserInfoModel.fromJson(json['fromInfo']),
-      toInfo: json['toInfo'] == null ? null : UserInfoModel.fromJson(json['toInfo']),
-      create_time: json['create_time'],
-    );
-  }
-
-}
+// class CommentListModel {
+//   final int comment_id;
+//   final String create_time;
+//   final int topic_id;
+//   final int topic_type;
+//   final String content;
+//   final int from_uid;
+//   final List<ReplyListModel> replys;
+//   final List<ReplyListModel> showReply;
+//   final UserInfoModel userInfo;
+//   final int reply_count;
+//   final int next_page;
+//
+//   CommentListModel({
+//     this.comment_id,
+//     this.create_time,
+//     this.topic_id,
+//     this.topic_type,
+//     this.content,
+//     this.from_uid,
+//     this.replys,
+//     this.showReply,
+//     this.userInfo,
+//     this.reply_count,
+//     this.next_page,
+//   });
+//
+//   factory CommentListModel.fromJson(Map<String,dynamic> json) {
+//     return CommentListModel(
+//       comment_id: json['comment_id'],
+//       create_time: json['create_time'],
+//       topic_id: json['topic_id'],
+//       topic_type: json['topic_type'],
+//       content: json['content'],
+//       from_uid: json['from_uid'],
+//       replys: json['replys'] == null ? null : (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
+//       showReply: json['showReply'] == null ? null :  (json['showReply'] as List)?.map((e) => ReplyListModel.fromJson(e)).toList(),
+//       userInfo:  json['userInfo'] == null ? null : UserInfoModel.fromJson(json['userInfo']),
+//       reply_count: json['reply_count'],
+//       next_page: json['next_page'],
+//     );
+//   }
+// }
+//
+// /*
+// struct ReplyListModel: HandyJSON {
+//     var id: Int?
+//     var comment_id : Int?
+//     var reply_id : Int? // #表示回复目标的 id，如果 reply_type 是 comment 的话，那么 reply_id ＝ commit_id，如果 reply_type 是 reply 的话，这表示这条回复的父回复。
+//     var reply_type : Int? // #表示回复的类型，因为回复可以是针对评论的回复（comment），也可以是针对回复的回复（reply）， 通过这个字段来区分两种情景。
+//     var content : String?
+//     var from_uid : Int?
+//     var to_uid : Int?
+//     var fromInfo: UserInfoModel?
+//     var toInfo: UserInfoModel?
+//     var create_time: String?
+//
+//  */
+// class ReplyListModel {
+//   final int id;
+//   final int comment_id;
+//   final int reply_id;
+//   final int reply_type;
+//   final String content;
+//   final int from_uid;
+//   final int to_uid;
+//   final UserInfoModel fromInfo;
+//   final UserInfoModel toInfo;
+//   final String create_time;
+//
+//   ReplyListModel({
+//     this.id,
+//     this.comment_id,
+//     this.reply_id,
+//     this.reply_type,
+//     this.content,
+//     this.from_uid,
+//     this.to_uid,
+//     this.fromInfo,
+//     this.toInfo,
+//     this.create_time
+//   });
+//
+//   factory ReplyListModel.fromJson(Map<String,dynamic> json) {
+//     return ReplyListModel(
+//       id: json['id'],
+//       comment_id: json['comment_id'],
+//       reply_id: json['reply_id'],
+//       reply_type: json['reply_type'],
+//       content: json['content'],
+//       from_uid: json['from_uid'],
+//       to_uid: json['to_uid'],
+//       fromInfo: json['fromInfo'] == null ? null : UserInfoModel.fromJson(json['fromInfo']),
+//       toInfo: json['toInfo'] == null ? null : UserInfoModel.fromJson(json['toInfo']),
+//       create_time: json['create_time'],
+//     );
+//   }
+//
+// }

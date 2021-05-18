@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
@@ -32,6 +33,8 @@ class CommentState extends State<CommentInfoWidget> {
   bool _firstRefresh = true;
   FocusNode _focusNode = FocusNode();
   TextEditingController _comController = TextEditingController();
+  // 回复时的模型
+  ReplyComModel _replyComModel;
 
   /// 点击的类型
   ComTapTypeInfo _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
@@ -77,6 +80,7 @@ class CommentState extends State<CommentInfoWidget> {
           onTap: (){
             if(_focusNode.hasFocus)  {
               _focusNode.unfocus();
+              _replyComModel = null;
 
               setState(() {
                 _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
@@ -200,7 +204,11 @@ class CommentState extends State<CommentInfoWidget> {
               ),
             ),
             TextButton(onPressed: (){
-              pushCommentNetworking();
+              if (_replyComModel != null) {
+                replyCommentNetworking(_replyComModel);
+              }else{
+                pushCommentNetworking();
+              }
             }, child: Text('发送',
               style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),))
           ],
@@ -321,6 +329,13 @@ class CommentState extends State<CommentInfoWidget> {
         var json = data['data'];
         var model = CommentInfoModel.fromJson(json);
         addPushCommentInfo(model);
+        setState(() {
+          // 清空输入框
+          _focusNode.unfocus();
+          _comController.clear();
+          _replyComModel = null;
+          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+        });
       }else{
         EasyLoading.showToast('发表失败');
       }
@@ -336,12 +351,61 @@ class CommentState extends State<CommentInfoWidget> {
     for (int i = 0;i < dataSource.length; i++){
       commentListData(dataSource[i]);
     }
-     setState(() {
-      // 清空输入框
-      _focusNode.unfocus();
-      _comController.clear();
-      _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+
+  }
+
+  /// 回复评论
+  Future<Null> replyCommentNetworking(ReplyComModel model) async {
+    final url = NetWorkingConfig.path(NetPath.replyComment);
+    final dic = {
+      'token': UserManager.instance.token,
+      'content': _comController.text,
+      'comment_id': model.comment_id,
+      'reply_id': model.reply_id,
+      'reply_type': model.reply_type,
+      'to_uid': model.to_uid,
+      'from_uid': UserManager.instance.userInfo.id,
+    };
+    print(dic);
+
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        EasyLoading.showToast("发表成功");
+        var json = data['data'];
+        var model = ReplyListModel.fromJson(json);
+        addReplyCommentInfo(model);
+        setState(() {
+          // 清空输入框
+          _focusNode.unfocus();
+          _comController.clear();
+          _replyComModel = null;
+          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+        });
+      }else{
+        EasyLoading.showToast("发表失败");
+
+      }
+    }, (error) {
+      print(error);
+      EasyLoading.showToast("发表失败");
     });
+  }
+
+  void addReplyCommentInfo(ReplyListModel model) {
+    for (int i = 0;i < dataSource.length; i++){
+      var data = dataSource[i];
+      if (data.comment_id == model.comment_id) {
+        data.replys.insert(0, model);
+        dataSource[i] = data;
+      }
+    }
+    /// 情况listData
+    listData = [];
+    for (int i = 0;i < dataSource.length; i++){
+      commentListData(dataSource[i]);
+    }
   }
   
   Widget commentCell(ComRepListModel model) {
@@ -398,6 +462,15 @@ class CommentState extends State<CommentInfoWidget> {
           // 点击评论
           FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
           _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel.userInfo.username}");
+
+          /// 回复时需要的数据
+          _replyComModel = ReplyComModel(
+              comment_id: model.commentModel.comment_id,
+              reply_id: model.commentModel.comment_id,
+              reply_type: 1,
+              to_uid: model.commentModel.userInfo.id
+          );
+
           setState(() {
 
           });
@@ -476,6 +549,15 @@ class CommentState extends State<CommentInfoWidget> {
           FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
           /// 点击了回复
           _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel.fromInfo.username}");
+
+          /// 回复时需要的数据
+          _replyComModel = ReplyComModel(
+              comment_id: model.replyModel.comment_id,
+              reply_id: model.replyModel.reply_id,
+              reply_type: 2,
+              to_uid: model.replyModel.from_uid
+          );
+
           setState(() {
 
           });

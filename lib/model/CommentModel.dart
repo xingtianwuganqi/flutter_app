@@ -123,3 +123,20 @@ class ComTapTypeInfo {
   String name;
   ComTapTypeInfo({this.tapType,this.name});
 }
+
+/// 回复时的数据模型
+class ReplyComModel {
+  final String content;
+  final int comment_id;
+  final int reply_id;
+  final int reply_type; //  1回复评论， 2回复回复, comment_id == replyId ? 1 : 2
+  final int to_uid;
+
+  ReplyComModel({
+    this.content,
+    this.comment_id,
+    this.reply_id,
+    this.reply_type,
+    this.to_uid,
+  });
+}
