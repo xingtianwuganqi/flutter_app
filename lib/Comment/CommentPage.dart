@@ -44,28 +44,32 @@ class CommentState extends State<CommentInfoWidget> {
     // TODO: implement initState
     super.initState();
 
-    // _focusNode.addListener(() {
-    //   _focusNodeListener();
-    // });
+    _focusNode.addListener(() {
+      _focusNodeListener();
+    });
   }
 
   void dispose() {
     // TODO: implement dispose
     // 移除焦点监听
-    // _focusNode.removeListener(_focusNodeListener);
+    _focusNode.removeListener(_focusNodeListener);
     _comController.dispose();
     super.dispose();
   }
 
 
-  //   // 监听焦点
-  // Future<Null> _focusNodeListener() async{
-  //   if(_focusNode.hasFocus){
-  //     print("用户名框获取焦点");
-  //     // 取消密码框的焦点状态
-  //     _focusNode.unfocus();
-  //   }
-  // }
+    // 监听焦点
+  Future<Null> _focusNodeListener() async{
+    /// 失去焦点时，去掉输入框中的问题
+    if(!_focusNode.hasFocus){
+      // 取消密码框的焦点状态
+      _replyComModel = null;
+      _comController.clear();
+      setState(() {
+        _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -80,11 +84,11 @@ class CommentState extends State<CommentInfoWidget> {
           onTap: (){
             if(_focusNode.hasFocus)  {
               _focusNode.unfocus();
-              _replyComModel = null;
-
-              setState(() {
-                _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
-              });
+              // _replyComModel = null;
+              // _comController.clear();
+              // setState(() {
+              //   _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+              // });
             }
           },
         ),
@@ -321,8 +325,6 @@ class CommentState extends State<CommentInfoWidget> {
     };
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
-      print('data');
-      print(data);
       if (data['code'] == 200) {
         EasyLoading.showToast('发表成功');
         /// 刷新数据
@@ -332,9 +334,9 @@ class CommentState extends State<CommentInfoWidget> {
         setState(() {
           // 清空输入框
           _focusNode.unfocus();
-          _comController.clear();
-          _replyComModel = null;
-          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+          // _comController.clear();
+          // _replyComModel = null;
+          // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
       }else{
         EasyLoading.showToast('发表失败');
@@ -366,11 +368,9 @@ class CommentState extends State<CommentInfoWidget> {
       'to_uid': model.to_uid,
       'from_uid': UserManager.instance.userInfo.id,
     };
-    print(dic);
 
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
-      print(data);
       if (data['code'] == 200) {
         EasyLoading.showToast("发表成功");
         var json = data['data'];
@@ -379,16 +379,15 @@ class CommentState extends State<CommentInfoWidget> {
         setState(() {
           // 清空输入框
           _focusNode.unfocus();
-          _comController.clear();
-          _replyComModel = null;
-          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
+          // _comController.clear();
+          // _replyComModel = null;
+          // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
       }else{
         EasyLoading.showToast("发表失败");
 
       }
     }, (error) {
-      print(error);
       EasyLoading.showToast("发表失败");
     });
   }

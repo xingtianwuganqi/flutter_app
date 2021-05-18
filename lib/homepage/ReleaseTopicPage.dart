@@ -31,6 +31,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
   OverlayEntry overlayEntry;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,17 +40,17 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
     _contentFocusNode.addListener(() {
       if (_contentFocusNode.hasFocus) {
-        showOverlay(context);
+        // showOverlay(context);
       } else {
-        removeOverlay();
+        // removeOverlay();
       }
     });
 
     _phoneFocusNode.addListener(() {
       if (_phoneFocusNode.hasFocus) {
-        showOverlay(context);
+        // showOverlay(context);
       } else {
-        removeOverlay();
+        // removeOverlay();
       }
     });
 
@@ -58,49 +60,64 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double screenH = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('发布送养信息'),
         elevation: 0.5,
       ),
-      resizeToAvoidBottomInset: false,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        child:Container(
-          padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: tags.length > 0 ? tagsWidget() : TextButton(
-                    onPressed: () {
-
-                    }, child: Text('添加标签 >',style: TextStyle(fontSize: 15,
-                    color: ColorsUtil.fromEnmu(ColorEnum.system)),
-                  textAlign: TextAlign.left,)),
-              ),
-              Expanded(
-                  child: TextField(
-                    focusNode: _contentFocusNode,
-                    maxLines: null,
-                    decoration: InputDecoration.collapsed(
-                        hintText: "请简单介绍下宠物，例如：\n名字\n年龄"),
-
-                  )
-              ),
-              photosWidget(),
-              phoneWidget(),
-              addressWidget(),
-              bottomRemindText()
-            ],
-          ),
-        ),
-        onTap: () {
-          _contentFocusNode.unfocus();
-          _phoneFocusNode.unfocus();
-        },
+      // resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: gestureWidget(screenH,statusBarHeight),
       )
+    );
+  }
+
+  Widget gestureWidget(double screenH,double statusBarHeight) {
+    return GestureDetector(
+      child: contentWidget(screenH,statusBarHeight),
+      onTap: () {
+        _contentFocusNode.unfocus();
+        _phoneFocusNode.unfocus();
+      },
+    );
+  }
+
+  Widget contentWidget(double screenH,double statusBarHeight) {
+    return Container(
+      padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
+      height:  screenH - statusBarHeight - kToolbarHeight,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: tags.length > 0 ? tagsWidget() : TextButton(
+                onPressed: () {
+
+                }, child: Text('添加标签 >',
+              style: TextStyle(fontSize: 15,
+                color: ColorsUtil.fromEnmu(ColorEnum.system),),
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          Expanded(
+              child: TextField(
+                focusNode: _contentFocusNode,
+                maxLines: null,
+                decoration: InputDecoration.collapsed(
+                    hintText: "请简单介绍下宠物，例如：\n名字\n年龄"),
+
+              )
+          ),
+          photosWidget(),
+          phoneWidget(),
+          addressWidget(),
+          bottomRemindText()
+        ],
+      ),
     );
   }
 
