@@ -4,6 +4,8 @@ import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
+import 'TagInfoPage.dart';
+
 class ReleaseTopicPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -94,7 +96,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
             alignment: Alignment.centerLeft,
             child: tags.length > 0 ? tagsWidget() : TextButton(
                 onPressed: () {
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TagInfoPage();
+                  }));
                 }, child: Text('添加标签 >',
               style: TextStyle(fontSize: 15,
                 color: ColorsUtil.fromEnmu(ColorEnum.system),),

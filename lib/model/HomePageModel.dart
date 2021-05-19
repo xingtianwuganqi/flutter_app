@@ -133,3 +133,17 @@ class ReleasePhotoModel {
     this.image
   });
 }
+
+
+class TagInfoModel {
+  TagInfoModel({this.id,this.tag_name});
+  final int id;
+  final String tag_name;
+
+  factory TagInfoModel.fromJson(Map<String,dynamic> json) {
+    return TagInfoModel(
+      id: json['id'],
+      tag_name: json['tag_name']
+    );
+  }
+}

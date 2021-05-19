@@ -66,6 +66,7 @@ enum NetPath {
   commentList,
   pushComment, // 发表评论
   replyComment, // 回复评论
+  tagsInfo,
 }
 
 class NetWorkingConfig {
@@ -131,6 +132,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/commentaction/';
       case NetPath.replyComment:
         return baseUrl + '/api/v1/replycomment/';
+      case NetPath.tagsInfo:
+        return baseUrl + '/api/v1/gettaglist/';
       default:
         return "";
     }
