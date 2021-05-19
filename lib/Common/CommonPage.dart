@@ -252,9 +252,12 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     }
   }
 }
-
+//
 /// 无参数
 // typedef ActionNoParam = void Function();
+/// 有参数
+// typedef ChangedCallBack<T> = void Function(T value);
+
 
 /// 空白页
 // ignore: must_be_immutable

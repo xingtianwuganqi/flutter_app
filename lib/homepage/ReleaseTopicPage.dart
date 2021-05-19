@@ -18,7 +18,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
 
 
-  List<TagModel> tags = [];
+  List<TagInfoModel> tags = [];
   FocusNode _contentFocusNode = FocusNode();
   FocusNode _phoneFocusNode = FocusNode();
   List<ReleasePhotoModel> _releasePhones = [
@@ -94,26 +94,56 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            child: tags.length > 0 ? tagsWidget() : TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TagInfoPage();
-                  }));
-                }, child: Text('添加标签 >',
-              style: TextStyle(fontSize: 15,
-                color: ColorsUtil.fromEnmu(ColorEnum.system),),
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            child: tags.length > 0 ? tagsWidget() :
+                GestureDetector(
+                  child: Container(
+                    width: 100,
+                    height: 40,
+                    alignment: Alignment.centerLeft,
+                    child: Text('添加标签 >',style: TextStyle(fontSize: 15,
+                      color: ColorsUtil.fromEnmu(ColorEnum.system),),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      )
+                    ),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return TagInfoPage(tags: tags,changed: (List<TagInfoModel> value) {
+                          tags = value;
+                          setState(() {
+
+                          });
+                        });
+                      }));
+                    },
+                  ),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context){
+            //         return TagInfoPage(changed: (List<TagInfoModel> value) {
+            //           tags = value;
+            //           setState(() {
+            //
+            //           });
+            //         });
+            //       }));
+            //     }, child: Text('添加标签 >',
+            //   style: TextStyle(fontSize: 15,
+            //     color: ColorsUtil.fromEnmu(ColorEnum.system),),
+            //     textAlign: TextAlign.left,
+            //     overflow: TextOverflow.ellipsis,
+            //   ),
+            // ),
           ),
           Expanded(
               child: TextField(
                 focusNode: _contentFocusNode,
                 maxLines: null,
                 decoration: InputDecoration.collapsed(
-                    hintText: "请简单介绍下宠物，例如：\n名字\n年龄"),
-
+                    hintText: "请简单介绍下宠物，例如：\n名字：xxx\n年龄：xxx\n性别：xxx\n品种：xxx\n健康信息：xxx\n领养要求：xxx",
+                  hintStyle: TextStyle(color: Colors.black12)
+                ),
+                style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
               )
           ),
           photosWidget(),
@@ -125,23 +155,39 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     );
   }
 
-  List<Widget> tagsWidget() {
+  Widget tagsWidget() {
     if (tags.length > 0) {
-      return tags.map((e) => Container(
-        decoration: BoxDecoration(
-            color: ColorsUtil.fromEnmu(ColorEnum.system),
-            borderRadius: BorderRadius.all(Radius.circular(3.0))
+      return GestureDetector(
+        child: Container(
+            child: Column(
+              children: <Widget>[
+                Wrap(
+                  spacing: 8,
+                  children: List.generate(tags.length, (index) {
+                    var data = tags[index];
+                    return RawChip(
+                        label: Text(data.tag_name,
+                            style: TextStyle(color:  Colors.white)),
+                        backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system)
+                    );
+                  }),
+                ),
+              ],
+            )
         ),
-        padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
-        child: Text(e.tag_name ?? "",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-          ),
-        ),
-      )).toList();
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return TagInfoPage(tags: tags,changed: (List<TagInfoModel> value) {
+              tags = value;
+              setState(() {
+
+              });
+            });
+          }));
+        },
+      );
     }else{
-      return [];
+      return Container();
     }
   }
 
@@ -200,6 +246,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         focusNode: _phoneFocusNode,
         decoration: InputDecoration.collapsed(
           hintText: '请输入联系方式',
+            hintStyle: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
+
         ),
       ),
     );
@@ -215,7 +263,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       margin: EdgeInsets.only(top: 5,bottom: 5),
       height: 50,
       child: TextButton(
-        child: Text('请选择地区',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
+        child: Text('请选择地区',style: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
+      ),
         onPressed: () {
 
         },

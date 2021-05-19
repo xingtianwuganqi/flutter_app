@@ -100,16 +100,16 @@ class tabbarState extends State<tabbar> {
 
     EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 1500)
+      ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorType = EasyLoadingIndicatorType.ring
-      ..loadingStyle = EasyLoadingStyle.dark
+      ..indicatorColor = ColorsUtil.fromEnmu(ColorEnum.system)
       ..indicatorSize = 40.0
       ..radius = 10.0
       ..progressColor = ColorsUtil.fromEnmu(ColorEnum.system)
-      ..backgroundColor = Colors.green
-      ..indicatorColor = ColorsUtil.fromEnmu(ColorEnum.system)
+      ..backgroundColor = Colors.transparent
+      ..textColor = ColorsUtil.fromEnmu(ColorEnum.system)
       ..lineWidth = 3
       ..toastPosition = EasyLoadingToastPosition.center
-    // ..textColor = Colors.yellow
       ..maskColor = Colors.blue.withOpacity(0.5)
       ..userInteractions = true
       ..dismissOnTap = false;

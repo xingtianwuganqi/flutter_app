@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class TagInfoPage extends StatefulWidget {
+  final ValueChanged<List<TagInfoModel>> changed;
+  final List<TagInfoModel> tags;
+
+  TagInfoPage({Key key,@required this.changed,this.tags}): super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -13,11 +20,20 @@ class TagInfoPage extends StatefulWidget {
 class TagInfoState extends State<TagInfoPage> {
 
   List<TagInfoModel> dataSource = [];
+  List<TagInfoModel> _filters = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     tagsInfoNetworking();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -37,33 +53,58 @@ class TagInfoState extends State<TagInfoPage> {
               children: List.generate(dataSource.length, (index) {
                 var data = dataSource[index];
                 return RawChip(
-                  label: Text(data.tag_name),
+                  label: Text(data.tag_name,
+                    style: TextStyle(color: data.isSelect ? Colors.white : ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                  backgroundColor: data.isSelect ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.tableBack),
                   onPressed: (){
-                    // 点击
-
+                    if (!data.isSelect) {
+                      data.isSelect = true;
+                      _filters.add(data);
+                    }else{
+                      data.isSelect = false;
+                      _filters.removeWhere((element) {
+                        return element.id == data.id;
+                      });
+                    }
+                    dataSource[index] = data;
+                    setState(() {
+                      widget.changed(_filters);
+                    });
                   },
                 );
               }).toList(),
             ),
             // Text('选中：${_filters.join(',')}'),
           ],
-        ),
+        )
       )
     );
   }
 
   Future<Null> tagsInfoNetworking() async {
+    EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.tagsInfo);
     await NetWorking.post(url, (data) {
+      EasyLoading.dismiss();
       print(data);
       if (data['code'] == 200) {
         dataSource = (data['data'] as List).map((e) => TagInfoModel.fromJson(e)).toList();
+        for (int i = 0; i < dataSource.length;i++) {
+          var value = dataSource[i];
+          for (int j = 0;j < widget.tags.length;j++) {
+            if (value.id == widget.tags[j].id) {
+              value.isSelect = true;
+            }
+          }
+          dataSource[i] = value;
+        }
+        _filters = widget.tags;
         setState(() {
 
         });
       }
     }, (error) {
-
+      EasyLoading.dismiss();
     });
   }
 }

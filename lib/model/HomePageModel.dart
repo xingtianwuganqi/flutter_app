@@ -136,14 +136,16 @@ class ReleasePhotoModel {
 
 
 class TagInfoModel {
-  TagInfoModel({this.id,this.tag_name});
+  TagInfoModel({this.id,this.tag_name, this.isSelect});
   final int id;
   final String tag_name;
+  bool  isSelect = false;
 
   factory TagInfoModel.fromJson(Map<String,dynamic> json) {
     return TagInfoModel(
       id: json['id'],
-      tag_name: json['tag_name']
+      tag_name: json['tag_name'],
+      isSelect: false,
     );
   }
 }
