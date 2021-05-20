@@ -30,10 +30,9 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
   @override
   void initState() {
     super.initState();
-    // 创建Controller
-    _tabController = TabController(length: tabs.length, vsync: this);
-    getLocationJsonInfo();
-
+      // 创建Controller
+      _tabController = TabController(length: tabs.length, vsync: this);
+      getLocationJsonInfo();
     }
 
   @override
@@ -48,7 +47,6 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
     return Scaffold(
       appBar: AppBar(
         title: SizedBox(
-          width: 120,
           height: 44,
           child: TabBar(
             indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -61,9 +59,15 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
       body: TabBarView(
         controller: _tabController,
         children: [
-          CityPage(citys: _provinceDatas),
-          CityPage(citys: _cityDatas),
-          CityPage(citys: _areaDatas),
+          CityPage(citys: _provinceDatas,changed: (value) {
+            _provinceModel = value;
+          },),
+          CityPage(citys: _cityDatas,changed: (value) {
+            _cityModel = value;
+          }),
+          CityPage(citys: _areaDatas,changed: (value) {
+            _areaModel = value;
+          }),
         ],
       ),
     );
@@ -83,8 +87,9 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
 
 class CityPage<T> extends StatefulWidget {
 
+  final ValueChanged<T> changed;
   final List<T> citys;
-  CityPage({Key key, this.citys}): super(key: key);
+  CityPage({Key key, this.citys,this.changed}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -109,10 +114,23 @@ class CityState extends State<CityPage> {
           }else if (widget.citys[index] as AreaModel != null) {
             name = widget.citys[index].value;
           }
-          return Container(
-            alignment: Alignment.centerLeft,
-            child: Text(name),
-        );
+          return Column(
+            children: [
+              GestureDetector(
+                child:
+                Container(
+                  padding: EdgeInsets.only(left: 15,right: 15),
+                  height: 40,
+                  alignment: Alignment.centerLeft,
+                  child: Text(name),
+                ),
+                onTap: () {
+                  widget.changed(widget.citys[index]);
+                },
+              ),
+              Divider(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),)
+            ],
+          );
       }),
     );
   }
