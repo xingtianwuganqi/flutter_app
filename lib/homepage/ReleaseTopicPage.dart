@@ -34,7 +34,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
   OverlayEntry overlayEntry;
 
-
+  String _addressInfo = '';
 
   @override
   void initState() {
@@ -244,6 +244,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       height: 50,
       padding: EdgeInsets.only(left: 10),
       child:TextField(
+        maxLines: 1,
         focusNode: _phoneFocusNode,
         decoration: InputDecoration.collapsed(
           hintText: '请输入联系方式',
@@ -255,6 +256,18 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   }
 
   Widget addressWidget() {
+    Widget address;
+    if (_addressInfo != null && _addressInfo.length > 0) {
+      address = Text(_addressInfo,
+        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+          fontSize: FontUtil.fs(FontSize.content)),
+        maxLines: 1,overflow: TextOverflow.ellipsis);
+    }else{
+      address = Text('请选择地区',
+          style: TextStyle(color: Colors.black26,
+              fontSize: FontUtil.fs(FontSize.content))
+      );
+    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -264,12 +277,25 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       margin: EdgeInsets.only(top: 5,bottom: 5),
       height: 50,
       child: TextButton(
-        child: Text('请选择地区',style: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
-      ),
+        child: address,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return AddressSelectPage();
-          }));
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context){
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.8,
+                color: Colors.white,
+                child: AddressSelectPage(changed: (address) {
+                  _addressInfo = address;
+                  setState(() {
+
+                  });
+                },),
+              );
+            },
+          );
         },
       ),
     );
@@ -325,26 +351,6 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     });
   }
 
-  showOverlay(BuildContext context) {
-    if (overlayEntry != null) return;
-    OverlayState overlayState = Overlay.of(context);
-    overlayEntry = OverlayEntry(builder: (context) {
-      return Positioned(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          right: 0.0,
-          left: 0.0,
-          child: InputDoneView());
-    });
-
-    overlayState.insert(overlayEntry);
-  }
-
-  removeOverlay() {
-    if (overlayEntry != null) {
-      overlayEntry.remove();
-      overlayEntry = null;
-    }
-  }
 
 }
 

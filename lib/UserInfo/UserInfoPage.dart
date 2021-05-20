@@ -161,11 +161,13 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
               TextButton(
                   onPressed: () {},
                   child: IconButton(icon: Icon(Icons.settings,color: Colors.white,),onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context){
-                          return SettingPageWidget();
-                        })
-                    );
+                    lazyAuthToDoThings(context, (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context){
+                            return SettingPageWidget();
+                          })
+                      );
+                    });
                   },))
             ],
           ),
