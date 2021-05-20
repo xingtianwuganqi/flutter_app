@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
@@ -266,7 +267,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         child: Text('请选择地区',style: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
       ),
         onPressed: () {
-
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return AddressSelectPage();
+          }));
         },
       ),
     );
