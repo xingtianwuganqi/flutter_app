@@ -67,6 +67,8 @@ class UserManager {
   }
 }
 
+// void get backToRoot => Navigator.of(context).popUntil((route) => route.isFirst);
+
 // class ProfileChangeNotifier extends ChangeNotifier {
 //   UserInfoModel get _userInfo => UserManager.instance.userInfo;
 //

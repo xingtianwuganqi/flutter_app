@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import '../model/HomePageModel.dart';
 
 class AddressSelectPage extends StatefulWidget {
   @override
@@ -15,6 +16,16 @@ class AddressSelectPage extends StatefulWidget {
 class AddressSelectState extends State<AddressSelectPage> with SingleTickerProviderStateMixin {
   List tabs = ['','',''];
   TabController _tabController; //需要定义一个Controller
+  CountryModel _countryModel;
+
+  ProvinceModel _provinceModel;
+  CityModel _cityModel;
+  AreaModel _areaModel;
+
+  List<ProvinceModel> _provinceDatas;
+  List<CityModel> _cityDatas;
+  List<AreaModel> _areaDatas;
+
 
   @override
   void initState() {
@@ -50,9 +61,9 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
       body: TabBarView(
         controller: _tabController,
         children: [
-          CityPage(),
-          CityPage(),
-          CityPage(),
+          CityPage(citys: _provinceDatas),
+          CityPage(citys: _cityDatas),
+          CityPage(citys: _areaDatas),
         ],
       ),
     );
@@ -61,12 +72,20 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
   Future<Null> getLocationJsonInfo() async {
     String data = await DefaultAssetBundle.of(context).loadString("assets/files/location.json");
     final jsonResult = json.decode(data);
-    print(jsonResult);
+    _countryModel = CountryModel.fromJson(jsonResult);
+    _provinceDatas = _countryModel.children;
+    setState(() {
+
+    });
   }
 
 }
 
-class CityPage extends StatefulWidget {
+class CityPage<T> extends StatefulWidget {
+
+  final List<T> citys;
+  CityPage({Key key, this.citys}): super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -80,11 +99,19 @@ class CityState extends State<CityPage> {
     // TODO: implement build
     return Scaffold(
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: (widget.citys != null) ? widget.citys.length : 0,
           itemBuilder: (context,index){
-        return Container(
-          alignment: Alignment.centerLeft,
-          child: Text('city'),
+          var name = '';
+          if (widget.citys[index] as ProvinceModel != null) {
+            name = widget.citys[index].value;
+          }else if (widget.citys[index] as CityModel != null) {
+            name = widget.citys[index].value;
+          }else if (widget.citys[index] as AreaModel != null) {
+            name = widget.citys[index].value;
+          }
+          return Container(
+            alignment: Alignment.centerLeft,
+            child: Text(name),
         );
       }),
     );

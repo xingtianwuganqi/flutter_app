@@ -149,3 +149,77 @@ class TagInfoModel {
     );
   }
 }
+
+class CountryModel {
+  final List<ProvinceModel> children;
+  final String id;
+  final String pid;
+  final String value;
+  bool isSelect = false;
+  CountryModel({this.children,this.id,this.pid,this.value,this.isSelect});
+
+  factory CountryModel.fromJson(Map<String,dynamic> json) {
+    return CountryModel(
+        children: (json['children'] as List).map((e) => ProvinceModel.fromJson(e)).toList(),
+        id: json['id'],
+        pid: json['pid'],
+        value: json['value'],
+        isSelect: false
+    );
+  }
+}
+
+class ProvinceModel {
+  final List<CityModel> children;
+  final String id;
+  final String pid;
+  final String value;
+  bool isSelect = false;
+  ProvinceModel({this.children,this.id,this.pid,this.value,this.isSelect});
+
+  factory ProvinceModel.fromJson(Map<String,dynamic> json) {
+    return ProvinceModel(
+        children: (json['children'] as List).map((e) => CityModel.fromJson(e)).toList(),
+        id: json['id'],
+        pid: json['pid'],
+        value: json['value'],
+        isSelect: false
+    );
+  }
+}
+
+class CityModel {
+  final List<AreaModel> children;
+  final String id;
+  final String pid;
+  final String value;
+  bool isSelect = false;
+  CityModel({this.children,this.id,this.pid,this.value,this.isSelect});
+
+  factory CityModel.fromJson(Map<String,dynamic> json) {
+    return CityModel(
+        children: (json['children'] as List).map((e) => AreaModel.fromJson(e)).toList(),
+        id: json['id'],
+        pid: json['pid'],
+        value: json['value'],
+        isSelect: false
+    );
+  }
+}
+
+class AreaModel {
+  final String id;
+  final String pid;
+  final String value;
+  bool isSelect = false;
+
+  AreaModel({this.id,this.pid,this.value,this.isSelect});
+  factory AreaModel.fromJson(Map<String,dynamic> json) {
+    return AreaModel(
+      id: json['id'],
+      pid: json['pid'],
+      value: json['value'],
+      isSelect: false
+    );
+  }
+}

@@ -96,6 +96,8 @@ class SettingPageWidget extends StatelessWidget {
                   /// 退出登录
                   UserManager.instance.logout();
                   Provider.of<UserProviderModel>(context, listen: false).user = null;
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+
                   // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context){
                   //   return TabBar();
                   // }), (route) => false);
