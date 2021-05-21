@@ -3,8 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/ShowInfo/ReleaseShowInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
+import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -49,6 +52,20 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: IconButton(
+          icon: Image.asset('assets/icons/icon_home_write.png'),
+        ),
+        backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
+        onPressed: (){
+          lazyAuthToDoThings(context, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return ReleaseShowInfoPage();
+            }));
+          });
+        },
+        tooltip: 'Increment',
+      ),
       body:
         EasyRefresh(
           header: MaterialHeader(),
@@ -164,7 +181,40 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
                   child: Container(
 
                   )),
-              IconButton(icon: Icon(Icons.more_horiz_outlined), onPressed: (){}),
+              IconButton(icon: Icon(Icons.more_horiz_outlined,
+                color: ColorsUtil.fromEnmu(ColorEnum.mark),
+              ), onPressed: (){
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context){
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 150,
+                      color: Colors.white,
+                      child: ListView(
+                        children: [
+                          TextButton(onPressed: (){
+
+                          }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                          Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+                            lazyAuthToDoThings(context, (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return ViolationsListWidget(reportType: Report_type.show_page,reportId: data.show_id);
+                              }));
+                            });
+                          }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                          Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),
@@ -195,6 +245,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
                         style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
                           color: ColorsUtil.fromEnmu(ColorEnum.system),
                         ),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

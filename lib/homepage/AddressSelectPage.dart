@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../model/HomePageModel.dart';
 
 class AddressSelectPage extends StatefulWidget {
@@ -101,7 +102,6 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
         physics: NeverScrollableScrollPhysics(), //禁止滑动
         children: [
           CityPage(citys: _provinceArr,changed: (value) {
-            print(value);
             _provinceModel = value;
             _cityArr = _provinceModel.children;
             tabs[0] = _provinceModel.value;
@@ -150,12 +150,13 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
   }
 
   Future<Null> getLocationJsonInfo() async {
+    EasyLoading.show();
     String data = await DefaultAssetBundle.of(context).loadString("assets/files/location.json");
     final jsonResult = json.decode(data);
     _countryModel = CountryModel.fromJson(jsonResult);
     _provinceArr = _countryModel.children;
     setState(() {
-
+      EasyLoading.dismiss();
     });
   }
 
@@ -203,7 +204,6 @@ class CityState extends State<CityPage> {
                   child: Text(name),
                 ),
                 onTap: () {
-                  print(widget.citys[index]);
                   widget.changed(widget.citys[index]);
                 },
               ),

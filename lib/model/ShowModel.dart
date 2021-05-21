@@ -6,8 +6,9 @@ class GambitModel {
   final int selected;
   final String create_time;
   final int review_type;
+  bool isSelect;
 
-  GambitModel({this.descript, this.id, this.selected,this.create_time,this.review_type});
+  GambitModel({this.descript, this.id, this.selected,this.create_time,this.review_type,this.isSelect});
 
   factory GambitModel.fromJson(Map<String, dynamic> json) {
     return GambitModel(descript: json['descript'],
@@ -15,6 +16,7 @@ class GambitModel {
         selected: 0,
         create_time: json['create_time'],
         review_type: json['review_type'],
+        isSelect: false,
     );
   }
 }

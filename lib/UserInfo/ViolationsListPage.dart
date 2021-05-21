@@ -222,12 +222,12 @@ class ViolationListState extends State<ViolationsListWidget> {
     };
 
     FormData formData = FormData.fromMap(dic);
-    print(dic);
-    print(url);
     await NetWorking.formDataPost(url, formData, (data) {
-      print(data);
       if (data['code'] == 200) {
         EasyLoading.showToast('提交成功');
+        Future.delayed(Duration(seconds: 2),() {
+          Navigator.pop(context);
+        });
       }else{
         EasyLoading.showToast('提交失败');
       }
