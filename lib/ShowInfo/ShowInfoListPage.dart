@@ -44,7 +44,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
     // 创建Controller
     // double width =MediaQuery.of(context).size.width;
     // print(width);
-    showInfoListNetWroking(1);
+    // showInfoListNetWroking(1);
   }
 
 
@@ -65,6 +65,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
           });
         },
         tooltip: 'Increment',
+        heroTag: 'Second',
       ),
       body:
         EasyRefresh(
@@ -106,16 +107,14 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
       'gambit_id': widget.gambitId
     };
     FormData formData = FormData.fromMap(dic);
-
+    print("page");
+    print(page);
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, formData,(data){
       if (data['code'] == 200) {
         Printer.printMapJsonLog(data);
-        List<ShowInfoModel> datas = [];
         var models = data['data'];
-        for (int i = 0;i < models.length; i++ ){
-          datas.add(new ShowInfoModel.fromJson(models[i]));
-        }
+        var datas = (models as List).map((e) => ShowInfoModel.fromJson(e)).toList();
         page > 1 ? showInfoLists += datas : showInfoLists = datas;
         if (models.length > 0) {
           page += 1;

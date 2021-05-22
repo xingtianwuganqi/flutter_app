@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    homePageListNetWroking(1);
+    // homePageListNetWroking(1);
   }
 
   @override
@@ -122,17 +122,14 @@ class _HomePageState extends State<HomePage> {
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, formData,(data){
       if (data['code'] == 200) {
-        isFirstLoad = false;
-        List<HomePageModel> datas = [];
         var models = data['data'];
-        for (int i = 0;i < models.length; i++ ){
-          datas.add(new HomePageModel.fromJson(models[i]));
-        }
+        var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
           page += 1;
         }
         setState(() {
+          isFirstLoad = false;
 
         });
       }else{

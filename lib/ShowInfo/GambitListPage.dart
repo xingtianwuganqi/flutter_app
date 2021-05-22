@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../Common/CommonPage.dart';
+import 'ShowInfoSinglePage.dart';
 
 class GambitListWidget extends StatefulWidget {
   @override
@@ -44,16 +46,30 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
         emptyWidget: null,
         child: ListView.builder(
           itemCount: gambitList.length,
-          itemExtent: 50,
+          cacheExtent: 50,
           itemBuilder: (context, index) {
             var data = gambitList[index];
-            return ListTile(
-              leading: Image.asset('assets/icons/icon_show_gb.png'),
-              title: Container(
-                transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                child: Text(data.descript != null ? data.descript : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
-              ),
-              trailing:  Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+            return Column(
+              children: [
+                GestureDetector(
+                  child: ListTile(
+                  leading: Image.asset('assets/icons/icon_show_gb.png'),
+                  title: Container(
+                    transform: Matrix4.translationValues(-25, 0.0, 0.0),
+                    child: Text(data.descript != null ? data.descript : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                    ),
+                    trailing:  Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
+                  ),
+                  onTap:() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return ShowInfoSingleWidget(gambitId: data.id);
+                    }));
+                },),
+                Divider(height: 0.5,
+                  color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                  indent: 15,
+                )
+              ],
             );
           }
         ),

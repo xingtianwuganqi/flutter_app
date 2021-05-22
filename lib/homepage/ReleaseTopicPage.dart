@@ -63,8 +63,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double screenH = MediaQuery.of(context).size.height;
+    // final double statusBarHeight = MediaQuery.of(context).padding.top;
+    // final double screenH = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('发布送养信息'),
@@ -72,14 +72,14 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       ),
       // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        child: gestureWidget(screenH,statusBarHeight),
+        child: gestureWidget(),
       )
     );
   }
 
-  Widget gestureWidget(double screenH,double statusBarHeight) {
+  Widget gestureWidget() {
     return GestureDetector(
-      child: contentWidget(screenH,statusBarHeight),
+      child: contentWidget(),
       onTap: () {
         _contentFocusNode.unfocus();
         _phoneFocusNode.unfocus();
@@ -87,10 +87,13 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     );
   }
 
-  Widget contentWidget(double screenH,double statusBarHeight) {
+  Widget contentWidget() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double safeBottomHeight = MediaQuery.of(context).padding.bottom;
+    final double screenH = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
-      height:  screenH - statusBarHeight - kToolbarHeight,
+      height:  screenH - statusBarHeight - kToolbarHeight - safeBottomHeight,
       child: Column(
         children: [
           Container(

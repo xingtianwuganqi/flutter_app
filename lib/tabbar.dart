@@ -106,8 +106,8 @@ class tabbarState extends State<tabbar> {
       ..indicatorSize = 40.0
       ..radius = 10.0
       ..progressColor = ColorsUtil.fromEnmu(ColorEnum.system)
-      ..backgroundColor = Colors.transparent
-      ..textColor = ColorsUtil.fromEnmu(ColorEnum.system)
+      ..backgroundColor = Colors.black54
+      ..textColor = Colors.white
       ..lineWidth = 3
       ..toastPosition = EasyLoadingToastPosition.center
       ..maskColor = Colors.blue.withOpacity(0.5)

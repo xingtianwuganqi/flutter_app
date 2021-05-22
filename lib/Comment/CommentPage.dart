@@ -74,6 +74,7 @@ class CommentState extends State<CommentInfoWidget> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return  Scaffold(
+      backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
       appBar: AppBar(
         title: Text('评论'),
         elevation: 0.5,
@@ -409,6 +410,7 @@ class CommentState extends State<CommentInfoWidget> {
   
   Widget commentCell(ComRepListModel model) {
     return Container(
+      color: Colors.white,
       child: GestureDetector(
         child: Container(
           child: Column(
@@ -494,6 +496,7 @@ class CommentState extends State<CommentInfoWidget> {
     userTitle = fromName + '  回复  ' + toName;
 
     return Container(
+      color: Colors.white,
       child: GestureDetector(
         child: Container(
           padding: EdgeInsets.only(left: 45),
@@ -571,6 +574,7 @@ class CommentState extends State<CommentInfoWidget> {
       child: Column(
         children: [
           Container(
+            color: Colors.white,
             padding: EdgeInsets.only(left: 75),
             height: 50,
             alignment: Alignment.center,

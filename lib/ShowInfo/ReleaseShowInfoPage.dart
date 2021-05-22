@@ -35,32 +35,36 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double screenH = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('秀宠'),
         elevation: 0.5,
       ),
-      body: SingleChildScrollView(
-        child: gestureWidget(screenH,statusBarHeight),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: gestureWidget(),
+        ),
       )
     );
   }
 
-  Widget gestureWidget(double screenH,double statusBarHeight) {
+  Widget gestureWidget() {
     return GestureDetector(
-      child: contentWidget(screenH,statusBarHeight),
+      child: contentWidget(),
       onTap: () {
         _contentFocusNode.unfocus();
       },
     );
   }
 
-  Widget contentWidget(double screenH,double statusBarHeight) {
+  Widget contentWidget() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double safeBottomHeight = MediaQuery.of(context).padding.bottom;
+    final double screenH = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
-      height:  screenH - statusBarHeight - kToolbarHeight,
+      height:  screenH - statusBarHeight - kToolbarHeight - safeBottomHeight,
       child: Column(
         children: [
           Container(
@@ -219,15 +223,15 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     String error = 'No Error Dectected';
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 7 - _releasePhones.length,
+        maxImages: 1,
         enableCamera: false,
         selectedAssets: resultList,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
-            actionBarColor: "#abcdef",
+            actionBarColor: '#ffa500',
             actionBarTitle: "App",
             allViewTitle: "All Photos",
-            useDetailsView: false,
+            useDetailsView: true,
             selectCircleStrokeColor: "#000000",
             startInAllView: true),
       );

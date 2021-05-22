@@ -118,7 +118,7 @@ class GambitSelectState extends State<GambitSelectPage> {
         var models = data['data'];
         for (int i = 0;i < models.length; i++ ){
           var model = new GambitModel.fromJson(models[i]);
-          if (model.id == widget.defGambit.id) {
+          if (widget.defGambit != null && model.id == widget.defGambit.id) {
             model.isSelect = true;
           }else{
             model.isSelect = false;
