@@ -10,6 +10,8 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
+
 
 class UserManager {
   // 工厂模式
@@ -47,7 +49,7 @@ class UserManager {
     }
   }
 
-  void saveUerInfo(UserInfoModel data) async{
+  void saveUserInfo(UserInfoModel data) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (data != null) {
       String jsonStringA = jsonEncode(data.toJson());
@@ -64,6 +66,13 @@ class UserManager {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     UserManager.instance.userInfo = null;
+    Future.delayed(Duration(seconds: 1),(){
+      BuildContext context = navigatorKey.currentState.overlay.context;
+      // 退出登录的通知
+      Provider.of<UserProviderModel>(context, listen: false).user = null;
+      // 退出到首页
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    });
   }
 }
 
@@ -87,7 +96,7 @@ class UserProviderModel extends ChangeNotifier  {
   set user(UserInfoModel value) {
     _user = value;
     UserManager.instance.userInfo = _user;
-    UserManager.instance.saveUerInfo(_user);
+    UserManager.instance.saveUserInfo(_user);
     print('_user');
     print(_user);
     notifyListeners();
@@ -113,8 +122,26 @@ lazyAuthToDoThings(context, obj) async{
     }));
   }
 }
+/*
+static func apiBasicParameters() -> [String:Any] {
+        [
+            "appType": "ios",
+            "token":UserManager.shared.token,
+            "appVersion": GlobalConstants.AppVersion,
+            "iOSVersion": GlobalConstants.iOSVersion,
+        ]
+    }
+ */
+// 定义一些公关参数
+var paramDic = {
+  'appType': 'flutter',
+  'appVersion': '1.0.3',
+  'androidVersion': '',
+  'token': UserManager.instance.token != null ? UserManager.instance.token : '',
+};
 
-
+/// photo 的key
+String get comPhotoKey => DateTime.now().millisecondsSinceEpoch.toString() + '/' + ToolConfig.random() + '.png';
 
 /// 颜色
 class ColorsUtil {

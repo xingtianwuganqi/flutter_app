@@ -250,9 +250,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         maxLines: 1,
         focusNode: _phoneFocusNode,
         decoration: InputDecoration.collapsed(
-          hintText: '请输入联系方式',
+          hintText: '请输入联系方式,例如：手机号：xxx 或 微信：xxx',
             hintStyle: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
-
         ),
       ),
     );
@@ -279,28 +278,32 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(top: 5,bottom: 5),
       height: 50,
-      child: TextButton(
-        child: address,
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context){
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.8,
-                color: Colors.white,
-                child: AddressSelectPage(changed: (address) {
-                  _addressInfo = address;
-                  setState(() {
+      child: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: TextButton(
+          child: address,
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context){
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  color: Colors.white,
+                  child: AddressSelectPage(changed: (address) {
+                    _addressInfo = address;
+                    setState(() {
 
-                  });
-                },),
-              );
-            },
-          );
-        },
-      ),
+                    });
+                  },),
+                );
+              },
+            );
+          },
+        ),
+      )
     );
   }
 
@@ -346,7 +349,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         isAdd: false,
         progress: 0.0,
         complete: false,
-        photoUrl: DateTime.now().millisecondsSinceEpoch.toString() + '/' + ToolConfig.random() + '.png',
+        photoUrl: '',
         photoKey: '',
         image: e
       ));

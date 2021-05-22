@@ -1,10 +1,21 @@
-import 'dart:ffi';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_printer/flutter_printer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
+
 
 class EditUserWidget extends StatefulWidget {
   
@@ -22,6 +33,17 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
   TextEditingController _nicknameController = TextEditingController();
 
+  /// 上传图片
+  // 创建 storage 对象
+  Storage storage = Storage();
+  // 创建 Controller 对象
+  PutController putController = PutController();
+
+  String _token;
+
+  Asset _assetInfo;
+  String _avator;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,9 +59,27 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
     if (UserManager.instance.isLogin) {
       _nicknameController.text = UserManager.instance.userInfo.username;
+      _avator = UserManager.instance.userInfo.avator;
     }
-  }
 
+    // 添加任务进度监听
+    putController.addProgressListener((double percent) {
+      print('任务进度变化：已发送：$percent');
+    });
+    // 添加文件发送进度监听
+    putController.addSendProgressListener((double percent) {
+      print('已上传进度变化：已发送：$percent');
+    });
+    // 添加任务状态监听
+    putController.addStatusListener((StorageStatus status) {
+      print('状态变化: 当前任务状态：$status');
+      if (status == StorageStatus.Success) {
+        // 上传成功
+
+      }
+    });
+
+  }
   //   // 监听焦点
   Future<Null> _focusNodeListener() async{
     if(_focusNodeUserName.hasFocus){
@@ -54,70 +94,63 @@ class EditUserWidgetState extends State<EditUserWidget> {
     Widget headWidget() {
       return GestureDetector(
         child: new Container(
-          padding: EdgeInsets.only(left: 16,top: 10,right: 16,bottom: 5),
+          padding: EdgeInsets.only(top: 10),
           child: Column(
             children: [
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.white,
-                backgroundImage: UserManager.instance.isLogin ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator): Image.asset('assets/icons/icon_plh.png'),
+                backgroundImage: _assetInfo != null ?
+                AssetThumbImageProvider(_assetInfo,height: 80,width: 80) :
+                (UserManager.instance.isLogin ?
+                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator):
+                Image.asset('assets/icons/icon_plh.png')),
                 child: Container(
                   alignment: Alignment(0, .5),
-                  width: 60,
-                  height: 60,
+                  width: 80,
+                  height: 80,
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 15,bottom: 15),
                 child: Text("点击更换头像",style: TextStyle(fontSize: 14),),
               ),
-              Container(
-                height: 0.5,
-                color: Colors.black12,
-              )
+              Divider(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),height: 0.5,)
             ],
           ),
         ),
         onTap: () {
           /// 点击更换头型
-
+          loadAssets();
         },
       );
     }
 
     Widget nickNameWidget() {
       return Container(
-        padding: EdgeInsets.only(left: 16,right: 16),
+        height: 50,
         child: Column(
           children: [
-            Row(
-              children: [
-                Text('昵称'),
-                Padding(padding: EdgeInsets.only(left: 10)),
-                Expanded(
-                  child: TextField(maxLines: 1,
-                    focusNode: _focusNodeUserName,
-                    controller: _nicknameController,
-                    decoration: InputDecoration(
-                      hintText: "请输入昵称",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+            Expanded(child:
+              Row(
+                children: [
+                  Padding(padding: EdgeInsets.only(left: 15)),
+                  Text('昵称: '),
+                  Expanded(
+                    child: TextField(maxLines: 1,
+                      focusNode: _focusNodeUserName,
+                      controller: _nicknameController,
+                      decoration: InputDecoration(
+                          hintText: "请输入昵称",
+                          border: InputBorder.none
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
+                      style: TextStyle(fontSize: FontUtil.fs(FontSize.content)),
+
                     ),
-                    style: TextStyle(fontSize: 15),
-
-
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            Container(
-              height: 0.5,
-              color: Colors.black12,
-            )
+            Divider(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),height: 0.5,)
           ],
         )
 
@@ -130,9 +163,27 @@ class EditUserWidgetState extends State<EditUserWidget> {
         actions: [
           TextButton(
               onPressed: () {
+                if (_nicknameController.text == null || _nicknameController.text.length == 0) {
+                  EasyLoading.showToast('请输入昵称');
+                  return;
+                }
 
+                /// 如果没有选新头像
+                if (_assetInfo != null) {
+                  if (_token != null) {
+                    uploadImgToQiNiu(_token);
+                  } else {
+                    // 先获取token，再上传
+                    getQiNiuToken();
+                  }
+                }else{
+                  updateUserInfoNetworking(_avator);
+                }
               },
-              child: Text('保存',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content)),))
+              child: Text('保存',
+                style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
+                    fontSize: FontUtil.fs(FontSize.content)),)
+          )
         ],
         elevation: 0.5,
       ),
@@ -150,5 +201,94 @@ class EditUserWidgetState extends State<EditUserWidget> {
         ),
       )
     );
+  }
+  // 选择头像
+  Future<void> loadAssets() async {
+    List<Asset> resultList = [];
+    String error = 'No Error Dectected';
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 1,
+        enableCamera: false,
+        selectedAssets: resultList,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+            // actionBarColor: '#ffa500',
+            actionBarTitle: "App",
+            allViewTitle: "All Photos",
+            useDetailsView: true,
+            selectCircleStrokeColor: "#666666",
+            startInAllView: true),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+      print(error);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      if (resultList.length > 0 ){
+        _assetInfo = resultList.first;
+      }
+    });
+  }
+
+  Future<Null> getQiNiuToken() async {
+    final url = NetWorkingConfig.path(NetPath.qiniuToken);
+    final dic = paramDic;
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = UploadImgTokenModel.formJson(data['data']);
+        _token = model.token;
+        uploadImgToQiNiu(_token);
+      }
+    }, (error) {
+      EasyLoading.showToast('获取token失败');
+    });
+  }
+
+  /// 上传图片到七牛
+  Future<Null> uploadImgToQiNiu(String token) async {
+    EasyLoading.show(status:'上传图片...');
+    // 使用 storage 的 putFile
+    String photoKey = comPhotoKey;
+    print("photoKey");
+    print(photoKey);
+    final filePath = await FlutterAbsolutePath.getAbsolutePath(_assetInfo.identifier);
+    File file = File(filePath);
+    storage.putFile(file, token, options: PutOptions(
+      controller: putController,
+      key: photoKey,
+    )).then((value) {
+      print("value");
+      print(value.key);
+      // 上传成功
+      _avator = value.key;
+      updateUserInfoNetworking(_avator);
+    });
+  }
+
+  Future<Null> updateUserInfoNetworking(String avator) async {
+    EasyLoading.show(status: '更新用户信息...');
+    final url = NetWorkingConfig.path(NetPath.updateUserInfo);
+    var dic = paramDic;
+    dic['username'] = _nicknameController.text;
+    dic['avator'] = avator;
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      if (data['code'] == 200) {
+        Printer.printMapJsonLog(data['data']);
+        EasyLoading.showToast('更新成功');
+        Future.delayed(Duration(milliseconds: 1500),() {
+          EasyLoading.dismiss();
+        });
+        var info = UserInfoModel.fromJson(data['data']);
+        Provider.of<UserProviderModel>(context, listen: false).user = info;
+      }
+    }, (error) {
+      EasyLoading.showToast('更新失败');
+    });
   }
 }

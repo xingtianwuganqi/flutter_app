@@ -246,8 +246,8 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
           isAdd: false,
           progress: 0.0,
           complete: false,
-          photoUrl: DateTime.now().millisecondsSinceEpoch.toString() + '/' + ToolConfig.random() + '.png',
-          photoKey: '',
+          photoUrl: '',
+          photoKey: comPhotoKey,
           image: e
       ));
       _releasePhones.insertAll(0, photos);

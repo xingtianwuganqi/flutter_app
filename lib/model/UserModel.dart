@@ -169,6 +169,8 @@ class ViolationModel {
   }
 }
 
+
+
 ///# 1.领养举报 2.领养评论 3.领养回复 4.秀宠举报 5.秀宠评论 6.秀宠回复
 enum Report_type {
   rescue_page, // 1

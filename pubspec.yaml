@@ -36,6 +36,8 @@ dependencies:
   multi_image_picker: ^4.8.0
   provider: 5.0.0
   flutter_printer: ^1.0.3+1
+  qiniu_flutter_sdk: ^0.3.0
+  flutter_absolute_path: ^1.0.6
 
 dev_dependencies:
   flutter_test:

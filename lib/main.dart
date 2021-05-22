@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 // void main() => UserManager.instance.getUserInfo().then((e) => runApp(MyApp()));
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 void main() {
   /// 可以在程序run之前就读取二进制文件
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+          navigatorKey: navigatorKey,
           title: '',
           theme: ThemeData(
             // This is the theme of your application.

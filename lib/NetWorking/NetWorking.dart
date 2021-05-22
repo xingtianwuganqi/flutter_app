@@ -2,6 +2,9 @@
 import 'package:dio/dio.dart';
 import 'dart:async';
 
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_printer/flutter_printer.dart';
+
 Dio dio = new Dio();
 
 typedef SuccessCallBack = void Function(dynamic data);
@@ -32,6 +35,13 @@ class NetWorking {
       var response = await dio.post(url,data: formData);
       successBack(response.data);
     }catch(e){
+      Printer.printMapJsonLog(e);
+      if (e is DioError) {
+        // 退出登录
+        if (e.response.statusCode == 403) {
+          UserManager.instance.logout();
+        }
+      }
       failBack(e);
     }
   }
@@ -67,6 +77,8 @@ enum NetPath {
   pushComment, // 发表评论
   replyComment, // 回复评论
   tagsInfo,
+  pushGambit,
+  qiniuToken,
 }
 
 class NetWorkingConfig {
@@ -134,6 +146,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/replycomment/';
       case NetPath.tagsInfo:
         return baseUrl + '/api/v1/gettaglist/';
+      case NetPath.pushGambit:
+        return baseUrl + '/api/v1/creategambitinfo/';
+      case NetPath.qiniuToken:
+        return baseUrl + '/api/v1/qiniu/';
       default:
         return "";
     }

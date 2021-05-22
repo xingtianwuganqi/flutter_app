@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'UserModel.dart';
@@ -220,6 +221,16 @@ class AreaModel {
       pid: json['pid'],
       value: json['value'],
       isSelect: false
+    );
+  }
+}
+
+class UploadImgTokenModel {
+  final String token;
+  UploadImgTokenModel({this.token});
+  factory UploadImgTokenModel.formJson(Map<String,dynamic> json) {
+    return UploadImgTokenModel(
+      token: json['token'],
     );
   }
 }

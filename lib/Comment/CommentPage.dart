@@ -190,21 +190,15 @@ class CommentState extends State<CommentInfoWidget> {
                   //设置四周边框
                   // border: new Border.all(width: 1, color: Colors.red),
                 ),
+                alignment: Alignment.centerLeft,
                 child: TextField(maxLines: 1,
                   style: TextStyle(fontSize: 15,textBaseline: TextBaseline.alphabetic),
                   focusNode: _focusNode,
                   controller: _comController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
+                  decoration: InputDecoration.collapsed(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
                     hintText: _tapType.name,
-                    // enabledBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(color: Colors.transparent),
-                    // ),
-                    // focusedBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(color: Colors.transparent),
-                    // ),
                   ),
-
                 ),
               ),
             ),

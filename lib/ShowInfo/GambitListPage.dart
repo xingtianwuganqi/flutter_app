@@ -5,6 +5,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../Common/CommonPage.dart';
+import 'CreateGambitPage.dart';
 import 'ShowInfoSinglePage.dart';
 
 class GambitListWidget extends StatefulWidget {
@@ -35,6 +36,21 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: IconButton(
+          icon: Image.asset('assets/icons/icon_home_write.png'),
+        ),
+        backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
+        onPressed: (){
+          lazyAuthToDoThings(context, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CreateGambitPage();
+            }));
+          });
+        },
+        tooltip: 'Increment',
+        heroTag: 'Third',
+      ),
       body:
       EasyRefresh(
         header: MaterialHeader(),
