@@ -19,6 +19,8 @@ class GambitModel {
         isSelect: false,
     );
   }
+
+  get gambit_type => null;
 }
 
 class ShowInfoModel {
