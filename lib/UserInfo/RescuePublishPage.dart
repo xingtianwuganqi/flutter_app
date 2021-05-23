@@ -52,7 +52,9 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
                 var data = homeModels[index];
                 return  GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  child: homePageItemWidget(context, data),
+                  child: homePageItemWidget(context, data,(value){
+
+                  }),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context){
                       return TopicDetailWidget(topicId: data.topic_id);

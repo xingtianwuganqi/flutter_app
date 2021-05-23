@@ -234,3 +234,27 @@ class UploadImgTokenModel {
     );
   }
 }
+
+class LikeStatusModel {
+  final int like;
+  final int mark;
+  LikeStatusModel({this.like,this.mark});
+  factory LikeStatusModel.fromJson(Map<String,dynamic> json) {
+    return LikeStatusModel(
+      like: json['like'],
+      mark: json['mark'],
+    );
+  }
+}
+
+class CollectionStatusModel {
+  final int collection;
+  final int mark;
+  CollectionStatusModel({this.collection,this.mark});
+  factory CollectionStatusModel.fromJson(Map<String,dynamic> json) {
+    return CollectionStatusModel(
+      collection: json['like'],
+      mark: json['mark'],
+    )
+  }
+}

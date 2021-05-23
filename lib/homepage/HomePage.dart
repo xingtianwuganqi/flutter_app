@@ -72,7 +72,11 @@ class _HomePageState extends State<HomePage> {
           lazyAuthToDoThings(context, (){
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return ReleaseTopicPage();
-            }));
+            })).then((value) async {
+              if (value == 'refresh') {
+                await homePageListNetWroking(1);
+              }
+            });
           });
         },
         tooltip: 'Increment',
@@ -88,7 +92,9 @@ class _HomePageState extends State<HomePage> {
             var data = homeModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data),
+                child: homePageItemWidget(context, data, (value) {
+                    if (value is li)
+                }),
               onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
                     return TopicDetailWidget(topicId: data.topic_id);
@@ -142,8 +148,51 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+Future<Null> homeLikeClickAction(int likeMark,int topicId,ValueChanged changed) async {
+  final url = NetWorkingConfig.path(NetPath.homeLikeClick);
+  var dic = paramDic;
+  dic['like_mark'] = "$likeMark";
+  dic['topic_id'] = "$topicId";
+  FormData formData = FormData.fromMap(dic);
+  await NetWorking.formDataPost(url, formData, (data) {
+    if (data['code'] == 200) {
+      changed(data);
+    }else{
+      changed(data);
+    }
+  }, (error) {
+    changed(error);
+  });
+}
+
+
+Future<Null> homeCollectClickAction(int collectMark,int topicId,ValueChanged changed) async {
+  /*
+parameter["token"] = UserManager.shared.token
+            parameter["collect_mark"] = collect_mark
+            parameter["topic_id"] = topicId
+
+ */
+  final url = NetWorkingConfig.path(NetPath.homeLikeClick);
+  var dic = paramDic;
+  dic['collect_mark'] = "$collectMark";
+  dic['topic_id'] = "$topicId";
+  FormData formData = FormData.fromMap(dic);
+  await NetWorking.formDataPost(url, formData, (data) {
+    if (data['code'] == 200) {
+      changed(data);
+    }else{
+      changed(data);
+    }
+  }, (error) {
+    changed(error);
+  });
+}
+
+
+
 /// UI
-Widget homePageItemWidget(BuildContext context, HomePageModel data) {
+Widget homePageItemWidget(BuildContext context, HomePageModel data,ValueChanged changed) {
   return
     // GestureDetector(
     // child:
@@ -154,7 +203,19 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data) {
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
-          commentWidget(60, context, data),
+          commentWidget(60, context, data, (value){
+            if (value == 0) { // 点赞
+              var liked = data.liked == true ?  0 :  1;
+              homeLikeClickAction(liked, data.topic_id, (value) {
+                changed(value);
+              });
+            }else if (value == 1) { // 收藏
+              var collected = data.collectioned == true ?  0 :  1;
+              homeCollectClickAction(collected, data.topic_id, (value) {
+                changed(value);
+              });
+            }
+          }),
           Divider(height: 1,),
         ],
       ),
@@ -537,7 +598,7 @@ Widget addressWidget(HomePageModel data) {
   );
 }
 
-Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
+Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, ValueChanged change) {
   return Container(
     padding: EdgeInsets.only(left: leftNum,right: 15),
     height: 40,
@@ -553,7 +614,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
                 ),              ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-                  print('is login');
+                  change(0);
                 });
               },
             )
@@ -569,7 +630,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data) {
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-
+                  change(1);
                 });
               },
             )

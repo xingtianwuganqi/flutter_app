@@ -1,5 +1,12 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_printer/flutter_printer.dart';
+import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
@@ -17,16 +24,19 @@ class ReleaseTopicPage extends StatefulWidget {
 
 class ReleaseTopicState extends State<ReleaseTopicPage> {
 
-
-
   List<TagInfoModel> tags = [];
   FocusNode _contentFocusNode = FocusNode();
   FocusNode _phoneFocusNode = FocusNode();
-  List<ReleasePhotoModel> _releasePhones = [
+
+  TextEditingController _contentController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+
+
+  List<ReleasePhotoModel> _releasePhotos = [
     ReleasePhotoModel(
       isAdd: true,
       progress: 0.0,
-      complete: false,
+      complete: true,
       photoKey: '',
       photoUrl: '',
       image: null
@@ -35,6 +45,15 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   OverlayEntry overlayEntry;
 
   String _addressInfo = '';
+
+  /// 上传图片
+  // 创建 storage 对象
+  Storage storage = Storage();
+  // 创建 Controller 对象
+  PutController putController = PutController();
+  /// 图片的token
+  String _token;
+  ///
 
   @override
   void initState() {
@@ -57,7 +76,33 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       }
     });
 
+    // 添加任务进度监听
+    putController.addProgressListener((double percent) {
+      print('任务进度变化：已发送：$percent');
+    });
+    // 添加文件发送进度监听
+    putController.addSendProgressListener((double percent) {
+      print('已上传进度变化：已发送：$percent');
+    });
+    // 添加任务状态监听
+    putController.addStatusListener((StorageStatus status) {
+      print('状态变化: 当前任务状态：$status');
+      if (status == StorageStatus.Success) {
+        // 上传成功
 
+      }
+    });
+
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _contentFocusNode.removeListener(() { });
+    _phoneFocusNode.removeListener(() { });
+    _contentController.dispose();
+    _phoneController.dispose();
   }
 
   @override
@@ -69,6 +114,24 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       appBar: AppBar(
         title: Text('发布送养信息'),
         elevation: 0.5,
+        actions: [
+          TextButton(
+              onPressed: () {
+                resignFirstFocus();
+                if (!isCanPushInfo()) {
+                  return;
+                }
+                if (_token == null || _token.length == 0) {
+                  getQiNiuToken();
+                }else{
+                  uploadImgToQiNiu(_token);
+                }
+              },
+              child: Text('发布',
+                style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
+                    fontSize: FontUtil.fs(FontSize.content)),)
+          )
+        ],
       ),
       // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -121,27 +184,11 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                       }));
                     },
                   ),
-            // TextButton(
-            //     onPressed: () {
-            //       Navigator.push(context, MaterialPageRoute(builder: (context){
-            //         return TagInfoPage(changed: (List<TagInfoModel> value) {
-            //           tags = value;
-            //           setState(() {
-            //
-            //           });
-            //         });
-            //       }));
-            //     }, child: Text('添加标签 >',
-            //   style: TextStyle(fontSize: 15,
-            //     color: ColorsUtil.fromEnmu(ColorEnum.system),),
-            //     textAlign: TextAlign.left,
-            //     overflow: TextOverflow.ellipsis,
-            //   ),
-            // ),
           ),
           Expanded(
               child: TextField(
                 focusNode: _contentFocusNode,
+                controller: _contentController,
                 maxLines: null,
                 decoration: InputDecoration.collapsed(
                     hintText: "请简单介绍下宠物，例如：\n名字：xxx\n年龄：xxx\n性别：xxx\n品种：xxx\n健康信息：xxx\n领养要求：xxx",
@@ -198,7 +245,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   Widget photosWidget() {
     return Container(
       padding: EdgeInsets.only(bottom: 10),
-      height: _releasePhones.length > 3 ? ((MediaQuery.of(context).size.width - 50) / 3 + 10) * 2 : (MediaQuery.of(context).size.width - 50) / 3 + 10,
+      height: _releasePhotos.length > 3 ? ((MediaQuery.of(context).size.width - 50) / 3 + 10) * 2 : (MediaQuery.of(context).size.width - 50) / 3 + 10,
       child: GridView.builder(
           physics: new NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -207,9 +254,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
           ),
-          itemCount:_releasePhones.length,
+          itemCount:_releasePhotos.length,
           itemBuilder: (context,index){
-            var item = _releasePhones[index];
+            var item = _releasePhotos[index];
             if (item.isAdd) {
               return GestureDetector(
                 child: Container(
@@ -222,6 +269,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                   ),
                 ),
                 onTap: () async {
+                  resignFirstFocus();
                   await loadAssets();
                 },
               );
@@ -248,6 +296,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       padding: EdgeInsets.only(left: 10),
       child:TextField(
         maxLines: 1,
+        controller: _phoneController,
         focusNode: _phoneFocusNode,
         decoration: InputDecoration.collapsed(
           hintText: '请输入联系方式,例如：手机号：xxx 或 微信：xxx',
@@ -282,8 +331,12 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         width: double.infinity,
         height: double.infinity,
         child: TextButton(
+          style: ButtonStyle(
+            alignment: Alignment.centerLeft
+          ),
           child: address,
           onPressed: () {
+            resignFirstFocus();
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -319,23 +372,23 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   }
 
   Future<void> loadAssets() async {
-    if (_releasePhones.length > 6) {
+    if (_releasePhotos.length > 6) {
       return;
     }
     List<Asset> resultList = [];
     String error = 'No Error Dectected';
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 7 - _releasePhones.length,
+        maxImages: 7 - _releasePhotos.length,
         enableCamera: false,
         selectedAssets: resultList,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
-            actionBarColor: "#abcdef",
+          // actionBarColor: '#ffa500',
             actionBarTitle: "App",
             allViewTitle: "All Photos",
-            useDetailsView: false,
-            selectCircleStrokeColor: "#000000",
+            useDetailsView: true,
+            selectCircleStrokeColor: "#666666",
             startInAllView: true),
       );
     } on Exception catch (e) {
@@ -350,37 +403,140 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         progress: 0.0,
         complete: false,
         photoUrl: '',
-        photoKey: '',
+        photoKey: comPhotoKey,
         image: e
-      ));
-      _releasePhones.insertAll(0, photos);
+      )).toList();
+      _releasePhotos.insertAll(0, photos);
     });
   }
 
+  Future<Null> releaseTopicNetworking() async {
+    /*
+    parameter["content"] = content
+            parameter["imgs"] = imgs
+            parameter["address_info"] = address
+            parameter["contact"] = contact
+            parameter["token"] = UserManager.shared.token
+            parameter["tags"] = tags
+     */
+    EasyLoading.show(status:'发布中...');
+    List<ReleasePhotoModel> photos = [];
+    for(int i = 0;i < _releasePhotos.length;i++) {
+      var item = _releasePhotos[i];
+      if (item.isAdd == false) {
+        photos.add(item);
+      }
+    }
+    String imgStr = photos.map((e) => e.photoUrl).toList().join(',');
+    String tagStr = tags.map((e) => '${e.id}').toList().join(',');
+    final url = NetWorkingConfig.path(NetPath.releaseTopicInfo);
+    var dic = paramDic;
+    dic['content'] = _contentController.text;
+    dic['address_info'] = _addressInfo;
+    dic['contact'] = _phoneController.text;
+    dic['tags'] = tagStr;
+    dic['imgs'] = imgStr;
 
-}
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      if (data['code'] == 200) {
+        EasyLoading.showToast('发布成功');
+        Future.delayed(Duration(milliseconds: 1500),(){
+          Navigator.pop(context,"refresh");
+        });
+      }else{
+        EasyLoading.showToast(data['message'] ?? '发布失败');
+      }
+    }, (error) {
+      EasyLoading.showToast('发布失败');
+    });
+  }
 
-class InputDoneView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.white,
-      child: Align(
-        alignment: Alignment.topRight,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-          child: MaterialButton(
-            padding: EdgeInsets.only(right: 24.0, top: 8.0, bottom: 8.0),
-            onPressed: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-            },
-            child: Text("Done",
-                style: TextStyle(
-                    color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-          ),
-        ),
-      ),
-    );
+  Future<Null> getQiNiuToken() async {
+    EasyLoading.show(status:'上传图片...');
+    final url = NetWorkingConfig.path(NetPath.qiniuToken);
+    final dic = paramDic;
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = UploadImgTokenModel.formJson(data['data']);
+        _token = model.token;
+        uploadImgToQiNiu(_token);
+      }
+    }, (error) {
+      EasyLoading.showToast('获取token失败');
+    });
+  }
+
+  /// 上传图片到七牛
+  void uploadImgToQiNiu(String token) {
+    EasyLoading.show(status:'上传图片...');
+    for (int i = 0; i < _releasePhotos.length; i++) {
+      var item = _releasePhotos[i];
+      updateImg(item);
+    }
+  }
+
+  Future<Null> updateImg(ReleasePhotoModel item) async {
+    if (item.isAdd == false) {
+      final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
+      File file = File(filePath);
+      storage.putFile(file, _token, options: PutOptions(
+        controller: putController,
+        key: item.photoKey,
+      )).then((value) {
+        // 更新模型的数据
+        _releasePhotos = _releasePhotos.map((e) {
+          var newModel = e;
+          if (e.photoKey == value.key) {
+            newModel.complete = true;
+            newModel.photoUrl = value.key;
+          }
+          return newModel;
+        }).toList();
+        // 判断_releasePhotos 是不是所有的complete 都变成了true；
+        int isComplete = 0;
+        for (int i = 0;i < _releasePhotos.length;i++) {
+          var item = _releasePhotos[i];
+          if (item.complete == false) {
+            isComplete = 1;
+            break;
+          }
+        }
+        if (isComplete == 0) { // 说明全部传成功了
+          releaseTopicNetworking();
+          return;
+        }
+      });
+    }
+  }
+
+  bool isCanPushInfo() {
+    if (_contentController.text == null || _contentController.text.length == 0) {
+      EasyLoading.showToast('请输入介绍');
+      return false;
+    }
+
+    if (_releasePhotos.length == 1 && _releasePhotos.first.isAdd == true) {
+      EasyLoading.showToast('请选择图片');
+      return false;
+    }
+
+    if (_phoneController == null || _phoneController.text.length == 0) {
+      EasyLoading.showToast('请输入联系方式');
+      return false;
+    }
+
+    if (_addressInfo == null || _addressInfo.length == 0) {
+      EasyLoading.showToast('请选择地区');
+      return false;
+    }
+    return true;
+  }
+
+  void resignFirstFocus() {
+    _contentFocusNode.unfocus();
+    _phoneFocusNode.unfocus();
   }
 }

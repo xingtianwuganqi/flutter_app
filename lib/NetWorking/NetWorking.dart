@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'dart:async';
 
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 
 Dio dio = new Dio();
@@ -39,6 +40,7 @@ class NetWorking {
       if (e is DioError) {
         // 退出登录
         if (e.response.statusCode == 403) {
+          EasyLoading.showToast('认证有误,请重新登录');
           UserManager.instance.logout();
         }
       }
@@ -79,6 +81,10 @@ enum NetPath {
   tagsInfo,
   pushGambit,
   qiniuToken,
+  releaseTopicInfo,
+  releaseShowInfo,
+  homeLikeClick,
+  homeCollectClick
 }
 
 class NetWorkingConfig {
@@ -150,6 +156,14 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/creategambitinfo/';
       case NetPath.qiniuToken:
         return baseUrl + '/api/v1/qiniu/';
+      case NetPath.releaseTopicInfo:
+        return baseUrl + '/api/v1/releasetopic/';
+      case NetPath.releaseShowInfo:
+        return baseUrl + "/api/v1/releaseshowinfo/";
+      case NetPath.homeLikeClick:
+        return baseUrl + '/api/v1/likeaction/';
+      case NetPath.homeCollectClick:
+        return baseUrl + '/api/v1/collection/';
       default:
         return "";
     }

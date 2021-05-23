@@ -2,10 +2,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Comment/CommentPage.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/ShowInfo/ReleaseShowInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
 import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
+import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -61,7 +63,11 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
           lazyAuthToDoThings(context, (){
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return ReleaseShowInfoPage();
-            }));
+            })).then((value) async {
+              if (value == 'refresh') {
+                await showInfoListNetWroking(1);
+              }
+            });
           });
         },
         tooltip: 'Increment',
@@ -280,17 +286,35 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
           ),
         ),
         /// 评论
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 15,top: 10,right: 15),
-          child: Text('添加评论...',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: FontUtil.fs(FontSize.desc),
-                color: ColorsUtil.fromEnmu(ColorEnum.desc)
+        GestureDetector(
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 15,top: 10,right: 15),
+            child: Text('添加评论...',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: FontUtil.fs(FontSize.desc),
+                  color: ColorsUtil.fromEnmu(ColorEnum.desc)
+              ),
             ),
           ),
+          onTap: () {
+            lazyAuthToDoThings(context, (){
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context){
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    color: Colors.white,
+                    child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,),
+                  );
+                },
+              );
+            });
+          },
         ),
         /// 点赞，收藏，评论
         commentWidget(context,data),
@@ -333,10 +357,26 @@ Widget commentWidget(BuildContext context, ShowInfoModel data) {
               label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
                 style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
               ),
-              onPressed: (){},
+              onPressed: (){
+                lazyAuthToDoThings(context, (){
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context){
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        color: Colors.white,
+                        child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,),
+                      );
+                    },
+                  );
+                });
+              },
             )
         ),
       ],
     ),
   );
+
 }

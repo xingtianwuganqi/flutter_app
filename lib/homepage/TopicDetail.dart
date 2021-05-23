@@ -216,7 +216,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
                           ),
                         ),
 
-                    commentWidget(15,context,homeModel),
+                    commentWidget(15,context,homeModel,(value) {
+
+                    }),
                   ],
                 ),
               )

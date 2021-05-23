@@ -186,7 +186,9 @@ class SearchPageState extends State<SearchPageWidget> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return homePageItemWidget(context,data);
+            return homePageItemWidget(context,data,(value) {
+
+            });
           }
       );
     }else{

@@ -51,7 +51,9 @@ class BrowseListState extends State<BrowseListWidget> {
               var data = hisModels[index];
               return  GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data.topicInfo),
+                child: homePageItemWidget(context, data.topicInfo,(value){
+
+                }),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
                     return TopicDetailWidget(topicId: data.topicInfo.topic_id);
