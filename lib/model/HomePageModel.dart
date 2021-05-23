@@ -10,14 +10,14 @@ class HomePageModel {
   final  String create_time;
   final  String update_time;
   final  int views_num;
-  final  int likes_num;
-  final  int collection_num;
+  int likes_num;
+  int collection_num;
   final  int commNum;
   final  String address_info;
   final  bool is_complete;
   final  List<int> tags;
-  final  bool liked;
-  final  bool collectioned;
+  bool liked;
+  bool collectioned;
   final  int user;
   final  List<TagModel> tagInfos;
   final  String contact_info;
@@ -62,6 +62,8 @@ class HomePageModel {
       commNum: json['commNum'],
       address_info: json['address_info'],
       tagInfos: json['tagInfos']== null ? null : (json['tagInfos'] as List)?.map((e) => TagModel.fromJson(e)).toList(),
+      liked:  json['liked'],
+      collectioned: json['collectioned'],
     );
   }
 
@@ -235,26 +237,31 @@ class UploadImgTokenModel {
   }
 }
 
-class LikeStatusModel {
+class HomeLikeStatusModel {
   final int like;
   final int mark;
-  LikeStatusModel({this.like,this.mark});
-  factory LikeStatusModel.fromJson(Map<String,dynamic> json) {
-    return LikeStatusModel(
-      like: json['like'],
-      mark: json['mark'],
+  HomeLikeStatusModel({this.like,this.mark});
+  factory HomeLikeStatusModel.fromJson(Map<String,dynamic> json) {
+    return HomeLikeStatusModel(
+      like: int.parse(json['like'].toString()),
+      mark: int.parse(json['mark'].toString()),
     );
   }
 }
 
-class CollectionStatusModel {
+class HomeCollectionStatusModel {
+/*
+var collection: Int?
+    var mark: Int?
+
+ */
   final int collection;
   final int mark;
-  CollectionStatusModel({this.collection,this.mark});
-  factory CollectionStatusModel.fromJson(Map<String,dynamic> json) {
-    return CollectionStatusModel(
-      collection: json['like'],
-      mark: json['mark'],
-    )
+  HomeCollectionStatusModel({this.collection,this.mark});
+  factory HomeCollectionStatusModel.fromJson(Map<String,dynamic> json) {
+    return HomeCollectionStatusModel(
+      collection: int.parse(json['collection'].toString()),
+      mark: int.parse(json['mark'].toString()),
+    );
   }
 }

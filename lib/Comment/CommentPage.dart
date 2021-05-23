@@ -233,12 +233,11 @@ class CommentState extends State<CommentInfoWidget> {
     };
 
     final url = NetWorkingConfig.path(NetPath.commentList);
-    final dic = {
-      'topic_type': commentType,
-      'topic_id': widget.topicId,
-      'page': _page,
-      'size': 10
-    };
+    final dic = paramDic;
+    dic['topic_type'] = commentType;
+    dic['topic_id'] = widget.topicId;
+    dic['page'] = _page;
+    dic['size'] = 10;
 
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {

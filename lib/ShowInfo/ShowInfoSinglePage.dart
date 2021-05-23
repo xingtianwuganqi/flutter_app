@@ -103,13 +103,12 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
   Future<Null> showInfoListNetWroking(num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.showInfoList);
-    final dic = {
-      "page": page,
-      "size": 10,
-      'token': UserManager.instance.token,
-      'show_id': widget.showId,
-      'gambit_id': widget.gambitId
-    };
+    var dic = paramDic;
+    dic["page"] = page;
+    dic["size"] = 10;
+    dic['show_id'] = widget.showId;
+    dic['gambit_id'] = widget.gambitId;
+
     FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数

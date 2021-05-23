@@ -1,7 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
@@ -34,6 +34,7 @@ class NetWorking {
   static Future formDataPost(String url, FormData formData,SuccessCallBack successBack,FailureCallBack failBack) async {
     try {
       var response = await dio.post(url,data: formData);
+      // Map<String, dynamic> responseData =  jsonDecode(response.data);
       successBack(response.data);
     }catch(e){
       Printer.printMapJsonLog(e);

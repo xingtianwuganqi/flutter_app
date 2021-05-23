@@ -186,8 +186,41 @@ class SearchPageState extends State<SearchPageWidget> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return homePageItemWidget(context,data,(value) {
+            return homePageItemWidget(context,data,(topicId,value) {
+              if (value is HomeLikeStatusModel) {
+                homeModels = homeModels.map((e) {
+                  var newModel = e;
+                  if (newModel.topic_id == topicId) {
+                    newModel.liked = value.like == 1 ? true : false;
+                    if (newModel.liked) {
+                      newModel.likes_num += 1;
+                    }else if (newModel.liked == false){
+                      if(newModel.likes_num > 0) {
+                        newModel.likes_num -= 1;
+                      }
+                    }
+                  }
+                  return newModel;
+                }).toList();
+              }else if (value is HomeCollectionStatusModel){
+                homeModels = homeModels.map((e) {
+                  var newModel = e;
+                  if (newModel.topic_id == topicId) {
+                    newModel.collectioned = value.collection == 1 ? true : false;
+                    if (newModel.collectioned) {
+                      newModel.collection_num += 1;
+                    }else if (newModel.collectioned == false){
+                      if(newModel.collection_num > 0) {
+                        newModel.collection_num -= 1;
+                      }
+                    }
+                  }
+                  return newModel;
+                }).toList();
+              }
+              setState(() {
 
+              });
             });
           }
       );

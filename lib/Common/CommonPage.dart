@@ -133,7 +133,7 @@ static func apiBasicParameters() -> [String:Any] {
     }
  */
 // 定义一些公关参数
-Map paramDic = {
+Map<String,dynamic> paramDic = {
   'appType': 'flutter',
   'appVersion': '1.0.3',
   'androidVersion': '',

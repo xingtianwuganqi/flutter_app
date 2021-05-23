@@ -8,12 +8,12 @@ import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
-import '../Login/LoginPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,8 +92,41 @@ class _HomePageState extends State<HomePage> {
             var data = homeModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data, (value) {
-                    if (value is li)
+                child: homePageItemWidget(context, data, (topicId,value) {
+                    if (value is HomeLikeStatusModel) {
+                      homeModels = homeModels.map((e) {
+                        var newModel = e;
+                        if (newModel.topic_id == topicId) {
+                          newModel.liked = value.like == 1 ? true : false;
+                          if (newModel.liked) {
+                            newModel.likes_num += 1;
+                          }else if (newModel.liked == false){
+                            if(newModel.likes_num > 0) {
+                              newModel.likes_num -= 1;
+                            }
+                          }
+                        }
+                        return newModel;
+                      }).toList();
+                    }else if (value is HomeCollectionStatusModel){
+                      homeModels = homeModels.map((e) {
+                        var newModel = e;
+                        if (newModel.topic_id == topicId) {
+                          newModel.collectioned = value.collection == 1 ? true : false;
+                          if (newModel.collectioned) {
+                            newModel.collection_num += 1;
+                          }else if (newModel.collectioned == false){
+                            if(newModel.collection_num > 0) {
+                              newModel.collection_num -= 1;
+                            }
+                          }
+                        }
+                        return newModel;
+                      }).toList();
+                    }
+                    setState(() {
+
+                    });
                 }),
               onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -123,7 +156,9 @@ class _HomePageState extends State<HomePage> {
   Future<Null> homePageListNetWroking(int num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.topiclist);
-    final dic = {"page": page,"size": 10};
+    var dic = paramDic;
+    dic['page'] = page;
+    dic['size'] = 10;
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, formData,(data){
@@ -147,52 +182,65 @@ class _HomePageState extends State<HomePage> {
 
   }
 }
+typedef commentInfoChanged = void Function(int topicId,dynamic info);
+typedef clickChange = void Function(int index);
 
-Future<Null> homeLikeClickAction(int likeMark,int topicId,ValueChanged changed) async {
-  final url = NetWorkingConfig.path(NetPath.homeLikeClick);
-  var dic = paramDic;
-  dic['like_mark'] = "$likeMark";
-  dic['topic_id'] = "$topicId";
-  FormData formData = FormData.fromMap(dic);
-  await NetWorking.formDataPost(url, formData, (data) {
-    if (data['code'] == 200) {
-      changed(data);
-    }else{
-      changed(data);
-    }
-  }, (error) {
-    changed(error);
-  });
-}
+class HomeNetworking {
+  static Future<Null> homeLikeClickAction(int likeMark,int topicId,commentInfoChanged changed) async {
+    final url = NetWorkingConfig.path(NetPath.homeLikeClick);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['like_mark'] = likeMark;
+    dic['topic_id'] = topicId;
+    FormData formData = FormData.fromMap(dic);
+    print(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = HomeLikeStatusModel.fromJson(data['data']);
+        changed(topicId,model);
+      }else{
+        var model = HomeLikeStatusModel.fromJson(data['data']);
+        changed(topicId,model);
+      }
+    }, (error) {
+      print(error);
+      // changed(topicId,error);
+    });
+  }
 
 
-Future<Null> homeCollectClickAction(int collectMark,int topicId,ValueChanged changed) async {
-  /*
+  static Future<Null> homeCollectClickAction(int collectMark,int topicId,commentInfoChanged changed) async {
+    /*
 parameter["token"] = UserManager.shared.token
             parameter["collect_mark"] = collect_mark
             parameter["topic_id"] = topicId
 
  */
-  final url = NetWorkingConfig.path(NetPath.homeLikeClick);
-  var dic = paramDic;
-  dic['collect_mark'] = "$collectMark";
-  dic['topic_id'] = "$topicId";
-  FormData formData = FormData.fromMap(dic);
-  await NetWorking.formDataPost(url, formData, (data) {
-    if (data['code'] == 200) {
-      changed(data);
-    }else{
-      changed(data);
-    }
-  }, (error) {
-    changed(error);
-  });
+    final url = NetWorkingConfig.path(NetPath.homeCollectClick);
+    var dic = paramDic;
+    dic['collect_mark'] = collectMark;
+    dic['topic_id'] = topicId;
+    print(url);
+    print(dic);
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = HomeCollectionStatusModel.fromJson(data['data']);
+        changed(topicId,model);
+      }else{
+        var model = HomeCollectionStatusModel.fromJson(data['data']);
+        changed(topicId,model);
+      }
+    }, (error) {
+      print(error);
+    });
+  }
 }
 
 
-
 /// UI
-Widget homePageItemWidget(BuildContext context, HomePageModel data,ValueChanged changed) {
+Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoChanged changed) {
   return
     // GestureDetector(
     // child:
@@ -203,16 +251,16 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,ValueChanged 
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
-          commentWidget(60, context, data, (value){
-            if (value == 0) { // 点赞
+          commentWidget(60, context, data, (comIndex){
+            if (comIndex == 0) { // 点赞
               var liked = data.liked == true ?  0 :  1;
-              homeLikeClickAction(liked, data.topic_id, (value) {
-                changed(value);
+              HomeNetworking.homeLikeClickAction(liked, data.topic_id, (topicId,value) {
+                changed(topicId,value);
               });
-            }else if (value == 1) { // 收藏
+            }else if (comIndex == 1) { // 收藏
               var collected = data.collectioned == true ?  0 :  1;
-              homeCollectClickAction(collected, data.topic_id, (value) {
-                changed(value);
+              HomeNetworking.homeCollectClickAction(collected, data.topic_id, (topicId,value) {
+                changed(topicId,value);
               });
             }
           }),
@@ -243,25 +291,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
             height: 36,
           ),
         ),
-        // Container(
-        //     alignment: Alignment.centerLeft,
-        //     padding: EdgeInsets.only(left: 10),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text(data.userInfo.username ?? "",
-        //             textAlign: TextAlign.left,
-        //             style: TextStyle(
-        //                 color: ColorsUtil.fromEnmu(ColorEnum.title),
-        //                 fontSize: FontUtil.fs(FontSize.title)),
-        //             overflow: TextOverflow.ellipsis),
-        //         Padding(padding: EdgeInsets.all(3)),
-        //         Text(ToolConfig.timeT(data.create_time) ?? "",
-        //             style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
-        //                 fontSize: FontUtil.fs(FontSize.desc)),
-        //             overflow: TextOverflow.ellipsis)
-        //       ],
-        //     )),
+
         Expanded(
             child: Container(
                 alignment: Alignment.centerLeft,
@@ -598,7 +628,7 @@ Widget addressWidget(HomePageModel data) {
   );
 }
 
-Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, ValueChanged change) {
+Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, clickChange clicked) {
   return Container(
     padding: EdgeInsets.only(left: leftNum,right: 15),
     height: 40,
@@ -606,22 +636,22 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, Va
       children: [
         Expanded(
             child: TextButton.icon(
-              icon:Image.asset('assets/icons/icon_zan_un.png'),
+              icon: (data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
               label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.mark),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),              ),
               onPressed: (){
-                lazyAuthToDoThings(context, (){
-                  change(0);
+                lazyAuthToDoThings(context, () {
+                  clicked(0);
                 });
               },
             )
         ),
         Expanded(
             child: TextButton.icon(
-              icon:Image.asset('assets/icons/icon_collection_un.png'),
+              icon: (data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
               label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.mark),
@@ -629,8 +659,8 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, Va
                 ),
               ),
               onPressed: (){
-                lazyAuthToDoThings(context, (){
-                  change(1);
+                lazyAuthToDoThings(context, () {
+                  clicked(1);
                 });
               },
             )

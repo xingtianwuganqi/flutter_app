@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
 import '../model/UserModel.dart';
@@ -51,8 +52,41 @@ class BrowseListState extends State<BrowseListWidget> {
               var data = hisModels[index];
               return  GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data.topicInfo,(value){
+                child: homePageItemWidget(context, data.topicInfo,(topicId,value){
+                  if (value is HomeLikeStatusModel) {
+                    hisModels = hisModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo.liked = value.like == 1 ? true : false;
+                        if (newModel.topicInfo.liked) {
+                          newModel.topicInfo.likes_num += 1;
+                        }else if (newModel.topicInfo.liked == false){
+                          if(newModel.topicInfo.likes_num > 0) {
+                            newModel.topicInfo.likes_num -= 1;
+                          }
+                        }
+                      }
+                      return newModel;
+                    }).toList();
+                  }else if (value is HomeCollectionStatusModel){
+                    hisModels = hisModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
+                        if (newModel.topicInfo.collectioned) {
+                          newModel.topicInfo.collection_num += 1;
+                        }else if (newModel.topicInfo.collectioned == false){
+                          if(newModel.topicInfo.collection_num > 0) {
+                            newModel.topicInfo.collection_num -= 1;
+                          }
+                        }
+                      }
+                      return newModel;
+                    }).toList();
+                  }
+                  setState(() {
 
+                  });
                 }),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){

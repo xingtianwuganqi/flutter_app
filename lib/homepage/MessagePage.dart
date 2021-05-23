@@ -3,12 +3,7 @@ import 'package:flutter_720yun/homepage/MessageListPage.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
-import '../Common/CommonPage.dart';
+
 class MessagePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
