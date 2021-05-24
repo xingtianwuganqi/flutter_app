@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
@@ -10,6 +11,9 @@ import 'HomePage.dart';
 class TopicDetailWidget extends StatefulWidget {
 
   final int topicId;
+
+  // 反向传值
+
 
   TopicDetailWidget({
     Key key,
@@ -216,8 +220,18 @@ class TopicDetailState extends State<TopicDetailWidget> {
                           ),
                         ),
 
-                    commentWidget(15,context,homeModel,(value) {
-
+                    commentWidget(15,context,homeModel,(comIndex) {
+                      if (comIndex == 0) { // 点赞
+                        var liked = homeModel.liked == true ?  0 :  1;
+                        HomeNetworking.homeLikeClickAction(liked, homeModel.topic_id, (topicId,value) {
+                          updateState(topicId,value);
+                        });
+                      }else if (comIndex == 1) { // 收藏
+                        var collected = homeModel.collectioned == true ?  0 :  1;
+                        HomeNetworking.homeCollectClickAction(collected, homeModel.topic_id, (topicId,value) {
+                          updateState(topicId,value);
+                        });
+                      }
                     }),
                   ],
                 ),
@@ -229,13 +243,45 @@ class TopicDetailState extends State<TopicDetailWidget> {
     );
   }
 
+  void updateState(int topicId,dynamic value) {
+    if (value is HomeLikeStatusModel) {
+        if (homeModel.topic_id == topicId) {
+          homeModel.liked = value.like == 1 ? true : false;
+          if (homeModel.liked) {
+            homeModel.likes_num += 1;
+          }else if (homeModel.liked == false){
+            if(homeModel.likes_num > 0) {
+              homeModel.likes_num -= 1;
+            }
+          }
+        }
+    }else if (value is HomeCollectionStatusModel){
+      // homeModels = homeModels.map((e) {
+      //   var newModel = e;
+        if (homeModel.topic_id == topicId) {
+          homeModel.collectioned = value.collection == 1 ? true : false;
+          if (homeModel.collectioned) {
+            homeModel.collection_num += 1;
+          }else if (homeModel.collectioned == false){
+            if(homeModel.collection_num > 0) {
+              homeModel.collection_num -= 1;
+            }
+          }
+        }
+    }
+    setState(() {
+
+    });
+  }
+
   Future<Null> homePageListNetWroking() async {
+    EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.topicdetail);
     final dic = {"topic_id": widget.topicId,"token": UserManager.instance.token ?? ""};
     FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, formData,(data){
-      print(data);
+      EasyLoading.dismiss();
       if (data['code'] == 200) {
         var model = data['data'];
         homeModel = HomePageModel.fromJson(model);
@@ -247,9 +293,24 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
       }
     },(error){
-
+      EasyLoading.dismiss();
     });
 
+  }
+
+  Future<Null> addViewHistoryNetWorking() async {
+    final url = NetWorkingConfig.path(NetPath.addViewHistory);
+    var dic = paramDic;
+    dic['topic_id'] = widget.topicId;
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+
+      }
+    }, (error) {
+
+    });
   }
 }
 

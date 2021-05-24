@@ -7,7 +7,9 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/ShowInfo/ReleaseShowInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
 import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
+import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -88,7 +90,42 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
               itemCount: showInfoLists.length,
               itemBuilder: (context, index) {
                 var data = showInfoLists[index];
-                return showInfoItem(context,data);
+                return showInfoItem(context,data,(showId,value) {
+                  if (value is HomeLikeStatusModel) {
+                    showInfoLists = showInfoLists.map((e) {
+                      var newModel = e;
+                      if (newModel.show_id == showId) {
+                        newModel.liked = value.like == 1 ? true : false;
+                        if (newModel.liked) {
+                          newModel.likes_num += 1;
+                        }else if (newModel.liked == false){
+                          if(newModel.likes_num > 0) {
+                            newModel.likes_num -= 1;
+                          }
+                        }
+                      }
+                      return newModel;
+                    }).toList();
+                  }else if (value is HomeCollectionStatusModel){
+                    showInfoLists = showInfoLists.map((e) {
+                      var newModel = e;
+                      if (newModel.show_id == showId) {
+                        newModel.collectioned = value.collection == 1 ? true : false;
+                        if (newModel.collectioned) {
+                          newModel.collection_num += 1;
+                        }else if (newModel.collectioned == false){
+                          if(newModel.collection_num > 0) {
+                            newModel.collection_num -= 1;
+                          }
+                        }
+                      }
+                      return newModel;
+                    }).toList();
+                  }
+                  setState(() {
+
+                  });
+                });
               }
           ),
           onRefresh: () async {
@@ -138,12 +175,64 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   }
 }
 
-Widget showInfoItem(BuildContext context, ShowInfoModel data) {
+class ShowInfoActionNetworking {
+  /*
+  dic["token"] = UserManager.shared.token
+            dic["like_mark"] = like_mark
+            dic["show_id"] = showId
+   */
+  static Future<Null> showInfoLikeClickAction(int likeMark,int showId,commentInfoChanged changed) async {
+    final url = NetWorkingConfig.path(NetPath.showInfoLikeClick);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['like_mark'] = likeMark;
+    dic['show_id'] = showId;
+    FormData formData = FormData.fromMap(dic);
+    print(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = HomeLikeStatusModel.fromJson(data['data']);
+        changed(showId,model);
+      }else{
+        var model = HomeLikeStatusModel.fromJson(data['data']);
+        changed(showId,model);
+      }
+    }, (error) {
+      print(error);
+      // changed(topicId,error);
+    });
+  }
+
+
+  static Future<Null> showInfoCollectClickAction(int collectMark,int showId,commentInfoChanged changed) async {
+
+    final url = NetWorkingConfig.path(NetPath.showInfoCollectClick);
+    var dic = paramDic;
+    dic['collect_mark'] = collectMark;
+    dic['show_id'] = showId;
+    print(url);
+    print(dic);
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = HomeCollectionStatusModel.fromJson(data['data']);
+        changed(showId,model);
+      }else{
+        var model = HomeCollectionStatusModel.fromJson(data['data']);
+        changed(showId,model);
+      }
+    }, (error) {
+      print(error);
+    });
+  }
+}
+
+Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
 
   var imgWidgets = data.imgs.map((e) => Container(
     child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,)
   ));
-
 
   return Container(
     child: Column(
@@ -317,38 +406,54 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data) {
           },
         ),
         /// 点赞，收藏，评论
-        commentWidget(context,data),
+        commentWidget(context,data,(index) {
+          if (index == 0) { // 点击了点赞
+            var likeMark = data.liked == true ? 0 : 1;
+            ShowInfoActionNetworking.showInfoLikeClickAction(likeMark, data.show_id, (showId, info) {
+              changed(showId,info);
+            });
+          }else if (index == 1) { // 点击了收藏
+            var collectMark = data.collectioned ? 0 : 1;
+            print("collectMark");
+            print(collectMark);
+            ShowInfoActionNetworking.showInfoCollectClickAction(collectMark, data.show_id, (showId, info) {
+              changed(showId,info);
+            });
+          }
+        }),
         Divider(thickness: 10,color: Colors.grey[100],)
       ],
     ),
   );
 }
 
-Widget commentWidget(BuildContext context, ShowInfoModel data) {
+Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicked) {
   return Container(
     height: 40,
     child: Row(
       children: [
         Expanded(
             child: TextButton.icon(
-              icon:Image.asset('assets/icons/icon_zan_un.png'),
+              icon:(data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
               label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
                 style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-                  print('is login');
+                  clicked(0);
                 });
               },
             )
         ),
         Expanded(
             child: TextButton.icon(
-              icon:Image.asset('assets/icons/icon_collection_un.png'),
+              icon:(data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
               label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
                 style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
               ),
-              onPressed: (){},
+              onPressed: (){
+                clicked(1);
+              },
             )
         ),
         Expanded(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
@@ -51,7 +52,42 @@ class ShowCollectState extends State<ShowCollectWidget> with AutomaticKeepAliveC
             itemCount: showInfoLists.length,
             itemBuilder: (context, index) {
               var data = showInfoLists[index];
-              return showInfoItem(context,data.showInfo);
+              return showInfoItem(context,data.showInfo,(showId,value) {
+                if (value is HomeLikeStatusModel) {
+                  showInfoLists = showInfoLists.map((e) {
+                    var newModel = e;
+                    if (newModel.showInfo.show_id == showId) {
+                      newModel.showInfo.liked = value.like == 1 ? true : false;
+                      if (newModel.showInfo.liked) {
+                        newModel.showInfo.likes_num += 1;
+                      }else if (newModel.showInfo.liked == false){
+                        if(newModel.showInfo.likes_num > 0) {
+                          newModel.showInfo.likes_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if (value is HomeCollectionStatusModel){
+                  showInfoLists = showInfoLists.map((e) {
+                    var newModel = e;
+                    if (newModel.showInfo.show_id == showId) {
+                      newModel.showInfo.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.showInfo.collectioned) {
+                        newModel.showInfo.collection_num += 1;
+                      }else if (newModel.showInfo.collectioned == false){
+                        if(newModel.showInfo.collection_num > 0) {
+                          newModel.showInfo.collection_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }
+                setState(() {
+
+                });
+              });
             }
         ),
         onRefresh: () async {

@@ -182,8 +182,7 @@ class _HomePageState extends State<HomePage> {
 
   }
 }
-typedef commentInfoChanged = void Function(int topicId,dynamic info);
-typedef clickChange = void Function(int index);
+
 
 class HomeNetworking {
   static Future<Null> homeLikeClickAction(int likeMark,int topicId,commentInfoChanged changed) async {

@@ -273,7 +273,9 @@ class SearchPageState extends State<SearchPageWidget> {
       return;
     }
     final url = NetWorkingConfig.path(NetPath.search);
-    FormData formData = FormData.fromMap({'keyword': keyword});
+    var dic = paramDic;
+    dic['keyword'] = keyword;
+    FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData,(data){
       if (data['code'] == 200) {
         List<HomePageModel> datas = [];

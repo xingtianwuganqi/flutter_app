@@ -28,13 +28,13 @@ class ShowInfoModel {
   final UserInfoModel user;
   final List<String> imgs;
   final int views_num;
-  final int likes_num;
-  final int collection_num;
-  final int comments_num;
+  int likes_num;
+  int collection_num;
+  int comments_num;
   final String instruction;
   final int open;
-  final bool liked;
-  final bool collectioned;
+  bool liked;
+  bool collectioned;
   final String create_time;
   // final commentInfo: CommentListModel?
   // final commentAttr: NSAttributedString?
@@ -72,6 +72,7 @@ class ShowInfoModel {
         collectioned: json['collectioned'],
         create_time: json['create_time'],
         gambit_type: json['gambit_type'] != null ? GambitModel.fromJson(json['gambit_type']): null,
-        commNum: json['commNum']);
+        commNum: json['commNum'],
+    );
   }
 }

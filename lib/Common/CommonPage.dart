@@ -143,6 +143,8 @@ Map<String,dynamic> paramDic = {
 /// photo 的key
 String get comPhotoKey => DateTime.now().millisecondsSinceEpoch.toString() + '/' + ToolConfig.random() + '.png';
 
+typedef commentInfoChanged = void Function(int id,dynamic info);
+typedef clickChange = void Function(int index);
 /// 颜色
 class ColorsUtil {
   /// 十六进制颜色，

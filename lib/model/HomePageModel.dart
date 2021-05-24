@@ -12,7 +12,7 @@ class HomePageModel {
   final  int views_num;
   int likes_num;
   int collection_num;
-  final  int commNum;
+  int commNum;
   final  String address_info;
   final  bool is_complete;
   final  List<int> tags;

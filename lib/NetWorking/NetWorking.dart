@@ -85,7 +85,10 @@ enum NetPath {
   releaseTopicInfo,
   releaseShowInfo,
   homeLikeClick,
-  homeCollectClick
+  homeCollectClick,
+  showInfoLikeClick,
+  showInfoCollectClick,
+  addViewHistory,
 }
 
 class NetWorkingConfig {
@@ -165,6 +168,12 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/likeaction/';
       case NetPath.homeCollectClick:
         return baseUrl + '/api/v1/collection/';
+      case NetPath.showInfoLikeClick:
+        return baseUrl + '/api/v1/showinfolikeaction/';
+      case NetPath.showInfoCollectClick:
+        return baseUrl + '/api/v1/showcollectionaction/';
+      case NetPath.addViewHistory:
+        return baseUrl + '/api/v1/addviewhistory/';
       default:
         return "";
     }
