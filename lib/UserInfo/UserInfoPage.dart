@@ -8,6 +8,7 @@ import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 import 'package:provider/provider.dart';
 import '../NetWorking/NetWorking.dart';
+import 'WebviewPage.dart';
 
 class UserInfoWidget extends StatefulWidget {
   @override
@@ -200,6 +201,24 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       lazyAuthToDoThings(context, () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return UserCollectionWidget();
+        }));
+      });
+    }else if (data.title == '用户协议') {
+      lazyAuthToDoThings(context,() {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+        }));
+      });
+    }else if (data.title == '隐私政策') {
+      lazyAuthToDoThings(context,() {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+        }));
+      });
+    }else if (data.title == '关于我们') {
+      lazyAuthToDoThings(context,() {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
         }));
       });
     }

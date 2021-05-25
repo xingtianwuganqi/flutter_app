@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
@@ -290,7 +291,9 @@ class _RegisterState extends State<RegisterWidget> {
                     // 设置点击事件
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                        }));
                       },
                   ),
                   TextSpan(
@@ -299,7 +302,9 @@ class _RegisterState extends State<RegisterWidget> {
                     // 设置点击事件
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                        }));
                       },
                   ),
                 ],

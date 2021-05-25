@@ -50,6 +50,7 @@ class NetWorking {
   }
 }
 
+
 enum UrlConfig {
   formal,
   test,
@@ -89,6 +90,10 @@ enum NetPath {
   showInfoLikeClick,
   showInfoCollectClick,
   addViewHistory,
+  /// 服务协议的url
+  pravicy,
+  userAgreen,
+  aboutUs,
 }
 
 class NetWorkingConfig {
@@ -174,6 +179,12 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/showcollectionaction/';
       case NetPath.addViewHistory:
         return baseUrl + '/api/v1/addviewhistory/';
+      case NetPath.pravicy:
+        return baseUrl + "/api/pravicy/";
+      case NetPath.userAgreen:
+        return baseUrl + "/api/useragreen/";
+      case NetPath.aboutUs:
+        return baseUrl + "/api/aboutus/";
       default:
         return "";
     }

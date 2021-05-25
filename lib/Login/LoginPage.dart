@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/Login/RegisterPage.dart';
+import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -289,7 +290,9 @@ class _LoginWidgetState extends State<LoginWidget> {
           // 设置点击事件
                   recognizer: TapGestureRecognizer()
                   ..onTap = () {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                    }));
                     },
                 ),
                 TextSpan(
@@ -298,7 +301,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                   // 设置点击事件
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                      }));
                     },
                 ),
               ],

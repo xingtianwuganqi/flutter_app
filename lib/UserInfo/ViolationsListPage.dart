@@ -7,6 +7,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
+import 'WebviewPage.dart';
 
 class ViolationsListWidget extends StatefulWidget {
 
@@ -87,8 +88,9 @@ class ViolationListState extends State<ViolationsListWidget> {
             ),
             SliverToBoxAdapter(
               child: Container(
+                padding: EdgeInsets.only(top: 20),
                 alignment: Alignment.center,
-                height: 70,
+                height: 100,
                 child: Column(
                   children: [
                     Container(
@@ -105,7 +107,7 @@ class ViolationListState extends State<ViolationsListWidget> {
                         },
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Padding(padding: EdgeInsets.only(top: 20)),
                     Text.rich(
                       TextSpan(
                         children: [
@@ -119,7 +121,11 @@ class ViolationListState extends State<ViolationsListWidget> {
                             // 设置点击事件
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-
+                                // lazyAuthToDoThings(context,() {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                  }));
+                                // });
                               },
                           ),
                         ],
@@ -136,8 +142,10 @@ class ViolationListState extends State<ViolationsListWidget> {
   }
   /// 网络请求
   Future<Null> listNetworking() async {
+    EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.violations);
     await NetWorking.post(url, (data) {
+      EasyLoading.dismiss();
       if (data['code'] == 200) {
         var models = data['data'];
         for(int i = 0; i < models.length; i ++) {
@@ -149,6 +157,7 @@ class ViolationListState extends State<ViolationsListWidget> {
         });
       }
     }, (error) {
+      EasyLoading.dismiss();
 
     });
   }
