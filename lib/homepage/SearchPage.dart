@@ -130,43 +130,71 @@ class SearchPageState extends State<SearchPageWidget> {
   }
 
   Widget keywordsListWidget(List<SearchKeyWordModel> datas) {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 2.2
-        ),
-        itemCount: datas.length,
-        itemBuilder: (context,index){
-          var item = datas[index];
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                border:Border.all(
-                  width: 1,
-                  color: ColorsUtil.fromEnmu(ColorEnum.tableBack)
-                )
+    return Container(
+        child: Column(
+          children: <Widget>[
+            Wrap(
+              spacing: 15,
+              children: List.generate(datas.length, (index) {
+                var data = datas[index];
+                return RawChip(
+                  label: Text(data.keyword,
+                    style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                  backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  onPressed: (){
+                    /// 点击
+                    _searchController.value = _searchController.value.copyWith(
+                      text: data.keyword,
+                      selection:
+                      TextSelection(baseOffset: data.keyword.length, extentOffset: data.keyword.length),
+                      composing: TextRange.empty,
+                    );
+                    beginSearch();
+                  },
+                );
+              }).toList(),
             ),
-            child: TextButton(
-              child: Text(item.keyword,
-                style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
-                  color: ColorsUtil.fromEnmu(ColorEnum.content),
-                ),
-              ),
-              onPressed: () {
-                /// 点击
-                  _searchController.value = _searchController.value.copyWith(
-                    text: item.keyword,
-                    selection:
-                    TextSelection(baseOffset: item.keyword.length, extentOffset: item.keyword.length),
-                    composing: TextRange.empty,
-                  );
-                  beginSearch();
-              },
-            ),
-          );
-        });
+            // Text('选中：${_filters.join(',')}'),
+          ],
+        )
+    );
+    // return GridView.builder(
+    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //       crossAxisCount: 4,
+    //       crossAxisSpacing: 10,
+    //       mainAxisSpacing: 10,
+    //       childAspectRatio: 2.2
+    //     ),
+    //     itemCount: datas.length,
+    //     itemBuilder: (context,index){
+    //       var item = datas[index];
+    //       return Container(
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    //             border:Border.all(
+    //               width: 1,
+    //               color: ColorsUtil.fromEnmu(ColorEnum.tableBack)
+    //             )
+    //         ),
+    //         child: TextButton(
+    //           child: Text(item.keyword,
+    //             style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+    //               color: ColorsUtil.fromEnmu(ColorEnum.content),
+    //             ),
+    //           ),
+    //           onPressed: () {
+    //             /// 点击
+    //               _searchController.value = _searchController.value.copyWith(
+    //                 text: item.keyword,
+    //                 selection:
+    //                 TextSelection(baseOffset: item.keyword.length, extentOffset: item.keyword.length),
+    //                 composing: TextRange.empty,
+    //               );
+    //               beginSearch();
+    //           },
+    //         ),
+    //       );
+    //     });
   }
 
   beginSearch() {
@@ -226,7 +254,7 @@ class SearchPageState extends State<SearchPageWidget> {
       );
     }else{
       return Container(
-        padding: EdgeInsets.only(left: 10,right: 10,top: 20,bottom: 20),
+        padding: EdgeInsets.all(15),
         child: keywordsListWidget(datas),
       );
     }

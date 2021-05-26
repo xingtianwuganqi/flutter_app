@@ -6,7 +6,14 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 
-Dio dio = new Dio();
+
+BaseOptions options = new BaseOptions(
+  baseUrl: NetWorkingConfig.baseUrl(),
+  connectTimeout: 5000,
+  receiveTimeout: 3000,
+);
+
+Dio dio = new Dio(options);
 
 typedef SuccessCallBack = void Function(dynamic data);
 typedef FailureCallBack = void Function(dynamic error);
@@ -33,8 +40,8 @@ class NetWorking {
 
   static Future formDataPost(String url, FormData formData,SuccessCallBack successBack,FailureCallBack failBack) async {
     try {
+      Printer.printMapJsonLog(url);
       var response = await dio.post(url,data: formData);
-      // Map<String, dynamic> responseData =  jsonDecode(response.data);
       successBack(response.data);
     }catch(e){
       Printer.printMapJsonLog(e);

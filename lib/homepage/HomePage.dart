@@ -187,11 +187,10 @@ class _HomePageState extends State<HomePage> {
 class HomeNetworking {
   static Future<Null> homeLikeClickAction(int likeMark,int topicId,commentInfoChanged changed) async {
     final url = NetWorkingConfig.path(NetPath.homeLikeClick);
-    var dic = new Map<String, dynamic>.from(paramDic);
+    var dic = paramDic;
     dic['like_mark'] = likeMark;
     dic['topic_id'] = topicId;
     FormData formData = FormData.fromMap(dic);
-    print(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);
       if (data['code'] == 200) {

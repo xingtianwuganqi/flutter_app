@@ -204,23 +204,17 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         }));
       });
     }else if (data.title == '用户协议') {
-      lazyAuthToDoThings(context,() {
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-          return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
-        }));
-      });
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+      }));
     }else if (data.title == '隐私政策') {
-      lazyAuthToDoThings(context,() {
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-          return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
-        }));
-      });
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+      }));
     }else if (data.title == '关于我们') {
-      lazyAuthToDoThings(context,() {
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-          return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
-        }));
-      });
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
+      }));
     }
   }
 }

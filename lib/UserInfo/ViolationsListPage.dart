@@ -121,11 +121,9 @@ class ViolationListState extends State<ViolationsListWidget> {
                             // 设置点击事件
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                // lazyAuthToDoThings(context,() {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
                                     return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
                                   }));
-                                // });
                               },
                           ),
                         ],

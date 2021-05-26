@@ -398,7 +398,9 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.8,
                     color: Colors.white,
-                    child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,),
+                    child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,changed: (commNum) {
+
+                    },),
                   );
                 },
               );

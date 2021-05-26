@@ -12,11 +12,12 @@ import '../model/CommentModel.dart';
 
 class CommentInfoWidget extends StatefulWidget {
 
-  CommentType commentType;
-  int topicId;
-  int toUid;
+  final CommentType commentType;
+  final int topicId;
+  final int toUid;
+  final ValueChanged changed;
 
-  CommentInfoWidget({Key key,@required this.commentType,@required this.topicId,@required this.toUid}): super(key:key);
+  CommentInfoWidget({Key key,@required this.commentType,@required this.topicId,@required this.toUid,this.changed}): super(key:key);
 
   @override
   State<StatefulWidget> createState() {
@@ -122,7 +123,7 @@ class CommentState extends State<CommentInfoWidget> {
       firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
       emptyWidget: listData.length > 0 ? null : EmptyPage((){
         commentListNetWorking(1);
-      }),
+      },title: '暂无评论',desc:'快去发布第一条评论吧!'),
       child: listViewWidget(),
       onRefresh: () async {
         await commentListNetWorking(1);
@@ -285,7 +286,9 @@ class CommentState extends State<CommentInfoWidget> {
       var com = ComRepListModel(type: 3);
       listData.add(com);
     }
-
+    if (listData.length > 0) {
+      widget.changed(listData.length);
+    }
   }
 
   /// 发表评论
@@ -341,6 +344,7 @@ class CommentState extends State<CommentInfoWidget> {
     });
   }
 
+  /// 发表评论处理数据
   void addPushCommentInfo(CommentInfoModel model) {
     dataSource.insert(0, model);
     listData = [];
@@ -386,6 +390,7 @@ class CommentState extends State<CommentInfoWidget> {
     });
   }
 
+  /// 添加回复处理数据
   void addReplyCommentInfo(ReplyListModel model) {
     for (int i = 0;i < dataSource.length; i++){
       var data = dataSource[i];
