@@ -286,7 +286,7 @@ class CommentState extends State<CommentInfoWidget> {
       var com = ComRepListModel(type: 3);
       listData.add(com);
     }
-    if (listData.length > 0) {
+    if (listData.length > 0 && widget.changed != null) {
       widget.changed(listData.length);
     }
   }

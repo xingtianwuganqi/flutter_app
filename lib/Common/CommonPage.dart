@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -282,6 +285,29 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
       return time;
     }
   }
+
+  static Future<String> deviceName() async{
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo build = await deviceInfoPlugin.androidInfo;
+        return build.model;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
+        return data.name;
+      }
+    } on PlatformException {
+      return 'platform version null';
+    }
+  }
+
+  static bool isEmail(String input) {
+     if (input == null || input.isEmpty) return false;
+     // 邮箱正则
+     String regexEmail = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
+     return RegExp(regexEmail).hasMatch(input);
+  }
+
 }
 //
 /// 无参数
@@ -331,4 +357,102 @@ class EmptyPage extends StatelessWidget {
 /// 第一次加载的widget
 Widget FirstLoadWidget() {
   return SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,);
+}
+
+
+class DeviceInfo {
+
+  // 工厂模式
+  factory DeviceInfo() =>_getInstance();
+  static DeviceInfo get instance => _getInstance();
+  static DeviceInfo _instance;
+
+  DeviceInfo._internal() {
+    // 初始化
+
+  }
+
+  static DeviceInfo _getInstance() {
+    if (_instance == null) {
+      _instance = new DeviceInfo._internal();
+    }
+    return _instance;
+  }
+
+  Map<String, dynamic> _deviceData;
+
+
+  Future<String> initPlatformState() async {
+    Map<String, dynamic> deviceData;
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+
+    try {
+      if (Platform.isAndroid) {
+        deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+      } else if (Platform.isIOS) {
+        deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    // if (!mounted) return;
+    //
+    // setState(() {
+    _deviceData = deviceData;
+    // });
+    return deviceData['model'];
+  }
+
+  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'version.securityPatch': build.version.securityPatch,
+      'version.sdkInt': build.version.sdkInt,
+      'version.release': build.version.release,
+      'version.previewSdkInt': build.version.previewSdkInt,
+      'version.incremental': build.version.incremental,
+      'version.codename': build.version.codename,
+      'version.baseOS': build.version.baseOS,
+      'board': build.board,
+      'bootloader': build.bootloader,
+      'brand': build.brand,
+      'device': build.device,
+      'display': build.display,
+      'fingerprint': build.fingerprint,
+      'hardware': build.hardware,
+      'host': build.host,
+      'id': build.id,
+      'manufacturer': build.manufacturer,
+      'model': build.model,
+      'product': build.product,
+      'supported32BitAbis': build.supported32BitAbis,
+      'supported64BitAbis': build.supported64BitAbis,
+      'supportedAbis': build.supportedAbis,
+      'tags': build.tags,
+      'type': build.type,
+      'isPhysicalDevice': build.isPhysicalDevice,
+      'androidId': build.androidId,
+      'systemFeatures': build.systemFeatures,
+    };
+  }
+
+  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    return <String, dynamic>{
+      'name': data.name,
+      'systemName': data.systemName,
+      'systemVersion': data.systemVersion,
+      'model': data.model,
+      'localizedModel': data.localizedModel,
+      'identifierForVendor': data.identifierForVendor,
+      'isPhysicalDevice': data.isPhysicalDevice,
+      'utsname.sysname:': data.utsname.sysname,
+      'utsname.nodename:': data.utsname.nodename,
+      'utsname.release:': data.utsname.release,
+      'utsname.version:': data.utsname.version,
+      'utsname.machine:': data.utsname.machine,
+    };
+  }
+
 }

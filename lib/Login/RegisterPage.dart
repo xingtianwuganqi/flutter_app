@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
@@ -34,6 +37,7 @@ class _RegisterState extends State<RegisterWidget> {
   var _confirm  = '';// 确认密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
+  var _isShowConfirm = false;
   var _proSelect = true;
   UserInfoModel _userModel;
 
@@ -41,7 +45,6 @@ class _RegisterState extends State<RegisterWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // loginNetWorking();
 
     startSet();
 
@@ -61,7 +64,6 @@ class _RegisterState extends State<RegisterWidget> {
     });
 
     _userNameController.addListener(() {
-      print(_userNameController.text);
       _username = _userNameController.text;
       // 监听文本框输入变化，当有内容的时候，显示尾部清除按钮，否则不显示
       if (_userNameController.text.length > 0) {
@@ -75,45 +77,75 @@ class _RegisterState extends State<RegisterWidget> {
     });
 
     _userPswdController.addListener(() {
-      print(_userPswdController.text);
       _password = _userPswdController.text;
+      setState(() {
 
+      });
     });
 
     _confirmController.addListener(() {
-      print(_confirmController.text);
       _confirm = _confirmController.text;
+      setState(() {
+
+      });
     });
   }
 
 
 
   Future<Null> loginNetWorking() async {
-    print(_username);
-    print(_password);
+    EasyLoading.show(status: '正在注册...');
+    if (!_proSelect) {
+      EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
+      return ;
+    }
     if (_username.length == 0)  {
-      print('========');
+      EasyLoading.showToast('请输入手机号码或邮箱');
       return;
     }
-    if (_password.length == 0)  {
-      print('--------');
+    if (_password.length == 0 || _password.length < 6)  {
+      EasyLoading.showToast('请输入6位或6位以上密码');
       return;
     }
-    final url = NetWorkingConfig.path(NetPath.login);
-    final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
+    if (_confirm != _password)  {
+      EasyLoading.showToast('确认密码与密码不一致');
+      return;
+    }
+    String deviceInfo = await ToolConfig.deviceName();
+    final url = NetWorkingConfig.path(NetPath.register);
+    /*
+                parameter["phoneNum"] = phone
+            parameter["email"] = email
+            parameter["password"] = pswd
+            parameter["confirm_password"] = confrim
+            parameter["phone_type"] = PhoneType.getDeviceModel()
+
+     */
+    var dic = {
+      "password":generateMD5(_password),
+      "confirm_password": generateMD5(_confirm),
+      "phone_type":deviceInfo
+    };
+    if (ToolConfig.isEmail(_username)) {
+      dic['email'] = _username;
+    }else{
+      dic['phoneNum'] = _username;
+    }
     print(dic);
     await NetWorking.post(url, (data) {
-      print(data);
+      EasyLoading.dismiss();
       if (data["code"] == 200) {
         var model = data["data"];
         var userModel = UserInfoModel.fromJson(model);
         print(model);
         _userModel = userModel;
         print(_userModel.phone_number);
+      }else{
+        EasyLoading.showToast(data['message'] ?? '登录失败');
       }
     }, (error) {
       /// 登录失败
-
+      EasyLoading.showToast('登录失败');
     },params: dic);
 
   }
@@ -157,7 +189,7 @@ class _RegisterState extends State<RegisterWidget> {
                 controller: _userNameController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  hintText: "请输入用户名",
+                  hintText: "请输入手机号码或邮箱",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
@@ -185,11 +217,12 @@ class _RegisterState extends State<RegisterWidget> {
                   return v.trim().isNotEmpty ? null : "请输入正确的用户名";
                 }
             ), TextFormField(
+              obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "请输入密码",
+                hintText: "请输入6位或6位以上密码",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
@@ -198,13 +231,19 @@ class _RegisterState extends State<RegisterWidget> {
                   borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
                 ),
                 prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                suffixIcon: (_isShowPwd) ? IconButton(icon: Icon(Icons.panorama_fish_eye),
+                suffixIcon: _password.length == 0 ? null : ((_isShowPwd) ? IconButton(icon: Icon(Icons.visibility_off_outlined,size: 20,),
                     onPressed: (){
                       setState(() {
                         _isShowPwd = !_isShowPwd;
                       });
                     }
-                ): null,
+                ): IconButton(icon: Icon(Icons.visibility_outlined,size: 20,),
+                    onPressed: (){
+                      setState(() {
+                        _isShowPwd = !_isShowPwd;
+                      });
+                    }
+                )),
               ),
               onSaved: (String name) {
                 _password = name;
@@ -214,6 +253,7 @@ class _RegisterState extends State<RegisterWidget> {
                 return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
               },
             ),TextFormField(
+                obscureText: !_isShowConfirm,
                 focusNode: _focusNodeConfirm,
                 controller: _confirmController,
                 keyboardType: TextInputType.number,
@@ -228,17 +268,19 @@ class _RegisterState extends State<RegisterWidget> {
                   ),
                   prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   //尾部添加清除按钮
-                  suffixIcon:(_isShowClear)
-                      ? IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: (){
-                      // 清空输入框内容
-                      setState(() {
-                        // _isShowPwd = !_isShowPwd;
-                      });
-                    },
-                  )
-                      : null ,
+                  suffixIcon:_confirm.length == 0 ? null : ((_isShowPwd) ? IconButton(icon: Icon(Icons.visibility_off_outlined,size: 20,),
+                      onPressed: (){
+                        setState(() {
+                          _isShowConfirm = !_isShowConfirm;
+                        });
+                      }
+                  ): IconButton(icon: Icon(Icons.visibility_outlined,size: 20,),
+                      onPressed: (){
+                        setState(() {
+                          _isShowConfirm = !_isShowConfirm;
+                        });
+                      }
+                  )),
                 ),
                 onSaved: (String name) {
                   _username = name;
@@ -254,6 +296,7 @@ class _RegisterState extends State<RegisterWidget> {
     );
 
     Widget loginBtn = new Container(
+      height: 45,
       decoration: BoxDecoration(
         color: ColorsUtil.fromEnmu(ColorEnum.system),
       ),

@@ -36,6 +36,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     // TODO: implement initState
     super.initState();
     homePageListNetWroking();
+    addViewHistoryNetWorking();
   }
 
   /// 用户信息
