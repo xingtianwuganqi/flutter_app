@@ -184,7 +184,7 @@ class SearchPageState extends State<SearchPageWidget> {
   Widget commontPageWidget() {
     if (isSearch) {
       return EasyRefresh(
-          header: null,
+          header: MaterialHeader(),
           footer: MaterialFooter(
             enableInfiniteLoad:false,
           ),
@@ -246,11 +246,14 @@ class SearchPageState extends State<SearchPageWidget> {
               );
             }
         ),
-        firstRefresh: isFirstLoad,
-        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
+        // firstRefresh: isFirstLoad,
+        // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+        emptyWidget: isFirstLoad ? null : (homeModels.length > 0   ? null : EmptyPage((){
           beginSearch(1);
-        }),
+        })),
+        onRefresh: () async {
+            await beginSearch(1);
+        },
         onLoad: () async{
           await beginSearch(_page);
         },
@@ -315,7 +318,7 @@ class SearchPageState extends State<SearchPageWidget> {
     dic['keyword'] = keyword;
     dic['page'] = _page;
     dic['size'] = 10;
-    print(dic);
+    print(page);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData,(data){
       print(data);
@@ -331,7 +334,7 @@ class SearchPageState extends State<SearchPageWidget> {
         }
 
         setState(() {
-
+          isFirstLoad = false;
         });
       }else{
         EasyLoading.showToast(data['message'] ?? '');

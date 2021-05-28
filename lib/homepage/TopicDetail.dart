@@ -240,16 +240,18 @@ class TopicDetailState extends State<TopicDetailWidget> {
                         ),
 
                     commentWidget(15,context,homeModel,(comIndex) {
-                      if (comIndex == 0) { // 点赞
+                      if (comIndex == -1) { // 点赞
                         var liked = homeModel.liked == true ?  0 :  1;
                         HomeNetworking.homeLikeClickAction(liked, homeModel.topic_id, (topicId,value) {
                           updateState(topicId,value);
                         });
-                      }else if (comIndex == 1) { // 收藏
+                      }else if (comIndex == -2) { // 收藏
                         var collected = homeModel.collectioned == true ?  0 :  1;
                         HomeNetworking.homeCollectClickAction(collected, homeModel.topic_id, (topicId,value) {
                           updateState(topicId,value);
                         });
+                      }else{
+                        updateState(homeModel.topic_id, comIndex);
                       }
                     }),
                   ],
@@ -287,6 +289,10 @@ class TopicDetailState extends State<TopicDetailWidget> {
             }
           }
         }
+    }else if (value is int) {
+      if (homeModel.topic_id == topicId) {
+        homeModel.commNum = value;
+      }
     }
     setState(() {
 
