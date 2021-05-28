@@ -67,6 +67,8 @@ enum UrlConfig {
 enum NetPath {
   login,
   register,
+  confirmPhoneInfo,
+  loginUpdatePswd,
   topiclist,
   gambitlist,
   topicdetail,
@@ -101,6 +103,7 @@ enum NetPath {
   pravicy,
   userAgreen,
   aboutUs,
+
 }
 
 class NetWorkingConfig {
@@ -126,6 +129,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/login/';
       case NetPath.register:
         return baseUrl + '/api/v1/register/';
+      case NetPath.confirmPhoneInfo:
+        return baseUrl + '/api/v1/confirminfo/';
+      case NetPath.loginUpdatePswd:
+        return baseUrl + '/api/v1/updatepswd/';
       case NetPath.topiclist:
         return baseUrl + '/api/v1/topiclist/';
       case NetPath.gambitlist:

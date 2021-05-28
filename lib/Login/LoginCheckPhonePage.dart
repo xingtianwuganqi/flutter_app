@@ -1,336 +1,198 @@
-// import 'package:flutter/material.dart';
-//
-// class LoginCheckPhonePage extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() {
-//     // TODO: implement createState
-//     return LoginCheckPhoneState();
-//   }
-// }
-//
-// class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
-//   //焦点
-//   FocusNode _focusNodeUserName = new FocusNode();
-//   FocusNode _focusNodePassWord = new FocusNode();
-//
-//   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-//   TextEditingController _userNameController = new TextEditingController();
-//   TextEditingController _userPswdController = new TextEditingController();
-//
-//   //表单状态
-//   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//
-//   var _password = '';//用户名
-//   var _username = '';//密码
-//   var _isShowPwd = false;//是否显示密码
-//   var _isShowClear = false;//是否显示输入框尾部的清除按钮
-//   var _proSelect = true;
-//   UserInfoModel _userModel;
-//
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     loginNetWorking();
-//
-//     _focusNodeUserName.addListener(() {
-//       _focusNodeListener();
-//     });
-//
-//     _focusNodePassWord.addListener(() {
-//       _focusNodeListener();
-//     });
-//
-//     _userNameController.addListener(() {
-//       print(_userNameController.text);
-//       _username = _userNameController.text;
-//       // 监听文本框输入变化，当有内容的时候，显示尾部清除按钮，否则不显示
-//       if (_userNameController.text.length > 0) {
-//         _isShowClear = true;
-//       }else{
-//         _isShowClear = false;
-//       }
-//       setState(() {
-//
-//       });
-//     });
-//
-//     _userPswdController.addListener(() {
-//       print(_userPswdController.text);
-//       _password = _userPswdController.text;
-//
-//     });
-//
-//   }
-//
-//   void dispose() {
-//     // TODO: implement dispose
-//     // 移除焦点监听
-//     _focusNodeUserName.removeListener(_focusNodeListener);
-//     _focusNodePassWord.removeListener(_focusNodeListener);
-//     _userNameController.dispose();
-//     _userPswdController.dispose();
-//     super.dispose();
-//   }
-//
-//   Future<Null> loginNetWorking() async {
-//     if (!_proSelect) {
-//       EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
-//       return ;
-//     }
-//     if (_username.length == 0)  {
-//       EasyLoading.showToast('请输入手机号码或邮箱');
-//       return;
-//     }
-//     if (_password.length == 0 || _password.length < 6)  {
-//       EasyLoading.showToast('请输入6位或6位以上密码');
-//       return;
-//     }
-//     final url = NetWorkingConfig.path(NetPath.login);
-//     final dic = {"phoneNum": _username,"password":generateMD5(_password),"phone_type":"iPhone 7"};
-//
-//     print(_password);
-//     print(generateMD5(_password));
-//     await NetWorking.post(url, (data) {
-//       print(data);
-//       if (data["code"] == 200) {
-//         var model = data["data"];
-//         var userModel = UserInfoModel.fromJson(model);
-//         _userModel = userModel;
-//         Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
-//         /// 登录成功
-//         Navigator.pop(context);
-//       }else{
-//         /// 登录失败
-//       }
-//     }, (error) {
-//
-//     },params: dic);
-//
-//
-//   }
-//
-//   //   // 监听焦点
-//   Future<Null> _focusNodeListener() async{
-//     if(_focusNodeUserName.hasFocus){
-//       print("用户名框获取焦点");
-//       // 取消密码框的焦点状态
-//       _focusNodePassWord.unfocus();
-//     }
-//     if (_focusNodePassWord.hasFocus) {
-//       print("密码框获取焦点");
-//       // 取消用户名框焦点状态
-//       _focusNodeUserName.unfocus();
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     // TODO: implement build
-//     Widget logoWidget = new Container(
-//       alignment: Alignment.topCenter,
-//       child: Text("真命天喵",style: TextStyle(fontSize: 28,color: ColorsUtil.fromEnmu(ColorEnum.system),fontWeight: FontWeight.w700,fontStyle: FontStyle.italic)),
-//     );
-//
-//
-//     Widget inputTextArea = new Container(
-//       margin: EdgeInsets.only(left: 20, right: 20),
-//       decoration: new BoxDecoration(
-//         borderRadius: BorderRadius.all(Radius.circular(8)),
-//         color: Colors.white,
-//       ),
-//       child: new Form(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             TextFormField(
-//                 focusNode: _focusNodeUserName,
-//                 controller: _userNameController,
-//                 keyboardType: TextInputType.number,
-//                 decoration: InputDecoration(
-//                   hintText: "请输入手机号码或邮箱",
-//                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-//                   enabledBorder: UnderlineInputBorder(
-//                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-//                   ),
-//                   focusedBorder: UnderlineInputBorder(
-//                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-//                   ),
-//                   prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)), //Image.asset('assets/icons/icon_login_phone.png')
-//                   //尾部添加清除按钮
-//                   suffixIcon:(_isShowClear)
-//                       ? IconButton(
-//                     icon: Icon(Icons.clear),
-//                     onPressed: (){
-//                       // 清空输入框内容
-//                       _userNameController.clear();
-//                     },
-//                   )
-//                       : null ,
-//                 ),
-//                 onSaved: (String name) {
-//                   _username = name;
-//                 },
-//                 // 校验用户名（不能为空）
-//                 validator: (v) {
-//                   return v.trim().isNotEmpty ? null : "请输入正确的用户名";
-//                 }
-//             ), TextFormField(
-//               focusNode: _focusNodePassWord,
-//               controller: _userPswdController,
-//               keyboardType: TextInputType.number,
-//               decoration: InputDecoration(
-//                 hintText: "请输入6位或6位以上密码",
-//                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-//                 enabledBorder: UnderlineInputBorder(
-//                   borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-//                 ),
-//                 focusedBorder: UnderlineInputBorder(
-//                   borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-//                 ),
-//                 prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
-//                 suffixIcon: (_isShowPwd) ? IconButton(icon: Icon(Icons.panorama_fish_eye),
-//                     onPressed: (){
-//                       setState(() {
-//                         _isShowPwd = !_isShowPwd;
-//                       });
-//                     }
-//                 ): null,
-//               ),
-//               onSaved: (String name) {
-//                 _password = name;
-//               },
-//               // 校验用户名（不能为空）
-//               validator: (v) {
-//                 return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
-//               },
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//
-//     Widget loginBtn = new Container(
-//       height: 45,
-//       decoration: BoxDecoration(
-//         color: ColorsUtil.fromEnmu(ColorEnum.system),
-//       ),
-//       child: TextButton(
-//         child: Text("登录",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
-//         onPressed: loginNetWorking,
-//       ),
-//       margin: EdgeInsets.only(left: 20,right: 20),
-//     );
-//
-//
-//     Widget registerArea = new Container(
-//       margin: EdgeInsets.only(left: 20,right: 20),
-//       child: Row(
-//         mainAxisSize: MainAxisSize.max,
-//         children: <Widget>[
-//           TextButton(
-//             child: Text('忘记密码？',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
-//           ),
-//           Expanded(
-//             flex: 1,
-//             child: Container(
-//
-//             ),
-//           ),
-//           TextButton(
-//             child: Text('新用户注册',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
-//             onPressed: () {
-//               Navigator.push(context,
-//                   new MaterialPageRoute(builder: (context){
-//                     return RegisterWidget();
-//                   })
-//               );
-//             },
-//           )
-//         ],
-//       ),
-//     );
-//
-//     Widget protocalArea = new Container(
-//         alignment: Alignment.center,
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             IconButton(
-//               icon: _proSelect ? Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) : Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
-//               iconSize:20,
-//               onPressed: (){
-//                 setState(() {
-//                   _proSelect = !_proSelect;
-//                 });
-//               },
-//             ),
-//             Text.rich(
-//               TextSpan(
-//                 children: [
-//                   TextSpan(
-//                     text: "阅读并同意",
-//                     style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-//                   ),
-//                   TextSpan(
-//                     text: "用户协议、",
-//                     style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
-//                     // 设置点击事件
-//                     recognizer: TapGestureRecognizer()
-//                       ..onTap = () {
-//                         Navigator.push(context, MaterialPageRoute(builder: (context){
-//                           return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
-//                         }));
-//                       },
-//                   ),
-//                   TextSpan(
-//                     text: "隐私协议",
-//                     style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
-//                     // 设置点击事件
-//                     recognizer: TapGestureRecognizer()
-//                       ..onTap = () {
-//                         Navigator.push(context, MaterialPageRoute(builder: (context){
-//                           return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
-//                         }));
-//                       },
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         )
-//     );
-//
-//
-//
-//
-//     return new Scaffold(
-//         appBar: new AppBar(
-//           title: Text('登录'),
-//           elevation: 0.5,
-//         ),
-//         body: new GestureDetector(
-//           onTap: () {
-//             _focusNodeUserName.unfocus();
-//             _focusNodePassWord.unfocus();
-//           },
-//           child: new ListView(
-//             children: <Widget>[
-//               new SizedBox(height: 40),
-//               logoWidget,
-//               new SizedBox(height: 40),
-//               inputTextArea,
-//               new SizedBox(height: 30),
-//               loginBtn,
-//               new SizedBox(height: 1),
-//               registerArea,
-//               new SizedBox(height: 30,),
-//               protocalArea,
-//               new SizedBox(height: 30,),
-//             ],
-//           ),
-//         )
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Login/LoginChangePswdPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../Common/CommonPage.dart';
+class LoginCheckPhonePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return LoginCheckPhoneState();
+  }
+}
+
+class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
+  //焦点
+  FocusNode _focusNodeUserName = new FocusNode();
+
+  //用户名输入框控制器，此控制器可以监听用户名输入框操作
+  TextEditingController _userNameController = new TextEditingController();
+
+  var _username = '';// 用户名
+  var _isShowClear = false;//是否显示输入框尾部的清除按钮
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _focusNodeUserName.addListener(() {
+      _focusNodeListener();
+    });
+
+    _userNameController.addListener(() {
+      print(_userNameController.text);
+      _username = _userNameController.text;
+      // 监听文本框输入变化，当有内容的时候，显示尾部清除按钮，否则不显示
+      if (_userNameController.text.length > 0) {
+        _isShowClear = true;
+      }else{
+        _isShowClear = false;
+      }
+      setState(() {
+
+      });
+    });
+
+  }
+
+  void dispose() {
+    // TODO: implement dispose
+    // 移除焦点监听
+    _focusNodeUserName.removeListener(_focusNodeListener);
+    _userNameController.dispose();
+    super.dispose();
+  }
+
+  Future<Null> confirmPhoneNetWorking() async {
+    EasyLoading.show(status: '环境检测中...');
+    if (_username.length == 0)  {
+      EasyLoading.showToast('请输入手机号码或邮箱');
+      return;
+    }
+    String deviceInfo = await ToolConfig.deviceName();
+    final url = NetWorkingConfig.path(NetPath.confirmPhoneInfo);
+    /*
+    parameter["phone_or_email"] = contact
+            parameter["phone_type"] = PhoneType.getDeviceModel()
+     */
+    final dic = {
+      "phone_or_email": _username,
+      "phone_type": deviceInfo
+    };
+
+    await NetWorking.post(url, (data) {
+      print(data);
+      EasyLoading.dismiss();
+      if (data["code"] == 200) {
+        /// 验证成功
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return LoginChangePswdPage(phoneStr: _username);
+        }));
+      }else{
+        /// 验证失败
+        EasyLoading.showToast('验证失败');
+      }
+    }, (error) {
+      EasyLoading.showToast('验证失败');
+    },params: dic);
+
+
+  }
+
+  //   // 监听焦点
+  Future<Null> _focusNodeListener() async{
+    if(_focusNodeUserName.hasFocus){
+      print("用户名框获取焦点");
+      // 取消密码框的焦点状态
+      // _focusNodePassWord.unfocus();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    // TODO: implement build
+    Widget logoWidget = new Container(
+      alignment: Alignment.topCenter,
+      child: Text("真命天喵",style: TextStyle(fontSize: 28,color: ColorsUtil.fromEnmu(ColorEnum.system),fontWeight: FontWeight.w700,fontStyle: FontStyle.italic)),
+    );
+
+
+    Widget inputTextArea = new Container(
+      margin: EdgeInsets.only(left: 20, right: 20),
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        color: Colors.white,
+      ),
+      child: new Form(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextFormField(
+                focusNode: _focusNodeUserName,
+                controller: _userNameController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请输入手机号码或邮箱",
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                  ),
+                  prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)), //Image.asset('assets/icons/icon_login_phone.png')
+                  //尾部添加清除按钮
+                  suffixIcon:(_isShowClear)
+                      ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: (){
+                      // 清空输入框内容
+                      _userNameController.clear();
+                    },
+                  )
+                      : null ,
+                ),
+                onSaved: (String name) {
+                  _username = name;
+                },
+                // 校验用户名（不能为空）
+                validator: (v) {
+                  return v.trim().isNotEmpty ? null : "请输入正确的用户名";
+                }
+            )
+          ],
+        ),
+      ),
+    );
+
+    Widget loginBtn = new Container(
+      height: 45,
+      decoration: BoxDecoration(
+        color: ColorsUtil.fromEnmu(ColorEnum.system),
+      ),
+      child: TextButton(
+        child: Text("确认",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
+        onPressed: (){
+          confirmPhoneNetWorking();
+        },
+      ),
+      margin: EdgeInsets.only(left: 20,right: 20),
+    );
+
+
+    return new Scaffold(
+        appBar: new AppBar(
+          title: Text('找回密码'),
+          elevation: 0.5,
+        ),
+        body: new GestureDetector(
+          onTap: () {
+            _focusNodeUserName.unfocus();
+          },
+          child: new ListView(
+            children: <Widget>[
+              new SizedBox(height: 40),
+              logoWidget,
+              new SizedBox(height: 40),
+              inputTextArea,
+              new SizedBox(height: 30),
+              loginBtn,
+              new SizedBox(height: 30,),
+            ],
+          ),
+        )
+    );
+  }
+}

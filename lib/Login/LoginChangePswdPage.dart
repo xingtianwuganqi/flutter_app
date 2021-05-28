@@ -17,15 +17,20 @@ import 'dart:io';
 
 
 
-class LoginWidget extends StatefulWidget {
+class LoginChangePswdPage extends StatefulWidget {
+
+  final String phoneStr;
+
+  LoginChangePswdPage({Key key,@required this.phoneStr});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _LoginWidgetState();
+    return LoginChangePswdState();
   }
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class LoginChangePswdState extends State<LoginChangePswdPage> {
 
   //焦点
   FocusNode _focusNodeUserName = new FocusNode();
@@ -38,8 +43,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  var _password = '';//用户名
-  var _username = '';//密码
+  var _username = '';//用户名
+  var _password = '';//密码
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = true;
@@ -91,36 +96,31 @@ class _LoginWidgetState extends State<LoginWidget> {
     super.dispose();
   }
 
-  Future<Null> loginNetWorking() async {
-    EasyLoading.show(status: '正在登录...');
-    if (!_proSelect) {
-      EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
-      return ;
-    }
-    if (_username.length == 0)  {
-      EasyLoading.showToast('请输入手机号码或邮箱');
+  Future<Null> changeNetWorking() async {
+    EasyLoading.show(status: '正在修改...');
+    if (_username.length == 0 || _username.length < 6)  {
+      EasyLoading.showToast('请输入6位或6位以上新密码');
       return;
     }
-    if (_password.length == 0 || _password.length < 6)  {
-      EasyLoading.showToast('请输入6位或6位以上密码');
+    if (_username != _password)  {
+      EasyLoading.showToast('确认密码与密码不一致');
       return;
     }
-    String deviceInfo = await ToolConfig.deviceName();
-    final url = NetWorkingConfig.path(NetPath.login);
+    final url = NetWorkingConfig.path(NetPath.loginUpdatePswd);
     /*
     parameter["phoneNum"] = phone
             parameter["email"] = email
             parameter["password"] = pswd
-            parameter["phone_type"] = PhoneType.getDeviceModel()
+            parameter["confirm_password"] = confirm
      */
     var dic = {
-      "password":generateMD5(_password),
-      "phone_type": deviceInfo
+      "password":generateMD5(_username),
+      "confirm_password":generateMD5(_password),
     };
-    if (ToolConfig.isEmail(_username)) {
-      dic['email'] = _username;
+    if (ToolConfig.isEmail(widget.phoneStr)) {
+      dic['email'] = widget.phoneStr;
     }else{
-      dic['phoneNum'] = _username;
+      dic['phoneNum'] = widget.phoneStr;
     }
     print(dic);
     await NetWorking.post(url, (data) {
@@ -130,23 +130,20 @@ class _LoginWidgetState extends State<LoginWidget> {
         var userModel = UserInfoModel.fromJson(model);
         _userModel = userModel;
         Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
-        /// 登录成功
-        Navigator.pop(context);
+        /// 修改成功
+        EasyLoading.showToast('修改成功');
+        Future.delayed(Duration(seconds: 1) ,(){
+          // 返回到上上个页面
+          Navigator.of(context)..pop()..pop();
+        });
       }else{
-        /// 登录失败
-        EasyLoading.showToast(data['message'] ?? '登录失败');
+        /// 修改失败
+        EasyLoading.showToast(data['message'] ?? '修改失败');
       }
     }, (error) {
       EasyLoading.dismiss();
     },params: dic);
   }
-
-  // Future<String> getDeviceInfo() async{
-  //   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  //   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-  //   Printer.printMapJsonLog(androidInfo.model);
-  //   return androidInfo.model.toString();
-  // }
 
 
 
@@ -166,7 +163,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
- 
+
     // TODO: implement build
     Widget logoWidget = new Container(
       alignment: Alignment.topCenter,
@@ -185,44 +182,41 @@ class _LoginWidgetState extends State<LoginWidget> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
-              focusNode: _focusNodeUserName,
-              controller: _userNameController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: "请输入手机号码或邮箱",
-                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                focusNode: _focusNodeUserName,
+                controller: _userNameController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: "请输入6位或6位以上新密码",
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                  ),
+                  prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)), //Image.asset('assets/icons/icon_login_phone.png')
+                  //尾部添加清除按钮
+                  suffixIcon:(_isShowClear)
+                      ? IconButton(
+                    icon: Icon(Icons.clear,size: 20),
+                    onPressed: (){
+                      // 清空输入框内容
+                      _userNameController.clear();
+                    },
+                  )
+                      : null ,
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-                ),
-                prefixIcon: Icon(Icons.phone_android_outlined,color: ColorsUtil.fromEnmu(ColorEnum.mark)), //Image.asset('assets/icons/icon_login_phone.png')
-                //尾部添加清除按钮
-                suffixIcon:(_isShowClear)
-                    ? IconButton(
-                  icon: Icon(Icons.clear,size: 20),
-                  onPressed: (){
-                    // 清空输入框内容
-                    _userNameController.clear();
-                  },
-                )
-                    : null ,
-              ),
-              onSaved: (String name) {
-                _username = name;
-              },
-            // 校验用户名（不能为空）
-              validator: (v) {
-              return v.trim().isNotEmpty ? null : "请输入正确的用户名";
-              }
+                onSaved: (String name) {
+                  _username = name;
+                },
+
             ), TextFormField(
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "请输入6位或6位以上密码",
+                hintText: "请再次输入新密码",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
@@ -232,11 +226,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
                 suffixIcon: _password.length == 0 ? null : ((_isShowPwd) ? IconButton(icon: Icon(Icons.visibility_off_outlined,size: 20),
-                  onPressed: (){
-                    setState(() {
-                      _isShowPwd = !_isShowPwd;
-                    });
-                  }
+                    onPressed: (){
+                      setState(() {
+                        _isShowPwd = !_isShowPwd;
+                      });
+                    }
                 ): IconButton(icon: Icon(Icons.visibility_outlined,size: 20),
                   onPressed: () {
                     setState(() {
@@ -248,7 +242,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               onSaved: (String name) {
                 _password = name;
               },
-          // 校验用户名（不能为空）
+              // 校验用户名（不能为空）
               validator: (v) {
                 return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
               },
@@ -264,102 +258,17 @@ class _LoginWidgetState extends State<LoginWidget> {
         color: ColorsUtil.fromEnmu(ColorEnum.system),
       ),
       child: TextButton(
-        child: Text("登录",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
-        onPressed: loginNetWorking,
+        child: Text("确定",style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
+        onPressed: changeNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
     );
-
-
-    Widget registerArea = new Container(
-      margin: EdgeInsets.only(left: 20,right: 20),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          TextButton(
-            child: Text('忘记密码？',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return LoginCheckPhonePage();
-              }));
-            },
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-
-            ),
-          ),
-          TextButton(
-            child: Text('新用户注册',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
-            onPressed: () {
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context){
-                    return RegisterWidget();
-                  })
-              );
-            },
-          )
-        ],
-      ),
-    );
-
-    Widget protocalArea = new Container(
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            icon: _proSelect ? Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) : Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
-            iconSize:20,
-            onPressed: (){
-              setState(() {
-                _proSelect = !_proSelect;
-              });
-            },
-          ),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: "阅读并同意",
-                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                ),
-                TextSpan(
-                  text: "用户协议、",
-                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
-          // 设置点击事件
-                  recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
-                    }));
-                    },
-                ),
-                TextSpan(
-                  text: "隐私协议",
-                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc), color: ColorsUtil.fromEnmu(ColorEnum.system)),
-                  // 设置点击事件
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
-                      }));
-                    },
-                ),
-              ],
-            ),
-          ),
-        ],
-      )
-    );
-
 
 
 
     return new Scaffold(
         appBar: new AppBar(
-            title: Text('登录'),
+          title: Text('登录'),
           elevation: 0.5,
         ),
         body: new GestureDetector(
@@ -375,10 +284,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               inputTextArea,
               new SizedBox(height: 30),
               loginBtn,
-              new SizedBox(height: 1),
-              registerArea,
-              new SizedBox(height: 30,),
-              protocalArea,
               new SizedBox(height: 30,),
             ],
           ),
