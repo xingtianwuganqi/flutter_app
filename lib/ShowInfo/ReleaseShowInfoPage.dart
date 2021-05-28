@@ -426,7 +426,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
 
   bool isCanPushInfo() {
     if (_contentController.text == null || _contentController.text.length == 0) {
-      EasyLoading.showToast('请输入简单介绍');
+      EasyLoading.showToast('请输入简单说明');
       return false;
     }
 

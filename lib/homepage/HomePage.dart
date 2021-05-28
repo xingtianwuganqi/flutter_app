@@ -123,6 +123,14 @@ class _HomePageState extends State<HomePage> {
                         }
                         return newModel;
                       }).toList();
+                    }else if(value is int) {
+                      homeModels = homeModels.map((e) {
+                        var newModel = e;
+                        if (newModel.topic_id == topicId) {
+                          newModel.commNum = value;
+                        }
+                        return newModel;
+                      }).toList();
                     }
                     setState(() {
 
@@ -250,16 +258,18 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
           imagesWidget(data),
           addressWidget(data),
           commentWidget(60, context, data, (comIndex){
-            if (comIndex == 0) { // 点赞
+            if (comIndex == -1) { // 点赞
               var liked = data.liked == true ?  0 :  1;
               HomeNetworking.homeLikeClickAction(liked, data.topic_id, (topicId,value) {
                 changed(topicId,value);
               });
-            }else if (comIndex == 1) { // 收藏
+            }else if (comIndex == -2) { // 收藏
               var collected = data.collectioned == true ?  0 :  1;
               HomeNetworking.homeCollectClickAction(collected, data.topic_id, (topicId,value) {
                 changed(topicId,value);
               });
+            }else {
+              changed(data.topic_id,comIndex);
             }
           }),
           Divider(height: 1,),
@@ -322,13 +332,13 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
             builder: (context){
               return Container(
                 width: MediaQuery.of(context).size.width,
-                height: 150,
+                height: 110,
                 color: Colors.white,
                 child: ListView(
                   children: [
-                    TextButton(onPressed: (){
-
-                    }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                    // TextButton(onPressed: (){
+                    //
+                    // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                     Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                     TextButton(onPressed: (){
                       Navigator.pop(context);
@@ -642,7 +652,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
                 ),              ),
               onPressed: (){
                 lazyAuthToDoThings(context, () {
-                  clicked(0);
+                  clicked(-1); // 点击了点赞
                 });
               },
             )
@@ -658,7 +668,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, () {
-                  clicked(1);
+                  clicked(-2); // 点击了收藏
                 });
               },
             )
@@ -682,13 +692,12 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
-                        child: CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,),
+                        child: CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,changed: (value){
+                          clicked(value);
+                        },),
                       );
                     },
                   );
-                  // Navigator.push(context, MaterialPageRoute(builder: (context){
-                  //   return CommentWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,);
-                  // }));
                 });
               },
             )

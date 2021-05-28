@@ -83,6 +83,14 @@ class BrowseListState extends State<BrowseListWidget> {
                       }
                       return newModel;
                     }).toList();
+                  }else if(value is int) {
+                    hisModels = hisModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo.commNum = value;
+                      }
+                      return newModel;
+                    }).toList();
                   }
                   setState(() {
 

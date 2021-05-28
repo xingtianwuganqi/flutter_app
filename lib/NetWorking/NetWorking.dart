@@ -104,6 +104,7 @@ enum NetPath {
   userAgreen,
   aboutUs,
 
+  getContact,
 }
 
 class NetWorkingConfig {
@@ -199,6 +200,8 @@ class NetWorkingConfig {
         return baseUrl + "/api/useragreen/";
       case NetPath.aboutUs:
         return baseUrl + "/api/aboutus/";
+      case NetPath.getContact:
+        return baseUrl + '/api/v1/getcontact/';
       default:
         return "";
     }

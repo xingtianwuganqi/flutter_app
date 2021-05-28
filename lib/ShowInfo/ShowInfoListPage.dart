@@ -17,6 +17,7 @@ import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import '../NetWorking/NetWorking.dart';
+import 'PageControlView.dart';
 
 
 class ShowInfoListWidget extends StatefulWidget {
@@ -118,6 +119,14 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
                             newModel.collection_num -= 1;
                           }
                         }
+                      }
+                      return newModel;
+                    }).toList();
+                  }else if (value is int) {
+                    showInfoLists = showInfoLists.map((e) {
+                      var newModel = e;
+                      if (newModel.show_id == showId) {
+                        newModel.commNum = value;
                       }
                       return newModel;
                     }).toList();
@@ -229,10 +238,10 @@ class ShowInfoActionNetworking {
 }
 
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
-
+  int currentIndex = 0;
   var imgWidgets = data.imgs.map((e) => Container(
     child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,)
-  ));
+  )).toList();
 
   return Container(
     child: Column(
@@ -283,13 +292,13 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                   builder: (context){
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 150,
+                      height: 110,
                       color: Colors.white,
                       child: ListView(
                         children: [
-                          TextButton(onPressed: (){
-
-                          }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                          // TextButton(onPressed: (){
+                          //
+                          // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                           Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                           TextButton(onPressed: (){
                             Navigator.pop(context);
@@ -355,13 +364,32 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
           )
         ),
         /// pageView
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
-          child: PageView(
-            children: imgWidgets.toList(),
-          ),
-        ),
+        // Container(
+        //   width: MediaQuery.of(context).size.width,
+        //   height: MediaQuery.of(context).size.width,
+        //   child: Stack(
+        //     alignment: Alignment.center,
+        //     children: [
+        //       PageView(
+        //         children: imgWidgets.toList(),
+        //           onPageChanged: (int index) {
+        //             currentIndex = index;
+        //           },
+        //       ),
+        //       Positioned(
+        //         bottom: 20,
+        //           child: DWPageView(
+        //             width: ((imgWidgets.toList().length) * 10 + 5).toDouble(),
+        //             height: 10,
+        //             numberOfPages: imgWidgets.toList().length,
+        //             currentPage: currentIndex,
+        //           )
+        //       )
+        //     ],
+        //   ),
+        // ),
+
+        PageControlWidget(imgWidget: imgWidgets),
         /// instraction
         Container(
           alignment: Alignment.centerLeft,
@@ -399,7 +427,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                     height: MediaQuery.of(context).size.height * 0.8,
                     color: Colors.white,
                     child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,changed: (commNum) {
-
+                      changed(data.show_id,commNum);
                     },),
                   );
                 },
@@ -409,18 +437,20 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
         ),
         /// 点赞，收藏，评论
         commentWidget(context,data,(index) {
-          if (index == 0) { // 点击了点赞
+          if (index == -1) { // 点击了点赞
             var likeMark = data.liked == true ? 0 : 1;
             ShowInfoActionNetworking.showInfoLikeClickAction(likeMark, data.show_id, (showId, info) {
               changed(showId,info);
             });
-          }else if (index == 1) { // 点击了收藏
+          }else if (index == -2) { // 点击了收藏
             var collectMark = data.collectioned ? 0 : 1;
             print("collectMark");
             print(collectMark);
             ShowInfoActionNetworking.showInfoCollectClickAction(collectMark, data.show_id, (showId, info) {
               changed(showId,info);
             });
+          }else{
+            changed(data.show_id,index);
           }
         }),
         Divider(thickness: 10,color: Colors.grey[100],)
@@ -442,7 +472,7 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-                  clicked(0);
+                  clicked(-1);
                 });
               },
             )
@@ -454,7 +484,7 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
                 style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
               ),
               onPressed: (){
-                clicked(1);
+                clicked(-2);
               },
             )
         ),
@@ -474,7 +504,9 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
-                        child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,),
+                        child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,changed: (value){
+                          clicked(value);
+                        }),
                       );
                     },
                   );
@@ -485,5 +517,52 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
       ],
     ),
   );
+}
 
+// ignore: must_be_immutable
+class PageControlWidget extends StatefulWidget {
+
+  //类变量,作为调用类时的参数
+  final List<Widget> imgWidget;
+
+  PageControlWidget({this.imgWidget});
+  GlobalKey<DWPageViewState> _childViewKey = new GlobalKey<DWPageViewState>();
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PageControlState();
+  }
+}
+
+class _PageControlState extends State<PageControlWidget> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PageView(
+            children: widget.imgWidget,
+            onPageChanged: (int index) {
+              widget._childViewKey.currentState.selectedIndex(index);
+            },
+          ),
+          Positioned(
+            bottom: 20,
+            child: DWPageView(
+              key: widget._childViewKey,
+              width: (widget.imgWidget.length * 10 + 5).toDouble(),
+              height: 10,
+              numberOfPages: widget.imgWidget.toList().length,
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }

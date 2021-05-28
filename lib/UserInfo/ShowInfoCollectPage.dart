@@ -83,6 +83,14 @@ class ShowCollectState extends State<ShowCollectWidget> with AutomaticKeepAliveC
                     }
                     return newModel;
                   }).toList();
+                }else if (value is int) {
+                  showInfoLists = showInfoLists.map((e) {
+                    var newModel = e;
+                    if (newModel.showInfo.show_id == showId) {
+                      newModel.showInfo.commNum = value;
+                    }
+                    return newModel;
+                  }).toList();
                 }
                 setState(() {
 

@@ -96,6 +96,14 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                   }
                   return newModel;
                 }).toList();
+              }else if (value is int) {
+                showInfoLists = showInfoLists.map((e) {
+                  var newModel = e;
+                  if (newModel.show_id == showId) {
+                    newModel.commNum = value;
+                  }
+                  return newModel;
+                }).toList();
               }
               setState(() {
 
@@ -155,6 +163,14 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                         newModel.collection_num -= 1;
                       }
                     }
+                  }
+                  return newModel;
+                }).toList();
+              }else if (value is int) {
+                showInfoLists = showInfoLists.map((e) {
+                  var newModel = e;
+                  if (newModel.show_id == showId) {
+                    newModel.commNum = value;
                   }
                   return newModel;
                 }).toList();

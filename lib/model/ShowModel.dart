@@ -39,7 +39,7 @@ class ShowInfoModel {
   // final commentInfo: CommentListModel?
   // final commentAttr: NSAttributedString?
   final GambitModel gambit_type;
-  final int commNum;
+  int commNum;
 
   ShowInfoModel(
       {this.show_id,

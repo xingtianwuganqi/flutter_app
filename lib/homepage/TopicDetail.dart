@@ -7,6 +7,8 @@ import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
 import 'HomePage.dart';
+import 'package:flutter/services.dart';
+
 
 class TopicDetailWidget extends StatefulWidget {
 
@@ -22,7 +24,7 @@ class TopicDetailWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+    // TODO: it createState
     return new TopicDetailState();
   }
 }
@@ -186,7 +188,10 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-
+    var contactInfo = '点击获取联系方式';
+    if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+      contactInfo = homeModel.contact_info;
+    }
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
@@ -211,12 +216,25 @@ class TopicDetailState extends State<TopicDetailWidget> {
                           height: 50,
                           width: MediaQuery.of(context).size.width - 30,
                           child: TextButton(
-                            child: Text('点击获取联系方式',
+                            child: Text(contactInfo,
                               style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                                   color: Colors.white),
                             ),
                             onPressed: () {
-
+                              lazyAuthToDoThings(context, (){
+                                if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+                                  /// 已经获取了联系方式
+                                  //复制
+                                  Future.delayed(Duration(milliseconds: 100),(){
+                                    Clipboard.setData(ClipboardData(text: homeModel.contact_info));
+                                  });
+                                  EasyLoading.showToast('已复制');
+                                  return;
+                                }else{
+                                  getTopicInfoContactNetworking();
+                                  return;
+                                }
+                              });
                             },
                           ),
                         ),
@@ -311,6 +329,27 @@ class TopicDetailState extends State<TopicDetailWidget> {
       }
     }, (error) {
 
+    });
+  }
+
+  Future<Null> getTopicInfoContactNetworking() async {
+    final url = NetWorkingConfig.path(NetPath.getContact);
+    var dic = paramDic;
+    dic['topic_id'] = widget.topicId;
+    FormData formData = FormData.fromMap(dic);
+    await NetWorking.formDataPost(url, formData, (data) {
+      if (data['code'] == 200) {
+        var model = ContactModel.fromJson(data['data']);
+        homeModel.getedcontact = true;
+        homeModel.contact_info = model.contact;
+        setState(() {
+
+        });
+      }else{
+        EasyLoading.showToast(data['message'] ?? '获取联系方式失败');
+      }
+    }, (error) {
+      EasyLoading.showToast('网络出错');
     });
   }
 }

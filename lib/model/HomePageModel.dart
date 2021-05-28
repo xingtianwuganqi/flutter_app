@@ -20,8 +20,8 @@ class HomePageModel {
   bool collectioned;
   final  int user;
   final  List<TagModel> tagInfos;
-  final  String contact_info;
-  final  bool getedcontact;
+  String contact_info;
+  bool getedcontact;
 
   HomePageModel({
     this.topic_id,
@@ -262,6 +262,16 @@ var collection: Int?
     return HomeCollectionStatusModel(
       collection: int.parse(json['collection'].toString()),
       mark: int.parse(json['mark'].toString()),
+    );
+  }
+}
+
+class ContactModel {
+  final String contact;
+  ContactModel({this.contact});
+  factory ContactModel.fromJson(Map<String,dynamic> json) {
+    return ContactModel(
+      contact: json['contact'],
     );
   }
 }

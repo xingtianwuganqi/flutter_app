@@ -3,7 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
 import 'package:flutter_720yun/model/MessageModel.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
@@ -182,7 +184,7 @@ class CommentState extends State<CommentInfoWidget> {
             Expanded(
               child:
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.only(left:10,right: 10,top: 5,bottom: 5),
                 decoration: new BoxDecoration(
                   //背景
                   color: Colors.white,
@@ -210,7 +212,10 @@ class CommentState extends State<CommentInfoWidget> {
                 pushCommentNetworking();
               }
             }, child: Text('发送',
-              style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),))
+              style: TextStyle(color: Colors.white),),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system))),
+            ),
+            Padding(padding: EdgeInsets.only(left: 10),)
           ],
         )
 
@@ -433,7 +438,44 @@ class CommentState extends State<CommentInfoWidget> {
                     ),
                     IconButton(icon: Icon(Icons.more_horiz_outlined,
                     color: ColorsUtil.fromEnmu(ColorEnum.mark),
-                    ), onPressed: (){})
+                    ), onPressed: (){
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context){
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 110,
+                            color: Colors.white,
+                            child: ListView(
+                              children: [
+                                // TextButton(onPressed: (){
+                                //
+                                // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                                Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                                TextButton(onPressed: (){
+                                  var report_type = Report_type.rescue_comment;
+                                  if (widget.commentType == CommentType.topic_comment) {
+                                    report_type = Report_type.rescue_comment;
+                                  }else{
+                                    report_type = Report_type.show_comment;
+                                  }
+                                  Navigator.pop(context);
+                                  lazyAuthToDoThings(context, (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ViolationsListWidget(reportType: report_type,reportId: model.commentModel.comment_id);
+                                    }));
+                                  });
+                                }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                                Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    })
                   ],
                 ),
               ),
@@ -519,7 +561,44 @@ class CommentState extends State<CommentInfoWidget> {
                     ),
                     IconButton(icon: Icon(Icons.more_horiz_outlined,
                       color: ColorsUtil.fromEnmu(ColorEnum.mark),
-                    ), onPressed: (){})
+                    ), onPressed: (){
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context){
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 110,
+                            color: Colors.white,
+                            child: ListView(
+                              children: [
+                                // TextButton(onPressed: (){
+                                //
+                                // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                                Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                                TextButton(onPressed: (){
+                                  var report_type = Report_type.rescue_reply;
+                                  if (widget.commentType == CommentType.topic_comment) {
+                                    report_type = Report_type.rescue_reply;
+                                  }else{
+                                    report_type = Report_type.show_reply;
+                                  }
+                                  Navigator.pop(context);
+                                  lazyAuthToDoThings(context, (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ViolationsListWidget(reportType: report_type,reportId: model.replyModel.reply_id);
+                                    }));
+                                  });
+                                }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                                Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    })
                   ],
                 ),
               ),

@@ -83,6 +83,14 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
                         }
                         return newModel;
                       }).toList();
+                    }else if(value is int) {
+                      homeModels = homeModels.map((e) {
+                        var newModel = e;
+                        if (newModel.topic_id == topicId) {
+                          newModel.commNum = value;
+                        }
+                        return newModel;
+                      }).toList();
                     }
                     setState(() {
 
