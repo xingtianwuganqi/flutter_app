@@ -364,31 +364,6 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
           )
         ),
         /// pageView
-        // Container(
-        //   width: MediaQuery.of(context).size.width,
-        //   height: MediaQuery.of(context).size.width,
-        //   child: Stack(
-        //     alignment: Alignment.center,
-        //     children: [
-        //       PageView(
-        //         children: imgWidgets.toList(),
-        //           onPageChanged: (int index) {
-        //             currentIndex = index;
-        //           },
-        //       ),
-        //       Positioned(
-        //         bottom: 20,
-        //           child: DWPageView(
-        //             width: ((imgWidgets.toList().length) * 10 + 5).toDouble(),
-        //             height: 10,
-        //             numberOfPages: imgWidgets.toList().length,
-        //             currentPage: currentIndex,
-        //           )
-        //       )
-        //     ],
-        //   ),
-        // ),
-
         PageControlWidget(imgWidget: imgWidgets),
         /// instraction
         Container(
@@ -558,7 +533,7 @@ class _PageControlState extends State<PageControlWidget> {
               key: widget._childViewKey,
               width: (widget.imgWidget.length * 10 + 5).toDouble(),
               height: 10,
-              numberOfPages: widget.imgWidget.toList().length,
+              numberOfPages: widget.imgWidget.length > 1 ? widget.imgWidget.length : 0,
             ),
           )
         ],
