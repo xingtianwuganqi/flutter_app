@@ -104,6 +104,8 @@ class UserProviderModel extends ChangeNotifier  {
     print(_user);
     notifyListeners();
   }
+
+
 }
 
 // class ProfileChangeNotifier extends ChangeNotifier {
@@ -455,4 +457,12 @@ class DeviceInfo {
     };
   }
 
+}
+
+class TestNotification extends Notification {
+  TestNotification({
+    @required this.count,
+  });
+
+  final int count;
 }

@@ -13,10 +13,12 @@ class MessageListWidget extends StatefulWidget {
 
   final String title;
   final int msgType;
+  final ValueChanged changed;
 
   MessageListWidget(
       this.title,
       this.msgType,
+      this.changed,
       {Key key}
       ) : super(key: key);
 
@@ -32,7 +34,13 @@ class MessageListState extends State<MessageListWidget> {
   bool isFirstLoad = true;
   List<MessageListModel> msgList = [];
   int page = 1;
-  
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   Widget userInfoWidget(MessageListModel data) {
     return /// 个人信息
       Container(
@@ -297,7 +305,7 @@ class MessageListState extends State<MessageListWidget> {
           page += 1;
         }
       }else{
-
+        msgList = [];
       }
       setState(() {
         isFirstLoad=false;

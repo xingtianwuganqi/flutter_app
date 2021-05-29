@@ -26,6 +26,8 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
+  static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,6 +52,7 @@ class MyApp extends StatelessWidget {
           ),
           home: tabbar(),
           builder: EasyLoading.init(),
+          navigatorObservers: [MyApp.routeObserver],
           routes: {
 
           },

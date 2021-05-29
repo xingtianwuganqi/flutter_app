@@ -71,6 +71,23 @@ class MessageListModel {
   }
 }
 
+class UnreadModel {
+  UnreadModel({this.sys_unread, this.like_unread, this.collec_unread, this.com_unread});
+  final int sys_unread;
+  final int like_unread;
+  final int collec_unread;
+  final int com_unread;
+  factory UnreadModel.fromJson(Map<String,dynamic> json) {
+    return UnreadModel(
+      sys_unread: json['sys_unread'],
+      like_unread: json['like_unread'],
+      collec_unread: json['collec_unread'],
+      com_unread: json['com_unread'],
+
+    );
+  }
+}
+
 /*
 struct CommentListModel: HandyJSON {
     var comment_id: Int?

@@ -105,6 +105,7 @@ enum NetPath {
   aboutUs,
 
   getContact,
+  authUnreadMsg,
 }
 
 class NetWorkingConfig {
@@ -202,6 +203,8 @@ class NetWorkingConfig {
         return baseUrl + "/api/aboutus/";
       case NetPath.getContact:
         return baseUrl + '/api/v1/getcontact/';
+      case NetPath.authUnreadMsg:
+        return baseUrl + '/api/v1/authunreadnum/';
       default:
         return "";
     }
