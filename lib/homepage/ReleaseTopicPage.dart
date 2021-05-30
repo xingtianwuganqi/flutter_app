@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,6 +15,10 @@ import '../NetWorking/NetWorking.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'TagInfoPage.dart';
+
+
+typedef StatefulWidgetBuilder = Widget Function(BuildContext context, StateSetter setState);
+
 
 class ReleaseTopicPage extends StatefulWidget {
   @override
@@ -53,7 +59,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   PutController putController = PutController();
   /// 图片的token
   String _token;
-  ///
+  /// 不再提示
+  bool _isSelectRemind = false;
+
 
   @override
   void initState() {
@@ -117,15 +125,15 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         actions: [
           TextButton(
               onPressed: () {
-                resignFirstFocus();
-                if (!isCanPushInfo()) {
-                  return;
-                }
-                if (_token == null || _token.length == 0) {
-                  getQiNiuToken();
-                }else{
-                  uploadImgToQiNiu(_token);
-                }
+                var isSave = UserManager.instance.getSaveRescueRemind();
+                isSave.then((value) {
+                  if (value == true) {
+                    clickPushButton();
+                  }else{
+                    _isSelectRemind = false;
+                    showAlert();
+                  }
+                });
               },
               child: Text('发布',
                 style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -369,6 +377,85 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
             color: ColorsUtil.fromEnmu(ColorEnum.desc)),
       ),
     );
+  }
+
+  Future<Widget> showAlert() async{
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text('发布提示'),
+            content: StatefulBuilder(builder: (context, StateSetter setState){
+              return SingleChildScrollView(
+                child:
+                Column(
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "        请详细阅读",
+                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
+                          ),
+                          TextSpan(
+                            text: "用户协议",
+                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.urlColor)),
+                            // 设置点击事件
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                }));
+                              },
+                          ),
+                          TextSpan(
+                            text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n        禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
+                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
+
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextButton.icon(onPressed: (){
+                      _isSelectRemind = !_isSelectRemind;
+                      setState(() {
+
+                      });
+                    },
+                        icon: _isSelectRemind ?
+                        Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),size: 20,) :
+                        Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),size: 20,),
+                        label: Text('不再提示',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.desc)),))
+                  ],
+                ),
+              );
+            }),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
+              TextButton(onPressed: (){
+                if (_isSelectRemind == true) {
+                  UserManager.instance.saveRescueRemind();
+                }
+                clickPushButton();
+              }, child: Text('确定发布',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
+            ],
+          );
+        }
+        );
+  }
+
+  void clickPushButton() {
+    resignFirstFocus();
+    if (!isCanPushInfo()) {
+      return;
+    }
+    if (_token == null || _token.length == 0) {
+      getQiNiuToken();
+    }else{
+      uploadImgToQiNiu(_token);
+    }
   }
 
   Future<void> loadAssets() async {

@@ -64,7 +64,7 @@ class MessageListState extends State<MessageListWidget> {
                     Text(data.from_info.username ?? "",
                       style: TextStyle(
                         color: ColorsUtil.fromEnmu(ColorEnum.title),
-                        fontSize: FontUtil.fs(FontSize.title),
+                        fontSize: FontUtil.fs(FontSize.content),
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -72,7 +72,7 @@ class MessageListState extends State<MessageListWidget> {
                     Text( ToolConfig.timeT(data.create_time) ?? "",
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                            fontSize: 12),
+                            fontSize: FontUtil.fs(FontSize.time)),
                         overflow: TextOverflow.ellipsis)
                   ],
                 )),

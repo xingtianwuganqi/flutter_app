@@ -268,6 +268,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                       Text(data.user.username ?? "",
                         style: TextStyle(
                           color: ColorsUtil.fromEnmu(ColorEnum.title),
+                          fontWeight: FontWeight.w600,
                           fontSize: FontUtil.fs(FontSize.title),
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -276,7 +277,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                       Text( ToolConfig.timeT(data.create_time) ?? "",
                           style: TextStyle(
                               color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                              fontSize: 12),
+                              fontSize: FontUtil.fs(FontSize.time)),
                           overflow: TextOverflow.ellipsis)
                     ],
                   )),
@@ -443,7 +444,9 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
             child: TextButton.icon(
               icon:(data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
               label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
@@ -456,7 +459,9 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
             child: TextButton.icon(
               icon:(data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
               label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),
               ),
               onPressed: (){
                 clicked(-2);
@@ -467,7 +472,9 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_sh_commen.png'),
               label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
-                style: TextStyle(fontSize: 14,color: ColorsUtil.hexColor(0x707070)),
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                ),
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){

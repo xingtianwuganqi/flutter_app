@@ -72,7 +72,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           child: ListTile(
               title: Container(
                 transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                  child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
+                  child: Text(data.title,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.black)),
                 ),
               leading: Image.asset(data.icon),
               trailing: Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
@@ -127,8 +127,10 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                     height: 50,
                 ),
               ),
-              title: context.watch<UserProviderModel>().isLogin ? Text(UserManager.instance.userInfo.username ?? "",
-                style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),) : Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.white),),
+              title: context.watch<UserProviderModel>().isLogin ?
+              Text(UserManager.instance.userInfo.username ?? "",
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
+              Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
               trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
           ),
         ),

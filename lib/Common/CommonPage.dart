@@ -77,6 +77,21 @@ class UserManager {
       Navigator.of(context).popUntil((route) => route.isFirst);
     });
   }
+
+  Future<bool> getSaveRescueRemind() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isSave = prefs.getBool('pushResRemind');
+    if (isSave != null  && isSave == true) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  Future<Null> saveRescueRemind() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('pushResRemind', true);
+  }
 }
 
 // void get backToRoot => Navigator.of(context).popUntil((route) => route.isFirst);
@@ -173,9 +188,9 @@ class ColorsUtil {
       case ColorEnum.system:
         return ColorsUtil.hexColor(0xffa500);
       case ColorEnum.title:
-        return ColorsUtil.hexColor(0x111111);
+        return ColorsUtil.hexColor(0x333333);
       case ColorEnum.content:
-        return ColorsUtil.hexColor(0x292929);
+        return ColorsUtil.hexColor(0x444444);
       case ColorEnum.note:
         return ColorsUtil.hexColor(0x666666);
       case ColorEnum.desc:
@@ -225,6 +240,8 @@ class FontUtil {
         return 14.0;
       case FontSize.desc:
         return 13.0;
+      case FontSize.time:
+        return 12.0;
       case FontSize.small:
         return 11.0;
       default:
@@ -239,6 +256,7 @@ enum FontSize {
   content,
   mark,
   desc,
+  time,
   small,
 }
 

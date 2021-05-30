@@ -311,14 +311,14 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
                     Text(data.userInfo.username ?? "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            color: ColorsUtil.fromEnmu(ColorEnum.content),
-                            fontWeight: FontWeight.w500,
+                            color: ColorsUtil.fromEnmu(ColorEnum.title),
+                            fontWeight: FontWeight.w600,
                             fontSize: FontUtil.fs(FontSize.title)),
                         overflow: TextOverflow.ellipsis),
                     Padding(padding: EdgeInsets.all(3)),
                     Text(ToolConfig.timeT(data.create_time) ?? "",
                         style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                            fontSize: FontUtil.fs(FontSize.desc)),
+                            fontSize: FontUtil.fs(FontSize.time)),
                         overflow: TextOverflow.ellipsis)
                   ],
                 )
@@ -375,7 +375,6 @@ Widget textInfoWidget(HomePageModel data) {
             color: ColorsUtil.fromEnmu(ColorEnum.system),
             borderRadius: BorderRadius.all(Radius.circular(3.0))
         ),
-        margin: EdgeInsets.only(right: 10),
         padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
         child: Text(e.tag_name ?? "",
           style: TextStyle(
@@ -394,9 +393,14 @@ Widget textInfoWidget(HomePageModel data) {
           // ignore: null_aware_before_operator
           padding: EdgeInsets.only(left: 60,right: 15,top: 2,bottom: 2),
           alignment: Alignment.centerLeft,
-          height: tags.length > 0 ? 26 : 3,
-          child: Row(
-            children: tags,
+          height: tags.length > 0 ? 23 : 3,
+          child: Column(
+            children: [
+              Wrap(
+                spacing: 10,
+                children:tags,
+              )
+            ],
           ),
         ),
         Container(

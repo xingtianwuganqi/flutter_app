@@ -38,7 +38,7 @@ class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProvi
           child: TabBar(
             indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
             controller: _tabController,
-            tabs: tabs.map((e) => Tab(text: e)).toList(),
+            tabs: tabs.map((e) => Tab(text: e,)).toList(),
           ),
         ),
         elevation: 0.5,
