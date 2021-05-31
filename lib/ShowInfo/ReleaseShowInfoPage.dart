@@ -267,7 +267,25 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
             }else{
               return Container(
                 child:
-                AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                Stack(
+                  children: [
+                    AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                    Positioned(
+                      child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                        // 删除数据
+                        var isRemove = _releasePhotos.remove(_releasePhotos[index]);
+                        if (isRemove) {
+                          setState(() {
+
+                          });
+                        }
+
+                      },),
+                      top: -10,
+                      right: -10,
+                    ),
+                  ],
+                )
               );
             }
           }),

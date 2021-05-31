@@ -283,8 +283,25 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
               );
             }else{
               return Container(
-                child:
-                AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                child: Stack(
+                  children: [
+                    AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                    Positioned(
+                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                            // 删除数据
+                          var isRemove = _releasePhotos.remove(_releasePhotos[index]);
+                          if (isRemove) {
+                            setState(() {
+
+                            });
+                          }
+
+                        },),
+                      top: -10,
+                      right: -10,
+                    ),
+                  ],
+                )
               );
             }
 
@@ -384,36 +401,40 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         context: context,
         builder: (context){
           return AlertDialog(
+            scrollable: true,
             title: Text('发布提示'),
             content: StatefulBuilder(builder: (context, StateSetter setState){
               return SingleChildScrollView(
                 child:
                 Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "        请详细阅读",
-                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
-                          ),
-                          TextSpan(
-                            text: "用户协议",
-                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.urlColor)),
-                            // 设置点击事件
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
-                                }));
-                              },
-                          ),
-                          TextSpan(
-                            text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n        禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
-                            style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
+                    Container(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "        请详细阅读",
+                              style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
+                            ),
+                            TextSpan(
+                              text: "用户协议",
+                              style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.urlColor)),
+                              // 设置点击事件
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                  }));
+                                },
+                            ),
+                            TextSpan(
+                              text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n        禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
+                              style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
 
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     TextButton.icon(onPressed: (){
