@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
-import 'package:flutter_720yun/homepage/MessageListPage.dart';
+import 'package:flutter_720yun/Message/MessageListPage.dart';
 import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
 import '../main.dart';
+import 'MessageSystemPage.dart';
 
 class MessagePage extends StatefulWidget {
 
@@ -104,6 +105,10 @@ class MessagePageState extends State<MessagePage> with RouteAware {
                       });
                     }));
                   });
+                }else{
+                  Navigator.push(context,MaterialPageRoute(builder: (context) {
+                    return MessageSystemPage();
+                  }));
                 }
               },
             );
@@ -164,7 +169,7 @@ class MessagePageState extends State<MessagePage> with RouteAware {
 
   Future<Null> _authUnreadMsgNetworking() async{
     final url = NetWorkingConfig.path(NetPath.authUnreadMsg);
-    var dic = paramDic;
+    var dic = Map.from(paramDic);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       if (data['code'] == 200) {

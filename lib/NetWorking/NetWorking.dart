@@ -39,9 +39,13 @@ class NetWorking {
   }
 
   static Future formDataPost(String url, FormData formData,SuccessCallBack successBack,FailureCallBack failBack) async {
+    Printer.printMapJsonLog('😁😁😁');
+    Printer.printMapJsonLog(url);
+    Printer.printMapJsonLog(formData.fields);
     try {
-      Printer.printMapJsonLog(url);
       var response = await dio.post(url,data: formData);
+      Printer.printMapJsonLog('++++++++++');
+      Printer.printMapJsonLog(response.data);
       successBack(response.data);
     }catch(e){
       Printer.printMapJsonLog(e);
@@ -106,6 +110,7 @@ enum NetPath {
 
   getContact,
   authUnreadMsg,
+  systemMeg,
 }
 
 class NetWorkingConfig {
@@ -205,6 +210,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/getcontact/';
       case NetPath.authUnreadMsg:
         return baseUrl + '/api/v1/authunreadnum/';
+      case NetPath.systemMeg:
+        return baseUrl + '/api/v1/systemnotification/';
       default:
         return "";
     }

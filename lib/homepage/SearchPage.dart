@@ -314,7 +314,7 @@ class SearchPageState extends State<SearchPageWidget> {
             parameter["page"] = page
             parameter["size"] = 10
      */
-    var dic = paramDic;
+    var dic = Map.from(paramDic);
     dic['keyword'] = keyword;
     dic['page'] = _page;
     dic['size'] = 10;

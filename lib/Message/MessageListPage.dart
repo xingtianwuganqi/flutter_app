@@ -8,7 +8,7 @@ import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import '../model/MessageModel.dart';
-import 'TopicDetail.dart';
+import '../homepage/TopicDetail.dart';
 class MessageListWidget extends StatefulWidget {
 
   final String title;

@@ -538,7 +538,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     String imgStr = photos.map((e) => e.photoUrl).toList().join(',');
     String tagStr = tags.map((e) => '${e.id}').toList().join(',');
     final url = NetWorkingConfig.path(NetPath.releaseTopicInfo);
-    var dic = paramDic;
+    var dic = Map.from(paramDic);
     dic['content'] = _contentController.text;
     dic['address_info'] = _addressInfo;
     dic['contact'] = _phoneController.text;
@@ -563,7 +563,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   Future<Null> getQiNiuToken() async {
     EasyLoading.show(status:'上传图片...');
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
-    final dic = paramDic;
+    var dic = Map.from(paramDic);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);

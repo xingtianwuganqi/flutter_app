@@ -7,7 +7,7 @@ import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'homepage/HomePage.dart';
-import 'homepage/MessagePage.dart';
+import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
 

@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
   Future<Null> homePageListNetWroking(int num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.topiclist);
-    var dic = paramDic;
+    var dic = Map.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
     FormData formData = FormData.fromMap(dic);
@@ -195,9 +195,11 @@ class _HomePageState extends State<HomePage> {
 class HomeNetworking {
   static Future<Null> homeLikeClickAction(int likeMark,int topicId,commentInfoChanged changed) async {
     final url = NetWorkingConfig.path(NetPath.homeLikeClick);
-    var dic = paramDic;
-    dic['like_mark'] = likeMark;
-    dic['topic_id'] = topicId;
+    final dic = {
+      'token': UserManager.instance.token,
+      'like_mark': likeMark,
+      'topic_id': topicId,
+    };
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);
@@ -223,11 +225,11 @@ parameter["token"] = UserManager.shared.token
 
  */
     final url = NetWorkingConfig.path(NetPath.homeCollectClick);
-    var dic = paramDic;
-    dic['collect_mark'] = collectMark;
-    dic['topic_id'] = topicId;
-    print(url);
-    print(dic);
+    var dic = {
+      'token': UserManager.instance.token,
+      'collect_mark': collectMark,
+      'topic_id': topicId,
+    };
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);
