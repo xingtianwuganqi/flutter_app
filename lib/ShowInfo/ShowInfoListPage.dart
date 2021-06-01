@@ -216,7 +216,7 @@ class ShowInfoActionNetworking {
   static Future<Null> showInfoCollectClickAction(int collectMark,int showId,commentInfoChanged changed) async {
 
     final url = NetWorkingConfig.path(NetPath.showInfoCollectClick);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['collect_mark'] = collectMark;
     dic['show_id'] = showId;
     print(url);

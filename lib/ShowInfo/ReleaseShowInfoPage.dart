@@ -361,7 +361,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     }
     String imgStr = photos.map((e) => e.photoUrl).toList().join(',');
     final url = NetWorkingConfig.path(NetPath.releaseShowInfo);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['instruction'] = _contentController.text;
     dic['gambit_id'] = _gambitModel == null ? null : _gambitModel.id.toString();
     dic['imgs'] = imgStr;
@@ -384,7 +384,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
   Future<Null> getQiNiuToken() async {
     EasyLoading.show(status:'上传图片...');
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);

@@ -169,7 +169,7 @@ class MessagePageState extends State<MessagePage> with RouteAware {
 
   Future<Null> _authUnreadMsgNetworking() async{
     final url = NetWorkingConfig.path(NetPath.authUnreadMsg);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       if (data['code'] == 200) {

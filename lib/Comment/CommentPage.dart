@@ -239,7 +239,7 @@ class CommentState extends State<CommentInfoWidget> {
     };
 
     final url = NetWorkingConfig.path(NetPath.commentList);
-    final dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_type'] = commentType;
     dic['topic_id'] = widget.topicId;
     dic['page'] = _page;

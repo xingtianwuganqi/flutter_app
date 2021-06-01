@@ -235,7 +235,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
   Future<Null> getQiNiuToken() async {
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
       print(data);
@@ -273,7 +273,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
   Future<Null> updateUserInfoNetworking(String avator) async {
     EasyLoading.show(status: '更新用户信息...');
     final url = NetWorkingConfig.path(NetPath.updateUserInfo);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['username'] = _nicknameController.text;
     dic['avator'] = avator;
     FormData formData = FormData.fromMap(dic);

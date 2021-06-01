@@ -117,7 +117,7 @@ class MessageSystemState extends State<MessageSystemPage> {
   Future<Null> systemNetWorking(int page) async{
     _page = page;
     final url = NetWorkingConfig.path(NetPath.systemMeg);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
     FormData formData = FormData.fromMap(dic);

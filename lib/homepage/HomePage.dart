@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
   Future<Null> homePageListNetWroking(int num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.topiclist);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
     FormData formData = FormData.fromMap(dic);

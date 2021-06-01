@@ -325,7 +325,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   Future<Null> addViewHistoryNetWorking() async {
     final url = NetWorkingConfig.path(NetPath.addViewHistory);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_id'] = widget.topicId;
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
@@ -340,7 +340,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   Future<Null> getTopicInfoContactNetworking() async {
     final url = NetWorkingConfig.path(NetPath.getContact);
-    var dic = Map.from(paramDic);
+    var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_id'] = widget.topicId;
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
