@@ -462,7 +462,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     String imgStr = photos.map((e) => e.photoUrl).toList().join(',');
     final url = NetWorkingConfig.path(NetPath.releaseShowInfo);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['instruction'] = _contentController.text;
+    dic['instruction'] = _contentController.text.trim();
     dic['gambit_id'] = _gambitModel == null ? null : _gambitModel.id.toString();
     dic['imgs'] = imgStr;
 

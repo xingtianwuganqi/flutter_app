@@ -544,7 +544,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     String tagStr = tags.map((e) => '${e.id}').toList().join(',');
     final url = NetWorkingConfig.path(NetPath.releaseTopicInfo);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['content'] = _contentController.text;
+    dic['content'] = _contentController.text.trim(); // 去掉首尾的空格和换行
     dic['address_info'] = _addressInfo;
     dic['contact'] = _phoneController.text;
     dic['tags'] = tagStr;
