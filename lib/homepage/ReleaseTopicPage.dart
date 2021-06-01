@@ -125,15 +125,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         actions: [
           TextButton(
               onPressed: () {
-                var isSave = UserManager.instance.getSaveRescueRemind();
-                isSave.then((value) {
-                  if (value == true) {
-                    clickPushButton();
-                  }else{
-                    _isSelectRemind = false;
-                    showAlert();
-                  }
-                });
+                clickPushButton();
               },
               child: Text('发布',
                 style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -317,7 +309,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       ),
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(top: 5,bottom: 5),
-      height: 50,
+      height: 45,
       padding: EdgeInsets.only(left: 10),
       child:TextField(
         maxLines: 1,
@@ -351,7 +343,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       ),
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(top: 5,bottom: 5),
-      height: 50,
+      height: 45,
       child: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -459,7 +451,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                 if (_isSelectRemind == true) {
                   UserManager.instance.saveRescueRemind();
                 }
-                clickPushButton();
+                Navigator.pop(context);
+                beginPushNetworking();
               }, child: Text('确定发布',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
             ],
           );
@@ -472,6 +465,18 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     if (!isCanPushInfo()) {
       return;
     }
+    var isSave = UserManager.instance.getSaveRescueRemind();
+    isSave.then((value) {
+      if (value == true) {
+        beginPushNetworking();
+      }else{
+        _isSelectRemind = false;
+        showAlert();
+      }
+    });
+  }
+
+  void beginPushNetworking() {
     if (_token == null || _token.length == 0) {
       getQiNiuToken();
     }else{
