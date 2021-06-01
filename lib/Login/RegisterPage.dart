@@ -187,7 +187,7 @@ class _RegisterState extends State<RegisterWidget> {
             TextFormField(
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请输入手机号码或邮箱",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -220,7 +220,7 @@ class _RegisterState extends State<RegisterWidget> {
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "请输入6位或6位以上密码",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -256,7 +256,7 @@ class _RegisterState extends State<RegisterWidget> {
                 obscureText: !_isShowConfirm,
                 focusNode: _focusNodeConfirm,
                 controller: _confirmController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请再次输入密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),

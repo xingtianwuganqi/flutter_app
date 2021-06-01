@@ -187,7 +187,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             TextFormField(
               focusNode: _focusNodeUserName,
               controller: _userNameController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "请输入手机号码或邮箱",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -220,7 +220,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "请输入6位或6位以上密码",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -310,7 +310,9 @@ class _LoginWidgetState extends State<LoginWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           IconButton(
-            icon: _proSelect ? Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) : Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
+            icon: _proSelect ?
+            Icon(Icons.check_box,color: ColorsUtil.fromEnmu(ColorEnum.system),) :
+            Icon(Icons.check_box_outline_blank,color: ColorsUtil.fromEnmu(ColorEnum.system),),
             iconSize:20,
             onPressed: (){
               setState(() {

@@ -449,7 +449,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
               }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
               TextButton(onPressed: (){
                 if (_isSelectRemind == true) {
-                  UserManager.instance.saveRescueRemind();
+                  UserManager.instance.saveRescueRemind('pushResRemind');
                 }
                 Navigator.pop(context);
                 beginPushNetworking();
@@ -465,7 +465,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     if (!isCanPushInfo()) {
       return;
     }
-    var isSave = UserManager.instance.getSaveRescueRemind();
+    var isSave = UserManager.instance.getSaveRescueRemind('pushResRemind');
     isSave.then((value) {
       if (value == true) {
         beginPushNetworking();

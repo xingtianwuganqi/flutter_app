@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
@@ -231,7 +233,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
                                   EasyLoading.showToast('已复制');
                                   return;
                                 }else{
-                                  getTopicInfoContactNetworking();
+                                  // getTopicInfoContactNetworking();
+                                  showAlert();
                                   return;
                                 }
                               });
@@ -261,6 +264,34 @@ class TopicDetailState extends State<TopicDetailWidget> {
           ),
         ),
       )
+    );
+  }
+
+  Future<Widget> showAlert() async{
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            scrollable: true,
+            title: Text('领养须知'),
+            content: StatefulBuilder(builder: (context, StateSetter setState){
+              return Text('        不要相信任何理由的提前转账要求，如定金、运费等。'
+                  '若是红包领养，请当面给送养人。领养更多是一种爱心行为，'
+                  '一些必要的程序，如领养协议、互换身份证复印件等必不可少。'
+                  '宠物是生命不是物品或工具，一切领养活动都应在为生命负责的态度下进行。'
+              );
+            }),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+                getTopicInfoContactNetworking();
+              }, child: Text('仍要获取',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
+            ],
+          );
+        }
     );
   }
 
@@ -339,11 +370,13 @@ class TopicDetailState extends State<TopicDetailWidget> {
   }
 
   Future<Null> getTopicInfoContactNetworking() async {
+    EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.getContact);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_id'] = widget.topicId;
     FormData formData = FormData.fromMap(dic);
     await NetWorking.formDataPost(url, formData, (data) {
+      EasyLoading.dismiss();
       if (data['code'] == 200) {
         var model = ContactModel.fromJson(data['data']);
         homeModel.getedcontact = true;

@@ -122,7 +122,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
             TextFormField(
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请输入手机号码或邮箱",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),

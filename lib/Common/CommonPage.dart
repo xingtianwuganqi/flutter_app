@@ -78,9 +78,9 @@ class UserManager {
     });
   }
 
-  Future<bool> getSaveRescueRemind() async{
+  Future<bool> getSaveRescueRemind(String info) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isSave = prefs.getBool('pushResRemind');
+    bool isSave = prefs.getBool(info);
     if (isSave != null  && isSave == true) {
       return true;
     }else{
@@ -88,9 +88,9 @@ class UserManager {
     }
   }
 
-  Future<Null> saveRescueRemind() async{
+  Future<Null> saveRescueRemind(String info) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('pushResRemind', true);
+    prefs.setBool(info, true);
   }
 }
 
