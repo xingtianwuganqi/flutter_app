@@ -111,6 +111,7 @@ enum NetPath {
   getContact,
   authUnreadMsg,
   systemMeg,
+  completeRescue,
 }
 
 class NetWorkingConfig {
@@ -212,6 +213,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/authunreadnum/';
       case NetPath.systemMeg:
         return baseUrl + '/api/v1/systemnotification/';
+      case NetPath.completeRescue:
+        return baseUrl + '/api/v1/completetopic/';
       default:
         return "";
     }

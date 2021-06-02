@@ -243,6 +243,21 @@ parameter["token"] = UserManager.shared.token
       print(error);
     });
   }
+
+  static Future<Null> homeCompleteNetWorking(int topicId,commentInfoChanged changed) async{
+    final url = NetWorkingConfig.path(NetPath.completeRescue);
+    var dic = Map<String,dynamic>.from(paramDic);
+    dic['topic_id'] = topicId;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        changed(topicId,true);
+      }else{
+        changed(topicId,false);
+      }
+    }, (error) {
+      changed(topicId,false);
+    });
+  }
 }
 
 
@@ -254,7 +269,13 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
     Container(
       child: Column(
         children: [
-          userInfoWidget(context,data,fromInfo: fromInfo),
+          userInfoWidget(context,data,fromInfo: fromInfo,clicked: (value) {
+            if (value == -3) {
+              HomeNetworking.homeCompleteNetWorking(data.topic_id, (id, info) {
+                changed(id,info);
+              });
+            }
+          }),
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
@@ -286,7 +307,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
 }
 
 /// 用户信息
-Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = ''}) {
+Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange clicked}) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
@@ -325,6 +346,12 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                 )
             ),
         ),
+        data.is_complete == true ?
+        Container(
+          height: 45,
+          width: 45,
+          child: Image.asset('assets/icons/icon_complete.png'),
+        ) :
         IconButton(icon: Icon(Icons.more_horiz_outlined,
           color: ColorsUtil.fromEnmu(ColorEnum.mark),
         ), onPressed: (){
@@ -344,9 +371,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                     fromInfo == 'publish' ?
                     TextButton(onPressed: (){
                       Navigator.pop(context);
-
-
-
+                      clicked(-3);
                     }, child: Text('完成领养',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)) :
                     TextButton(onPressed: (){
                       Navigator.pop(context);

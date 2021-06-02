@@ -14,7 +14,7 @@ class HomePageModel {
   int collection_num;
   int commNum;
   final  String address_info;
-  final  bool is_complete;
+  bool is_complete;
   final  List<int> tags;
   bool liked;
   bool collectioned;
@@ -64,6 +64,7 @@ class HomePageModel {
       tagInfos: json['tagInfos']== null ? null : (json['tagInfos'] as List)?.map((e) => TagModel.fromJson(e)).toList(),
       liked:  json['liked'],
       collectioned: json['collectioned'],
+      is_complete: json['is_complete'],
     );
   }
 
