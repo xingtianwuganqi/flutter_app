@@ -46,64 +46,27 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
           footer: MaterialFooter(
             enableInfiniteLoad:false,
           ),
-          child: ListView.builder(
-              itemCount: homeModels.length,
-              itemBuilder: (context,index) {
-                var data = homeModels[index];
-                return  GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: homePageItemWidget(context, data,(topicId,value){
-                    if (value is HomeLikeStatusModel) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.liked = value.like == 1 ? true : false;
-                          if (newModel.liked) {
-                            newModel.likes_num += 1;
-                          }else if (newModel.liked == false){
-                            if(newModel.likes_num > 0) {
-                              newModel.likes_num -= 1;
-                            }
-                          }
-                        }
-                        return newModel;
-                      }).toList();
-                    }else if (value is HomeCollectionStatusModel){
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.collectioned = value.collection == 1 ? true : false;
-                          if (newModel.collectioned) {
-                            newModel.collection_num += 1;
-                          }else if (newModel.collectioned == false){
-                            if(newModel.collection_num > 0) {
-                              newModel.collection_num -= 1;
-                            }
-                          }
-                        }
-                        return newModel;
-                      }).toList();
-                    }else if(value is int) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.commNum = value;
-                        }
-                        return newModel;
-                      }).toList();
-                    }
-                    setState(() {
-
-                    });
-                  }),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return TopicDetailWidget(topicId: data.topic_id);
-                    }));
-                  },
-                );
-
-              }
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Container(
+                  child: Text('点击右上角更多，点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式',style: TextStyle(
+                    color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                    fontSize: FontUtil.fs(FontSize.desc)
+                  ),),
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  padding: EdgeInsets.only(left: 15,right: 15,top: 8,bottom: 8),
+                ),
+              ),
+              SliverList(
+                  delegate: SliverChildBuilderDelegate( (context,index) {
+                      var data = homeModels[index];
+                      return publishCell(data);
+                    },
+                    childCount: homeModels.length,
+                  )
+              )
+            ],
           ),
           firstRefresh: isFirstLoad,
           firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
@@ -118,6 +81,61 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
           },
 
         )
+    );
+  }
+
+  Widget publishCell (HomePageModel data) {
+    return  GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: homePageItemWidget(context, data,(topicId,value){
+        if (value is HomeLikeStatusModel) {
+          homeModels = homeModels.map((e) {
+            var newModel = e;
+            if (newModel.topic_id == topicId) {
+              newModel.liked = value.like == 1 ? true : false;
+              if (newModel.liked) {
+                newModel.likes_num += 1;
+              }else if (newModel.liked == false){
+                if(newModel.likes_num > 0) {
+                  newModel.likes_num -= 1;
+                }
+              }
+            }
+            return newModel;
+          }).toList();
+        }else if (value is HomeCollectionStatusModel){
+          homeModels = homeModels.map((e) {
+            var newModel = e;
+            if (newModel.topic_id == topicId) {
+              newModel.collectioned = value.collection == 1 ? true : false;
+              if (newModel.collectioned) {
+                newModel.collection_num += 1;
+              }else if (newModel.collectioned == false){
+                if(newModel.collection_num > 0) {
+                  newModel.collection_num -= 1;
+                }
+              }
+            }
+            return newModel;
+          }).toList();
+        }else if(value is int) {
+          homeModels = homeModels.map((e) {
+            var newModel = e;
+            if (newModel.topic_id == topicId) {
+              newModel.commNum = value;
+            }
+            return newModel;
+          }).toList();
+        }
+        setState(() {
+
+        });
+      },fromInfo: 'publish'),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return TopicDetailWidget(topicId: data.topic_id);
+        }));
+      },
     );
   }
 

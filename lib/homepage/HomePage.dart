@@ -247,14 +247,14 @@ parameter["token"] = UserManager.shared.token
 
 
 /// UI
-Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoChanged changed) {
+Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoChanged changed,{String fromInfo = '' }) {
   return
     // GestureDetector(
     // child:
     Container(
       child: Column(
         children: [
-          userInfoWidget(context,data),
+          userInfoWidget(context,data,fromInfo: fromInfo),
           textInfoWidget(data),
           imagesWidget(data),
           addressWidget(data),
@@ -286,7 +286,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
 }
 
 /// 用户信息
-Widget userInfoWidget(BuildContext context, HomePageModel data) {
+Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = ''}) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
@@ -341,6 +341,13 @@ Widget userInfoWidget(BuildContext context, HomePageModel data) {
                     //
                     // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                     Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                    fromInfo == 'publish' ?
+                    TextButton(onPressed: (){
+                      Navigator.pop(context);
+
+
+
+                    }, child: Text('完成领养',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)) :
                     TextButton(onPressed: (){
                       Navigator.pop(context);
                       lazyAuthToDoThings(context, (){
