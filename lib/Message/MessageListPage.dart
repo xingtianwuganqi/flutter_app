@@ -134,7 +134,6 @@ class MessageListState extends State<MessageListWidget> {
                 color: ColorsUtil.fromEnmu(ColorEnum.system),
                 borderRadius: BorderRadius.all(Radius.circular(3.0))
             ),
-            margin: EdgeInsets.only(left: 10),
             padding: EdgeInsets.only(left: 5,right: 5,top: 3,bottom: 3),
             child: Text(e.tag_name ?? "",
               style: TextStyle(
@@ -160,7 +159,9 @@ class MessageListState extends State<MessageListWidget> {
                 child: Column(
                   children: [
                     Container(
-                      height: tags.length > 0 ? 24 : 3 ,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 10),
+                      height: tags.length > 0 ? 23 : 3 ,
                       child:  Column(
                         children: [
                           Wrap(

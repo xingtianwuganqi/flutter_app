@@ -549,7 +549,17 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     dic['contact'] = _phoneController.text;
     dic['tags'] = tagStr;
     dic['imgs'] = imgStr;
-
+    print('content的length');
+    print(_contentController.text.trim().length);
+    print(dic);
+    /*
+    parameter["content"] = content
+            parameter["imgs"] = imgs
+            parameter["address_info"] = address
+            parameter["contact"] = contact
+            parameter["token"] = UserManager.shared.token
+            parameter["tags"] = tags
+     */
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('发布成功');
@@ -568,6 +578,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     EasyLoading.show(status:'上传图片...');
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
     var dic = new Map<String, dynamic>.from(paramDic);
+    print(dic);
     await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {

@@ -41,6 +41,7 @@ class NetWorking {
   static Future formDataPost(String url, Map<String,dynamic> dic,SuccessCallBack successBack,FailureCallBack failBack) async {
     Printer.printMapJsonLog('😁😁😁');
     Printer.printMapJsonLog(url);
+    Printer.printMapJsonLog(dic);
     try {
       FormData formData = FormData.fromMap(dic);
       var response = await dio.post(url,data: formData);

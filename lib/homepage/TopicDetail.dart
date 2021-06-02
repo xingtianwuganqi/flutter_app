@@ -111,7 +111,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
               color: ColorsUtil.fromEnmu(ColorEnum.system),
               borderRadius: BorderRadius.all(Radius.circular(3.0))
           ),
-          margin: EdgeInsets.only(right: 10),
           padding: EdgeInsets.only(left: 5,right: 5,top: 1,bottom: 1),
           child: Text(e.tag_name ?? "",
             style: TextStyle(
@@ -130,7 +129,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             // ignore: null_aware_before_operator
             padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
-            height: tags.length > 0 ? 26 : 3,
+            height: tags.length > 0 ? 23 : 3,
               child:  Column(
                 children: [
                   Wrap(
@@ -293,7 +292,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
               TextButton(onPressed: (){
                 Navigator.pop(context);
                 getTopicInfoContactNetworking();
-              }, child: Text('仍要获取',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
+              }, child: Text('继续获取',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)))),
             ],
           );
         }

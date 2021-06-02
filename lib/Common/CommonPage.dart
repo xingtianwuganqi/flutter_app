@@ -67,6 +67,7 @@ class UserManager {
 
   void logout() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userInfo');
     prefs.clear();
     UserManager.instance.userInfo = null;
     Future.delayed(Duration(seconds: 1),(){
@@ -152,8 +153,8 @@ static func apiBasicParameters() -> [String:Any] {
         ]
     }
  */
-// 定义一些公关参数
-Map<String,dynamic> paramDic = {
+// 定义一些公关参数，// 定义为计算属性
+Map<String,dynamic> get paramDic => {
   'appType': 'flutter',
   'appVersion': '1.0.3',
   'androidVersion': '',
