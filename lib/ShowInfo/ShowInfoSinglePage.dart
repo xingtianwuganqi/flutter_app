@@ -196,10 +196,9 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
     dic['show_id'] = widget.showId;
     dic['gambit_id'] = widget.gambitId;
 
-    FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       if (data['code'] == 200) {
         List<ShowInfoModel> datas = [];
         var models = data['data'];

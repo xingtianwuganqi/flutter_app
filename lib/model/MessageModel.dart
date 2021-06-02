@@ -32,7 +32,7 @@ class MessageListModel {
   final HomePageModel topicInfo;
   final ShowInfoModel showInfo;
   final ReplyListModel replyInfo;
-  final CommentInfoModel commentInfo;
+  final MessageCommentModel commentInfo;
   final int reply_type;
   final int reply_id;
 
@@ -64,9 +64,38 @@ class MessageListModel {
       topicInfo: json['topicInfo'] != null ? HomePageModel.fromJson(json['topicInfo']) : null,
       showInfo: json['showInfo'] != null ? ShowInfoModel.fromJson(json['showInfo']) : null,
       replyInfo: json['replyInfo'] != null ? ReplyListModel.fromJson(json['replyInfo']) : null,
-      commentInfo: json['commentInfo'] != null ? CommentInfoModel.fromJson(json['commentInfo']) : null,
+      commentInfo: json['commentInfo'] != null ? MessageCommentModel.fromJson(json['commentInfo']) : null,
       reply_type: json['reply_type'],
       reply_id: json['reply_id']
+    );
+  }
+}
+
+class MessageCommentModel {
+  final int id;
+  final String content;
+  final int topic_id;
+  final int topic_type;
+  final int from_uid;
+  final int to_uid;
+
+  MessageCommentModel({
+    this.id,
+    this.content,
+    this.topic_id,
+    this.topic_type,
+    this.from_uid,
+    this.to_uid,
+  });
+
+  factory MessageCommentModel.fromJson(Map<String,dynamic> json) {
+    return MessageCommentModel(
+      id: json['id'],
+      content: json['content'],
+      topic_id: json['topic_id'],
+      topic_type: json['topic_type'],
+      from_uid: json['from_uid'],
+      to_uid: json['to_uid']
     );
   }
 }

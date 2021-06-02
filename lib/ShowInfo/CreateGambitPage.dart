@@ -148,8 +148,7 @@ class CreateGambitState extends State<CreateGambitPage> {
     };
     print(url);
     print(dic);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         EasyLoading.showToast("提交成功");

@@ -188,8 +188,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
     print(_originController.text);
     print(_pswdController.text);
     print(_confirmController.text);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       print(data);
       if (data['code'] == 200) {
         /// 成功

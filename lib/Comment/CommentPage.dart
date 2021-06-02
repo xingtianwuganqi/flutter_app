@@ -245,8 +245,7 @@ class CommentState extends State<CommentInfoWidget> {
     dic['page'] = _page;
     dic['size'] = 10;
 
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       // Printer.printMapJsonLog(data);
       if (data['code'] == 200) {
         var models = data['data'];
@@ -325,8 +324,7 @@ class CommentState extends State<CommentInfoWidget> {
       'from_uid': UserManager.instance.userInfo.id,
       'to_uid': widget.toUid
     };
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('发表成功');
         /// 刷新数据
@@ -372,8 +370,7 @@ class CommentState extends State<CommentInfoWidget> {
       'from_uid': UserManager.instance.userInfo.id,
     };
 
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast("发表成功");
         var json = data['data'];

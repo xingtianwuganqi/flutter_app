@@ -158,11 +158,10 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
       'show_id': widget.showId,
       'gambit_id': widget.gambitId
     };
-    FormData formData = FormData.fromMap(dic);
     print("page");
     print(page);
     ///创建Map 封装参数
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       if (data['code'] == 200) {
         Printer.printMapJsonLog(data);
         var models = data['data'];
@@ -195,9 +194,8 @@ class ShowInfoActionNetworking {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['like_mark'] = likeMark;
     dic['show_id'] = showId;
-    FormData formData = FormData.fromMap(dic);
     print(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = HomeLikeStatusModel.fromJson(data['data']);
@@ -221,8 +219,7 @@ class ShowInfoActionNetworking {
     dic['show_id'] = showId;
     print(url);
     print(dic);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = HomeCollectionStatusModel.fromJson(data['data']);

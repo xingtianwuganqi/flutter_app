@@ -318,9 +318,7 @@ class SearchPageState extends State<SearchPageWidget> {
     dic['keyword'] = keyword;
     dic['page'] = _page;
     dic['size'] = 10;
-    print(page);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       print(data);
       if (data['code'] == 200) {
         List<HomePageModel> datas = [];

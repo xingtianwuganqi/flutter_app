@@ -236,8 +236,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
   Future<Null> getQiNiuToken() async {
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
     var dic = new Map<String, dynamic>.from(paramDic);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
@@ -276,8 +275,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['username'] = _nicknameController.text;
     dic['avator'] = avator;
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         Printer.printMapJsonLog(data['data']);
         EasyLoading.showToast('更新成功');

@@ -125,8 +125,7 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
     page = num;
     final url = NetWorkingConfig.path(NetPath.authpublish);
     final dic = {'token': UserManager.instance.token,'page': page,'size': 10};
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       if (data['code'] == 200) {
         isFirstLoad = false;
         List<HomePageModel> datas = [];

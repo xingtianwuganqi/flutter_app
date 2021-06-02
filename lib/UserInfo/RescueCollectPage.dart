@@ -124,11 +124,10 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
     page = num;
     final url = NetWorkingConfig.path(NetPath.authcollection);
     final dic = {'token': UserManager.instance.token,'page': page,'size': 10};
-    FormData formData = FormData.fromMap(dic);
     print('resuce request');
     print(url);
     print(dic);
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       print(data);
       if (data['code'] == 200) {
         isFirstLoad = false;

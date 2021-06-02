@@ -120,8 +120,7 @@ class MessageSystemState extends State<MessageSystemPage> {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var models = data['data'];

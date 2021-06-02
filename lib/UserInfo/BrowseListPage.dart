@@ -118,10 +118,9 @@ class BrowseListState extends State<BrowseListWidget> {
     page = num;
     final url = NetWorkingConfig.path(NetPath.authhistorylist);
     final dic = {"page": page,"size": 10,'token': UserManager.instance.token};
-    FormData formData = FormData.fromMap(dic);
 
     ///创建Map 封装参数
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       print(data);
       if (data['code'] == 200) {
         List<AuthHistoryModel> datas = [];

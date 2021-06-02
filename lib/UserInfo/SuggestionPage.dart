@@ -148,8 +148,7 @@ class SuggestionState extends State<SuggesstionWidget> {
   Future<Null> suggestionNetworking() async{
     final url = NetWorkingConfig.path(NetPath.suggestion);
     final dic = {'token': UserManager.instance.token,'content': _sugController.text,'contact': _contactController.text};
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('提交成功');
         Future.delayed(Duration(seconds: 2), (){

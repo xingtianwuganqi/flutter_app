@@ -228,8 +228,7 @@ class ViolationListState extends State<ViolationsListWidget> {
       "token": UserManager.instance.token
     };
 
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('提交成功');
         Future.delayed(Duration(seconds: 2),() {

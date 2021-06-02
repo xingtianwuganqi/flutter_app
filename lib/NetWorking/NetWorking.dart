@@ -38,11 +38,11 @@ class NetWorking {
     }
   }
 
-  static Future formDataPost(String url, FormData formData,SuccessCallBack successBack,FailureCallBack failBack) async {
+  static Future formDataPost(String url, Map<String,dynamic> dic,SuccessCallBack successBack,FailureCallBack failBack) async {
     Printer.printMapJsonLog('😁😁😁');
     Printer.printMapJsonLog(url);
-    Printer.printMapJsonLog(formData.fields);
     try {
+      FormData formData = FormData.fromMap(dic);
       var response = await dio.post(url,data: formData);
       Printer.printMapJsonLog('++++++++++');
       Printer.printMapJsonLog(response.data);

@@ -161,8 +161,13 @@ class MessageListState extends State<MessageListWidget> {
                   children: [
                     Container(
                       height: tags.length > 0 ? 24 : 3 ,
-                      child: Row(children:
-                        tags
+                      child:  Column(
+                        children: [
+                          Wrap(
+                            spacing: 10,
+                            children:tags,
+                          )
+                        ],
                       ),
                     ),
                     Expanded(
@@ -291,21 +296,24 @@ class MessageListState extends State<MessageListWidget> {
     page = num;
     final url = NetWorkingConfig.path(NetPath.authorMessage);
     final dic = {'page': page,'size': 10,'token': UserManager.instance.token,'msg_type': widget.msgType};
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
+        // print('评论-----------');
+        // Printer.printMapJsonLog(data['data']);
         var models = data['data'];
         List<MessageListModel> items = [];
         for (int i = 0;i < models.length;i ++) {
           var item = MessageListModel.fromJson(models[i]);
           items.add(item);
         }
+        print("items.length");
+        print(items.length);
         page > 1 ? msgList += items : msgList = items;
         if (items.length > 0) {
           page += 1;
         }
       }else{
-        msgList = [];
+
       }
       setState(() {
         isFirstLoad=false;

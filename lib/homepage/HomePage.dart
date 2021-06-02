@@ -167,9 +167,8 @@ class _HomePageState extends State<HomePage> {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
-    FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       if (data['code'] == 200) {
         var models = data['data'];
         var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
@@ -200,8 +199,8 @@ class HomeNetworking {
       'like_mark': likeMark,
       'topic_id': topicId,
     };
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = HomeLikeStatusModel.fromJson(data['data']);
@@ -230,8 +229,8 @@ parameter["token"] = UserManager.shared.token
       'collect_mark': collectMark,
       'topic_id': topicId,
     };
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = HomeCollectionStatusModel.fromJson(data['data']);
