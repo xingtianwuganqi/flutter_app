@@ -286,7 +286,6 @@ class SearchPageState extends State<SearchPageWidget> {
 
   Future<Null> searchKeyWordsNetworking() async {
     final url = NetWorkingConfig.path(NetPath.searchkeyword);
-    // FormData formData = FormData.fromMap(map)
     await NetWorking.get(url, (data) {
       if (data['code'] == 200) {
         var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();

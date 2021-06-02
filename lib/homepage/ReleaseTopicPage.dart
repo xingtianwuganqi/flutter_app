@@ -550,8 +550,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     dic['tags'] = tagStr;
     dic['imgs'] = imgStr;
 
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('发布成功');
         Future.delayed(Duration(milliseconds: 1500),(){
@@ -569,8 +568,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     EasyLoading.show(status:'上传图片...');
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
     var dic = new Map<String, dynamic>.from(paramDic);
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);

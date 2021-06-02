@@ -131,9 +131,14 @@ class TopicDetailState extends State<TopicDetailWidget> {
             padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
             height: tags.length > 0 ? 26 : 3,
-            child: Row(
-              children: tags,
-            ),
+              child:  Column(
+                children: [
+                  Wrap(
+                    spacing: 10,
+                    children:tags,
+                  )
+                ],
+              ),
           ),
           Container(
             padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
@@ -334,9 +339,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
     EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.topicdetail);
     final dic = {"topic_id": widget.topicId,"token": UserManager.instance.token ?? ""};
-    FormData formData = FormData.fromMap(dic);
     ///创建Map 封装参数
-    await NetWorking.formDataPost(url, formData,(data){
+    await NetWorking.formDataPost(url, dic,(data){
       EasyLoading.dismiss();
       if (data['code'] == 200) {
         var model = data['data'];
@@ -358,8 +362,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     final url = NetWorkingConfig.path(NetPath.addViewHistory);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_id'] = widget.topicId;
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
 
@@ -374,8 +377,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     final url = NetWorkingConfig.path(NetPath.getContact);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['topic_id'] = widget.topicId;
-    FormData formData = FormData.fromMap(dic);
-    await NetWorking.formDataPost(url, formData, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
         var model = ContactModel.fromJson(data['data']);
