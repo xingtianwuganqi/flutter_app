@@ -1,3 +1,6 @@
+import 'package:flutter_720yun/model/CommentModel.dart';
+
+import 'MessageModel.dart';
 import 'UserModel.dart';
 
 class GambitModel {
@@ -36,13 +39,12 @@ class ShowInfoModel {
   bool liked;
   bool collectioned;
   final String create_time;
-  // final commentInfo: CommentListModel?
-  // final commentAttr: NSAttributedString?
+  final MessageCommentModel commentInfo;
   final GambitModel gambit_type;
   int commNum;
 
-  ShowInfoModel(
-      {this.show_id,
+  ShowInfoModel({
+      this.show_id,
       this.user,
       this.imgs,
       this.views_num,
@@ -55,7 +57,9 @@ class ShowInfoModel {
       this.collectioned,
       this.create_time,
       this.gambit_type,
-      this.commNum});
+      this.commNum,
+    this.commentInfo
+  });
 
   factory ShowInfoModel.fromJson(Map<String, dynamic> json) {
     return ShowInfoModel(
@@ -73,6 +77,7 @@ class ShowInfoModel {
         create_time: json['create_time'],
         gambit_type: json['gambit_type'] != null ? GambitModel.fromJson(json['gambit_type']): null,
         commNum: json['commNum'],
+        commentInfo:json['commentInfo'] != null ? MessageCommentModel.fromJson(json['commentInfo']) : null,
     );
   }
 }

@@ -457,6 +457,7 @@ Widget textInfoWidget(HomePageModel data) {
 
 Widget imagesWidget(HomePageModel data) {
   if (data.imgs?.length >= 4) {
+    var num = data.imgs.length - 4;
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       height: 170,
@@ -519,7 +520,38 @@ Widget imagesWidget(HomePageModel data) {
                       ),
                     ),
                     Expanded(
-                        child: Container(
+                        child:num > 1 ? Container(
+                          padding: EdgeInsets.only(left:2.5,top: 2.5),
+                          child: Stack(
+                            alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
+                            children: [
+                              CachedNetworkImage(
+                                imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],
+                                fit: BoxFit.cover,
+                                placeholder: (context,url) => Container(
+                                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                                ),
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                              Positioned(
+                                child: Container(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  // color: Colors.black12,
+                                  decoration: BoxDecoration(color: Color(0x30000000)),
+                                  alignment: Alignment.center,
+                                  child: Text('+$num',style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontUtil.fs(FontSize.big)
+                                  ),),
+                                ),
+                              )
+                            ],
+                          ),
+                        ):
+                        Container(
                           padding: EdgeInsets.only(left:2.5,top: 2.5),
                           child: CachedNetworkImage(
                             imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],

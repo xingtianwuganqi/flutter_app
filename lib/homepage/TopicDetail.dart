@@ -169,9 +169,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
   }
 
   List<Widget> imageWidgets(HomePageModel model) {
-    if ((model?.imgs?.length ?? 0) == 0) {
-      return [];
-    }else{
+    if (model != null && model.imgs != null && (model.imgs.length > 0)) {
       List<Widget> data = [];
       var imgWidgets = model.imgs?.map(
               (e) =>
@@ -188,6 +186,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;
       return data;
+    }else{
+      return [];
     }
 
   }
@@ -195,9 +195,15 @@ class TopicDetailState extends State<TopicDetailWidget> {
   @override
   Widget build(BuildContext context) {
     var contactInfo = '点击获取联系方式';
-    if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
-      contactInfo = homeModel.contact_info;
+    // 已经完成领养
+    if (homeModel != null && homeModel.is_complete == true) {
+      contactInfo = '已完成领养';
+    }else{
+      if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+        contactInfo = homeModel.contact_info;
+      }
     }
+
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
@@ -219,7 +225,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                   children: [
                       Container(
                           color: ColorsUtil.fromEnmu(ColorEnum.system),
-                          height: 50,
+                          height: 45,
                           width: MediaQuery.of(context).size.width - 30,
                           child: TextButton(
                             child: Text(contactInfo,
@@ -228,18 +234,22 @@ class TopicDetailState extends State<TopicDetailWidget> {
                             ),
                             onPressed: () {
                               lazyAuthToDoThings(context, (){
-                                if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
-                                  /// 已经获取了联系方式
-                                  //复制
-                                  Future.delayed(Duration(milliseconds: 100),(){
-                                    Clipboard.setData(ClipboardData(text: homeModel.contact_info));
-                                  });
-                                  EasyLoading.showToast('已复制');
-                                  return;
+                                if (homeModel != null && homeModel.is_complete == true) {
+                                  EasyLoading.showToast('已完成领养');
                                 }else{
-                                  // getTopicInfoContactNetworking();
-                                  showAlert();
-                                  return;
+                                  if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+                                    /// 已经获取了联系方式
+                                    //复制
+                                    Future.delayed(Duration(milliseconds: 100),(){
+                                      Clipboard.setData(ClipboardData(text: homeModel.contact_info));
+                                    });
+                                    EasyLoading.showToast('已复制');
+                                    return;
+                                  }else{
+                                    // getTopicInfoContactNetworking();
+                                    showAlert();
+                                    return;
+                                  }
                                 }
                               });
                             },
@@ -344,7 +354,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
       if (data['code'] == 200) {
         var model = data['data'];
         homeModel = HomePageModel.fromJson(model);
-        print(homeModel.imgs);
         setState(() {
 
         });

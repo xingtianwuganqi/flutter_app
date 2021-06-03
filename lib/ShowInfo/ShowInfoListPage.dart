@@ -239,7 +239,10 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
   var imgWidgets = data.imgs.map((e) => Container(
     child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,)
   )).toList();
-
+  var commentText = '添加评论...';
+  if (data.commentInfo != null) {
+    commentText = data.commentInfo.content;
+  }
   return Container(
     child: Column(
       children: [
@@ -380,7 +383,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
           child: Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,top: 10,right: 15),
-            child: Text('添加评论...',
+            child: Text(commentText,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
