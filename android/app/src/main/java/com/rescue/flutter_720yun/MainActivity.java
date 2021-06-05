@@ -1,4 +1,4 @@
-package com.example.flutter_720yun;
+package com.rescue.flutter_720yun;
 
 //import android.os.Bundle;
 //import io.flutter.app.FlutterActivity;

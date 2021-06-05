@@ -14,6 +14,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
+import '../tabbar.dart';
 
 
 class UserManager {
@@ -66,6 +67,7 @@ class UserManager {
   }
 
   void logout() async{
+    // jpush.deleteAlias().then((map) {});
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('userInfo');
     prefs.clear();

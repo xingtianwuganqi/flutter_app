@@ -299,9 +299,8 @@ class MessageListState extends State<MessageListWidget> {
     final dic = {'page': page,'size': 10,'token': UserManager.instance.token,'msg_type': widget.msgType};
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
-        // print('评论-----------');
-        // Printer.printMapJsonLog(data['data']);
         var models = data['data'];
+        print('begin fromjson');
         List<MessageListModel> items = [];
         for (int i = 0;i < models.length;i ++) {
           var item = MessageListModel.fromJson(models[i]);

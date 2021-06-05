@@ -10,6 +10,10 @@ import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
+// import 'package:jpush_flutter/jpush_flutter.dart';
+
+
+// JPush jpush = new JPush();
 
 class tabbar extends StatefulWidget {
 
@@ -128,22 +132,31 @@ class tabbarState extends State<tabbar> {
     );
   }
 
-  // Future<Null> _authUnreadMsgNetworking() async{
-  //   final url = NetWorkingConfig.path(NetPath.authUnreadMsg);
-  //   var dic = paramDic;
-  //   await NetWorking.formDataPost(url, formData, (data) {
-  //     print('unread');
-  //     print(data);
-  //     if (data['code'] == 200) {
-  //       var model = UnreadModel.fromJson(data['data']);
-  //       _unreadNum = (model.sys_unread ?? 0) + (model.collec_unread ?? 0) + (model.like_unread ?? 0) + (model.com_unread ?? 0);
-  //       setState(() {
+  // void jpushConfig() {
+  //   jpush.addEventHandler(
+  //   // 接收通知回调方法。
+  //     onReceiveNotification: (Map<String, dynamic> message) async {
+  //       print("flutter onReceiveNotification: $message");
+  //     },
+  //   // 点击通知回调方法。
+  //     onOpenNotification: (Map<String, dynamic> message) async {
+  //       print("flutter onOpenNotification: $message");
+  //     },
+  //   // 接收自定义消息回调方法。
+  //     onReceiveMessage: (Map<String, dynamic> message) async {
+  //       print("flutter onReceiveMessage: $message");
+  //     },
+  //   );
   //
-  //       });
-  //     }
-  //   }, (error) {
+  //   jpush.setup(
+  //     appKey: "d3d833b59e00683a1cba7323",
+  //     channel: "theChannel",
+  //     production: false,
+  //     debug: false, // 设置是否打印 debug 日志
+  //   );
   //
-  //   });
+  //   jpush.getRegistrationID().then((rid) { });
+  //
   // }
 
   void _loadConfig() {

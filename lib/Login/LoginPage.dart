@@ -15,6 +15,8 @@ import '../Common/CommonPage.dart';
 import 'package:device_info/device_info.dart';
 import 'dart:io';
 
+import '../tabbar.dart';
+
 
 
 class LoginWidget extends StatefulWidget {
@@ -128,6 +130,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (data["code"] == 200) {
         var model = data["data"];
         var userModel = UserInfoModel.fromJson(model);
+        // jpush.setAlias('${userModel.id}').then((map) { });
         _userModel = userModel;
         Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
         /// 登录成功

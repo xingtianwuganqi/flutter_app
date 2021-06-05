@@ -43,7 +43,7 @@ dependencies:
 #  flutter_linkify: ^5.0.2
   url_launcher: ^6.0.4
   link_text: ^0.2.0
-
+#  jpush_flutter: ^2.1.2
 
 dev_dependencies:
   flutter_test:

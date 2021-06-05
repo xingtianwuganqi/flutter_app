@@ -8,6 +8,7 @@ import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
 import '../Common/CommonPage.dart';
+import '../tabbar.dart';
 
 class RegisterWidget extends StatefulWidget {
   @override
@@ -137,7 +138,7 @@ class _RegisterState extends State<RegisterWidget> {
       if (data["code"] == 200) {
         var model = data["data"];
         var userModel = UserInfoModel.fromJson(model);
-        print(model);
+        // jpush.setAlias('${userModel.id}').then((map) { });
         _userModel = userModel;
         print(_userModel.phone_number);
       }else{

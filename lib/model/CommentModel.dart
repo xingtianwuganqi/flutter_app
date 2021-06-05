@@ -88,8 +88,8 @@ class ReplyListModel {
       content: json['content'],
       from_uid: json['from_uid'],
       to_uid: json['to_uid'],
-      fromInfo: UserInfoModel.fromJson(json['fromInfo']),
-      toInfo: UserInfoModel.fromJson(json['toInfo']),
+      fromInfo: json['fromInfo'] != null ? UserInfoModel.fromJson(json['fromInfo']) : null,
+      toInfo: json['toInfo'] != null ? UserInfoModel.fromJson(json['toInfo']) : null,
       create_time: json['create_time']
     );
   }
