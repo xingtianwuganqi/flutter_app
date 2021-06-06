@@ -8,11 +8,9 @@ import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
-import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
 
@@ -64,9 +62,11 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.5,
       ),
       floatingActionButton: FloatingActionButton(
-        child: IconButton(
-          icon: Image.asset('assets/icons/icon_home_write.png'),
-        ),
+        child:
+        Image.asset('assets/icons/icon_home_write.png'),
+        // IconButton(
+        //   icon: Image.asset('assets/icons/icon_home_write.png'),
+        // ),
         backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
         onPressed: (){
           lazyAuthToDoThings(context, (){
@@ -278,7 +278,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
             }
           }),
           textInfoWidget(data),
-          imagesWidget(data),
+          imagesWidget(context,data),
           addressWidget(data),
           commentWidget(60, context, data, (comIndex){
             if (comIndex == -1) { // 点赞
@@ -315,7 +315,9 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?  CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator) : AssetImage('assets/icons/icon_plh.png'),
+          backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+          CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator,) :
+          AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, 0),
             width: 36,
@@ -455,12 +457,16 @@ Widget textInfoWidget(HomePageModel data) {
   );
 }
 
-Widget imagesWidget(HomePageModel data) {
+Widget imagesWidget(BuildContext context, HomePageModel data) {
+
+  // var imgContentW = MediaQuery.of(context).size.height - 80;
+  var imgContentH = (MediaQuery.of(context).size.width - 80) * 0.618;
+
   if (data.imgs?.length >= 4) {
     var num = data.imgs.length - 4;
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
-      height: 170,
+      height: imgContentH,
       child: Column(
         children: [
           Expanded(
@@ -575,7 +581,7 @@ Widget imagesWidget(HomePageModel data) {
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       // width: MediaQuery.of(context).size.width - 65,
-      height: 170,
+      height: imgContentH,
       child: Row(
         children: [
           Expanded(
@@ -639,7 +645,7 @@ Widget imagesWidget(HomePageModel data) {
 
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       // width: MediaQuery.of(context).size.width - 65,
-      height: 170,
+      height: imgContentH,
       child: Row(
         children: [
           Expanded(
@@ -679,7 +685,7 @@ Widget imagesWidget(HomePageModel data) {
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       // width: MediaQuery.of(context).size.width - 65,
-      height: 170,
+      height: imgContentH,
       child: CachedNetworkImage(
         imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
         placeholder: (context,url) => Container(

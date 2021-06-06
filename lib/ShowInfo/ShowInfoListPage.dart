@@ -237,7 +237,14 @@ class ShowInfoActionNetworking {
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
   int currentIndex = 0;
   var imgWidgets = data.imgs.map((e) => Container(
-    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,)
+    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,
+        height: double.infinity,
+        width: double.infinity,
+        fit: BoxFit.contain,
+        placeholder: (context,url) => Container(
+          color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        ),
+    )
   )).toList();
   var commentText = '添加评论...';
   if (data.commentInfo != null) {

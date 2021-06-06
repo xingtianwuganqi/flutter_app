@@ -51,7 +51,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator): AssetImage('assets/icons/icon_plh.png'),
+            backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator):
+            AssetImage('assets/icons/icon_plh.png'),
             child: Container(
               alignment: Alignment(0, .5),
               width: 40,
@@ -177,6 +179,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                 padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                 child: CachedNetworkImage(
                   imageUrl:  NetWorkingConfig.imgBaseUrl + e,
+                  fit: BoxFit.contain,
                   placeholder: (context,url) => Container(
                     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                   ),
