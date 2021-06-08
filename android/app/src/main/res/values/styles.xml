@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <!-- Show a splash screen on the activity. Automatically removed when
-             Flutter draws its first frame -->
-        <item name="android:windowBackground">@drawable/launch_background</item>
-
+<!--    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">-->
+<!--        &lt;!&ndash; Show a splash screen on the activity. Automatically removed when-->
+<!--             Flutter draws its first frame &ndash;&gt;-->
+<!--        <item name="android:windowBackground">@drawable/splash</item>-->
+    <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item  name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--设置透明背景-->
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--        &lt;!&ndash;设置透明背景&ndash;&gt;-->
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+<!--    </style>-->
 </resources>
