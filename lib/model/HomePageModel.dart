@@ -276,3 +276,14 @@ class ContactModel {
     );
   }
 }
+
+class ImgIndexModel {
+  final String url;
+  final int index;
+
+  ImgIndexModel({this.url,this.index});
+  //
+  // factory ImgIndexModel.fromJson(Map<String,dynamic> json) {
+  //
+  // }
+}

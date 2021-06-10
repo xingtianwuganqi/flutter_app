@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_720yun/CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
@@ -46,7 +47,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
   /// 用户信息
   Widget userInfoWidget(HomePageModel data) {
     return Container(
-      padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
+      padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
       child: Row(
         children: [
           CircleAvatar(
@@ -104,11 +105,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
   Widget textInfoWidget(HomePageModel data) {
     /// 标签
     List<Widget> tags = [];
-
     if (data.tagInfos != null ) {
       if (data.tagInfos.isNotEmpty) {
         tags = data.tagInfos.map((e) => Container(
-
           decoration: BoxDecoration(
               color: ColorsUtil.fromEnmu(ColorEnum.system),
               borderRadius: BorderRadius.all(Radius.circular(3.0))
@@ -173,18 +172,48 @@ class TopicDetailState extends State<TopicDetailWidget> {
   List<Widget> imageWidgets(HomePageModel model) {
     if (model != null && model.imgs != null && (model.imgs.length > 0)) {
       List<Widget> data = [];
-      var imgWidgets = model.imgs?.map(
-              (e) =>
-              Container(
-                padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
-                child: CachedNetworkImage(
-                  imageUrl:  NetWorkingConfig.imgBaseUrl + e,
-                  fit: BoxFit.contain,
-                  placeholder: (context,url) => Container(
-                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+      List<ImgIndexModel> imgs = [];
+      List<ImgIndexModel> originImgs = [];
+      for (int i = 0;i < model.imgs.length;i ++ ) {
+        var img = new ImgIndexModel(url: NetWorkingConfig.imgBaseUrl + model.imgs[i] + NetWorkingConfig.imgTailUrl,index: i);
+        imgs.add(img);
+      }
+
+      for (int i = 0;i < model.imgs.length;i ++ ) {
+        var img = new ImgIndexModel(url: NetWorkingConfig.imgBaseUrl + model.imgs[i],index: i);
+        originImgs.add(img);
+      }
+      void tapClick(int index) {
+        var imgUrls = originImgs.map((e) => e.url).toList();
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return PhotoViewGalleryScreen(
+            images:imgUrls,//传入图片list
+            index: index,//传入当前点击的图片的index
+          );
+        }));
+      }
+      var imgWidgets = imgs.map(
+              (e) {
+                print(e.url);
+                return GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        left: 15, right: 15, top: 5, bottom: 5),
+                    child: CachedNetworkImage(
+                      imageUrl: e.url,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) =>
+                          Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          ),
+                    ),
                   ),
-                ),
-              ))?.toList();
+                  onTap: () {
+                    tapClick(e.index);
+                  },
+                );
+              }
+      )?.toList();
       data.add(userInfoWidget(homeModel));
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;

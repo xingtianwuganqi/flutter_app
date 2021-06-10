@@ -461,13 +461,15 @@ Widget textInfoWidget(HomePageModel data) {
 Widget imagesWidget(BuildContext context, HomePageModel data) {
 
   var imgs = data.imgs.map((e) {
-    return NetWorkingConfig.imgBaseUrl + e;
+    return NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgTailUrl;
   }).toList();
+
+  var originImgs = data.imgs.map((e) => NetWorkingConfig.imgBaseUrl + e).toList();
 
   void tapClick(int index) {
     Navigator.push(context, MaterialPageRoute(builder: (context){
       return PhotoViewGalleryScreen(
-        images:imgs,//传入图片list
+        images:originImgs,//传入图片list
         index: index,//传入当前点击的图片的index
       );
     }));
@@ -491,7 +493,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                       child: Container(
                         padding: EdgeInsets.only(right: 2.5,bottom: 2.5),
                         child: CachedNetworkImage(
-                          imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                          imageUrl: imgs[0],
                           placeholder: (context,url) => Container(
                             color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           ),
@@ -510,7 +512,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                     child:  Container(
                       padding: EdgeInsets.only(left:2.5,bottom: 2.5),
                       child: CachedNetworkImage(
-                        imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                        imageUrl: imgs[1],
                         placeholder: (context,url) => Container(
                           color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                         ),
@@ -539,7 +541,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                         child:Container(
                           padding: EdgeInsets.only(right:2.5,top: 2.5),
                           child: CachedNetworkImage(
-                            imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                            imageUrl: imgs[2],
                             placeholder: (context,url) => Container(
                               color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                             ),
@@ -561,7 +563,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                               alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
                               children: [
                                 CachedNetworkImage(
-                                  imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],
+                                  imageUrl: imgs[3],
                                   fit: BoxFit.cover,
                                   placeholder: (context,url) => Container(
                                     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
@@ -589,7 +591,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                           Container(
                             padding: EdgeInsets.only(left:2.5,top: 2.5),
                             child: CachedNetworkImage(
-                              imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[3],
+                              imageUrl: imgs[3],
                               fit: BoxFit.cover,
                               placeholder: (context,url) => Container(
                                 color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
@@ -623,7 +625,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
               child: Container(
                 padding: EdgeInsets.only(right: 2.5),
                 child: CachedNetworkImage(
-                  imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                  imageUrl: imgs[0],
                   placeholder: (context,url) => Container(
                     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                   ),
@@ -648,7 +650,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                         child: Container(
                           padding: EdgeInsets.only(left:2.5,bottom: 2.5),
                           child: CachedNetworkImage(
-                            imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                            imageUrl: imgs[1],
                             placeholder: (context,url) => Container(
                               color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                             ),
@@ -667,7 +669,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                           child:  Container(
                             padding: EdgeInsets.only(left:2.5,top: 2.5),
                             child: CachedNetworkImage(
-                              imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[2],
+                              imageUrl: imgs[2],
                               placeholder: (context,url) => Container(
                                 color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                               ),
@@ -702,7 +704,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                   child: Container(
                     padding: EdgeInsets.only(right: 2.5),
                     child: CachedNetworkImage(
-                      imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+                      imageUrl: imgs[0],
                       placeholder: (context,url) => Container(
                         color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                       ),
@@ -723,7 +725,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
               child: Container(
                 padding: EdgeInsets.only(left: 2.5),
                 child: CachedNetworkImage(
-                  imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[1],
+                  imageUrl: imgs[1],
                   placeholder: (context,url) => Container(
                     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                   ),
@@ -747,7 +749,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
         // width: MediaQuery.of(context).size.width - 65,
         height: imgContentH,
         child: CachedNetworkImage(
-          imageUrl:NetWorkingConfig.imgBaseUrl + data.imgs[0],
+          imageUrl: imgs[0],
           placeholder: (context,url) => Container(
             color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
           ),
