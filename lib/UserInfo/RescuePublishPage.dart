@@ -4,6 +4,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import '../model/HomePageModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../homepage/TopicDetail.dart';
@@ -26,7 +27,34 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
   var isFirstLoad = true;
 
   List<HomePageModel> homeModels = [];
+  ///加载图片的标识
+  bool isLoadingImage = true;
 
+  bool notificationFunction(Notification notification) {
+    ///通知类型
+    switch (notification.runtimeType) {
+      case ScrollStartNotification:
+        Printer.printMapJsonLog("开始滚动");
+        ///在这里更新标识 刷新页面 不加载图片
+        isLoadingImage = false;
+        break;
+      case ScrollUpdateNotification:
+        Printer.printMapJsonLog("正在滚动");
+        break;
+      case ScrollEndNotification:
+        Printer.printMapJsonLog("滚动停止");
+
+        ///在这里更新标识 刷新页面 加载图片
+        setState(() {
+          isLoadingImage = true;
+        });
+        break;
+      case OverscrollNotification:
+        Printer.printMapJsonLog("滚动到边界");
+        break;
+    }
+    return true;
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -41,53 +69,60 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
     // TODO: implement build
     return new Scaffold(
         appBar: null,
-        body: EasyRefresh(
-          header: MaterialHeader(),
-          footer: MaterialFooter(
-            enableInfiniteLoad:false,
-          ),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Container(
-                  child: Text('点击右上角更多，点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式',style: TextStyle(
-                    color: ColorsUtil.fromEnmu(ColorEnum.mark),
-                    fontSize: FontUtil.fs(FontSize.desc)
-                  ),),
-                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-                  padding: EdgeInsets.only(left: 15,right: 15,top: 8,bottom: 8),
-                ),
-              ),
-              SliverList(
-                  delegate: SliverChildBuilderDelegate( (context,index) {
-                      var data = homeModels[index];
-                      return publishCell(data);
-                    },
-                    childCount: homeModels.length,
-                  )
-              )
-            ],
-          ),
-          firstRefresh: isFirstLoad,
-          firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-          emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
-            loadRescuePublishList(1);
-          },title: '暂无发布',desc: '快去发布送养吧'),
-          onRefresh:() async {
-            await loadRescuePublishList(1);
-          },
-          onLoad: () async{
-            await loadRescuePublishList(page);
-          },
-
+        body: NotificationListener(
+          child: refreshBody(),
+          onNotification: notificationFunction,
         )
+    );
+  }
+
+  Widget refreshBody() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              child: Text('点击右上角更多，点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式',style: TextStyle(
+                  color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                  fontSize: FontUtil.fs(FontSize.desc)
+              ),),
+              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+              padding: EdgeInsets.only(left: 15,right: 15,top: 8,bottom: 8),
+            ),
+          ),
+          SliverList(
+              delegate: SliverChildBuilderDelegate( (context,index) {
+                var data = homeModels[index];
+                return publishCell(data);
+              },
+                childCount: homeModels.length,
+              )
+          )
+        ],
+      ),
+      firstRefresh: isFirstLoad,
+      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
+        loadRescuePublishList(1);
+      },title: '暂无发布',desc: '快去发布送养吧'),
+      onRefresh:() async {
+        await loadRescuePublishList(1);
+      },
+      onLoad: () async{
+        await loadRescuePublishList(page);
+      },
+
     );
   }
 
   Widget publishCell (HomePageModel data) {
     return  GestureDetector(
       behavior: HitTestBehavior.opaque,
-      child: homePageItemWidget(context, data,(topicId,value){
+      child: homePageItemWidget(context, data,isLoadingImage,(topicId,value){
         if (value is HomeLikeStatusModel) {
           homeModels = homeModels.map((e) {
             var newModel = e;

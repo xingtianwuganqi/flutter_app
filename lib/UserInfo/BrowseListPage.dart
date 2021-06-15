@@ -3,6 +3,7 @@ import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Common/CommonPage.dart';
 import '../model/UserModel.dart';
@@ -22,6 +23,35 @@ class BrowseListState extends State<BrowseListWidget> {
   bool isFirstLoad = true;
   List<AuthHistoryModel> hisModels = [];
 
+  ///加载图片的标识
+  bool isLoadingImage = true;
+
+  bool notificationFunction(Notification notification) {
+    ///通知类型
+    switch (notification.runtimeType) {
+      case ScrollStartNotification:
+        Printer.printMapJsonLog("开始滚动");
+        ///在这里更新标识 刷新页面 不加载图片
+        isLoadingImage = false;
+        break;
+      case ScrollUpdateNotification:
+        Printer.printMapJsonLog("正在滚动");
+        break;
+      case ScrollEndNotification:
+        Printer.printMapJsonLog("滚动停止");
+
+        ///在这里更新标识 刷新页面 加载图片
+        setState(() {
+          isLoadingImage = true;
+        });
+        break;
+      case OverscrollNotification:
+        Printer.printMapJsonLog("滚动到边界");
+        break;
+    }
+    return true;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -36,83 +66,89 @@ class BrowseListState extends State<BrowseListWidget> {
         title: Text('浏览记录'),
         elevation: 0.5,
       ),
-      body: EasyRefresh(
-        header: MaterialHeader(),
-        footer: MaterialFooter(
-          enableInfiniteLoad:false,
-        ),
-        firstRefresh: isFirstLoad,
-        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: hisModels.length > 0 ? null : EmptyPage((){
-          authHistoryNetWroking(1);
-        }),
-        child:ListView.builder(
-            itemCount: hisModels.length,
-            itemBuilder: (context,index){
-              var data = hisModels[index];
-              return  GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data.topicInfo,(topicId,value){
-                  if (value is HomeLikeStatusModel) {
-                    hisModels = hisModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.topicInfo.liked = value.like == 1 ? true : false;
-                        if (newModel.topicInfo.liked) {
-                          newModel.topicInfo.likes_num += 1;
-                        }else if (newModel.topicInfo.liked == false){
-                          if(newModel.topicInfo.likes_num > 0) {
-                            newModel.topicInfo.likes_num -= 1;
-                          }
-                        }
-                      }
-                      return newModel;
-                    }).toList();
-                  }else if (value is HomeCollectionStatusModel){
-                    hisModels = hisModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.topicInfo.collectioned) {
-                          newModel.topicInfo.collection_num += 1;
-                        }else if (newModel.topicInfo.collectioned == false){
-                          if(newModel.topicInfo.collection_num > 0) {
-                            newModel.topicInfo.collection_num -= 1;
-                          }
-                        }
-                      }
-                      return newModel;
-                    }).toList();
-                  }else if(value is int) {
-                    hisModels = hisModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.topicInfo.commNum = value;
-                      }
-                      return newModel;
-                    }).toList();
-                  }
-                  setState(() {
-
-                  });
-                }),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topicInfo.topic_id);
-                  }));
-                },
-              );
-            }),
-        onRefresh: () async {
-          await authHistoryNetWroking(1);
-        },
-        onLoad: () async {
-          await authHistoryNetWroking(page);
-        },
+      body: NotificationListener(
+        child: refreshBody(),
+        onNotification: notificationFunction,
       )
     );
   }
 
+  Widget refreshBody() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      firstRefresh: isFirstLoad,
+      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: hisModels.length > 0 ? null : EmptyPage((){
+        authHistoryNetWroking(1);
+      }),
+      child:ListView.builder(
+          itemCount: hisModels.length,
+          itemBuilder: (context,index){
+            var data = hisModels[index];
+            return  GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              child: homePageItemWidget(context, data.topicInfo,isLoadingImage,(topicId,value){
+                if (value is HomeLikeStatusModel) {
+                  hisModels = hisModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.liked = value.like == 1 ? true : false;
+                      if (newModel.topicInfo.liked) {
+                        newModel.topicInfo.likes_num += 1;
+                      }else if (newModel.topicInfo.liked == false){
+                        if(newModel.topicInfo.likes_num > 0) {
+                          newModel.topicInfo.likes_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if (value is HomeCollectionStatusModel){
+                  hisModels = hisModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.topicInfo.collectioned) {
+                        newModel.topicInfo.collection_num += 1;
+                      }else if (newModel.topicInfo.collectioned == false){
+                        if(newModel.topicInfo.collection_num > 0) {
+                          newModel.topicInfo.collection_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if(value is int) {
+                  hisModels = hisModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.commNum = value;
+                    }
+                    return newModel;
+                  }).toList();
+                }
+                setState(() {
+
+                });
+              }),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return TopicDetailWidget(topicId: data.topicInfo.topic_id);
+                }));
+              },
+            );
+          }),
+      onRefresh: () async {
+        await authHistoryNetWroking(1);
+      },
+      onLoad: () async {
+        await authHistoryNetWroking(page);
+      },
+    );
+  }
   ///authhistorylist
   Future<Null> authHistoryNetWroking(num) async {
     page = num;

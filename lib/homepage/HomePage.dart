@@ -8,6 +8,7 @@ import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
@@ -30,11 +31,41 @@ class _HomePageState extends State<HomePage> {
   var isFirstLoad = true;
   var page = 1;
 
+  ///加载图片的标识
+  bool isLoadingImage = true;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // homePageListNetWroking(1);
+  }
+
+  bool notificationFunction(Notification notification) {
+    ///通知类型
+    switch (notification.runtimeType) {
+      case ScrollStartNotification:
+        Printer.printMapJsonLog("开始滚动");
+        ///在这里更新标识 刷新页面 不加载图片
+        isLoadingImage = false;
+        break;
+      case ScrollUpdateNotification:
+        Printer.printMapJsonLog("正在滚动");
+        break;
+      case ScrollEndNotification:
+        Printer.printMapJsonLog("滚动停止");
+
+        ///在这里更新标识 刷新页面 加载图片
+        setState(() {
+          isLoadingImage = true;
+        });
+
+        break;
+      case OverscrollNotification:
+        Printer.printMapJsonLog("滚动到边界");
+        break;
+    }
+    return true;
   }
 
   @override
@@ -82,83 +113,92 @@ class _HomePageState extends State<HomePage> {
         },
         tooltip: 'Increment',
       ),
-      body: EasyRefresh(
-        header: MaterialHeader(),
-        footer: MaterialFooter(
-            enableInfiniteLoad:false,
-        ),
-        child: ListView.builder(
+      body: NotificationListener(
+        ///子Widget中的滚动组件滑动时就会分发滚动通知
+        child: refreshBody(),
+        ///每当有滑动通知时就会回调此方法
+        onNotification: notificationFunction,
+      ),
+    );
+  }
+
+  Widget refreshBody() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      child: ListView.builder(
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-                child: homePageItemWidget(context, data, (topicId,value) {
-                    if (value is HomeLikeStatusModel) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.liked = value.like == 1 ? true : false;
-                          if (newModel.liked) {
-                            newModel.likes_num += 1;
-                          }else if (newModel.liked == false){
-                            if(newModel.likes_num > 0) {
-                              newModel.likes_num -= 1;
-                            }
-                          }
+              child: homePageItemWidget(context, data,isLoadingImage , (topicId,value) {
+                if (value is HomeLikeStatusModel) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.liked = value.like == 1 ? true : false;
+                      if (newModel.liked) {
+                        newModel.likes_num += 1;
+                      }else if (newModel.liked == false){
+                        if(newModel.likes_num > 0) {
+                          newModel.likes_num -= 1;
                         }
-                        return newModel;
-                      }).toList();
-                    }else if (value is HomeCollectionStatusModel){
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.collectioned = value.collection == 1 ? true : false;
-                          if (newModel.collectioned) {
-                            newModel.collection_num += 1;
-                          }else if (newModel.collectioned == false){
-                            if(newModel.collection_num > 0) {
-                              newModel.collection_num -= 1;
-                            }
-                          }
-                        }
-                        return newModel;
-                      }).toList();
-                    }else if(value is int) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.commNum = value;
-                        }
-                        return newModel;
-                      }).toList();
+                      }
                     }
-                    setState(() {
+                    return newModel;
+                  }).toList();
+                }else if (value is HomeCollectionStatusModel){
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.collectioned) {
+                        newModel.collection_num += 1;
+                      }else if (newModel.collectioned == false){
+                        if(newModel.collection_num > 0) {
+                          newModel.collection_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if(value is int) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.commNum = value;
+                    }
+                    return newModel;
+                  }).toList();
+                }
+                setState(() {
 
-                    });
-                }),
+                });
+              }),
               onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topic_id);
-                  }));
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return TopicDetailWidget(topicId: data.topic_id);
+                }));
               },
             );
 
           }
-        ),
-        firstRefresh: isFirstLoad,
-        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
-          homePageListNetWroking(1);
-        }),
-        onRefresh:() async {
-          await homePageListNetWroking(1);
-        },
-        onLoad: () async{
-          await homePageListNetWroking(page);
-        },
+      ),
+      firstRefresh: isFirstLoad,
+      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
+        homePageListNetWroking(1);
+      }),
+      onRefresh:() async {
+        await homePageListNetWroking(1);
+      },
+      onLoad: () async{
+        await homePageListNetWroking(page);
+      },
 
-      )
     );
   }
 
@@ -264,14 +304,14 @@ parameter["token"] = UserManager.shared.token
 
 
 /// UI
-Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoChanged changed,{String fromInfo = '' }) {
+Widget homePageItemWidget(BuildContext context, HomePageModel data,bool isLoadingImg,commentInfoChanged changed,{String fromInfo = '' }) {
   return
     // GestureDetector(
     // child:
     Container(
       child: Column(
         children: [
-          userInfoWidget(context,data,fromInfo: fromInfo,clicked: (value) {
+          userInfoWidget(context,data,isLoadingImg,fromInfo: fromInfo,clicked: (value) {
             if (value == -3) {
               HomeNetworking.homeCompleteNetWorking(data.topic_id, (id, info) {
                 changed(id,info);
@@ -279,7 +319,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
             }
           }),
           textInfoWidget(data),
-          imagesWidget(context,data),
+          imagesWidget(context,data,isLoadingImg),
           addressWidget(data),
           commentWidget(60, context, data, (comIndex){
             if (comIndex == -1) { // 点赞
@@ -309,15 +349,17 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
 }
 
 /// 用户信息
-Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange clicked}) {
+Widget userInfoWidget(BuildContext context, HomePageModel data,bool isLoadingImg, {String fromInfo = '',clickChange clicked}) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+          backgroundImage: isLoadingImg ?
+          ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
           CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator,) :
+          AssetImage('assets/icons/icon_plh.png')) :
           AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, 0),
@@ -458,7 +500,18 @@ Widget textInfoWidget(HomePageModel data) {
   );
 }
 
-Widget imagesWidget(BuildContext context, HomePageModel data) {
+Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) {
+  var imgContentH = (MediaQuery.of(context).size.width - 80) * 0.618;
+
+  // if (!isLoadingImg) {
+  //   return Container(
+  //     padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
+  //     height: imgContentH,
+  //     child: Container(
+  //       color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+  //     ),
+  //   );
+  // }
 
   var imgs = data.imgs.map((e) {
     return NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgTailUrl;
@@ -475,7 +528,6 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
     }));
   }
   // var imgContentW = MediaQuery.of(context).size.height - 80;
-  var imgContentH = (MediaQuery.of(context).size.width - 80) * 0.618;
 
   if (data.imgs?.length >= 4) {
     var num = data.imgs.length - 4;
@@ -489,7 +541,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
               child: Row(
                 children: [
                   Expanded(
-                    child: GestureDetector(
+                    child: isLoadingImg ? GestureDetector(
                       child: Container(
                         padding: EdgeInsets.only(right: 2.5,bottom: 2.5),
                         child: CachedNetworkImage(
@@ -505,26 +557,33 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                       onTap: () {
                         tapClick(0);
                       },
+                    ) :
+                    Container(
+                      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                     )
                   ),
                   Expanded(child:
-                  GestureDetector(
-                    child:  Container(
-                      padding: EdgeInsets.only(left:2.5,bottom: 2.5),
-                      child: CachedNetworkImage(
-                        imageUrl: imgs[1],
-                        placeholder: (context,url) => Container(
-                          color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                      isLoadingImg ?
+                      GestureDetector(
+                        child:  Container(
+                          padding: EdgeInsets.only(left:2.5,bottom: 2.5),
+                          child: CachedNetworkImage(
+                            imageUrl: imgs[1],
+                            placeholder: (context,url) => Container(
+                              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                            ),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
                         ),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      ),
-                    ),
-                    onTap: () {
-                      tapClick(1);
-                    },
-                  )
+                        onTap: () {
+                          tapClick(1);
+                        },
+                      ):
+                      Container(
+                        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                      )
                   )
                 ],
               ),
@@ -537,73 +596,82 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                   children: [
                     Expanded(
                       child:
-                      GestureDetector(
-                        child:Container(
-                          padding: EdgeInsets.only(right:2.5,top: 2.5),
-                          child: CachedNetworkImage(
-                            imageUrl: imgs[2],
-                            placeholder: (context,url) => Container(
-                              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-                            ),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        ),
-                        onTap: () {
-                          tapClick(2);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                        child: GestureDetector(
-                          child: num > 1 ? Container(
-                            padding: EdgeInsets.only(left:2.5,top: 2.5),
-                            child: Stack(
-                              alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: imgs[3],
-                                  fit: BoxFit.cover,
-                                  placeholder: (context,url) => Container(
-                                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-                                  ),
-                                  width: double.infinity,
-                                  height: double.infinity,
+                          isLoadingImg ?
+                          GestureDetector(
+                            child:Container(
+                              padding: EdgeInsets.only(right:2.5,top: 2.5),
+                              child: CachedNetworkImage(
+                                imageUrl: imgs[2],
+                                placeholder: (context,url) => Container(
+                                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                                 ),
-                                Positioned(
-                                  child: Container(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    // color: Colors.black12,
-                                    decoration: BoxDecoration(color: Color(0x30000000)),
-                                    alignment: Alignment.center,
-                                    child: Text('+$num',style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: FontUtil.fs(FontSize.big)
-                                    ),),
-                                  ),
-                                )
-                              ],
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
+                            onTap: () {
+                              tapClick(2);
+                            },
                           ):
                           Container(
-                            padding: EdgeInsets.only(left:2.5,top: 2.5),
-                            child: CachedNetworkImage(
-                              imageUrl: imgs[3],
-                              fit: BoxFit.cover,
-                              placeholder: (context,url) => Container(
-                                color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          )
+                    ),
+                    Expanded(
+                        child:
+                          isLoadingImg ?
+                          GestureDetector(
+                            child: num > 1 ? Container(
+                              padding: EdgeInsets.only(left:2.5,top: 2.5),
+                              child: Stack(
+                                alignment:Alignment.center , //指定未定位或部分定位widget的对齐方式
+                                children: [
+                                  CachedNetworkImage(
+                                    imageUrl: imgs[3],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context,url) => Container(
+                                      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                                    ),
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                  Positioned(
+                                    child: Container(
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      // color: Colors.black12,
+                                      decoration: BoxDecoration(color: Color(0x30000000)),
+                                      alignment: Alignment.center,
+                                      child: Text('+$num',style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: FontUtil.fs(FontSize.big)
+                                      ),),
+                                    ),
+                                  )
+                                ],
                               ),
-                              width: double.infinity,
-                              height: double.infinity,
+                            ):
+                            Container(
+                              padding: EdgeInsets.only(left:2.5,top: 2.5),
+                              child: CachedNetworkImage(
+                                imageUrl: imgs[3],
+                                fit: BoxFit.cover,
+                                placeholder: (context,url) => Container(
+                                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                                ),
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            tapClick(3);
-                          },
-                        )
+                            onTap: () {
+                              tapClick(3);
+                            },
+                          ):
+                          Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          )
                     )
                   ],
                 ),
@@ -621,23 +689,27 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
         children: [
           Expanded(
             child:
-            GestureDetector(
-              child: Container(
-                padding: EdgeInsets.only(right: 2.5),
-                child: CachedNetworkImage(
-                  imageUrl: imgs[0],
-                  placeholder: (context,url) => Container(
-                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                isLoadingImg ?
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.only(right: 2.5),
+                    child: CachedNetworkImage(
+                      imageUrl: imgs[0],
+                      placeholder: (context,url) => Container(
+                        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                      ),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ),
-              onTap: () {
-                tapClick(0);
-              },
-            )
+                  onTap: () {
+                    tapClick(0);
+                  },
+                ):
+                Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                )
           ),
           Expanded(
               child:
@@ -646,42 +718,51 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                   children: [
                     Expanded(
                       child:
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.only(left:2.5,bottom: 2.5),
-                          child: CachedNetworkImage(
-                            imageUrl: imgs[1],
-                            placeholder: (context,url) => Container(
-                              color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          isLoadingImg ?
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.only(left:2.5,bottom: 2.5),
+                              child: CachedNetworkImage(
+                                imageUrl: imgs[1],
+                                placeholder: (context,url) => Container(
+                                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                                ),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        ),
-                        onTap: (){
-                          tapClick(1);
-                        },
-                      ),
+                            onTap: (){
+                              tapClick(1);
+                            },
+                          ):
+                          Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          )
                     ),
                     Expanded(
-                        child:GestureDetector(
-                          child:  Container(
-                            padding: EdgeInsets.only(left:2.5,top: 2.5),
-                            child: CachedNetworkImage(
-                              imageUrl: imgs[2],
-                              placeholder: (context,url) => Container(
-                                color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                        child:
+                          isLoadingImg ?
+                          GestureDetector(
+                            child:  Container(
+                              padding: EdgeInsets.only(left:2.5,top: 2.5),
+                              child: CachedNetworkImage(
+                                imageUrl: imgs[2],
+                                placeholder: (context,url) => Container(
+                                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                                ),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
                               ),
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
                             ),
-                          ),
-                          onTap: () {
-                            tapClick(2);
-                          },
-                        )
+                            onTap: () {
+                              tapClick(2);
+                            },
+                          ):
+                          Container(
+                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          )
                     )
                   ],
                 ),
@@ -700,6 +781,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
         children: [
           Expanded(
             child:
+                isLoadingImg ?
                 GestureDetector(
                   child: Container(
                     padding: EdgeInsets.only(right: 2.5),
@@ -716,34 +798,42 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
                   onTap: () {
                     tapClick(0);
                   },
-          )
+                ):
+                Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                )
             ,
           ),
           Expanded(
             child:
-            GestureDetector(
-              child: Container(
-                padding: EdgeInsets.only(left: 2.5),
-                child: CachedNetworkImage(
-                  imageUrl: imgs[1],
-                  placeholder: (context,url) => Container(
-                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                isLoadingImg ?
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 2.5),
+                    child: CachedNetworkImage(
+                      imageUrl: imgs[1],
+                      placeholder: (context,url) => Container(
+                        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                      ),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ),
-              onTap: () {
-                tapClick(1);
-              },
-            ),
+                  onTap: () {
+                    tapClick(1);
+                  },
+                ):
+                Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                )
           ),
         ],
       ),
     );
   }else if (data.imgs?.length == 1) {
-    return GestureDetector(
+    return isLoadingImg ?
+    GestureDetector(
       child:  Container(
         padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
         // width: MediaQuery.of(context).size.width - 65,
@@ -761,8 +851,13 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
       onTap: () {
         tapClick(0);
       },
-    )
-     ;
+    ): Container(
+      padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
+      height: imgContentH,
+      child: Container(
+        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+      )
+    );
   }
 }
 

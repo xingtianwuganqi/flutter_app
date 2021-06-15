@@ -3,6 +3,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import 'package:dio/dio.dart';
@@ -35,6 +36,37 @@ class SearchPageState extends State<SearchPageWidget> {
   var isShowClear = false;
   var _page = 1;
   bool isFirstLoad = true;
+
+
+  ///加载图片的标识
+  bool isLoadingImage = true;
+
+  bool notificationFunction(Notification notification) {
+    ///通知类型
+    switch (notification.runtimeType) {
+      case ScrollStartNotification:
+        Printer.printMapJsonLog("开始滚动");
+        ///在这里更新标识 刷新页面 不加载图片
+        isLoadingImage = false;
+        break;
+      case ScrollUpdateNotification:
+        Printer.printMapJsonLog("正在滚动");
+        break;
+      case ScrollEndNotification:
+        Printer.printMapJsonLog("滚动停止");
+
+        ///在这里更新标识 刷新页面 加载图片
+        setState(() {
+          isLoadingImage = true;
+        });
+        break;
+      case OverscrollNotification:
+        Printer.printMapJsonLog("滚动到边界");
+        break;
+    }
+    return true;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -183,80 +215,11 @@ class SearchPageState extends State<SearchPageWidget> {
 
   Widget commontPageWidget() {
     if (isSearch) {
-      return EasyRefresh(
-          header: MaterialHeader(),
-          footer: MaterialFooter(
-            enableInfiniteLoad:false,
-          ),
-          child: ListView.builder(
-            itemCount: homeModels.length,
-            itemBuilder: (context,index) {
-              var data = homeModels[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topic_id);
-                  }));
-                },
-                child: homePageItemWidget(context,data,(topicId,value) {
-                  if (value is HomeLikeStatusModel) {
-                    homeModels = homeModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.liked = value.like == 1 ? true : false;
-                        if (newModel.liked) {
-                          newModel.likes_num += 1;
-                        }else if (newModel.liked == false){
-                          if(newModel.likes_num > 0) {
-                            newModel.likes_num -= 1;
-                          }
-                        }
-                      }
-                      return newModel;
-                    }).toList();
-                  }else if (value is HomeCollectionStatusModel){
-                    homeModels = homeModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.collectioned) {
-                          newModel.collection_num += 1;
-                        }else if (newModel.collectioned == false){
-                          if(newModel.collection_num > 0) {
-                            newModel.collection_num -= 1;
-                          }
-                        }
-                      }
-                      return newModel;
-                    }).toList();
-                  }else if(value is int) {
-                    homeModels = homeModels.map((e) {
-                      var newModel = e;
-                      if (newModel.topic_id == topicId) {
-                        newModel.commNum = value;
-                      }
-                      return newModel;
-                    }).toList();
-                  }
-                  setState(() {
-
-                  });
-                }),
-              );
-            }
-        ),
-        // firstRefresh: isFirstLoad,
-        // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-        emptyWidget: isFirstLoad ? null : (homeModels.length > 0   ? null : EmptyPage((){
-          beginSearch(1);
-        })),
-        onRefresh: () async {
-            await beginSearch(1);
-        },
-        onLoad: () async{
-          await beginSearch(_page);
-        },
+      return NotificationListener(
+        ///子Widget中的滚动组件滑动时就会分发滚动通知
+        child: refreshBody(),
+        ///每当有滑动通知时就会回调此方法
+        onNotification: notificationFunction,
       );
     }else{
       return Container(
@@ -264,6 +227,84 @@ class SearchPageState extends State<SearchPageWidget> {
         child: keywordsListWidget(datas),
       );
     }
+  }
+
+  Widget refreshBody() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      child: ListView.builder(
+          itemCount: homeModels.length,
+          itemBuilder: (context,index) {
+            var data = homeModels[index];
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return TopicDetailWidget(topicId: data.topic_id);
+                }));
+              },
+              child: homePageItemWidget(context,data,isLoadingImage,(topicId,value) {
+                if (value is HomeLikeStatusModel) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.liked = value.like == 1 ? true : false;
+                      if (newModel.liked) {
+                        newModel.likes_num += 1;
+                      }else if (newModel.liked == false){
+                        if(newModel.likes_num > 0) {
+                          newModel.likes_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if (value is HomeCollectionStatusModel){
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.collectioned) {
+                        newModel.collection_num += 1;
+                      }else if (newModel.collectioned == false){
+                        if(newModel.collection_num > 0) {
+                          newModel.collection_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if(value is int) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.commNum = value;
+                    }
+                    return newModel;
+                  }).toList();
+                }
+                setState(() {
+
+                });
+              }),
+            );
+          }
+      ),
+      // firstRefresh: isFirstLoad,
+      // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: isFirstLoad ? null : (homeModels.length > 0   ? null : EmptyPage((){
+        beginSearch(1);
+      })),
+      onRefresh: () async {
+        await beginSearch(1);
+      },
+      onLoad: () async{
+        await beginSearch(_page);
+      },
+    );
   }
 
   @override

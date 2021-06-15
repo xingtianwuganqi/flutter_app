@@ -5,6 +5,7 @@ import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_printer/flutter_printer.dart';
 import '../model/HomePageModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../homepage/TopicDetail.dart';
@@ -27,6 +28,34 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
   var isFirstLoad = true;
 
   List<AuthCollectRescueModel> homeModels = [];
+  ///加载图片的标识
+  bool isLoadingImage = true;
+
+  bool notificationFunction(Notification notification) {
+    ///通知类型
+    switch (notification.runtimeType) {
+      case ScrollStartNotification:
+        Printer.printMapJsonLog("开始滚动");
+        ///在这里更新标识 刷新页面 不加载图片
+        isLoadingImage = false;
+        break;
+      case ScrollUpdateNotification:
+        Printer.printMapJsonLog("正在滚动");
+        break;
+      case ScrollEndNotification:
+        Printer.printMapJsonLog("滚动停止");
+
+        ///在这里更新标识 刷新页面 加载图片
+        setState(() {
+          isLoadingImage = true;
+        });
+        break;
+      case OverscrollNotification:
+        Printer.printMapJsonLog("滚动到边界");
+        break;
+    }
+    return true;
+  }
 
   @override
   void initState() {
@@ -40,83 +69,90 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
     // TODO: implement build
     return new Scaffold(
         appBar: null,
-        body: EasyRefresh(
-          header: MaterialHeader(),
-          footer: MaterialFooter(
-            enableInfiniteLoad:false,
-          ),
-          child: ListView.builder(
-              itemCount: homeModels.length,
-              itemBuilder: (context,index) {
-                var data = homeModels[index];
-                return  GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: homePageItemWidget(context, data.topicInfo,(topicId,value) {
-                    if (value is HomeLikeStatusModel) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.topicInfo.liked = value.like == 1 ? true : false;
-                          if (newModel.topicInfo.liked) {
-                            newModel.topicInfo.likes_num += 1;
-                          }else if (newModel.topicInfo.liked == false){
-                            if(newModel.topicInfo.likes_num > 0) {
-                              newModel.topicInfo.likes_num -= 1;
-                            }
-                          }
-                        }
-                        return newModel;
-                      }).toList();
-                    }else if (value is HomeCollectionStatusModel){
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
-                          if (newModel.topicInfo.collectioned) {
-                            newModel.topicInfo.collection_num += 1;
-                          }else if (newModel.topicInfo.collectioned == false){
-                            if(newModel.topicInfo.collection_num > 0) {
-                              newModel.topicInfo.collection_num -= 1;
-                            }
-                          }
-                        }
-                        return newModel;
-                      }).toList();
-                    }else if(value is int) {
-                      homeModels = homeModels.map((e) {
-                        var newModel = e;
-                        if (newModel.topic_id == topicId) {
-                          newModel.topicInfo.commNum = value;
-                        }
-                        return newModel;
-                      }).toList();
-                    }
-                    setState(() {
-
-                    });
-                  }),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return TopicDetailWidget(topicId: data.topic_id);
-                    }));
-                  },
-                );
-
-              }
-          ),
-          firstRefresh: isFirstLoad,
-          firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-          emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
-            loadRescueCollectList(1);
-          },title: '暂无数据',desc: '快去收藏领养吧'),
-          onRefresh:() async {
-            await loadRescueCollectList(1);
-          },
-          onLoad: () async{
-            await loadRescueCollectList(page);
-          },
-
+        body: NotificationListener(
+          child: refreshWidget(),
+          onNotification: notificationFunction,
         )
+    );
+  }
+
+  Widget refreshWidget() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      child: ListView.builder(
+          itemCount: homeModels.length,
+          itemBuilder: (context,index) {
+            var data = homeModels[index];
+            return  GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              child: homePageItemWidget(context, data.topicInfo,isLoadingImage,(topicId,value) {
+                if (value is HomeLikeStatusModel) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.liked = value.like == 1 ? true : false;
+                      if (newModel.topicInfo.liked) {
+                        newModel.topicInfo.likes_num += 1;
+                      }else if (newModel.topicInfo.liked == false){
+                        if(newModel.topicInfo.likes_num > 0) {
+                          newModel.topicInfo.likes_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if (value is HomeCollectionStatusModel){
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.topicInfo.collectioned) {
+                        newModel.topicInfo.collection_num += 1;
+                      }else if (newModel.topicInfo.collectioned == false){
+                        if(newModel.topicInfo.collection_num > 0) {
+                          newModel.topicInfo.collection_num -= 1;
+                        }
+                      }
+                    }
+                    return newModel;
+                  }).toList();
+                }else if(value is int) {
+                  homeModels = homeModels.map((e) {
+                    var newModel = e;
+                    if (newModel.topic_id == topicId) {
+                      newModel.topicInfo.commNum = value;
+                    }
+                    return newModel;
+                  }).toList();
+                }
+                setState(() {
+
+                });
+              }),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return TopicDetailWidget(topicId: data.topic_id);
+                }));
+              },
+            );
+
+          }
+      ),
+      firstRefresh: isFirstLoad,
+      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
+        loadRescueCollectList(1);
+      },title: '暂无数据',desc: '快去收藏领养吧'),
+      onRefresh:() async {
+        await loadRescueCollectList(1);
+      },
+      onLoad: () async{
+        await loadRescueCollectList(page);
+      },
+
     );
   }
 
