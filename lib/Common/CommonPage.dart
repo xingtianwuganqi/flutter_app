@@ -157,7 +157,7 @@ static func apiBasicParameters() -> [String:Any] {
  */
 // 定义一些公关参数，// 定义为计算属性
 Map<String,dynamic> get paramDic => {
-  'appType': 'flutter',
+  'appType': 'android',
   'appVersion': '1.0.3',
   'androidVersion': '',
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
