@@ -215,12 +215,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
   Widget commontPageWidget() {
     if (isSearch) {
-      return NotificationListener(
-        ///子Widget中的滚动组件滑动时就会分发滚动通知
-        child: refreshBody(),
-        ///每当有滑动通知时就会回调此方法
-        onNotification: notificationFunction,
-      );
+      return refreshBody();
     }else{
       return Container(
         padding: EdgeInsets.all(15),
@@ -246,7 +241,7 @@ class SearchPageState extends State<SearchPageWidget> {
                   return TopicDetailWidget(topicId: data.topic_id);
                 }));
               },
-              child: homePageItemWidget(context,data,isLoadingImage,(topicId,value) {
+              child: homePageItemWidget(context,data,(topicId,value) {
                 if (value is HomeLikeStatusModel) {
                   homeModels = homeModels.map((e) {
                     var newModel = e;

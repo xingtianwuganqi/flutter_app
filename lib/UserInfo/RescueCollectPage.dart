@@ -69,14 +69,11 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
     // TODO: implement build
     return new Scaffold(
         appBar: null,
-        body: NotificationListener(
-          child: refreshWidget(),
-          onNotification: notificationFunction,
-        )
+        body: refreshBody()
     );
   }
 
-  Widget refreshWidget() {
+  Widget refreshBody() {
     return EasyRefresh(
       header: MaterialHeader(),
       footer: MaterialFooter(
@@ -88,7 +85,7 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
             var data = homeModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data.topicInfo,isLoadingImage,(topicId,value) {
+              child: homePageItemWidget(context, data.topicInfo,(topicId,value) {
                 if (value is HomeLikeStatusModel) {
                   homeModels = homeModels.map((e) {
                     var newModel = e;

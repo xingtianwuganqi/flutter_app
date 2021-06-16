@@ -69,10 +69,7 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
     // TODO: implement build
     return new Scaffold(
         appBar: null,
-        body: NotificationListener(
-          child: refreshBody(),
-          onNotification: notificationFunction,
-        )
+        body: refreshBody()
     );
   }
 
@@ -122,7 +119,7 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
   Widget publishCell (HomePageModel data) {
     return  GestureDetector(
       behavior: HitTestBehavior.opaque,
-      child: homePageItemWidget(context, data,isLoadingImage,(topicId,value){
+      child: homePageItemWidget(context, data,(topicId,value){
         if (value is HomeLikeStatusModel) {
           homeModels = homeModels.map((e) {
             var newModel = e;

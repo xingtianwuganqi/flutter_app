@@ -113,14 +113,16 @@ class _HomePageState extends State<HomePage> {
         },
         tooltip: 'Increment',
       ),
-      body: NotificationListener(
-        ///子Widget中的滚动组件滑动时就会分发滚动通知
-        child: refreshBody(),
-        ///每当有滑动通知时就会回调此方法
-        onNotification: notificationFunction,
-      ),
+      body: refreshBody()
     );
   }
+
+  // NotificationListener(
+  // ///子Widget中的滚动组件滑动时就会分发滚动通知
+  // child: refreshBody(),
+  // ///每当有滑动通知时就会回调此方法
+  // onNotification: notificationFunction,
+  // ),
 
   Widget refreshBody() {
     return EasyRefresh(
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
             var data = homeModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data,isLoadingImage , (topicId,value) {
+              child: homePageItemWidget(context, data, (topicId,value) {
                 if (value is HomeLikeStatusModel) {
                   homeModels = homeModels.map((e) {
                     var newModel = e;
@@ -304,14 +306,14 @@ parameter["token"] = UserManager.shared.token
 
 
 /// UI
-Widget homePageItemWidget(BuildContext context, HomePageModel data,bool isLoadingImg,commentInfoChanged changed,{String fromInfo = '' }) {
+Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoChanged changed,{String fromInfo = '' }) {
   return
     // GestureDetector(
     // child:
     Container(
       child: Column(
         children: [
-          userInfoWidget(context,data,isLoadingImg,fromInfo: fromInfo,clicked: (value) {
+          userInfoWidget(context,data,fromInfo: fromInfo,clicked: (value) {
             if (value == -3) {
               HomeNetworking.homeCompleteNetWorking(data.topic_id, (id, info) {
                 changed(id,info);
@@ -319,7 +321,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,bool isLoadin
             }
           }),
           textInfoWidget(data),
-          imagesWidget(context,data,isLoadingImg),
+          imagesWidget(context,data),
           addressWidget(data),
           commentWidget(60, context, data, (comIndex){
             if (comIndex == -1) { // 点赞
@@ -349,18 +351,20 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,bool isLoadin
 }
 
 /// 用户信息
-Widget userInfoWidget(BuildContext context, HomePageModel data,bool isLoadingImg, {String fromInfo = '',clickChange clicked}) {
+Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange clicked}) {
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundImage: isLoadingImg ?
+          backgroundImage:
+          // isLoadingImg ?
           ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
           CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator,) :
-          AssetImage('assets/icons/icon_plh.png')) :
-          AssetImage('assets/icons/icon_plh.png'),
+          AssetImage('assets/icons/icon_plh.png')),
+          //   :
+          // AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, 0),
             width: 36,
@@ -500,7 +504,7 @@ Widget textInfoWidget(HomePageModel data) {
   );
 }
 
-Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) {
+Widget imagesWidget(BuildContext context, HomePageModel data) {
   var imgContentH = (MediaQuery.of(context).size.width - 80) * 0.618;
 
   // if (!isLoadingImg) {
@@ -541,7 +545,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
               child: Row(
                 children: [
                   Expanded(
-                    child: isLoadingImg ? GestureDetector(
+                    child:  GestureDetector(
                       child: Container(
                         padding: EdgeInsets.only(right: 2.5,bottom: 2.5),
                         child: CachedNetworkImage(
@@ -557,13 +561,14 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                       onTap: () {
                         tapClick(0);
                       },
-                    ) :
-                    Container(
-                      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                     )
+      // :
+      //               Container(
+      //                 color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+      //               )
                   ),
                   Expanded(child:
-                      isLoadingImg ?
+                      // isLoadingImg ?
                       GestureDetector(
                         child:  Container(
                           padding: EdgeInsets.only(left:2.5,bottom: 2.5),
@@ -580,10 +585,11 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                         onTap: () {
                           tapClick(1);
                         },
-                      ):
-                      Container(
-                        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                       )
+      // :
+      //                 Container(
+      //                   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+      //                 )
                   )
                 ],
               ),
@@ -596,7 +602,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                   children: [
                     Expanded(
                       child:
-                          isLoadingImg ?
+                          // isLoadingImg ?
                           GestureDetector(
                             child:Container(
                               padding: EdgeInsets.only(right:2.5,top: 2.5),
@@ -613,14 +619,15 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                             onTap: () {
                               tapClick(2);
                             },
-                          ):
-                          Container(
-                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           )
+                            // :
+                          // Container(
+                          //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          // )
                     ),
                     Expanded(
                         child:
-                          isLoadingImg ?
+                          // isLoadingImg ?
                           GestureDetector(
                             child: num > 1 ? Container(
                               padding: EdgeInsets.only(left:2.5,top: 2.5),
@@ -668,10 +675,11 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                             onTap: () {
                               tapClick(3);
                             },
-                          ):
-                          Container(
-                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           )
+                            // :
+                          // Container(
+                          //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          // )
                     )
                   ],
                 ),
@@ -689,7 +697,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
         children: [
           Expanded(
             child:
-                isLoadingImg ?
+                // isLoadingImg ?
                 GestureDetector(
                   child: Container(
                     padding: EdgeInsets.only(right: 2.5),
@@ -706,10 +714,11 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                   onTap: () {
                     tapClick(0);
                   },
-                ):
-                Container(
-                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                 )
+                  // :
+                // Container(
+                //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                // )
           ),
           Expanded(
               child:
@@ -718,7 +727,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                   children: [
                     Expanded(
                       child:
-                          isLoadingImg ?
+                          // isLoadingImg ?
                           GestureDetector(
                             child: Container(
                               padding: EdgeInsets.only(left:2.5,bottom: 2.5),
@@ -735,14 +744,15 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                             onTap: (){
                               tapClick(1);
                             },
-                          ):
-                          Container(
-                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           )
+                            // :
+                          // Container(
+                          //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          // )
                     ),
                     Expanded(
                         child:
-                          isLoadingImg ?
+                          // isLoadingImg ?
                           GestureDetector(
                             child:  Container(
                               padding: EdgeInsets.only(left:2.5,top: 2.5),
@@ -759,10 +769,11 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                             onTap: () {
                               tapClick(2);
                             },
-                          ):
-                          Container(
-                            color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           )
+                            // :
+                          // Container(
+                          //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          // )
                     )
                   ],
                 ),
@@ -781,7 +792,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
         children: [
           Expanded(
             child:
-                isLoadingImg ?
+                // isLoadingImg ?
                 GestureDetector(
                   child: Container(
                     padding: EdgeInsets.only(right: 2.5),
@@ -798,15 +809,16 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                   onTap: () {
                     tapClick(0);
                   },
-                ):
-                Container(
-                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                 )
+                // :
+                // Container(
+                //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                // )
             ,
           ),
           Expanded(
             child:
-                isLoadingImg ?
+                // isLoadingImg ?
                 GestureDetector(
                   child: Container(
                     padding: EdgeInsets.only(left: 2.5),
@@ -823,16 +835,18 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
                   onTap: () {
                     tapClick(1);
                   },
-                ):
-                Container(
-                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                 )
+                  // :
+                // Container(
+                //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                // )
           ),
         ],
       ),
     );
   }else if (data.imgs?.length == 1) {
-    return isLoadingImg ?
+    return
+      // isLoadingImg ?
     GestureDetector(
       child:  Container(
         padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
@@ -851,13 +865,14 @@ Widget imagesWidget(BuildContext context, HomePageModel data,bool isLoadingImg) 
       onTap: () {
         tapClick(0);
       },
-    ): Container(
-      padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
-      height: imgContentH,
-      child: Container(
-        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-      )
     );
+  // : Container(
+  //     padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
+  //     height: imgContentH,
+  //     child: Container(
+  //       color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+  //     )
+  //   );
   }
 }
 

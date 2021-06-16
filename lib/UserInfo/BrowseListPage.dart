@@ -66,10 +66,7 @@ class BrowseListState extends State<BrowseListWidget> {
         title: Text('浏览记录'),
         elevation: 0.5,
       ),
-      body: NotificationListener(
-        child: refreshBody(),
-        onNotification: notificationFunction,
-      )
+      body: refreshBody()
     );
   }
 
@@ -90,7 +87,7 @@ class BrowseListState extends State<BrowseListWidget> {
             var data = hisModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data.topicInfo,isLoadingImage,(topicId,value){
+              child: homePageItemWidget(context, data.topicInfo,(topicId,value){
                 if (value is HomeLikeStatusModel) {
                   hisModels = hisModels.map((e) {
                     var newModel = e;
