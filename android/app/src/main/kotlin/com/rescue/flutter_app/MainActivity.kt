@@ -1,4 +1,4 @@
-package com.rescue.flutter_app
+package com.rescue.flutter_720yun
 
 import io.flutter.embedding.android.FlutterActivity
 

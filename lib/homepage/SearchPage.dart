@@ -378,4 +378,5 @@ class SearchPageState extends State<SearchPageWidget> {
 
   }
 
+
 }

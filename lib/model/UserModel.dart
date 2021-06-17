@@ -185,10 +185,11 @@ enum Report_type {
 class UserPageModel {
   final String icon;
   final String title;
-
+  int num;
   UserPageModel(
       this.icon,
-      this.title
+      this.title,
+      this.num
       );
 }
 

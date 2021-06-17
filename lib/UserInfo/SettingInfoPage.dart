@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 class SettingPageWidget extends StatelessWidget {
 
   List<UserPageModel> datas = [
-    UserPageModel('icon', '修改密码'),
-    UserPageModel('icon', '意见反馈'),
-    UserPageModel('', "退出登录")
+    UserPageModel('icon', '修改密码',0),
+    UserPageModel('icon', '意见反馈',0),
+    UserPageModel('', "退出登录",0)
     // UserPageModel('', title)
   ];
 

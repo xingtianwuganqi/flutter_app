@@ -113,7 +113,8 @@ enum NetPath {
   authUnreadMsg,
   systemMeg,
   completeRescue,
-  appUpload
+  appUpload,
+  appdownload,
 }
 
 class NetWorkingConfig {
@@ -219,6 +220,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/completetopic/';
       case NetPath.appUpload:
         return baseUrl + '/api/app/upload/';
+      case NetPath.appdownload:
+        return baseUrl + '/api/download/';
       default:
         return "";
     }
