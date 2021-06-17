@@ -3,6 +3,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/ChangePswdPage.dart';
 import 'package:flutter_720yun/UserInfo/SuggestionPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import '../UserInfo/UserInfoPage.dart';
 import 'package:provider/provider.dart';
 

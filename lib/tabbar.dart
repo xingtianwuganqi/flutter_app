@@ -27,6 +27,7 @@ class tabbar extends StatefulWidget {
 class tabbarState extends State<tabbar> {
   int _selectedIndex = 0;
   int _unreadNum = 0;
+  int _newVersion = 0;
   List<Widget> pages = [];
 
   @override
@@ -44,7 +45,16 @@ class tabbarState extends State<tabbar> {
 
       });
     },));
-    pages.add(UserInfoWidget());
+    pages.add(UserInfoWidget(changed: (value){
+      var dic = Map.from(paramDic);
+      var localVersion = dic['androidVersion'];
+      if (int.parse(localVersion) < value) {
+        _newVersion = 1;
+      }
+      setState(() {
+
+      });
+    },));
   }
 
   @override
@@ -78,9 +88,7 @@ class tabbarState extends State<tabbar> {
             // Image.asset('assets/icons/icon_tabbar_msg_un.png', width: 25, height: 25,)
             // ignore: deprecated_member_use
             ,title: Text("消息")),
-        BottomNavigationBarItem(icon: _selectedIndex == 3 ?
-        Image.asset('assets/icons/icon_tabbar_mi_se.png',width: 25,height: 25) :
-        Image.asset('assets/icons/icon_tabbar_mi_un.png', width: 25, height: 25,),
+        BottomNavigationBarItem(icon: newVersionIcon(_selectedIndex == 3),
             // ignore: deprecated_member_use
             title: Text("我的"))
       ],
@@ -116,6 +124,36 @@ class tabbarState extends State<tabbar> {
         Image.asset('assets/icons/icon_tabbar_msg_un.png', width: 25, height: 25,),
         Positioned(
           child: _unreadNum > 0 ? Container(
+            height: 16,
+            width: 16,
+            alignment: Alignment.center,
+            decoration: new BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              color: Colors.redAccent,
+            ),
+            child: Text(num,style: TextStyle(color: Colors.white,fontSize: 10),),
+          ) : Container(color: Colors.transparent,width: 2,height: 2,),
+          top: 0,
+          right: 0,
+        )
+      ],
+    );
+  }
+
+  Widget newVersionIcon(bool isSelect) {
+    var num = "";
+    if (_newVersion > 0) {
+      num = '$_newVersion';
+    }else{
+      num = '';
+    }
+    return Stack(
+      children: [
+        isSelect ?
+        Image.asset('assets/icons/icon_tabbar_mi_se.png',width: 25,height: 25):
+        Image.asset('assets/icons/icon_tabbar_mi_un.png', width: 25, height: 25,),
+        Positioned(
+          child: _newVersion > 0 ? Container(
             height: 16,
             width: 16,
             alignment: Alignment.center,

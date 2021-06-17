@@ -113,10 +113,11 @@ enum NetPath {
   authUnreadMsg,
   systemMeg,
   completeRescue,
+  appUpload
 }
 
 class NetWorkingConfig {
-  static final UrlConfig urlConfig = UrlConfig.formal;
+  static final UrlConfig urlConfig = UrlConfig.test;
   static String baseUrl() {
     switch (urlConfig) {
       case UrlConfig.formal:
@@ -216,6 +217,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/systemnotification/';
       case NetPath.completeRescue:
         return baseUrl + '/api/v1/completetopic/';
+      case NetPath.appUpload:
+        return baseUrl + '/api/app/upload/';
       default:
         return "";
     }

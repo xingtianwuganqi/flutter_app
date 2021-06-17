@@ -159,7 +159,7 @@ static func apiBasicParameters() -> [String:Any] {
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
   'appVersion': '1.0.3',
-  'androidVersion': '',
+  'androidVersion': '0',
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 

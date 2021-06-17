@@ -6,11 +6,17 @@ import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:provider/provider.dart';
 import '../NetWorking/NetWorking.dart';
 import 'WebviewPage.dart';
 
 class UserInfoWidget extends StatefulWidget {
+
+  final ValueChanged changed;
+
+  UserInfoWidget({Key key,this.changed}): super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -41,6 +47,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     UserPageModel('assets/icons/icon_mi_about.png', '关于我们'),
   ];
 
+  AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -58,6 +65,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
 
       });
     });
+    uploadNetWorking();
   }
 
   @override
@@ -219,14 +227,21 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       }));
     }
   }
-}
 
-class UserPageModel {
-  final String icon;
-  final String title;
+  Future<Null> uploadNetWorking() async{
+    final url = NetWorkingConfig.path(NetPath.appUpload);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        var model = data['data'];
+        var info = AppVersionModel.fromJson(model);
+        appVersionInfo = info;
+        print('======');
+        print(info);
+        widget.changed(info.version);
+      }
+    }, (error) {
 
-  UserPageModel(
-      this.icon,
-      this.title
-      );
+    });
+  }
 }

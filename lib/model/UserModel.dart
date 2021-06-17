@@ -180,3 +180,29 @@ enum Report_type {
   show_comment,// 5
   show_reply,// 6
 }
+
+
+class UserPageModel {
+  final String icon;
+  final String title;
+
+  UserPageModel(
+      this.icon,
+      this.title
+      );
+}
+
+class AppVersionModel {
+  final int id;
+  final String app_type;
+  final int version;
+
+  AppVersionModel({this.id,this.app_type,this.version});
+  factory AppVersionModel.fromJson(Map<String,dynamic> json) {
+    return AppVersionModel(
+      id: json['id'],
+      app_type: json['app_type'],
+      version: json['version']
+    );
+  }
+}
