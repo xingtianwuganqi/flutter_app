@@ -92,6 +92,7 @@ enum NetPath {
   violations,
   report,
   commentList,
+  moreReplyInfo,
   pushComment, // 发表评论
   replyComment, // 回复评论
   tagsInfo,
@@ -180,6 +181,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v1/report/';
       case NetPath.commentList:
         return baseUrl + '/api/v1/commentlist/';
+      case NetPath.moreReplyInfo:
+        return baseUrl + '/api/v1/replypageinfo/';
       case NetPath.pushComment:
         return baseUrl + '/api/v1/commentaction/';
       case NetPath.replyComment:

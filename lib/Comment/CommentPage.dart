@@ -151,7 +151,7 @@ class CommentState extends State<CommentInfoWidget> {
             child: replyCell(data),
           );
         }else{
-          return moreItemCell();
+          return moreItemCell(data);
         }
       },
       itemCount: listData.length,
@@ -170,7 +170,7 @@ class CommentState extends State<CommentInfoWidget> {
           child: replyCell(data),
         );
       }else{
-        return moreItemCell();
+        return moreItemCell(data);
       }
     }, childCount: listData.length));
   }
@@ -276,6 +276,42 @@ class CommentState extends State<CommentInfoWidget> {
     });
   }
 
+  Future<Null> moreReplyNetworking(CommentInfoModel model) async{
+    final url = NetWorkingConfig.path(NetPath.moreReplyInfo);
+    var dic = Map<String,dynamic>.from(paramDic);
+    dic['comment_id'] = model.comment_id;
+    dic['page'] = model.next_page;
+
+    await NetWorking.formDataPost(url, dic, (data) {
+      Printer.printMapJsonLog('-----');
+      Printer.printMapJsonLog(data);
+      if (data['code'] == 200) {
+        var models = data['data'] as List;
+        var moreReply =  models.map((e) => ReplyListModel.fromJson(e))?.toList();
+        /// 先清空所有的数据
+        listData = [];
+        for (int i=0;i<dataSource.length;i++) {
+          var comInfo = dataSource[i];
+          if (comInfo.comment_id == model.comment_id) {
+            comInfo.replys.addAll(moreReply);
+            if (models.length > 0) {
+              comInfo.next_page = comInfo.next_page + 1;
+              comInfo.isOpend = comInfo.reply_count == (comInfo.replys.length ?? 0);
+            }
+          }
+          dataSource[i] = comInfo;
+          commentListData(comInfo);
+        }
+        setState(() {
+
+        });
+
+      }
+    }, (error) {
+
+    });
+  }
+
   // 处理数据
   void commentListData(CommentInfoModel model) {
     var comModel = ComRepListModel(type: 1,commentModel: model);
@@ -285,9 +321,8 @@ class CommentState extends State<CommentInfoWidget> {
       listData.addAll(replyInfos);
     }
 
-    /// 如果replys有5个或5个以上，则可能还有下一页
-    if (model.replys.length >= 5) {
-      var com = ComRepListModel(type: 3);
+    if (!model.isOpend) {
+      var com = ComRepListModel(type: 3,commentModel: model);
       listData.add(com);
     }
     if (listData.length > 0 && widget.changed != null) {
@@ -488,8 +523,29 @@ class CommentState extends State<CommentInfoWidget> {
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 45,right: 10,top: 3,bottom: 3),
-                child: Text((model.commentModel.create_time != null && model.commentModel.create_time.length > 0) ? ToolConfig.timeT(model.commentModel.create_time) : '--',
-                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                child:
+                // Text((model.commentModel.create_time != null && model.commentModel.create_time.length > 0) ? ToolConfig.timeT(model.commentModel.create_time) : '--',
+                //   style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                // ),
+                Row(
+                  children: [
+                    Text((model.commentModel.create_time != null && model.commentModel.create_time.length > 0) ? ToolConfig.timeT(model.commentModel.create_time) : '--',
+                      style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        height: 24,
+                        width: 50,
+                        alignment: Alignment.center,
+                        child:  Text('回复',style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                      ),
+                      onTap: (){
+                        tapCommentButton(model);
+                      },
+                    )
+                  ],
                 ),
               ),
               Divider(height: 0.5,indent: 45,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),)
@@ -497,25 +553,29 @@ class CommentState extends State<CommentInfoWidget> {
           ),
         ),
         onTap: () {
-          // 点击评论
-          FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
-          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel.userInfo.username}");
-
-          /// 回复时需要的数据
-          _replyComModel = ReplyComModel(
-              comment_id: model.commentModel.comment_id,
-              reply_id: model.commentModel.comment_id,
-              reply_type: 1,
-              to_uid: model.commentModel.userInfo.id
-          );
-
-          setState(() {
-
-          });
+          tapCommentButton(model);
         },
         // behavior: HitTestBehavior.opaque,
       ),
     );
+  }
+
+  void tapCommentButton(ComRepListModel model) {
+    // 点击评论
+    FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
+    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel.userInfo.username}");
+
+    /// 回复时需要的数据
+    _replyComModel = ReplyComModel(
+        comment_id: model.commentModel.comment_id,
+        reply_id: model.commentModel.comment_id,
+        reply_type: 1,
+        to_uid: model.commentModel.userInfo.id
+    );
+
+    setState(() {
+
+    });
   }
 
   Widget replyCell(ComRepListModel model) {
@@ -607,12 +667,30 @@ class CommentState extends State<CommentInfoWidget> {
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
               ),
+
               // 时间
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 30,right: 10,top: 3,bottom: 3),
-                child: Text((model.replyModel.create_time != null && model.replyModel.create_time.length > 0) ? ToolConfig.timeT(model.replyModel.create_time) : '--',
-                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                child: Row(
+                  children: [
+                    Text((model.replyModel.create_time != null && model.replyModel.create_time.length > 0) ? ToolConfig.timeT(model.replyModel.create_time) : '--',
+                      style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 10)),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        height: 24,
+                        width: 50,
+                        alignment: Alignment.center,
+                        child:  Text('回复',style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                      ),
+                      onTap: (){
+                        tapReplyButton(model);
+                      },
+                    ),
+                  ]
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 5)),
@@ -621,30 +699,35 @@ class CommentState extends State<CommentInfoWidget> {
           ),
         ),
         onTap: () {
-          // 点击回复
-          FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
-          /// 点击了回复
-          _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel.fromInfo.username}");
-
-          /// 回复时需要的数据
-          _replyComModel = ReplyComModel(
-              comment_id: model.replyModel.comment_id,
-              reply_id: model.replyModel.reply_id,
-              reply_type: 2,
-              to_uid: model.replyModel.from_uid
-          );
-
-          setState(() {
-
-          });
+          tapReplyButton(model);
         },
         // behavior: HitTestBehavior.opaque,
       ),
     );
   }
 
-  Widget moreItemCell() {
+  void tapReplyButton(ComRepListModel model) {
+    // 点击回复
+    FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
+    /// 点击了回复
+    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel.fromInfo.username}");
+
+    /// 回复时需要的数据
+    _replyComModel = ReplyComModel(
+        comment_id: model.replyModel.comment_id,
+        reply_id: model.replyModel.reply_id,
+        reply_type: 2,
+        to_uid: model.replyModel.from_uid
+    );
+
+    setState(() {
+
+    });
+  }
+
+  Widget moreItemCell(ComRepListModel model) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       child: Column(
         children: [
           Container(
@@ -652,13 +735,17 @@ class CommentState extends State<CommentInfoWidget> {
             padding: EdgeInsets.only(left: 75),
             height: 50,
             alignment: Alignment.center,
-            child: Text('查看更多回复 >',
+            child: Text('查看更多回复',
               style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.urlColor)),
             ),
           ),
           Divider(indent: 75,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),height: 0.5,)
         ],
-      )
+      ),
+      onTap: () async {
+
+        await moreReplyNetworking(model.commentModel);
+      },
     );
   }
 }
