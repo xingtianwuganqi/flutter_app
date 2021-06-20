@@ -33,6 +33,8 @@
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
                  defined in @style/LaunchTheme). -->
+            <meta-data android:name="io.flutter.network-policy"
+                android:resource="@xml/network_security_config"/>
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
