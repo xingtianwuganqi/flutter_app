@@ -4,4 +4,8 @@
 -keep class io.flutter.view.**  { *; }
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
 -ignorewarnings
