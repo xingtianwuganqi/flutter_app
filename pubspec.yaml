@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^4.0.0
-  flutter_cache_manager: ^3.1.2
+#  flutter_cache_manager: ^3.1.2
   cached_network_image: ^3.0.0
   flutter_screenutil: ^4.0.2
   font_awesome_flutter: ^8.12.0

@@ -161,7 +161,7 @@ class MessageListState extends State<MessageListWidget> {
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: 10,top: 3),
-                      height: tags.length > 0 ? 23 : 3 ,
+                      height: tags.length > 0 ? null : 3 ,
                       child:  Column(
                         children: [
                           Wrap(

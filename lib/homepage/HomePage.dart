@@ -475,7 +475,7 @@ Widget textInfoWidget(HomePageModel data) {
           // ignore: null_aware_before_operator
           padding: EdgeInsets.only(left: 60,right: 15,top: 2,bottom: 2),
           alignment: Alignment.centerLeft,
-          height: tags.length > 0 ? 23 : 3,
+          height: tags.length > 0 ? null : 3,
           child: Column(
             children: [
               Wrap(
