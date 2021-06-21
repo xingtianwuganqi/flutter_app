@@ -130,7 +130,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             // ignore: null_aware_before_operator
             padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
-            height: tags.length > 0 ? null : 3,
+            height: tags.length > 0 ? null : 1,
               child:  Column(
                 children: [
                   Wrap(
@@ -148,6 +148,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
+                height: 1.2
               ),
             ),
           ),

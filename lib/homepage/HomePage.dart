@@ -15,6 +15,7 @@ import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
 import '../CommonWidget/PhotoViewGalleryScreen.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -475,7 +476,7 @@ Widget textInfoWidget(HomePageModel data) {
           // ignore: null_aware_before_operator
           padding: EdgeInsets.only(left: 60,right: 15,top: 2,bottom: 2),
           alignment: Alignment.centerLeft,
-          height: tags.length > 0 ? null : 3,
+          height: tags.length > 0 ? null : 1,
           child: Column(
             children: [
               Wrap(
@@ -488,15 +489,24 @@ Widget textInfoWidget(HomePageModel data) {
         Container(
           padding: EdgeInsets.only(left: 60,right: 10,top: 5,bottom: 5),
           alignment: Alignment.centerLeft,
-          child: Text(data.content ?? '',
-            maxLines: 7,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.justify,
-            style: TextStyle(
-              fontSize: FontUtil.fs(FontSize.content),
-              color: ColorsUtil.fromEnmu(ColorEnum.content),
+          child:
+          //禁止点击
+          IgnorePointer(
+            child: ExpandableText(
+              data.content ?? '',
+              style: TextStyle(
+                fontSize: FontUtil.fs(FontSize.content),
+                color: ColorsUtil.fromEnmu(ColorEnum.content),
+                height: 1.2,
+              ),
+              expandText: '全文',
+              maxLines: 7,
+              linkColor: Colors.blue,
+              linkEllipsis: false,
+              expanded: false,
             ),
-          ),
+          )
+
         ),
       ],
     ),

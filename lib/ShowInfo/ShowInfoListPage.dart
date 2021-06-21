@@ -1,6 +1,7 @@
 // import 'dart:html';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Comment/CommentPage.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
@@ -377,13 +378,28 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 15,top: 10,right: 10,bottom: 0),
-          child: Text(data.instruction ?? "",
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+          child:
+          ExpandableText(
+            data.instruction ?? "" ,
             style: TextStyle(
-                fontSize: FontUtil.fs(FontSize.content),
-                color: ColorsUtil.fromEnmu(ColorEnum.content)),
-          ),
+              fontSize: FontUtil.fs(FontSize.content),
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              height: 1.2
+            ),
+            expandText: '全文',
+            maxLines: 3,
+            linkColor: Colors.blue,
+            expanded: false,
+            expandOnTextTap: true,
+            collapseOnTextTap: true,
+          )
+          // Text(data.instruction ?? "",
+          //   maxLines: 3,
+          //   overflow: TextOverflow.ellipsis,
+          //   style: TextStyle(
+          //       fontSize: FontUtil.fs(FontSize.content),
+          //       color: ColorsUtil.fromEnmu(ColorEnum.content)),
+          // ),
         ),
         /// 评论
         GestureDetector(
