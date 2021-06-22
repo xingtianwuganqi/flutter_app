@@ -487,7 +487,7 @@ Widget textInfoWidget(HomePageModel data) {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 60,right: 10,top: 5,bottom: 5),
+          padding: EdgeInsets.only(left: 60,right: 10,top: 2,bottom: 2),
           alignment: Alignment.centerLeft,
           child:
           //禁止点击
@@ -497,7 +497,7 @@ Widget textInfoWidget(HomePageModel data) {
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
-                height: 1.2,
+                height: 1.3,
               ),
               expandText: '全文',
               maxLines: 7,

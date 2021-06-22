@@ -37,6 +37,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   TextEditingController _contentController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
+  int textCount = 0;
 
   List<ReleasePhotoModel> _releasePhotos = [
     ReleasePhotoModel(
@@ -99,6 +100,17 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         // 上传成功
 
       }
+    });
+
+    _contentController.addListener(() {
+      if (_contentController.text.length > 0) {
+        textCount = _contentController.text.length;
+      }else{
+        textCount = 0;
+      }
+      setState(() {
+
+      });
     });
 
   }
@@ -186,16 +198,26 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                   ),
           ),
           Expanded(
-              child: TextField(
-                focusNode: _contentFocusNode,
-                controller: _contentController,
-                maxLines: null,
-                decoration: InputDecoration.collapsed(
-                    hintText: "请简单介绍下宠物，例如：\n名字：xxx\n年龄：xxx\n性别：xxx\n品种：xxx\n健康信息：xxx\n领养要求：xxx",
-                  hintStyle: TextStyle(color: Colors.black12)
-                ),
-                style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
-              )
+              child:
+                  Stack(
+                    children: [
+                      TextField(
+                        focusNode: _contentFocusNode,
+                        controller: _contentController,
+                        maxLines: null,
+                        decoration: InputDecoration.collapsed(
+                            hintText: "请简单介绍下宠物，例如：\n名字：xxx\n年龄：xxx\n性别：xxx\n品种：xxx\n健康信息：xxx\n领养要求：xxx",
+                            hintStyle: TextStyle(color: Colors.black12)
+                        ),
+                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
+                      ),
+                      Positioned(
+                        child: Text('$textCount/1000',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                        right: 5,
+                        bottom: 5,
+                      )
+                    ],
+                  )
           ),
           photosWidget(),
           phoneWidget(),

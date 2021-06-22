@@ -48,6 +48,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
   /// 是否已经点击了不再提醒
   bool _isSelectRemind = false;
 
+  int textCount = 0;
 
   @override
   void initState() {
@@ -79,6 +80,17 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
       }
     });
 
+    _contentController.addListener(() {
+      if (_contentController.text.length > 0) {
+        textCount = _contentController.text.length;
+      }else{
+        textCount = 0;
+      }
+      setState(() {
+
+      });
+    });
+
   }
 
   @override
@@ -99,7 +111,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
         actions: [
           TextButton(
               onPressed: () {
-
+                clickPushButton();
               },
               child: Text('发布',
                 style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -266,16 +278,26 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
           ),
           photosWidget(),
           Expanded(
-              child: TextField(
-                focusNode: _contentFocusNode,
-                controller: _contentController,
-                maxLines: null,
-                decoration: InputDecoration.collapsed(
-                    hintText: "请输入简单说明",
-                    hintStyle: TextStyle(color: Colors.black12)
+            child: Stack(
+              children: [
+                TextField(
+                  focusNode: _contentFocusNode,
+                  controller: _contentController,
+                  maxLines: null,
+                  decoration: InputDecoration.collapsed(
+                      hintText: "请输入简单说明",
+                      hintStyle: TextStyle(color: Colors.black12)
+                  ),
+                  style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
-                style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
-              )
+                Positioned(
+                  child: Text('$textCount/1000',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                  right: 5,
+                  bottom: 5,
+                )
+              ],
+            ),
+
           ),
           bottomRemindText()
         ],

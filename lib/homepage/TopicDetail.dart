@@ -141,14 +141,14 @@ class TopicDetailState extends State<TopicDetailWidget> {
               ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+            padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
             child: Text(data.content ?? '',
               maxLines: null,
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
-                height: 1.2
+                height: 1.3
               ),
             ),
           ),

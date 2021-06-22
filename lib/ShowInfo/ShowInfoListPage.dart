@@ -238,7 +238,7 @@ class ShowInfoActionNetworking {
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
   int currentIndex = 0;
   var imgWidgets = data.imgs.map((e) => Container(
-    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e,
+    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgTailUrl,
         height: double.infinity,
         width: double.infinity,
         fit: BoxFit.contain,
@@ -384,11 +384,12 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
             style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
               color: ColorsUtil.fromEnmu(ColorEnum.content),
-              height: 1.2
+              height: 1.3
             ),
             expandText: '全文',
             maxLines: 3,
             linkColor: Colors.blue,
+            linkEllipsis: false,
             expanded: false,
             expandOnTextTap: true,
             collapseOnTextTap: true,
