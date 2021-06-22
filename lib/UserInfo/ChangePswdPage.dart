@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/NetWorking/Encryption.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -184,7 +185,12 @@ class ChangePswdState extends State<ChangePswdWidget> {
       return;
     }
     final url = NetWorkingConfig.path(NetPath.changePswd);
-    final dic = {'origin_pswd':_originController.text,'password': _pswdController.text,'confirm_pswd': _confirmController.text,'token': UserManager.instance.token};
+    final dic = {
+      'origin_pswd':generateMD5(_originController.text),
+      'password': generateMD5(_pswdController.text),
+      'confirm_pswd': generateMD5(_confirmController.text),
+      'token': UserManager.instance.token
+    };
     print(_originController.text);
     print(_pswdController.text);
     print(_confirmController.text);

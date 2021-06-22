@@ -238,7 +238,7 @@ class ShowInfoActionNetworking {
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
   int currentIndex = 0;
   var imgWidgets = data.imgs.map((e) => Container(
-    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgTailUrl,
+    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgHeightTail,
         height: double.infinity,
         width: double.infinity,
         fit: BoxFit.contain,
@@ -261,7 +261,9 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: (data.user.avator != null && data.user.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator): AssetImage('assets/icons/icon_plh.png'),
+                backgroundImage: (data.user.avator != null && data.user.avator.length > 0) ?
+                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator + NetWorkingConfig.imgTailUrl):
+                AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 40,
@@ -386,21 +388,15 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
               color: ColorsUtil.fromEnmu(ColorEnum.content),
               height: 1.3
             ),
-            expandText: '全文',
+            expandText: '展开',
+            collapseText: '收起',
             maxLines: 3,
             linkColor: Colors.blue,
             linkEllipsis: false,
             expanded: false,
-            expandOnTextTap: true,
-            collapseOnTextTap: true,
+            expandOnTextTap: false,
+            collapseOnTextTap: false,
           )
-          // Text(data.instruction ?? "",
-          //   maxLines: 3,
-          //   overflow: TextOverflow.ellipsis,
-          //   style: TextStyle(
-          //       fontSize: FontUtil.fs(FontSize.content),
-          //       color: ColorsUtil.fromEnmu(ColorEnum.content)),
-          // ),
         ),
         /// 评论
         GestureDetector(

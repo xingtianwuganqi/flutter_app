@@ -53,7 +53,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
           CircleAvatar(
             radius: 20,
             backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator):
+            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator + NetWorkingConfig.imgTailUrl):
             AssetImage('assets/icons/icon_plh.png'),
             child: Container(
               alignment: Alignment(0, .5),

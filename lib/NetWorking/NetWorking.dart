@@ -134,6 +134,7 @@ class NetWorkingConfig {
   }
   static String get imgBaseUrl => 'http://img.rxswift.cn/';
   static String get imgTailUrl => "?imageView2/0/q/40";
+  static String get imgHeightTail => "?imageView2/0/q/80";
   static String path(NetPath path) {
     var baseUrl = NetWorkingConfig.baseUrl();
     switch (path) {

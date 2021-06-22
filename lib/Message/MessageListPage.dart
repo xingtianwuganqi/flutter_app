@@ -49,7 +49,9 @@ class MessageListState extends State<MessageListWidget> {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundImage: (data.from_info.avator != null && data.from_info.avator.length > 0) ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.from_info.avator) : AssetImage('assets/icons/icon_plh.png'),
+              backgroundImage: (data.from_info.avator != null && data.from_info.avator.length > 0) ?
+              CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.from_info.avator + NetWorkingConfig.imgTailUrl) :
+              AssetImage('assets/icons/icon_plh.png'),
               child: Container(
                 alignment: Alignment(0, .5),
                 width: 40,
@@ -196,7 +198,11 @@ class MessageListState extends State<MessageListWidget> {
             Container(
               color: Colors.white,
               margin: EdgeInsets.only(left: 1,top: 1,bottom: 1),
-              child: CachedNetworkImage(imageUrl: (NetWorkingConfig.imgBaseUrl + data.showInfo.imgs.first ?? ''),width: 78,height: 78,fit: BoxFit.cover,),
+              child: CachedNetworkImage(
+                imageUrl: (NetWorkingConfig.imgBaseUrl + (data.showInfo.imgs.first ?? '') + NetWorkingConfig.imgTailUrl),
+                width: 78,
+                height: 78,
+                fit: BoxFit.cover,),
             ),
             Expanded(
                 child: Container(

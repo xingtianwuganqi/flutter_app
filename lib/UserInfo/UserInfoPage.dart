@@ -137,7 +137,9 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.white,
-                backgroundImage: context.watch<UserProviderModel>().isLogin ? CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "")) : AssetImage('assets/icons/icon_plh.png'),
+                backgroundImage: context.watch<UserProviderModel>().isLogin ?
+                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+                AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
                     width: 50,

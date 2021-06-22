@@ -141,10 +141,11 @@ class CreateGambitState extends State<CreateGambitPage> {
     }
 
     final url = NetWorkingConfig.path(NetPath.pushGambit);
-    final dic = {'descript': _comController.text,
+    final dic = {
+      'descript': _comController.text,
       'user_id': UserManager.instance.userInfo.id,
       'review_type': 1,
-      'token': "e83d54a6b802166183ac5dbd4844372e"
+      'token': UserManager.instance.token
     };
     print(url);
     print(dic);
@@ -152,7 +153,11 @@ class CreateGambitState extends State<CreateGambitPage> {
       print(data);
       if (data['code'] == 200) {
         EasyLoading.showToast("提交成功");
-        _comController.clear();
+        Future.delayed(Duration(seconds: 1),()
+        {
+          _comController.clear();
+          Navigator.pop(context);
+        });
       }else{
         EasyLoading.showToast("提交失败");
       }

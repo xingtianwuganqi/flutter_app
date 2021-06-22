@@ -361,7 +361,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           backgroundImage:
           // isLoadingImg ?
           ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-          CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator,) :
+          CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator + NetWorkingConfig.imgTailUrl,) :
           AssetImage('assets/icons/icon_plh.png')),
           //   :
           // AssetImage('assets/icons/icon_plh.png'),

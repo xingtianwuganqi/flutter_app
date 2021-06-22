@@ -456,7 +456,9 @@ class CommentState extends State<CommentInfoWidget> {
                   children: [
                     CircleAvatar(
                       radius: 10,
-                      backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?  CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.commentModel.userInfo.avator) : AssetImage('assets/icons/icon_plh.png'),
+                      backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
+                      CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.commentModel.userInfo.avator + NetWorkingConfig.imgTailUrl) :
+                      AssetImage('assets/icons/icon_plh.png'),
                       child: Container(
                         alignment: Alignment(0, 0),
                         width: 20,
@@ -604,7 +606,9 @@ class CommentState extends State<CommentInfoWidget> {
                   children: [
                     CircleAvatar(
                       radius: 10,
-                      backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?  CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.replyModel.fromInfo.avator) : AssetImage('assets/icons/icon_plh.png'),
+                      backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?
+                      CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.replyModel.fromInfo.avator + NetWorkingConfig.imgTailUrl) :
+                      AssetImage('assets/icons/icon_plh.png'),
                       child: Container(
                         alignment: Alignment(0, 0),
                         width: 20,

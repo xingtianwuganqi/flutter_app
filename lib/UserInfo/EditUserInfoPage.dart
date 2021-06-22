@@ -54,7 +54,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     });
 
     _nicknameController.addListener(() {
-      print(_nicknameController.text);
+
     });
 
     if (UserManager.instance.isLogin) {
@@ -64,15 +64,12 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
     // 添加任务进度监听
     putController.addProgressListener((double percent) {
-      print('任务进度变化：已发送：$percent');
     });
     // 添加文件发送进度监听
     putController.addSendProgressListener((double percent) {
-      print('已上传进度变化：已发送：$percent');
     });
     // 添加任务状态监听
     putController.addStatusListener((StorageStatus status) {
-      print('状态变化: 当前任务状态：$status');
       if (status == StorageStatus.Success) {
         // 上传成功
 
@@ -80,10 +77,19 @@ class EditUserWidgetState extends State<EditUserWidget> {
     });
 
   }
+
+  void dispose() {
+    // TODO: implement dispose
+    // 移除焦点监听
+    _focusNodeUserName.removeListener(_focusNodeListener);
+    _nicknameController.removeListener(_focusNodeListener);
+    _focusNodeUserName.dispose();
+    _nicknameController.dispose();
+    super.dispose();
+  }
   //   // 监听焦点
   Future<Null> _focusNodeListener() async{
     if(_focusNodeUserName.hasFocus){
-      print("用户名框获取焦点");
       // 取消密码框的焦点状态
     }
   }
@@ -103,7 +109,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 backgroundImage: _assetInfo != null ?
                 AssetThumbImageProvider(_assetInfo,height: 80,width: 80) :
                 (UserManager.instance.isLogin ?
-                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator):
+                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator + NetWorkingConfig.imgTailUrl):
                 Image.asset('assets/icons/icon_plh.png')),
                 child: Container(
                   alignment: Alignment(0, .5),
@@ -163,6 +169,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
         actions: [
           TextButton(
               onPressed: () {
+                _focusNodeUserName.unfocus();
                 if (_nicknameController.text == null || _nicknameController.text.length == 0) {
                   EasyLoading.showToast('请输入昵称');
                   return;
@@ -222,7 +229,6 @@ class EditUserWidgetState extends State<EditUserWidget> {
       );
     } on Exception catch (e) {
       error = e.toString();
-      print(error);
     }
     if (!mounted) return;
 
@@ -237,7 +243,6 @@ class EditUserWidgetState extends State<EditUserWidget> {
     final url = NetWorkingConfig.path(NetPath.qiniuToken);
     var dic = new Map<String, dynamic>.from(paramDic);
     await NetWorking.formDataPost(url, dic, (data) {
-      print(data);
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
         _token = model.token;
@@ -253,16 +258,12 @@ class EditUserWidgetState extends State<EditUserWidget> {
     EasyLoading.show(status:'上传图片...');
     // 使用 storage 的 putFile
     String photoKey = comPhotoKey;
-    print("photoKey");
-    print(photoKey);
     final filePath = await FlutterAbsolutePath.getAbsolutePath(_assetInfo.identifier);
     File file = File(filePath);
     storage.putFile(file, token, options: PutOptions(
       controller: putController,
       key: photoKey,
     )).then((value) {
-      print("value");
-      print(value.key);
       // 上传成功
       _avator = value.key;
       updateUserInfoNetworking(_avator);
