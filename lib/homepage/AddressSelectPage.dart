@@ -56,6 +56,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
           height: 44,
           alignment: Alignment.centerLeft,
           child: TabBar(
+            isScrollable: false,
             indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
             controller: _tabController,
             tabs: tabs.map((e) => Tab(text: e)).toList(),
@@ -127,6 +128,15 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
 
               });
             });
+            // 如果没有area，则退出
+            if (_areaArr.length == null || _areaArr.length == 0) {
+              Future.delayed(Duration(milliseconds: 700),(){
+                var address = _provinceModel.value + '.' + _cityModel.value;
+                widget.changed(address);
+                Navigator.pop(context);
+              });
+            }
+
           }),
           CityPage(citys: _areaArr,changed: (value) {
             _areaModel = value;
@@ -138,7 +148,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
               });
             });
 
-            Future.delayed(Duration(milliseconds: 1000),(){
+            Future.delayed(Duration(milliseconds: 700),(){
               var address = _provinceModel.value + '.' + _cityModel.value + '.' + _areaModel.value;
               widget.changed(address);
               Navigator.pop(context);
