@@ -458,7 +458,7 @@ Widget textInfoWidget(HomePageModel data) {
             color: ColorsUtil.fromEnmu(ColorEnum.system),
             borderRadius: BorderRadius.all(Radius.circular(3.0))
         ),
-        padding: EdgeInsets.only(left: 5,right: 5,top: 3,bottom: 3),
+        padding: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
         child: Text(e.tag_name ?? "",
           style: TextStyle(
             color: Colors.white,
@@ -497,7 +497,7 @@ Widget textInfoWidget(HomePageModel data) {
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
-                height: 1.3,
+                height: 1.4,
               ),
               expandText: '全文',
               maxLines: 7,

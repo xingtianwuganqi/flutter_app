@@ -386,7 +386,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
             style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
               color: ColorsUtil.fromEnmu(ColorEnum.content),
-              height: 1.3
+              height: 1.4
             ),
             expandText: '展开',
             collapseText: '收起',

@@ -67,6 +67,7 @@ class MessageListState extends State<MessageListWidget> {
                       style: TextStyle(
                         color: ColorsUtil.fromEnmu(ColorEnum.title),
                         fontSize: FontUtil.fs(FontSize.content),
+                        fontWeight: FontWeight.w600
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -110,14 +111,38 @@ class MessageListState extends State<MessageListWidget> {
 
   Widget contentText(MessageListModel data) {
     if (data.msg_type == 1 || data.msg_type == 5) {
-      return Text('赞了这条帖子',textAlign: TextAlign.left,);
+      return Text('赞了这条帖子',
+        textAlign: TextAlign.left,
+        style:  TextStyle(
+            fontSize: FontUtil.fs(FontSize.content),
+            color: ColorsUtil.fromEnmu(ColorEnum.content)
+        ),
+      );
     }else if (data.msg_type == 2 || data.msg_type  == 6) {
-      return Text('收藏了这条帖子',textAlign: TextAlign.left,);
+      return Text('收藏了这条帖子',
+        textAlign: TextAlign.left,
+        style: TextStyle(
+            fontSize: FontUtil.fs(FontSize.content),
+            color: ColorsUtil.fromEnmu(ColorEnum.content)
+        ),
+      );
     }else if (data.msg_type == 3 || data.msg_type == 4 || data.msg_type == 7 || data.msg_type == 8) {
       if (data.reply_type == 1) {
-        return Text('评论说：' + data.commentInfo.content ?? "",textAlign: TextAlign.left,);
+        return Text('评论说：' + data.commentInfo.content ?? "",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              fontSize: FontUtil.fs(FontSize.content),
+              color: ColorsUtil.fromEnmu(ColorEnum.content)
+          ),
+        );
       }else {
-        return Text('回复说：' + data.replyInfo.content ?? "",textAlign: TextAlign.left,);
+        return Text('回复说：' + data.replyInfo.content ?? "",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              fontSize: FontUtil.fs(FontSize.content),
+              color: ColorsUtil.fromEnmu(ColorEnum.content)
+          ),
+        );
       }
     }else{
       return Text('');
@@ -177,7 +202,12 @@ class MessageListState extends State<MessageListWidget> {
                         child: Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 6,bottom: 5,left: 10,right: 10),
-                          child: Text(data.topicInfo.content ?? '',maxLines: tags.length > 0 ? 2 : 3,
+                          child: Text(data.topicInfo.content ?? '',
+                            style: TextStyle(
+                              fontSize: FontUtil.fs(FontSize.desc),
+                              color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                            ),
+                            maxLines: tags.length > 0 ? 2 : 3,
                            overflow: TextOverflow.ellipsis,
                           ),
                         )
@@ -208,7 +238,12 @@ class MessageListState extends State<MessageListWidget> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
-                  child: Text((data.showInfo.instruction != null) ? data.showInfo.instruction : '' ,maxLines: 3,
+                  child: Text((data.showInfo.instruction != null) ? data.showInfo.instruction : '' ,
+                    style: TextStyle(
+                        fontSize: FontUtil.fs(FontSize.desc),
+                        color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                    ),
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
