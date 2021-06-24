@@ -37,7 +37,7 @@ class SuggestionState extends State<SuggesstionWidget> {
         actions: [
           TextButton(
               onPressed: (){
-
+                suggestionClick();
               }, child: Text('提交',
             style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.system)),)
