@@ -134,7 +134,10 @@ class _LoginWidgetState extends State<LoginWidget> {
         _userModel = userModel;
         Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
         /// 登录成功
-        Navigator.pop(context);
+        EasyLoading.showToast("登录成功");
+        Future.delayed(Duration(seconds: 1),(){
+          Navigator.pop(context);
+        });
       }else{
         /// 登录失败
         EasyLoading.showToast(data['message'] ?? '登录失败');

@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import '../model/UserModel.dart';
 import '../NetWorking/NetWorking.dart';
 import '../NetWorking/Encryption.dart';
@@ -132,7 +133,6 @@ class _RegisterState extends State<RegisterWidget> {
     }else{
       dic['phoneNum'] = _username;
     }
-    print(dic);
     await NetWorking.post(url, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
@@ -140,7 +140,13 @@ class _RegisterState extends State<RegisterWidget> {
         var userModel = UserInfoModel.fromJson(model);
         // jpush.setAlias('${userModel.id}').then((map) { });
         _userModel = userModel;
-        print(_userModel.phone_number);
+        Provider.of<UserProviderModel>(context, listen: false).user = _userModel;
+        /// 注册成功
+        EasyLoading.showToast("注册成功");
+        Future.delayed(Duration(seconds: 1),(){
+          // 退出到根目录
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        });
       }else{
         EasyLoading.showToast(data['message'] ?? '登录失败');
       }
@@ -154,12 +160,10 @@ class _RegisterState extends State<RegisterWidget> {
   //   // 监听焦点
   Future<Null> _focusNodeListener() async{
     if(_focusNodeUserName.hasFocus){
-      print("用户名框获取焦点");
       // 取消密码框的焦点状态
       _focusNodePassWord.unfocus();
     }
     if (_focusNodePassWord.hasFocus) {
-      print("密码框获取焦点");
       // 取消用户名框焦点状态
       _focusNodeUserName.unfocus();
     }
