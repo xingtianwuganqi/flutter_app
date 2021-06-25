@@ -143,7 +143,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
           Container(
             padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
-            child: Text(data.content ?? '',
+            child: Text((data.content ?? '').trim(),
               maxLines: null,
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
