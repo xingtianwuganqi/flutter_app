@@ -294,8 +294,8 @@ class MessageListState extends State<MessageListWidget> {
         ),
         firstRefresh: isFirstLoad,
         firstRefreshWidget: FirstLoadWidget(),
-        emptyWidget: msgList.length > 0 ? null : EmptyPage((){
-          
+        emptyWidget: msgList.length > 0 ? null : EmptyPage(() async{
+          await messageListNetworking(1);
         }),
         child: ListView.builder(
           itemCount: msgList.length,
@@ -341,14 +341,11 @@ class MessageListState extends State<MessageListWidget> {
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         var models = data['data'];
-        print('begin fromjson');
         List<MessageListModel> items = [];
         for (int i = 0;i < models.length;i ++) {
           var item = MessageListModel.fromJson(models[i]);
           items.add(item);
         }
-        print("items.length");
-        print(items.length);
         page > 1 ? msgList += items : msgList = items;
         if (items.length > 0) {
           page += 1;

@@ -158,8 +158,8 @@ static func apiBasicParameters() -> [String:Any] {
 // 定义一些公关参数，// 定义为计算属性
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
-  'appVersion': '1.0.3',
-  'androidVersion': '0',
+  'appVersion': '1.0.0',
+  'androidVersion': '2', // 与pubspec 文件中的version 相同
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 

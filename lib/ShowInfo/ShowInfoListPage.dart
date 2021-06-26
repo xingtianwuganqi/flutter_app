@@ -85,8 +85,8 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
           ),
           firstRefresh: isFirstLoad,
           firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-          emptyWidget: showInfoLists.length > 0 ? null : EmptyPage((){
-            showInfoListNetWroking(1);
+          emptyWidget: showInfoLists.length > 0 ? null : EmptyPage(() async {
+            await showInfoListNetWroking(1);
           }),
           child: ListView.builder(
               itemCount: showInfoLists.length,

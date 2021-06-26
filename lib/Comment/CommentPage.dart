@@ -123,8 +123,8 @@ class CommentState extends State<CommentInfoWidget> {
       ),
       firstRefresh: _firstRefresh,
       firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: listData.length > 0 ? null : EmptyPage((){
-        commentListNetWorking(1);
+      emptyWidget: listData.length > 0 ? null : EmptyPage(() async {
+        await commentListNetWorking(1);
       },title: '暂无评论',desc:'快去发布第一条评论吧!'),
       child: listViewWidget(),
       onRefresh: () async {

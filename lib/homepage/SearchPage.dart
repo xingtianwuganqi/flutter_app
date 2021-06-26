@@ -290,8 +290,8 @@ class SearchPageState extends State<SearchPageWidget> {
       ),
       // firstRefresh: isFirstLoad,
       // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: isFirstLoad ? null : (homeModels.length > 0   ? null : EmptyPage((){
-        beginSearch(1);
+      emptyWidget: isFirstLoad ? null : (homeModels.length > 0   ? null : EmptyPage(() async{
+        await beginSearch(1);
       })),
       onRefresh: () async {
         await beginSearch(1);

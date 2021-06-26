@@ -97,6 +97,8 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
   }
 
   Future<Null> changeNetWorking() async {
+    _focusNodeUserName.unfocus();
+    _focusNodePassWord.unfocus();
     EasyLoading.show(status: '正在修改...');
     if (_username.length == 0 || _username.length < 6)  {
       EasyLoading.showToast('请输入6位或6位以上新密码');

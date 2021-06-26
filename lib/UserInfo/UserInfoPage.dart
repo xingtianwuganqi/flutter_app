@@ -59,6 +59,8 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
   AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
+  // 是不是点击了检测更新
+  bool isTap = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -138,7 +140,10 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 radius: 25,
                 backgroundColor: Colors.white,
                 backgroundImage: context.watch<UserProviderModel>().isLogin ?
+                ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
                 CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+                    AssetImage('assets/icons/icon_plh.png')
+                ) :
                 AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
@@ -156,7 +161,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         onTap: () {
           lazyAuthToDoThings(context, (){
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return new EditUserWidget();
+              return new EditUserWidget(from: 'userinfo');
             }));
           });
         },
@@ -246,6 +251,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
           },
         );
       }else{
+        isTap = true;
         uploadNetWorking();
       }
     }
@@ -260,21 +266,26 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         var info = AppVersionModel.fromJson(model);
         appVersionInfo = info;
         var localVersion = dic['androidVersion'];
-
-        var list = listData.map((e) {
-          var newValue = e;
-          if (e.title == "检测更新") {
-            if (int.parse(localVersion) < info.version) {
-              newValue.num = 1;
+        if (info.version > int.parse(localVersion)) {
+          var list = listData.map((e) {
+            var newValue = e;
+            if (e.title == "检测更新") {
+                newValue.num = 1;
             }
-          }
-          return newValue;
-        }).toList();
-        listData = list;
-        widget.changed(info.version);
-        setState(() {
+            return newValue;
+          }).toList();
+          listData = list;
+          widget.changed(info.version);
+          setState(() {
 
-        });
+          });
+        }else{
+          if (isTap == true) {
+            EasyLoading.showToast("当前是最新版本");
+            isTap = false;
+          }
+        }
+
       }
     }, (error) {
 

@@ -191,8 +191,8 @@ class _HomePageState extends State<HomePage> {
       ),
       firstRefresh: isFirstLoad,
       firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
-        homePageListNetWroking(1);
+      emptyWidget: homeModels.length > 0 ? null : EmptyPage(() async {
+        await homePageListNetWroking(1);
       }),
       onRefresh:() async {
         await homePageListNetWroking(1);
@@ -493,7 +493,7 @@ Widget textInfoWidget(HomePageModel data) {
           //禁止点击
           IgnorePointer(
             child: ExpandableText(
-              data.content ?? '',
+              (data.content ?? '').trim(),
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),

@@ -103,8 +103,8 @@ class RescuePublishState extends State<RescuePublishWidget> with AutomaticKeepAl
       ),
       firstRefresh: isFirstLoad,
       firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: homeModels.length > 0 ? null : EmptyPage((){
-        loadRescuePublishList(1);
+      emptyWidget: homeModels.length > 0 ? null : EmptyPage(() async{
+        await loadRescuePublishList(1);
       },title: '暂无发布',desc: '快去发布送养吧'),
       onRefresh:() async {
         await loadRescuePublishList(1);

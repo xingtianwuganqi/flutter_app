@@ -45,8 +45,8 @@ class ShowCollectState extends State<ShowCollectWidget> with AutomaticKeepAliveC
         firstRefresh: isFirstLoad,
         firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
         emptyWidget: showInfoLists.length > 0 ? null :
-        EmptyPage((){
-          showCollectListNetWroking(1);
+        EmptyPage(() async{
+          await showCollectListNetWroking(1);
         },title: '暂无数据',desc: '快去收藏秀宠吧'),
         child: ListView.builder(
             itemCount: showInfoLists.length,

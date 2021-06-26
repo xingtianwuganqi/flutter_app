@@ -44,8 +44,8 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
         firstRefresh: isFirstLoad,
         firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
         emptyWidget: showInfoLists.length > 0 ? null :
-          EmptyPage((){
-            showInfoListNetWroking(1);
+          EmptyPage(() async {
+            await showInfoListNetWroking(1);
           },title: '暂无发布',desc: '快去发布秀宠吧'),
         child: ListView.builder(
             itemCount: showInfoLists.length,

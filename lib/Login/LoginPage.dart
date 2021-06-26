@@ -61,7 +61,6 @@ class _LoginWidgetState extends State<LoginWidget> {
     });
 
     _userNameController.addListener(() {
-      print(_userNameController.text);
       _username = _userNameController.text;
       // 监听文本框输入变化，当有内容的时候，显示尾部清除按钮，否则不显示
       if (_userNameController.text.length > 0) {
@@ -94,6 +93,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   Future<Null> loginNetWorking() async {
+    _focusNodeUserName.unfocus();
+    _focusNodePassWord.unfocus();
     EasyLoading.show(status: '正在登录...');
     if (!_proSelect) {
       EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
@@ -124,7 +125,6 @@ class _LoginWidgetState extends State<LoginWidget> {
     }else{
       dic['phoneNum'] = _username;
     }
-    print(dic);
     await NetWorking.post(url, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
@@ -159,12 +159,10 @@ class _LoginWidgetState extends State<LoginWidget> {
   //   // 监听焦点
   Future<Null> _focusNodeListener() async{
     if(_focusNodeUserName.hasFocus){
-      print("用户名框获取焦点");
       // 取消密码框的焦点状态
       _focusNodePassWord.unfocus();
     }
     if (_focusNodePassWord.hasFocus) {
-      print("密码框获取焦点");
       // 取消用户名框焦点状态
       _focusNodeUserName.unfocus();
     }

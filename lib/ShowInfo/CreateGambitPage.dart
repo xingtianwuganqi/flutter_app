@@ -59,6 +59,7 @@ class CreateGambitState extends State<CreateGambitPage> {
         actions: [
           TextButton(
               onPressed: () {
+                _focusNode.unfocus();
                 pushNetworking();
               },
               child: Text('提交',

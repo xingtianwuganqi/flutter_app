@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,9 @@ class _RegisterState extends State<RegisterWidget> {
 
 
   Future<Null> loginNetWorking() async {
+    _focusNodeUserName.unfocus();
+    _focusNodePassWord.unfocus();
+    _focusNodeConfirm.unfocus();
     EasyLoading.show(status: '正在注册...');
     if (!_proSelect) {
       EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
@@ -145,7 +149,14 @@ class _RegisterState extends State<RegisterWidget> {
         EasyLoading.showToast("注册成功");
         Future.delayed(Duration(seconds: 1),(){
           // 退出到根目录
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          // Navigator.of(context).popUntil((route) => route.isFirst);
+          // Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false)
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            new MaterialPageRoute(builder: (context) => new EditUserWidget(from: 'register',)),
+                (route) => route.isFirst,
+          );
         });
       }else{
         EasyLoading.showToast(data['message'] ?? '登录失败');

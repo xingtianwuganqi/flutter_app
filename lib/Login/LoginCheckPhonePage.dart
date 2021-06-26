@@ -55,6 +55,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
   }
 
   Future<Null> confirmPhoneNetWorking() async {
+    _focusNodeUserName.unfocus();
     EasyLoading.show(status: '环境检测中...');
     if (_username.length == 0)  {
       EasyLoading.showToast('请输入手机号码或邮箱');

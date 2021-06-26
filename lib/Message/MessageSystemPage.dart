@@ -37,7 +37,9 @@ class MessageSystemState extends State<MessageSystemPage> {
         ),
         firstRefresh: _isFirst,
         firstRefreshWidget: FirstLoadWidget(),
-        // emptyWidget: ,
+        emptyWidget: sysDatas.length > 0 ? null : EmptyPage(() async{
+          await systemNetWorking(1);
+        }),
         child: ListView.builder(
             itemCount: sysDatas.length,
             cacheExtent: 50,

@@ -78,8 +78,8 @@ class BrowseListState extends State<BrowseListWidget> {
       ),
       firstRefresh: isFirstLoad,
       firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: hisModels.length > 0 ? null : EmptyPage((){
-        authHistoryNetWroking(1);
+      emptyWidget: hisModels.length > 0 ? null : EmptyPage(() async {
+        await authHistoryNetWroking(1);
       }),
       child:ListView.builder(
           itemCount: hisModels.length,

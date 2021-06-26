@@ -18,7 +18,8 @@ import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 
 
 class EditUserWidget extends StatefulWidget {
-  
+  String from;
+  EditUserWidget({Key key,this.from}): super(key: key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -109,7 +110,10 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 backgroundImage: _assetInfo != null ?
                 AssetThumbImageProvider(_assetInfo,height: 80,width: 80) :
                 (UserManager.instance.isLogin ?
-                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + UserManager.instance.userInfo.avator + NetWorkingConfig.imgTailUrl):
+                ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
+                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+                AssetImage('assets/icons/icon_plh.png')
+                ):
                 Image.asset('assets/icons/icon_plh.png')),
                 child: Container(
                   alignment: Alignment(0, .5),
@@ -282,9 +286,12 @@ class EditUserWidgetState extends State<EditUserWidget> {
         EasyLoading.showToast('更新成功');
         Future.delayed(Duration(milliseconds: 1500),() {
           EasyLoading.dismiss();
+          // 返回到根目录
+          Navigator.of(context).popUntil((route) => route.isFirst);
         });
         var info = UserInfoModel.fromJson(data['data']);
         Provider.of<UserProviderModel>(context, listen: false).user = info;
+
       }
     }, (error) {
       EasyLoading.showToast('更新失败');
