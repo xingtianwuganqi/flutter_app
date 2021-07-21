@@ -10,6 +10,8 @@ import 'package:dio/dio.dart';
 import '../model/HomePageModel.dart';
 import '../Login/LoginPage.dart';
 import 'TopicDetail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SearchPageWidget extends StatefulWidget {
   @override
@@ -23,6 +25,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
   bool isSearch = false;
   List<SearchKeyWordModel> datas = [];
+  List<String> searchHistory = [];
   List<HomePageModel> homeModels = [];
 
   FocusNode _focusNodeSearchKey = new FocusNode();
@@ -170,31 +173,123 @@ class SearchPageState extends State<SearchPageWidget> {
     return Container(
         child: Column(
           children: <Widget>[
-            Wrap(
-              spacing: 15,
-              children: List.generate(datas.length, (index) {
-                var data = datas[index];
-                return RawChip(
-                  label: Text(data.keyword,
-                    style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
-                  backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-                  onPressed: (){
-                    /// 点击
-                    _searchController.value = _searchController.value.copyWith(
-                      text: data.keyword,
-                      selection:
-                      TextSelection(baseOffset: data.keyword.length, extentOffset: data.keyword.length),
-                      composing: TextRange.empty,
-                    );
-                    beginSearch(1);
-                  },
-                );
-              }).toList(),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: searchHistory.length == 0 ? null: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text('历史搜索',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                        fontWeight: FontWeight.w600,
+                        color: ColorsUtil.fromEnmu(ColorEnum.title)),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: 15,
+                      children: List.generate(searchHistory.length, (index) {
+                        var text = searchHistory[index];
+                        return RawChip(
+                          label: Text(text,
+                              style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                          backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          onPressed: (){
+                            /// 点击
+                            _searchController.value = _searchController.value.copyWith(
+                              text: text,
+                              selection:
+                              TextSelection(baseOffset: text.length, extentOffset: text.length),
+                              composing: TextRange.empty,
+                            );
+                            beginSearch(1);
+                          },
+                        );
+                      }).toList(),
+                    ) ,
+                  )
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: datas.length == 0 ? null: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text('热门搜索',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                        fontWeight: FontWeight.w600,
+                        color: ColorsUtil.fromEnmu(ColorEnum.title)),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: 15,
+                      children: List.generate(datas.length, (index) {
+                        var data = datas[index];
+                        return RawChip(
+                          label: Text(data.keyword,
+                              style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                          backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                          onPressed: (){
+                            /// 点击
+                            _searchController.value = _searchController.value.copyWith(
+                              text: data.keyword,
+                              selection:
+                              TextSelection(baseOffset: data.keyword.length, extentOffset: data.keyword.length),
+                              composing: TextRange.empty,
+                            );
+                            beginSearch(1);
+                          },
+                        );
+                      }).toList(),
+                    ) ,
+                  )
+                ],
+              ),
             ),
             // Text('选中：${_filters.join(',')}'),
           ],
         )
     );
+  }
+
+  saveSearchWord(String keyword) async{
+    if (keyword.length > 0) {
+      try{
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        List<String> keywords = prefs.getStringList('searchKeyWords');
+        if (keywords != null) {
+          // 有值的话先移除
+          if (keywords.contains(keyword)) {
+            keywords.remove(keyword);
+          }
+          keywords.insert(0, keyword);
+          prefs.setStringList('searchKeyWords', keywords);
+          print(keywords);
+          setState(() {
+            searchHistory = keywords;
+          });
+        }
+      }catch(e){
+        print("happen catch");
+      }
+    }
+  }
+
+  void readSearchHistory() async{
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> keywords = prefs.getStringList('searchKeyWords');
+      if (keywords != null) {
+        setState(() {
+          searchHistory = keywords;
+        });
+      }
+    }catch(e){
+
+    }
   }
 
   beginSearch(int page) {
@@ -326,6 +421,7 @@ class SearchPageState extends State<SearchPageWidget> {
       if (data['code'] == 200) {
         var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();
         datas = keywords;
+        readSearchHistory();
         setState(() {
 
         });
@@ -339,6 +435,7 @@ class SearchPageState extends State<SearchPageWidget> {
   Future<Null> searchActionNetworking(int page) async {
     _page = page;
     final keyword = _searchController.text;
+    saveSearchWord(_searchController.text);
     if (keyword.length == 0) {
       return;
     }
