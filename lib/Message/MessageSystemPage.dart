@@ -9,6 +9,12 @@ import 'package:link_text/link_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MessageSystemPage extends StatefulWidget {
+  final ValueChanged changed;
+  MessageSystemPage(
+      this.changed,
+      {Key key}
+      ) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -21,6 +27,13 @@ class MessageSystemState extends State<MessageSystemPage> {
   bool _isFirst = true;
   List<SystemMsgModel> sysDatas = [];
   int _page = 1;
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    widget.changed(1);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -53,24 +53,35 @@ class MessagePageState extends State<MessagePage> with RouteAware {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+    // MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
 
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    MyApp.routeObserver.unsubscribe(this);
+    // MyApp.routeObserver.unsubscribe(this);
     super.dispose();
   }
 
   @override
-  void didPopNext() {
+  void deactivate() {
+    super.deactivate();
+    var bool = ModalRoute.of(context).isCurrent;
+    print('============');
+    if (bool) {
+      _authUnreadMsgNetworking();
+    }
+
+  }
+
+  // @override
+  // void didPopNext() {
     // Covering route was popped off the navigator.
     // 需要在MyApp中注册routerObserver,在disChange方法中subscribe，在dispose 中unsubscribe,才会监听到didPopNext方法；
-    super.didPopNext();
-    _authUnreadMsgNetworking();
-  }
+    // super.didPopNext();
+    // _authUnreadMsgNetworking();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +118,9 @@ class MessagePageState extends State<MessagePage> with RouteAware {
                   });
                 }else{
                   Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return MessageSystemPage();
+                    return MessageSystemPage((value){
+                      _authUnreadMsgNetworking();
+                    });
                   }));
                 }
               },

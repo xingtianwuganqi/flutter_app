@@ -119,7 +119,7 @@ enum NetPath {
 }
 
 class NetWorkingConfig {
-  static final UrlConfig urlConfig = UrlConfig.formal;
+  static final UrlConfig urlConfig = UrlConfig.test;
   static String baseUrl() {
     switch (urlConfig) {
       case UrlConfig.formal:

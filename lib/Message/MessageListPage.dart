@@ -29,6 +29,8 @@ class MessageListWidget extends StatefulWidget {
   }
 }
 
+
+
 class MessageListState extends State<MessageListWidget> {
 
   bool isFirstLoad = true;
@@ -39,6 +41,13 @@ class MessageListState extends State<MessageListWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    widget.changed(1);
   }
 
   Widget userInfoWidget(MessageListModel data) {
