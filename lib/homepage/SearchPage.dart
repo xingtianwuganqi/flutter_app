@@ -179,10 +179,23 @@ class SearchPageState extends State<SearchPageWidget> {
                 children: [
                   Container(
                     alignment: Alignment.topLeft,
-                    child: Text('历史搜索',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
-                        fontWeight: FontWeight.w600,
-                        color: ColorsUtil.fromEnmu(ColorEnum.title)),
-                    ),
+                    child: Row(
+                      children: [
+                        Text('历史搜索',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                            fontWeight: FontWeight.w600,
+                            color: ColorsUtil.fromEnmu(ColorEnum.title)),
+                        ),
+                        Expanded(flex: 1,child: Container(),),
+                        IconButton(icon: Icon(Icons.delete),color: Colors.grey, onPressed: (){
+                          // 移除本地搜索历史
+                          removeHistory();
+                          searchHistory = [];
+                          setState(() {
+
+                          });
+                        })
+                      ],
+                    )
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
@@ -216,7 +229,8 @@ class SearchPageState extends State<SearchPageWidget> {
               child: datas.length == 0 ? null: Column(
                 children: [
                   Container(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(top: 7,bottom: 7),
                     child: Text('热门搜索',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                         fontWeight: FontWeight.w600,
                         color: ColorsUtil.fromEnmu(ColorEnum.title)),
@@ -257,8 +271,8 @@ class SearchPageState extends State<SearchPageWidget> {
 
   saveSearchWord(String keyword) async{
     if (keyword.length > 0) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       try{
-        SharedPreferences prefs = await SharedPreferences.getInstance();
         List<String> keywords = prefs.getStringList('searchKeyWords');
         if (keywords != null) {
           // 有值的话先移除
@@ -266,8 +280,18 @@ class SearchPageState extends State<SearchPageWidget> {
             keywords.remove(keyword);
           }
           keywords.insert(0, keyword);
+          // 最多保留20条记录
+          if (keywords.length == 21) {
+            keywords.removeLast();
+          }
           prefs.setStringList('searchKeyWords', keywords);
           print(keywords);
+          setState(() {
+            searchHistory = keywords;
+          });
+        }else{
+          var keywords = [keyword];
+          prefs.setStringList('searchKeyWords',keywords);
           setState(() {
             searchHistory = keywords;
           });
@@ -275,6 +299,15 @@ class SearchPageState extends State<SearchPageWidget> {
       }catch(e){
         print("happen catch");
       }
+    }
+  }
+
+  void removeHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try{
+      prefs.remove('searchKeyWords');
+    }catch(e){
+
     }
   }
 
