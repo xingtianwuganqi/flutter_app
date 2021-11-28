@@ -80,7 +80,7 @@ class tabbarState extends State<tabbar> {
         Image.asset('assets/icons/icon_tabbar_dog_se.png',width: 25,height: 25) :
         Image.asset('assets/icons/icon_tabbar_dog_un.png', width: 25, height: 25,)
             // ignore: deprecated_member_use
-            ,title: Text("发现")),
+            ,title: Text("秀宠")),
 
         BottomNavigationBarItem(icon: unreadSelectIcon(_selectedIndex == 2)
             // _selectedIndex == 2 ?
