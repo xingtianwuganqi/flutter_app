@@ -10,8 +10,21 @@ import 'package:provider/provider.dart';
 class SettingPageWidget extends StatelessWidget {
 
   List<UserPageModel> datas = [
+    UserPageModel('icon', '浏览记录', 0),
+    UserPageModel('icon', '我的收藏', 0),
+    UserPageModel('line', '', 0),
+
     UserPageModel('icon', '修改密码',0),
     UserPageModel('icon', '意见反馈',0),
+    UserPageModel('line', '', 0),
+
+    UserPageModel('icon', '领养说明',0),
+    UserPageModel('icon', '检测更新',0),
+    UserPageModel('icon', '应用评分',0),
+    UserPageModel('icon', '用户协议',0),
+    UserPageModel('icon', '隐私政策',0),
+    UserPageModel('icon', '关于我们',0),
+    UserPageModel('line', '', 0),
     UserPageModel('', "退出登录",0)
     // UserPageModel('', title)
   ];
@@ -58,6 +71,8 @@ class SettingPageWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: 15,bottom: 15),
           child: Text(data.title),
         );
+      }else if (data.icon == 'line') {
+        return Divider(thickness: 10.0,color: Colors.grey[100]);
       }else{
         return Container(
           color: Colors.white,
