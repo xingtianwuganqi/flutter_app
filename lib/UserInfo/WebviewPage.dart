@@ -29,21 +29,24 @@ class WebViewPageState extends State<WebViewPage> {
         title: Text(_webTitle ?? ''),
         elevation: 0.5,
       ),
-      body: WebView(
-        initialUrl: widget.url,
-        //JS执行模式 是否允许JS执行
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (controller) {
-          _controller = controller;
-        },
-        onPageFinished: (url) {
-          _controller.evaluateJavascript("document.title").then((result){
-            setState(() {
-              _webTitle = result;
-            });
-          }
-          );
-        },
+      body: Container(
+        color: Colors.white,
+        child:  WebView(
+          initialUrl: widget.url,
+          //JS执行模式 是否允许JS执行
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (controller) {
+            _controller = controller;
+          },
+          onPageFinished: (url) {
+            _controller.evaluateJavascript("document.title").then((result){
+              setState(() {
+                _webTitle = result;
+              });
+            }
+            );
+          },
+        ),
       ),
     );
   }

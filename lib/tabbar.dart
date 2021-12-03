@@ -10,6 +10,7 @@ import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
+import 'homepage/HomeMainPage.dart';
 // import 'package:jpush_flutter/jpush_flutter.dart';
 
 
@@ -37,7 +38,7 @@ class tabbarState extends State<tabbar> {
     // _authUnreadMsgNetworking();
     _loadConfig();
 
-    pages.add(HomePage());
+    pages.add(HomeMainPage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage(changed: (value){
       _unreadNum = value;
