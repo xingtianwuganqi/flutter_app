@@ -191,7 +191,9 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                     lazyAuthToDoThings(context, (){
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context){
-                            return SettingPageWidget();
+                            return SettingPageWidget(changed: (value){
+                              widget.changed(value);
+                            });
                           })
                       );
                     });
