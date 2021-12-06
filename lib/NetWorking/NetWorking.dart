@@ -117,6 +117,10 @@ enum NetPath {
   completeRescue,
   appUpload,
   appdownload,
+
+  // v2/getuserpublish/
+  userIdGetUserPublish,
+  getUserShowPublish,
 }
 
 class NetWorkingConfig {
@@ -229,6 +233,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/download/';
       case NetPath.instruction:
         return baseUrl + '/api/instruction/';
+      case NetPath.userIdGetUserPublish:
+        return baseUrl + '/api/v2/getuserpublish/';
+      case NetPath.getUserShowPublish:
+        return baseUrl + '/api/v2/getusershowpublish/';
       default:
         return "";
     }
