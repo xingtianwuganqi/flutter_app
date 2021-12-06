@@ -352,6 +352,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
 
 /// 用户信息
 Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange clicked}) {
+  
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
@@ -361,7 +362,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           backgroundImage:
           // isLoadingImg ?
           ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-          CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator + NetWorkingConfig.imgTailUrl,) :
+          CachedNetworkImageProvider(ToolConfig.showHeadImg(data.userInfo.avator)) :
           AssetImage('assets/icons/icon_plh.png')),
           //   :
           // AssetImage('assets/icons/icon_plh.png'),

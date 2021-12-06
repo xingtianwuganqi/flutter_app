@@ -109,6 +109,7 @@ enum NetPath {
   pravicy,
   userAgreen,
   aboutUs,
+  instruction,
 
   getContact,
   authUnreadMsg,
@@ -226,6 +227,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/app/upload/';
       case NetPath.appdownload:
         return baseUrl + '/api/download/';
+      case NetPath.instruction:
+        return baseUrl + '/api/instruction/';
       default:
         return "";
     }

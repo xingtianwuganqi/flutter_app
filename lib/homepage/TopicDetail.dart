@@ -46,6 +46,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   /// 用户信息
   Widget userInfoWidget(HomePageModel data) {
+
     return Container(
       padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
       child: Row(
@@ -53,7 +54,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
           CircleAvatar(
             radius: 20,
             backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.userInfo.avator + NetWorkingConfig.imgTailUrl):
+            CachedNetworkImageProvider(ToolConfig.showHeadImg(data.userInfo.avator)):
             AssetImage('assets/icons/icon_plh.png'),
             child: Container(
               alignment: Alignment(0, .5),

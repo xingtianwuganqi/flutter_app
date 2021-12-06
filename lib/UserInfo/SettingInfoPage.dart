@@ -127,7 +127,12 @@ class SettingPageState extends State<SettingPageWidget> {
                       return UserCollectionWidget();
                     }));
                   });
-                }else if (data.title == '用户协议') {
+                }else if (data.title == '领养说明') {
+                  Navigator.push(context,MaterialPageRoute(builder: (context){
+                    return WebViewPage(url: NetWorkingConfig.path(NetPath.instruction));
+                  }));
+                }
+                else if (data.title == '用户协议') {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
                     return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
                   }));
@@ -160,7 +165,7 @@ class SettingPageState extends State<SettingPageWidget> {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
                     return new SuggesstionWidget();
                   }));
-                }else{
+                }else if (data.title == "退出登录"){
                   /// 退出登录
                   Provider.of<UserProviderModel>(context, listen: false).user = null;
                   UserManager.instance.logout();

@@ -12,7 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import '../main.dart';
 import '../tabbar.dart';
 
@@ -329,6 +329,16 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
      // 邮箱正则
      String regexEmail = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
      return RegExp(regexEmail).hasMatch(input);
+  }
+
+  static String showHeadImg(String url) {
+    var headImg = '';
+    if (url.contains("http")) {
+      headImg = url;
+    }else{
+      headImg = NetWorkingConfig.imgBaseUrl + url + NetWorkingConfig.imgTailUrl;
+    }
+    return headImg;
   }
 
 }
