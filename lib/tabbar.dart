@@ -12,7 +12,7 @@ import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
 import 'homepage/HomeMainPage.dart';
 // import 'package:jpush_flutter/jpush_flutter.dart';
-
+import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 
 // JPush jpush = new JPush();
 
@@ -46,16 +46,17 @@ class tabbarState extends State<tabbar> {
 
       });
     },));
-    pages.add(UserInfoWidget(changed: (value){
-      var dic = Map.from(paramDic);
-      var localVersion = dic['androidVersion'];
-      if (int.parse(localVersion) < value) {
-        _newVersion = 1;
-      }
-      setState(() {
-
-      });
-    },));
+    // pages.add(UserInfoWidget(changed: (value){
+    //   var dic = Map.from(paramDic);
+    //   var localVersion = dic['androidVersion'];
+    //   if (int.parse(localVersion) < value) {
+    //     _newVersion = 1;
+    //   }
+    //   setState(() {
+    //
+    //   });
+    // },));
+    pages.add(NewUserInfoPage());
   }
 
   @override
