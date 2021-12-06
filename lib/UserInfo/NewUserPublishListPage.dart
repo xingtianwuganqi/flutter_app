@@ -4,6 +4,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 class NewUserPublishListPage extends StatefulWidget {
 
   int pageType = 1;
@@ -21,41 +22,143 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
 
   List<HomePageModel> publishList = [];
   List<ShowInfoModel> showPublishList = [];
-
+  int pageNum = 1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.pageType == 1) {
-      getUserPublishListNetworking();
-    }else{
-      getUserShowPublishListNetworking();
-    }
+    // if (widget.pageType == 1) {
+      getUserPublishListNetworking(pageNum);
+    // }else{
+    //   getUserShowPublishListNetworking(pageNum);
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    // return Scaffold(
-    //   body: Container(
-    //
-    //   ),
-    // );
     return Container(
-      child: Text('--'),
+      padding: EdgeInsets.only(left: 15,right: 15),
+      child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisSpacing: 10,
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.73,
+      ), itemBuilder: (context,index){
+        var model = publishList[index];
+        return Container(
+          child: rescuePublishItem(model),
+        );
+      },itemCount: publishList.length,
+      )
     );
   }
 
-  Future<Null> getUserPublishListNetworking() async{
+  // SliverGrid(delegate: SliverChildBuilderDelegate( (BuildContext context,int index) {
+  // return Container(
+  // child: Text('==='),
+  // );
+  // },childCount: publishList.length,
+  // ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  // crossAxisCount: 2,
+  // crossAxisSpacing: 10,
+  // mainAxisSpacing: 10,
+  // childAspectRatio: 0.62,
+  // ),
+  // ),
+
+  Widget rescuePublishItem(HomePageModel model) {
+    var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;
+    var img = NetWorkingConfig.imgBaseUrl + model.imgs[0];
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        //边框设置
+        // decoration: new BoxDecoration(
+        //   //背景
+        //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        //   //设置四周圆角 角度
+        //   borderRadius: BorderRadius.all(Radius.circular(6.0)),
+        //   //设置四周边框
+        //   // border: new Border.all(width: 1, color: Colors.red),
+        // ),
+        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        child: Column(
+          children: [
+
+            CachedNetworkImage(
+              imageUrl: img,
+              placeholder: (context,url) => Container(
+                color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+              ),
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: imgContentH,
+            ),
+            Expanded(child: Container(
+                child: Column(
+                  children: [
+                    Expanded(child:
+                    Container(
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Text(model.content,overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+                            fontSize: FontUtil.fs(FontSize.content)),
+                      ),
+                    )
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      height: 30,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 10,
+                            backgroundImage:
+                            // isLoadingImg ?
+                            ((model.userInfo.avator != null && model.userInfo.avator.length > 0) ?
+                            CachedNetworkImageProvider(ToolConfig.showHeadImg(model.userInfo.avator)) :
+                            AssetImage('assets/icons/icon_plh.png')),
+                            //   :
+                            // AssetImage('assets/icons/icon_plh.png'),
+                            child: Container(
+                              alignment: Alignment(0, 0),
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child:Text(model.userInfo.username),
+                          )
+
+                        ],
+                      ),
+                    )
+                  ],
+                )
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<Null> getUserPublishListNetworking(int page) async{
+    pageNum = page;
     final url = NetWorkingConfig.path(NetPath.userIdGetUserPublish);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['userId'] = UserManager.instance.userInfo.id;
+    dic['page'] = pageNum;
+    dic['size'] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
+      print(data);
       if (data['code'] == 200) {
-        var models = data[data].map((res) {
+        var models = (data['data'] as List).map((res) {
           var model = HomePageModel.fromJson(res);
           return model;
-        });
+        }).toList();
         publishList = models;
         setState(() {
 
@@ -66,16 +169,19 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
     });
   }
 
-  Future<Null> getUserShowPublishListNetworking() async{
+  Future<Null> getUserShowPublishListNetworking(int page) async{
     final url = NetWorkingConfig.path(NetPath.getUserShowPublish);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['userId'] = UserManager.instance.userInfo.id;
+    dic['page'] = pageNum;
+    dic['size'] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
-        var models = data[data].map((res) {
+        var datas = data['data'];
+        var models = (datas as List).map((res) {
           var model = ShowInfoModel.fromJson(res);
           return model;
-        });
+        }).toList();
         showPublishList = models;
         setState(() {
 

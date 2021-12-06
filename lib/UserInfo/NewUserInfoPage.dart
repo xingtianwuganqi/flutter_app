@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/UserInfo/NewUserPublishListPage.dart';
 class NewUserInfoPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -29,10 +30,14 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
               SliverAppBar(
                 expandedHeight: 230.0,
                 pinned: true,
-                flexibleSpace: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: PageView(),
-                ),
+                flexibleSpace: 
+                // Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 8),
+                //   child: PageView(),
+                // ),
+                Container(
+                  color: ColorsUtil.fromEnmu(ColorEnum.system),
+                )
               ),
               SliverPersistentHeader(
                 pinned: true,
@@ -53,8 +58,8 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  Text('--'),
-                  Text('--'),
+                  NewUserPublishListPage(),
+                  NewUserPublishListPage(),
                 ],
               ),
             ),
