@@ -43,11 +43,15 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                 pinned: true,
                 delegate: StickyTabBarDelegate(
                   child: TabBar(
-                    labelColor: Colors.black,
+                    labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
+                    unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.note),
                     controller: _tabController,
+                    indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 4,
                     tabs: <Widget>[
-                      Tab(text: '资讯'),
-                      Tab(text: '技术'),
+                      Tab(text: '领养'),
+                      Tab(text: '秀宠'),
                     ],
                   ),
                 ),
@@ -79,7 +83,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Colors.white,
       child: this.child,
     );
   }

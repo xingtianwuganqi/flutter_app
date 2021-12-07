@@ -37,6 +37,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: ColorsUtil.fromEnmu(ColorEnum.backColor),
       padding: EdgeInsets.only(left: 15,right: 15),
       child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisSpacing: 10,
@@ -49,6 +50,8 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
           child: rescuePublishItem(model),
         );
       },itemCount: publishList.length,
+        physics: CustomBouncingScroll(),
+        padding: EdgeInsets.only(top: 15),
       )
     );
   }
@@ -73,19 +76,9 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
       child: Container(
-        //边框设置
-        // decoration: new BoxDecoration(
-        //   //背景
-        //   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-        //   //设置四周圆角 角度
-        //   borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        //   //设置四周边框
-        //   // border: new Border.all(width: 1, color: Colors.red),
-        // ),
-        color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+        color: Colors.white,
         child: Column(
           children: [
-
             CachedNetworkImage(
               imageUrl: img,
               placeholder: (context,url) => Container(
@@ -192,4 +185,43 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
       // EasyLoading.showToast('获取token失败');
     });
   }
+}
+
+
+class CustomBouncingScroll extends BouncingScrollPhysics {
+
+  /// Creates scroll physics that bounce back from the edge.
+
+  const CustomBouncingScroll({ScrollPhysics parent}) : super(parent: parent);
+
+  @override
+
+  CustomBouncingScroll applyTo(ScrollPhysics ancestor) {
+
+    return CustomBouncingScroll(parent: buildParent(ancestor));
+
+  }
+
+// 重构弹性范围，只有当上滑的时候才有弹性，下拉去除
+
+  @override
+
+  double applyBoundaryConditions(ScrollMetrics position, double value) {
+
+    if (value < position.pixels &&
+
+        position.pixels <= position.minScrollExtent) // underscroll
+
+      return value - position.pixels;
+
+    if (value < position.minScrollExtent &&
+
+        position.minScrollExtent < position.pixels) // hit top edge
+
+      return value - position.minScrollExtent;
+
+    return 0.0;
+
+  }
+
 }

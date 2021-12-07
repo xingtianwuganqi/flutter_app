@@ -136,6 +136,9 @@ class UserProviderModel extends ChangeNotifier  {
 //   }
 // }
 
+// 获取系统颜色
+// Theme.of(context).backgroundColor,
+
 lazyAuthToDoThings(context, obj) async{
   if (UserManager.instance.isLogin) {
     await obj();
@@ -210,6 +213,8 @@ class ColorsUtil {
         return ColorsUtil.hexColor(0x4169E1);
       case ColorEnum.iconColor:
         return ColorsUtil.hexColor(0x707070);
+      case ColorEnum.backColor:
+        return ColorsUtil.hexColor(0xFAF9FA);
       default:
         return ColorsUtil.hexColor(0x000000);
     }
@@ -226,7 +231,8 @@ enum ColorEnum {
   defIcon,
   tabbar,
   urlColor,
-  iconColor
+  iconColor,
+  backColor,
 }
 
 /// 字体大小
