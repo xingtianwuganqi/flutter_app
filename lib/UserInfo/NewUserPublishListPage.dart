@@ -18,11 +18,16 @@ class NewUserPublishListPage extends StatefulWidget {
   }
 }
 
-class NewUserPublishListPageState extends State<NewUserPublishListPage> {
+class NewUserPublishListPageState extends State<NewUserPublishListPage> with AutomaticKeepAliveClientMixin {
 
   List<HomePageModel> publishList = [];
   List<ShowInfoModel> showPublishList = [];
   int pageNum = 1;
+
+  //导航栏切换时保持原有状态
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -55,19 +60,6 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> {
       )
     );
   }
-
-  // SliverGrid(delegate: SliverChildBuilderDelegate( (BuildContext context,int index) {
-  // return Container(
-  // child: Text('==='),
-  // );
-  // },childCount: publishList.length,
-  // ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  // crossAxisCount: 2,
-  // crossAxisSpacing: 10,
-  // mainAxisSpacing: 10,
-  // childAspectRatio: 0.62,
-  // ),
-  // ),
 
   Widget rescuePublishItem(HomePageModel model) {
     var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;

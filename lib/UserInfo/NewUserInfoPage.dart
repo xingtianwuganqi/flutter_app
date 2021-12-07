@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/NewUserPublishListPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
+// import
 class NewUserInfoPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -28,16 +33,9 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
           headerSliverBuilder: (BuildContext context ,bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 230.0,
+                expandedHeight: 200.0,
                 pinned: true,
-                flexibleSpace: 
-                // Padding(
-                //   padding: EdgeInsets.symmetric(vertical: 8),
-                //   child: PageView(),
-                // ),
-                Container(
-                  color: ColorsUtil.fromEnmu(ColorEnum.system),
-                )
+                flexibleSpace: UserInfoWidget(),
               ),
               SliverPersistentHeader(
                 pinned: true,
@@ -70,6 +68,45 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
         ),
       ),
 
+    );
+  }
+
+  Widget UserInfoWidget() {
+    return GestureDetector(
+      child: Container(
+        color: Colors.black12,
+        alignment: Alignment(0, .7),
+        padding: EdgeInsets.only(left: 10,right: 6),
+        child: ListTile(
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.white,
+            backgroundImage: context.watch<UserProviderModel>().isLogin ?
+            ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
+            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+            AssetImage('assets/icons/icon_plh.png')
+            ) :
+            AssetImage('assets/icons/icon_plh.png'),
+            child: Container(
+              alignment: Alignment(0, .5),
+              width: 50,
+              height: 50,
+            ),
+          ),
+          title: context.watch<UserProviderModel>().isLogin ?
+          Text(UserManager.instance.userInfo.username ?? "",
+            style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
+          Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
+          trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
+        ),
+      ),
+      onTap: () {
+        lazyAuthToDoThings(context, (){
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return new EditUserWidget(from: 'userinfo');
+          }));
+        });
+      },
     );
   }
 }
