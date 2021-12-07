@@ -15,14 +15,27 @@ class NewUserInfoPage extends StatefulWidget {
 }
 
 class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProviderStateMixin {
-
+  List<String> tabs = ["领养","秀宠"];
   TabController _tabController;
-
+  ScrollController _scrollController;
+  bool isShowTitle = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 100 && isShowTitle == false) {
+        setState(() {
+          isShowTitle = true;
+        });
+      }else if (_scrollController.offset <= 100 && isShowTitle == true){
+        setState(() {
+          isShowTitle = false;
+        });
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -30,27 +43,32 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
     return Scaffold(
       body: Container(
         child: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (BuildContext context ,bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 200.0,
+                expandedHeight: 150.0,
                 pinned: true,
-                flexibleSpace: UserInfoWidget(),
+                elevation: 0.5,
+                floating: false,
+                title: isShowTitle ? Text('我的') : null,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: UserInfoWidget(),
+                ),
               ),
               SliverPersistentHeader(
                 pinned: true,
                 delegate: StickyTabBarDelegate(
                   child: TabBar(
-                    labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
-                    unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.note),
+                    // labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
+                    // unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.note),
+                    labelStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),fontSize: 17,fontWeight: FontWeight.w600),
+                    unselectedLabelStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.note),fontSize: 16),
                     controller: _tabController,
                     indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorWeight: 4,
-                    tabs: <Widget>[
-                      Tab(text: '领养'),
-                      Tab(text: '秀宠'),
-                    ],
+                    tabs: tabs.map((e) => Tab(text: e)).toList(),
                   ),
                 ),
               ),
@@ -60,8 +78,8 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  NewUserPublishListPage(),
-                  NewUserPublishListPage(),
+                  NewUserPublishListPage(pageType: 1),
+                  NewUserPublishListPage(pageType: 2),
                 ],
               ),
             ),
@@ -74,7 +92,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   Widget UserInfoWidget() {
     return GestureDetector(
       child: Container(
-        color: Colors.black12,
+        color: ColorsUtil.fromEnmu(ColorEnum.system),
         alignment: Alignment(0, .7),
         padding: EdgeInsets.only(left: 10,right: 6),
         child: ListTile(

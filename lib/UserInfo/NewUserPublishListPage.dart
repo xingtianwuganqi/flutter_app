@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
-import 'package:flutter_720yun/model/HomePageModel.dart';
-import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 class NewUserPublishListPage extends StatefulWidget {
 
-  int pageType = 1;
+  final pageType;
 
-  NewUserPublishListPage({Key key, this.pageType}): super(key: key);
+  NewUserPublishListPage({Key key, @required this.pageType}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,9 +20,10 @@ class NewUserPublishListPage extends StatefulWidget {
 
 class NewUserPublishListPageState extends State<NewUserPublishListPage> with AutomaticKeepAliveClientMixin {
 
-  List<HomePageModel> publishList = [];
-  List<ShowInfoModel> showPublishList = [];
+  List<dynamic> publishList = [];
+  // List<ShowInfoModel> showPublishList = [];
   int pageNum = 1;
+  bool isFirstLoad = true;
 
   //导航栏切换时保持原有状态
   @override
@@ -32,11 +33,15 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
   void initState() {
     // TODO: implement initState
     super.initState();
-    // if (widget.pageType == 1) {
-      getUserPublishListNetworking(pageNum);
-    // }else{
-    //   getUserShowPublishListNetworking(pageNum);
-    // }
+    listNetworking(pageNum);
+  }
+
+  void listNetworking(page) {
+    if (widget.pageType == 1) {
+      getUserPublishListNetworking(page);
+    }else{
+      getUserShowPublishListNetworking(page);
+    }
   }
 
   @override
@@ -44,6 +49,17 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     return Container(
       color: ColorsUtil.fromEnmu(ColorEnum.backColor),
       padding: EdgeInsets.only(left: 15,right: 15),
+      child: refreshBody()
+    );
+  }
+
+  Widget refreshBody() {
+    return EasyRefresh(
+      // header: MaterialHeader(),
+      header: null,
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
       child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisSpacing: 10,
         crossAxisCount: 2,
@@ -57,14 +73,36 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
       },itemCount: publishList.length,
         physics: CustomBouncingScroll(),
         padding: EdgeInsets.only(top: 15),
-      )
+      ),
+      firstRefresh: isFirstLoad,
+      firstRefreshWidget: FirstLoadWidget(),
+      emptyWidget: publishList.length > 0 ? null : EmptyPage(() async {
+        listNetworking(1);
+      }),
+      onRefresh: null,
+      onLoad: () async{
+        listNetworking(pageNum);
+      },
+      topBouncing: false,
+
     );
   }
 
-  Widget rescuePublishItem(HomePageModel model) {
+  Widget rescuePublishItem(model) {
+
+    HomePageModel homeModel;
+    ShowInfoModel showModel;
+    if (model is HomePageModel) {
+      homeModel = model;
+    }else if (model is ShowInfoModel){
+      showModel = model;
+    }
+
     var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;
     var img = NetWorkingConfig.imgBaseUrl + model.imgs[0];
-
+    var content = widget.pageType == 1 ? homeModel.content : showModel.instruction;
+    var avator = widget.pageType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
+    var username = widget.pageType == 1 ? homeModel.userInfo.username : showModel.user.username;
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
       child: Container(
@@ -87,8 +125,8 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                     Container(
                       padding: EdgeInsets.only(left: 10,right: 10),
                       alignment: Alignment.centerLeft,
-                      child: Text(model.content,overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+                      child: Text(content,maxLines: 1,overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
                             fontSize: FontUtil.fs(FontSize.content)),
                       ),
                     )
@@ -102,8 +140,8 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                             radius: 10,
                             backgroundImage:
                             // isLoadingImg ?
-                            ((model.userInfo.avator != null && model.userInfo.avator.length > 0) ?
-                            CachedNetworkImageProvider(ToolConfig.showHeadImg(model.userInfo.avator)) :
+                            ((avator != null && avator.length > 0) ?
+                            CachedNetworkImageProvider(ToolConfig.showHeadImg(avator)) :
                             AssetImage('assets/icons/icon_plh.png')),
                             //   :
                             // AssetImage('assets/icons/icon_plh.png'),
@@ -115,9 +153,8 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 10),
-                            child:Text(model.userInfo.username),
+                            child:Text(username),
                           )
-
                         ],
                       ),
                     )
@@ -140,14 +177,22 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
-        var models = (data['data'] as List).map((res) {
-          var model = HomePageModel.fromJson(res);
-          return model;
-        }).toList();
-        publishList = models;
-        setState(() {
+        if (data['data'].length > 0) {
+          var models = (data['data'] as List).map<dynamic>((res) {
+            var model = HomePageModel.fromJson(res);
+            return model;
+          }).toList();
+          if (pageNum ==1 ) {
+            publishList = models;
+          }else{
+            publishList = publishList + models;
+          }
+          pageNum += 1;
+          setState(() {
 
-        });
+          });
+        }
+
       }
     }, (error) {
       // EasyLoading.showToast('获取token失败');
@@ -162,15 +207,21 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     dic['size'] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
-        var datas = data['data'];
-        var models = (datas as List).map((res) {
-          var model = ShowInfoModel.fromJson(res);
-          return model;
-        }).toList();
-        showPublishList = models;
-        setState(() {
+        if (data['data'].length > 0) {
+          var models = (data['data'] as List).map<dynamic>((res) {
+            var model = ShowInfoModel.fromJson(res);
+            return model;
+          }).toList();
+          if (pageNum ==1 ) {
+            publishList = models;
+          }else{
+            publishList = publishList + models;
+          }
+          pageNum += 1;
+          setState(() {
 
-        });
+          });
+        }
 
       }
     }, (error) {
