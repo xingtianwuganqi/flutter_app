@@ -415,9 +415,6 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                 color: Colors.white,
                 child: ListView(
                   children: [
-                    // TextButton(onPressed: (){
-                    //
-                    // }, child: Text('屏蔽/拉黑',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                     Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                     fromInfo == 'publish' ?
                     TextButton(onPressed: (){

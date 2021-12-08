@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/ShowInfo/ShowInfoSinglePage.dart';
+import 'package:flutter_720yun/homepage/TopicDetail.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
@@ -68,7 +70,22 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
       ), itemBuilder: (context,index){
         var model = publishList[index];
         return Container(
-          child: rescuePublishItem(model),
+          child: GestureDetector(
+            onTap: () {
+              if (widget.pageType == 1) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context){
+                      return TopicDetailWidget(topicId: model.topic_id,pageType: MyPageType.myPage);
+                    })
+                );
+              }else{
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return ShowInfoSingleWidget(showId: model.show_id);
+                }));
+              }
+            },
+            child: rescuePublishItem(model),
+          ),
         );
       },itemCount: publishList.length,
         physics: CustomBouncingScroll(),
@@ -103,20 +120,55 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     var content = widget.pageType == 1 ? homeModel.content : showModel.instruction;
     var avator = widget.pageType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
     var username = widget.pageType == 1 ? homeModel.userInfo.username : showModel.user.username;
+    var complete = widget.pageType == 1 ? homeModel.is_complete : false;
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
       child: Container(
         color: Colors.white,
         child: Column(
           children: [
-            CachedNetworkImage(
-              imageUrl: img,
-              placeholder: (context,url) => Container(
-                color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-              ),
-              fit: BoxFit.cover,
+            // CachedNetworkImage(
+            //   imageUrl: img,
+            //   placeholder: (context,url) => Container(
+            //     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+            //   ),
+            //   fit: BoxFit.cover,
+            //   width: double.infinity,
+            //   height: imgContentH,
+            // )
+            Container(
               width: double.infinity,
               height: imgContentH,
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: img,
+                    placeholder: (context,url) => Container(
+                      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                    ),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: complete == true ? Container(
+                      decoration: BoxDecoration(
+                        color: ColorsUtil.fromEnmu(ColorEnum.system),
+                        borderRadius: BorderRadius.circular(14)
+                      ),
+                      width: 44,
+                      height: 18,
+                      alignment: Alignment.center,
+                      child: Text('已完成',style: TextStyle(color: Colors.white,
+                          fontSize: FontUtil.fs(FontSize.desc),
+                          fontWeight: FontWeight.w500)),
+                    ): Container(),
+                  )
+                ],
+              ),
             ),
             Expanded(child: Container(
                 child: Column(

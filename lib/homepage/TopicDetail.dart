@@ -16,13 +16,13 @@ import 'package:flutter/services.dart';
 class TopicDetailWidget extends StatefulWidget {
 
   final int topicId;
-
+  MyPageType pageType = MyPageType.otherPage;
   // 反向传值
-
 
   TopicDetailWidget({
     Key key,
-    @required this.topicId
+    @required this.topicId,
+    this.pageType
   });
 
   @override
@@ -238,11 +238,76 @@ class TopicDetailState extends State<TopicDetailWidget> {
       }
     }
 
+    rightActions() {
+      var desc = "";
+      var buttonStr = "";
+      if (homeModel.is_complete) {
+        desc = "点击未完成领养，即代表宠物未被领养，他人可以获取你的联系方式，确定改成未完成领养吗？";
+        buttonStr = "未完成领养";
+      }else{
+        desc = "点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式，确定改成完成领养吗？";
+        buttonStr = '完成领养';
+      }
+      if (widget.pageType == MyPageType.myPage) {
+        return [
+          IconButton(icon: Icon(Icons.more_horiz_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content),), onPressed: (){
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: false,
+              builder: (context){
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 190,
+                  color: Colors.white,
+                  child: ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.all(15),
+                          child: Text(desc,
+                          style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content),
+                          ),),
+                        ),
+                      ),
+                      Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                      TextButton(onPressed: (){
+                        Navigator.pop(context);
+                        // lazyAuthToDoThings(context, (){
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context){
+                        //     return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
+                        //   }));
+                        // });
+                      }, child: Text(buttonStr,style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                      Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                      TextButton(onPressed: (){
+                        Navigator.pop(context);
+                      }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                    ],
+                  ),
+                );
+              },
+            );
+          }),
+          IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
+
+          }),
+        ];
+      }else{
+        return [
+          IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
+
+          }),
+        ];
+      }
+    }
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
           title: Text('详情',),
         elevation: 0.5,
+        actions: rightActions(),
       ),
       body:
       SafeArea(

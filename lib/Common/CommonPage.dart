@@ -269,6 +269,12 @@ enum FontSize {
   small,
 }
 
+// 我的页面类型
+enum MyPageType {
+  myPage,
+  otherPage
+}
+
 
 class ToolConfig {
   static String random({int length=8}) {
