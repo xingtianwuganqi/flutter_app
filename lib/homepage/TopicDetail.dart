@@ -90,13 +90,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
                   )
               ),
           ),
-          // Container(
-          //   width: 30,
-          //   child: IconButton(icon: Icon(Icons.more_horiz_outlined,
-          //     color: ColorsUtil.fromEnmu(ColorEnum.content),
-          //   ), onPressed: (){}),
-          // )
-
         ],
       ),
     );
@@ -171,6 +164,19 @@ class TopicDetailState extends State<TopicDetailWidget> {
     );
   }
 
+  Widget remindTextWidget() {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 5),
+        child: Text('点击右上角更多按钮，可修改送养状态。(点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式)',
+        style: TextStyle(
+          fontSize: FontUtil.fs(FontSize.mark),
+          color: ColorsUtil.fromEnmu(ColorEnum.mark),
+        ),),
+      ),
+    );
+  }
+
   List<Widget> imageWidgets(HomePageModel model) {
     if (model != null && model.imgs != null && (model.imgs.length > 0)) {
       List<Widget> data = [];
@@ -216,6 +222,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
                 );
               }
       )?.toList();
+      if (widget.pageType == MyPageType.myPage) {
+        data.add(remindTextWidget());
+      }
       data.add(userInfoWidget(homeModel));
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;
@@ -241,7 +250,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     rightActions() {
       var desc = "";
       var buttonStr = "";
-      if (homeModel.is_complete) {
+      if (homeModel != null && homeModel.is_complete) {
         desc = "点击未完成领养，即代表宠物未被领养，他人可以获取你的联系方式，确定改成未完成领养吗？";
         buttonStr = "未完成领养";
       }else{
