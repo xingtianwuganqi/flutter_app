@@ -7,6 +7,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 // import
 class NewUserInfoPage extends StatefulWidget {
+  final MyPageType pageType;
+  int userId;
+  NewUserInfoPage({
+    Key key,
+    @required this.pageType,
+    @required this.userId
+  }):super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -39,6 +47,9 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   }
   @override
   Widget build(BuildContext context) {
+    // if (widget.pageType == MyPageType.myPage && UserManager.instance.userInfo.id != null) {
+    //   widgetuserId = UserManager.instance.userInfo.id;
+    // }
     // TODO: implement build
     return Scaffold(
       body: Container(
@@ -78,8 +89,8 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  NewUserPublishListPage(pageType: 1),
-                  NewUserPublishListPage(pageType: 2),
+                  NewUserPublishListPage(pageType:widget.pageType, netType: 1,userId: widget.userId),
+                  NewUserPublishListPage(pageType:widget.pageType, netType: 2,userId: widget.userId),
                 ],
               ),
             ),

@@ -364,38 +364,66 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 /// 空白页
 // ignore: must_be_immutable
 class EmptyPage extends StatelessWidget {
+  String image;
   String title;
   String desc;
   Function() obj;
-  EmptyPage(this.obj,{this.title='暂无数据',this.desc='请点击重试'});
+  EmptyPage(this.obj,{this.title='暂无数据',this.desc='请点击重试',this.image});
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Center(
       child: GestureDetector(
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(title,style: TextStyle(
-                color: ColorsUtil.fromEnmu(ColorEnum.content),
-                fontSize: FontUtil.fs(FontSize.content),
-                ),
-              ),
-              Padding(padding: EdgeInsets.only(top: 10)),
-              Text(desc,style: TextStyle(
-                color: ColorsUtil.fromEnmu(ColorEnum.desc),
-                fontSize: FontUtil.fs(FontSize.desc),
-              ),
-              ),
-            ],
-          ),
-        ),
+        child: emptyWidget(),
         onTap: () {
           obj();
         },
       )
+    );
+  }
+
+  Widget emptyWidget() {
+    List<Widget> centerWidgets = [];
+    if (this.image != null) {
+      centerWidgets = [
+        Container(
+          height: 45,
+          width: 45,
+          child: Image.asset('assets/icons/icon_complete.png'),
+        ),
+        Text(title,style: TextStyle(
+          color: ColorsUtil.fromEnmu(ColorEnum.content),
+          fontSize: FontUtil.fs(FontSize.content),
+        ),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        Text(desc,style: TextStyle(
+          color: ColorsUtil.fromEnmu(ColorEnum.desc),
+          fontSize: FontUtil.fs(FontSize.desc),
+        ),
+        ),
+      ];
+    }else{
+      centerWidgets = [
+        Text(title,style: TextStyle(
+          color: ColorsUtil.fromEnmu(ColorEnum.content),
+          fontSize: FontUtil.fs(FontSize.content),
+        ),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        Text(desc,style: TextStyle(
+          color: ColorsUtil.fromEnmu(ColorEnum.desc),
+          fontSize: FontUtil.fs(FontSize.desc),
+        ),
+        ),
+      ];
+    }
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: centerWidgets,
+      ),
     );
   }
 }

@@ -8,10 +8,11 @@ import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 class NewUserPublishListPage extends StatefulWidget {
+  final MyPageType pageType;
+  final int netType;
+  final int userId;
 
-  final pageType;
-
-  NewUserPublishListPage({Key key, @required this.pageType}): super(key: key);
+  NewUserPublishListPage({Key key,@required this.pageType, @required this.netType, this.userId}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +24,7 @@ class NewUserPublishListPage extends StatefulWidget {
 class NewUserPublishListPageState extends State<NewUserPublishListPage> with AutomaticKeepAliveClientMixin {
 
   List<dynamic> publishList = [];
-  // List<ShowInfoModel> showPublishList = [];
+
   int pageNum = 1;
   bool isFirstLoad = true;
 
@@ -39,7 +40,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
   }
 
   void listNetworking(page) {
-    if (widget.pageType == 1) {
+    if (widget.netType == 1) {
       getUserPublishListNetworking(page);
     }else{
       getUserShowPublishListNetworking(page);
@@ -56,6 +57,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
   }
 
   Widget refreshBody() {
+    var height = MediaQuery.of(context).size.width;
     return EasyRefresh(
       // header: MaterialHeader(),
       header: null,
@@ -72,7 +74,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
         return Container(
           child: GestureDetector(
             onTap: () {
-              if (widget.pageType == 1) {
+              if (widget.netType == 1) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context){
                       return TopicDetailWidget(topicId: model.topic_id,pageType: MyPageType.myPage);
@@ -95,7 +97,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
       firstRefreshWidget: FirstLoadWidget(),
       emptyWidget: publishList.length > 0 ? null : EmptyPage(() async {
         listNetworking(1);
-      }),
+      }), //
       onRefresh: null,
       onLoad: () async{
         listNetworking(pageNum);
@@ -117,25 +119,16 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 
     var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;
     var img = NetWorkingConfig.imgBaseUrl + model.imgs[0];
-    var content = widget.pageType == 1 ? homeModel.content : showModel.instruction;
-    var avator = widget.pageType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
-    var username = widget.pageType == 1 ? homeModel.userInfo.username : showModel.user.username;
-    var complete = widget.pageType == 1 ? homeModel.is_complete : false;
+    var content = widget.netType == 1 ? homeModel.content : showModel.instruction;
+    var avator = widget.netType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
+    var username = widget.netType == 1 ? homeModel.userInfo.username : showModel.user.username;
+    var complete = widget.netType == 1 ? homeModel.is_complete : false;
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
       child: Container(
         color: Colors.white,
         child: Column(
           children: [
-            // CachedNetworkImage(
-            //   imageUrl: img,
-            //   placeholder: (context,url) => Container(
-            //     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-            //   ),
-            //   fit: BoxFit.cover,
-            //   width: double.infinity,
-            //   height: imgContentH,
-            // )
             Container(
               width: double.infinity,
               height: imgContentH,
@@ -220,10 +213,17 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
   }
 
   Future<Null> getUserPublishListNetworking(int page) async{
+    if (widget.userId == 0) {
+      isFirstLoad = false;
+      setState(() {
+
+      });
+      return;
+    }
     pageNum = page;
     final url = NetWorkingConfig.path(NetPath.userIdGetUserPublish);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['userId'] = UserManager.instance.userInfo.id;
+    dic['userId'] = widget.userId;
     dic['page'] = pageNum;
     dic['size'] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
@@ -252,9 +252,17 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
   }
 
   Future<Null> getUserShowPublishListNetworking(int page) async{
+    if (widget.userId == 0) {
+      isFirstLoad = false;
+      setState(() {
+
+      });
+      return;
+    }
+    pageNum = page;
     final url = NetWorkingConfig.path(NetPath.getUserShowPublish);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['userId'] = UserManager.instance.userInfo.id;
+    dic['userId'] = widget.userId;
     dic['page'] = pageNum;
     dic['size'] = 10;
     await NetWorking.formDataPost(url, dic, (data) {

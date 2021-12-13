@@ -37,7 +37,10 @@ class tabbarState extends State<tabbar> {
     super.initState();
     // _authUnreadMsgNetworking();
     _loadConfig();
-
+    var userId = 0;
+    if (UserManager.instance.userInfo != null) {
+      userId = UserManager.instance.userInfo.id;
+    }
     pages.add(HomeMainPage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage(changed: (value){
@@ -56,7 +59,7 @@ class tabbarState extends State<tabbar> {
     //
     //   });
     // },));
-    pages.add(NewUserInfoPage());
+    pages.add(NewUserInfoPage(pageType: MyPageType.myPage, userId: userId));
   }
 
   @override

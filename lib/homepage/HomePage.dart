@@ -16,7 +16,7 @@ import '../Common/CommonPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
 import '../CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:expandable_text/expandable_text.dart';
-
+import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -357,20 +357,27 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
     child: Row(
       children: [
-        CircleAvatar(
-          radius: 18,
-          backgroundImage:
-          // isLoadingImg ?
-          ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-          CachedNetworkImageProvider(ToolConfig.showHeadImg(data.userInfo.avator)) :
-          AssetImage('assets/icons/icon_plh.png')),
-          //   :
-          // AssetImage('assets/icons/icon_plh.png'),
-          child: Container(
-            alignment: Alignment(0, 0),
-            width: 36,
-            height: 36,
+        GestureDetector(
+          child: CircleAvatar(
+            radius: 18,
+            backgroundImage:
+            // isLoadingImg ?
+            ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+            CachedNetworkImageProvider(ToolConfig.showHeadImg(data.userInfo.avator)) :
+            AssetImage('assets/icons/icon_plh.png')),
+            //   :
+            // AssetImage('assets/icons/icon_plh.png'),
+            child: Container(
+              alignment: Alignment(0, 0),
+              width: 36,
+              height: 36,
+            ),
           ),
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return NewUserInfoPage();
+            }));
+          },
         ),
 
         Expanded(
