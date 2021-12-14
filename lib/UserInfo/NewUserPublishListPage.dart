@@ -7,10 +7,12 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provider/provider.dart';
+
 class NewUserPublishListPage extends StatefulWidget {
   final MyPageType pageType;
   final int netType;
-  final int userId;
+  int userId;
 
   NewUserPublishListPage({Key key,@required this.pageType, @required this.netType, this.userId}): super(key: key);
 
@@ -37,6 +39,23 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     // TODO: implement initState
     super.initState();
     listNetworking(pageNum);
+
+   // listen 如果給 false 可以讓他不監聽 notifyListeners 而重新渲染
+    // 监听用户登录
+    Provider.of<UserProviderModel>(context,listen: false).addListener(() {
+      if (Provider.of<UserProviderModel>(context,listen: false).user != null) {
+        widget.userId = Provider.of<UserProviderModel>(context,listen: false).user.id;
+        if (widget.pageType == MyPageType.myPage) {
+          widget.userId = 0;
+          listNetworking(pageNum);
+        }
+      }else{
+        if (widget.pageType == MyPageType.myPage) {
+          widget.userId = 0;
+          listNetworking(pageNum);
+        }
+      }
+    });
   }
 
   void listNetworking(page) {

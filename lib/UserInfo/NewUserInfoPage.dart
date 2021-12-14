@@ -44,6 +44,26 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
         });
       }
     });
+
+    // 监听用户登录
+    Provider.of<UserProviderModel>(context,listen: false).addListener(() {
+      if (Provider.of<UserProviderModel>(context,listen: false).user != null) {
+        if (widget.pageType == MyPageType.myPage) {
+          widget.userId = Provider.of<UserProviderModel>(context,listen: false).user.id;
+          setState(() {
+
+          });
+        }
+
+      }else{
+        if (widget.pageType == MyPageType.myPage) {
+          widget.userId = 0;
+          setState(() {
+
+          });
+        }
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
