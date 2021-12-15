@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/NewUserPublishListPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
@@ -83,6 +84,16 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                 elevation: 0.5,
                 floating: false,
                 title: isShowTitle ? Text('我的') : null,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.settings,color: isShowTitle ? Colors.black: Colors.white),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return SettingPageWidget();
+                      }));
+                    },
+                  )
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: UserInfoWidget(),
                 ),
@@ -116,7 +127,6 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
             ),
         ),
       ),
-
     );
   }
 
