@@ -250,12 +250,15 @@ class TopicDetailState extends State<TopicDetailWidget> {
     rightActions() {
       var desc = "";
       var buttonStr = "";
+      String isComplete = "0";
       if (homeModel != null && homeModel.is_complete) {
         desc = "点击未完成领养，即代表宠物未被领养，他人可以获取你的联系方式，确定改成未完成领养吗？";
         buttonStr = "未完成领养";
-      }else{
+        isComplete = "0";
+      }else if (homeModel != null && homeModel.is_complete == false) {
         desc = "点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式，确定改成完成领养吗？";
         buttonStr = '完成领养';
+        isComplete = "1";
       }
       if (widget.pageType == MyPageType.myPage) {
         return [
@@ -283,11 +286,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                       Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                       TextButton(onPressed: (){
                         Navigator.pop(context);
-                        // lazyAuthToDoThings(context, (){
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context){
-                        //     return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
-                        //   }));
-                        // });
+                        changeRescueState(isComplete);
                       }, child: Text(buttonStr,style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
                       Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
                       TextButton(onPressed: (){
@@ -509,5 +508,36 @@ class TopicDetailState extends State<TopicDetailWidget> {
       EasyLoading.showToast('网络出错');
     });
   }
+
+  // 改变领养状态
+  Future<Null> changeRescueState(isComplete) async{
+    /*
+    /api/v2/changecompletestatus/
+      Post
+      参数：
+      token
+      topic_id
+      isComplete: String  “1” / “0"
+     */
+    final url = NetWorkingConfig.path(NetPath.changeRescueState);
+    var dic = new Map<String,dynamic>.from(paramDic);
+    dic["token"] = UserManager.instance.token;
+    dic["topic_id"] = widget.topicId;
+    dic["isComplete"] = isComplete;
+    await NetWorking.formDataPost(url, dic, (data) {
+      EasyLoading.dismiss();
+      if (data['code'] == 200) {
+        homeModel.is_complete = isComplete == "1" ? true : false;
+        setState(() {
+
+        });
+      }else{
+        EasyLoading.showToast(data['message'] ?? '网络错误');
+      }
+    }, (error) {
+      EasyLoading.showToast('网络出错');
+    });
+  }
+
 }
 
