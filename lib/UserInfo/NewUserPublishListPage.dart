@@ -96,7 +96,9 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
               if (widget.netType == 1) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context){
-                      return TopicDetailWidget(topicId: model.topic_id,pageType: MyPageType.myPage);
+                      return TopicDetailWidget(topicId: model.topic_id,pageType: MyPageType.myPage,statusChanged: (value) {
+                        updateRescueList(value);
+                      },);
                     })
                 );
               }else{
@@ -306,6 +308,20 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     }, (error) {
       // EasyLoading.showToast('获取token失败');
     });
+  }
+
+  void updateRescueList(value) {
+    if (value is HomePageModel) {
+      publishList = publishList.map((e){
+        if (e.topic_id == value.topic_id) {
+            return value;
+        }
+        return e;
+      }).toList();
+      setState(() {
+
+      });
+    }
   }
 }
 

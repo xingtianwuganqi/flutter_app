@@ -45,8 +45,8 @@ class NetWorking {
     try {
       FormData formData = FormData.fromMap(dic);
       var response = await dio.post(url,data: formData);
-      // Printer.printMapJsonLog('++++++++++');
-      // Printer.printMapJsonLog(response.data);
+      Printer.printMapJsonLog('++++++++++');
+      Printer.printMapJsonLog(response.data);
       successBack(response.data);
     }catch(e){
       Printer.printMapJsonLog(e);

@@ -18,11 +18,12 @@ class TopicDetailWidget extends StatefulWidget {
   final int topicId;
   MyPageType pageType = MyPageType.otherPage;
   // 反向传值
-
+  ValueChanged statusChanged;
   TopicDetailWidget({
     Key key,
     @required this.topicId,
-    this.pageType
+    this.pageType,
+    this.statusChanged,
   });
 
   @override
@@ -242,7 +243,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     if (homeModel != null && homeModel.is_complete == true) {
       contactInfo = '已完成领养';
     }else{
-      if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+      if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info != null) {
         contactInfo = homeModel.contact_info;
       }
     }
@@ -344,7 +345,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                                 if (homeModel != null && homeModel.is_complete == true) {
                                   EasyLoading.showToast('已完成领养');
                                 }else{
-                                  if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info.length > 0) {
+                                  if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info != null) {
                                     /// 已经获取了联系方式
                                     //复制
                                     Future.delayed(Duration(milliseconds: 100),(){
@@ -527,7 +528,12 @@ class TopicDetailState extends State<TopicDetailWidget> {
     await NetWorking.formDataPost(url, dic, (data) {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
+        String contact = homeModel.contact_info;
         homeModel.is_complete = isComplete == "1" ? true : false;
+        homeModel.contact_info = contact;
+        if (widget.statusChanged != null) {
+          widget.statusChanged(homeModel);
+        }
         setState(() {
 
         });
