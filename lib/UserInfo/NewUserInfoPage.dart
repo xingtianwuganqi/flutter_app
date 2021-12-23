@@ -3,6 +3,8 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/NewUserPublishListPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
@@ -28,6 +30,9 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   TabController _tabController;
   ScrollController _scrollController;
   bool isShowTitle = false;
+
+  /// 请求回来的uerInfo
+  UserInfoModel otherUserInfo;
   @override
   void initState() {
     // TODO: implement initState
@@ -65,6 +70,9 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
         }
       }
     });
+    if (widget.pageType == MyPageType.otherPage) {
+      userIdGetUserInfo();
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -95,7 +103,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                   )
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  background: UserInfoWidget(),
+                  background: widget.pageType == MyPageType.myPage ? UserInfoWidget() : OtherUserInfoWidget(),
                 ),
               ),
               SliverPersistentHeader(
@@ -142,7 +150,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
             backgroundColor: Colors.white,
             backgroundImage: context.watch<UserProviderModel>().isLogin ?
             ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+            CachedNetworkImageProvider(ToolConfig.showHeadImg(UserManager.instance.userInfo.avator)) :
             AssetImage('assets/icons/icon_plh.png')
             ) :
             AssetImage('assets/icons/icon_plh.png'),
@@ -167,6 +175,51 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
         });
       },
     );
+  }
+
+  Widget OtherUserInfoWidget() {
+    return Container(
+      color: ColorsUtil.fromEnmu(ColorEnum.system),
+      alignment: Alignment(0, .7),
+      padding: EdgeInsets.only(left: 10,right: 6),
+      child: ListTile(
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundColor: Colors.white,
+          backgroundImage: otherUserInfo != null ?
+          CachedNetworkImageProvider(ToolConfig.showHeadImg(otherUserInfo.avator)) :
+          AssetImage('assets/icons/icon_plh.png'),
+          child: Container(
+            alignment: Alignment(0, .5),
+            width: 50,
+            height: 50,
+          ),
+        ),
+        title: otherUserInfo != null ?
+        Text(otherUserInfo.username ?? "",
+          style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
+        Text('--',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
+        trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
+      ),
+    );
+  }
+
+  Future<Null> userIdGetUserInfo() async {
+    final url = NetWorkingConfig.path(NetPath.userIdGetUserInfo);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['userId'] = widget.userId;
+    await NetWorking.formDataPost(url, dic, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var info = UserInfoModel.fromJson(data["data"]);
+        otherUserInfo = info;
+        setState(() {
+
+        });
+      }
+    }, (error) {
+      // EasyLoading.showToast('获取token失败');
+    });
   }
 }
 

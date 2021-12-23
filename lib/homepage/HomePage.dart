@@ -375,7 +375,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           ),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return NewUserInfoPage();
+              return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
             }));
           },
         ),

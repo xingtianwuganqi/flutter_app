@@ -123,6 +123,8 @@ enum NetPath {
   getUserShowPublish,
   // 改变领养状态
   changeRescueState,
+  // userid查询userInfo
+  userIdGetUserInfo,
 }
 
 class NetWorkingConfig {
@@ -241,6 +243,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/getusershowpublish/';
       case NetPath.changeRescueState:
         return baseUrl + '/api/v2/changecompletestatus/';
+      case NetPath.userIdGetUserInfo:
+        return baseUrl + '/api/v2/useridgetuserinfo/';
       default:
         return "";
     }
