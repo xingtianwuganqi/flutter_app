@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
 import 'HomePage.dart';
 import 'package:flutter/services.dart';
+import 'TopicShareWidget.dart';
 
 
 class TopicDetailWidget extends StatefulWidget {
@@ -300,13 +301,13 @@ class TopicDetailState extends State<TopicDetailWidget> {
             );
           }),
           IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
-
+            showShareSheetView();
           }),
         ];
       }else{
         return [
           IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
-
+            showShareSheetView();
           }),
         ];
       }
@@ -545,5 +546,14 @@ class TopicDetailState extends State<TopicDetailWidget> {
     });
   }
 
+   showShareSheetView() {
+     showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      builder: (context){
+        return TopicShareWidget();
+      },
+    );
+  }
 }
 
