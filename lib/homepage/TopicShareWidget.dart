@@ -7,6 +7,8 @@ class TopicShareWidget extends StatelessWidget {
     TopicShareModel(title: "分享链接",img: "icon_share_share"),
     TopicShareModel(title: "复制链接",img: "icon_share_url"),
   ];
+  ValueChanged clickCallBack;
+  TopicShareWidget(this.clickCallBack,{Key key}): super(key: key);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -29,7 +31,12 @@ class TopicShareWidget extends StatelessWidget {
                 ),itemCount:items.length,
                 itemBuilder: (context,index){
                   var item = items[index];
-                  return shareItemWidget(item);
+                  return GestureDetector(
+                    child: shareItemWidget(item),
+                    onTap: () {
+                      clickCallBack(index);
+                    },
+                  );
                 }),
           ),
           Container(
@@ -39,7 +46,9 @@ class TopicShareWidget extends StatelessWidget {
               child: Text(
                 "取消",style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
                   fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.bold),
-              ),
+              ),onPressed: (){
+                clickCallBack(-1);
+              },
             ),
           )
         ],

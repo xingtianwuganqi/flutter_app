@@ -551,7 +551,18 @@ class TopicDetailState extends State<TopicDetailWidget> {
       context: context,
       isScrollControlled: false,
       builder: (context){
-        return TopicShareWidget();
+        return TopicShareWidget((value) {
+          Navigator.pop(context);
+          if (value == -1) {
+            return;
+          } else if (value == 0) { // 生成海报
+
+          } else if (value == 1) { // 分享
+
+          } else if (value == 2) { // 复制
+
+          }
+        });
       },
     );
   }
