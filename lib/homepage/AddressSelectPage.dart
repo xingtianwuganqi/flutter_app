@@ -21,15 +21,15 @@ class AddressSelectPage extends StatefulWidget {
 class AddressSelectState extends State<AddressSelectPage> with SingleTickerProviderStateMixin {
   List tabs = ['请选择','',''];
   TabController _tabController; //需要定义一个Controller
-  CountryModel _countryModel;
+  // CountryModel _countryModel;
 
-  ProvinceModel _provinceModel;
-  CityModel _cityModel;
-  AreaModel _areaModel;
+  NewProvinceModel _provinceModel;
+  NewCityModel _cityModel;
+  NewAreaModel _areaModel;
 
-  List<ProvinceModel> _provinceArr;
-  List<CityModel> _cityArr;
-  List<AreaModel> _areaArr;
+  List<NewProvinceModel> _provinceArr;
+  List<NewCityModel> _cityArr;
+  List<NewAreaModel> _areaArr;
 
 
   @override
@@ -105,7 +105,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
           CityPage(citys: _provinceArr,changed: (value) {
             _provinceModel = value;
             _cityArr = _provinceModel.children;
-            tabs[0] = _provinceModel.value;
+            tabs[0] = _provinceModel.name;
             tabs[1] = '请选择';
             _tabController.animateTo(1);
 
@@ -120,7 +120,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
           CityPage(citys: _cityArr,changed: (value) {
             _cityModel = value;
             _areaArr = _cityModel.children;
-            tabs[1] = _cityModel.value;
+            tabs[1] = _cityModel.name;
             tabs[2] = '请选择';
             _tabController.animateTo(2);
             Future.delayed(Duration(milliseconds: 500), (){
@@ -129,9 +129,9 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
               });
             });
             // 如果没有area，则退出
-            if (_areaArr.length == null || _areaArr.length == 0) {
+            if (_cityModel.children == null || _cityModel.children.length == 0) {
               Future.delayed(Duration(milliseconds: 700),(){
-                var address = _provinceModel.value + '.' + _cityModel.value;
+                var address = _provinceModel.name + '.' + _cityModel.name;
                 widget.changed(address);
                 Navigator.pop(context);
               });
@@ -141,7 +141,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
           CityPage(citys: _areaArr,changed: (value) {
             _areaModel = value;
             // 完成选择，退出
-            tabs[2] = _areaModel.value;
+            tabs[2] = _areaModel.name;
             Future.delayed(Duration(milliseconds: 500),(){
               setState(() {
 
@@ -149,7 +149,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
             });
 
             Future.delayed(Duration(milliseconds: 700),(){
-              var address = _provinceModel.value + '.' + _cityModel.value + '.' + _areaModel.value;
+              var address = _provinceModel.name + '.' + _cityModel.name + '.' + _areaModel.name;
               widget.changed(address);
               Navigator.pop(context);
             });
@@ -163,8 +163,8 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
     EasyLoading.show();
     String data = await DefaultAssetBundle.of(context).loadString("assets/files/location.json");
     final jsonResult = json.decode(data);
-    _countryModel = CountryModel.fromJson(jsonResult);
-    _provinceArr = _countryModel.children;
+    var arr = (jsonResult as List).map((m) => NewProvinceModel.fromJson(m)).toList();
+    _provinceArr = arr;
     setState(() {
       EasyLoading.dismiss();
     });
@@ -195,12 +195,12 @@ class CityState extends State<CityPage> {
           itemBuilder: (context,index){
           var name = '';
           var data = widget.citys[index];
-          if (data is ProvinceModel) {
-            name = data.value;
-          }else if (data is CityModel) {
-            name = data.value;
-          }else if (data is AreaModel) {
-            name = data.value;
+          if (data is NewProvinceModel) {
+            name = data.name;
+          }else if (data is NewCityModel) {
+            name = data.name;
+          }else if (data is NewAreaModel) {
+            name = data.name;
           }
           return Column(
             children: [

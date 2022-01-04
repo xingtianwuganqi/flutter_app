@@ -228,6 +228,69 @@ class AreaModel {
   }
 }
 
+class NewProvinceModel {
+  final String code;
+  final String name;
+  final List<NewCityModel> children;
+  bool isSelect = false;
+
+  NewProvinceModel({this.code,this.name,this.children,this.isSelect});
+
+  factory NewProvinceModel.fromJson(Map<String,dynamic> json) {
+    return NewProvinceModel(
+        code: json["code"],
+        name: json["name"],
+        children: (json['children'] as List).map((e) => NewCityModel.fromJson(e)).toList(),
+        isSelect: false
+    );
+  }
+}
+
+
+
+class NewCityModel {
+  final String code;
+  final String name;
+  final List<NewAreaModel> children;
+  bool isSelect = false;
+
+  NewCityModel({this.code,this.name,this.children,this.isSelect});
+
+  factory NewCityModel.fromJson(Map<String,dynamic> json) {
+    if ((json["children"] as List) != null) {
+      return NewCityModel(
+          code: json["code"],
+          name: json["name"],
+          children: (json["children"] as List).map((e) => NewAreaModel.fromJson(e)).toList(),
+          isSelect: false
+      );
+    }else {
+      return NewCityModel(
+          code: json["code"],
+          name: json["name"],
+          isSelect: false
+      );
+    }
+  }
+
+}
+
+class NewAreaModel {
+  final String code;
+  final String name;
+  bool isSelect = false;
+
+  NewAreaModel({this.code,this.name,this.isSelect});
+  factory NewAreaModel.fromJson(Map<String,dynamic> json) {
+    return NewAreaModel(
+        code: json['code'],
+        name: json['name'],
+        isSelect: false
+    );
+  }
+}
+
+
 class UploadImgTokenModel {
   final String token;
   UploadImgTokenModel({this.token});
