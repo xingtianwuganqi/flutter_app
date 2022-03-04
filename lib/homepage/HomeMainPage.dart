@@ -32,7 +32,18 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
     // TODO: implement build
     return Scaffold(
       appBar: new AppBar(
-        title: Container(
+        leading: Builder(
+          builder: (context){
+            return IconButton(
+                icon:Icon( Icons.dehaze_rounded),
+                onPressed: (){
+                  Scaffold.of(context).openDrawer();
+                }
+            );
+          },
+        ),
+        title:
+        Container(
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -68,6 +79,10 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
         //
         // ),
         elevation: 0.5,
+      ),
+      drawer: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Drawer(),
       ),
       body: Container(
         color: Colors.white,
