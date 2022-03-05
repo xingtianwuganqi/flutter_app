@@ -1,0 +1,98 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/Message/MessagePage.dart';
+
+class HomeDrawerPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return HomeDrawerPageState();
+  }
+}
+
+class HomeDrawerPageState extends State<HomeDrawerPage> {
+
+  List<MessagePageModel> datas = [
+    MessagePageModel(icon: '',name: '',type: 1,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '浏览记录',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '我的收藏',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '黑名单',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '领养相关',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '检测更新',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '用户协议',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '隐私政策',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '关于我们',type: 0,unreadNum: 0)
+  ];
+
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child: ListView(
+        children: datas.map((e) {
+          return listItem(e);
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget listItem(MessagePageModel model) {
+    var userInfo = UserManager.instance.userInfo;
+    if (model.type == 1){
+      return Container(
+        width: double.infinity,
+        height: 80,
+        child: Row(
+          children: [
+            Padding(padding: EdgeInsets.only(left: 15)),
+            CircleAvatar(
+              radius: 25,
+              backgroundImage:
+              ((userInfo != null && userInfo.avator != null && userInfo.avator.length > 0) ?
+              CachedNetworkImageProvider(ToolConfig.showHeadImg(userInfo.avator)) :
+              AssetImage('assets/icons/icon_plh.png')),
+              child: Container(
+                alignment: Alignment(0, 0),
+                width: 50,
+                height: 50,
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(left: 10)),
+            Text((userInfo != null && userInfo.username != null && userInfo.username.length > 0) ?
+            userInfo.username : "注册/登录",style:
+            (userInfo != null && userInfo.username != null && userInfo.username.length > 0) ? TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                color: ColorsUtil.fromEnmu(ColorEnum.content)) : TextStyle(fontSize: FontUtil.fs(FontSize.title),
+                color: ColorsUtil.fromEnmu(ColorEnum.title),fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+    }else {
+      // return Container(
+      //     width: double.infinity,
+      //     height: 50,
+      //     child: Row(
+      //       children: [
+      //         Padding(padding: EdgeInsets.only(left: 15, right: 10),
+      //           child: Image.asset('assets/icons/icon_show_gb.png'),),
+      //         Text(model.name, style:
+      //         TextStyle(fontSize: FontUtil.fs(FontSize.content),
+      //             color: ColorsUtil.fromEnmu(ColorEnum.content)),
+      //         ),
+      //       ],
+      //     )
+      // );
+      return ListTile(
+        leading: Image.asset(model.icon),
+        title: Text(model.name, style:
+            TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                color: ColorsUtil.fromEnmu(ColorEnum.content)),
+            ),
+      );
+    }
+  }
+
+
+}

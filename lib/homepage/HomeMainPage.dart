@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'SearchPage.dart';
+import 'package:flutter_720yun/homepage/HomeDrawerPage.dart';
+
 class HomeMainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -82,7 +84,9 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
       ),
       drawer: Container(
         width: MediaQuery.of(context).size.width * 0.7,
-        child: Drawer(),
+        child: Drawer(
+          child: HomeDrawerPage(),
+        ),
       ),
       body: Container(
         color: Colors.white,
