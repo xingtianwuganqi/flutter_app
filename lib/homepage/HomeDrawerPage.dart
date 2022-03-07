@@ -2,6 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/Message/MessagePage.dart';
+import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
+import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
+import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/homepage/BlackListPage.dart';
 
 class HomeDrawerPage extends StatefulWidget {
   @override
@@ -15,14 +20,14 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
 
   List<MessagePageModel> datas = [
     MessagePageModel(icon: '',name: '',type: 1,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '浏览记录',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '我的收藏',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '黑名单',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_sys.png',name: '领养相关',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '检测更新',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '用户协议',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_like.png',name: '隐私政策',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_message_collect.png',name: '关于我们',type: 0,unreadNum: 0)
+    MessagePageModel(icon: 'assets/icons/icon_view_hist.png',name: '浏览记录',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_collection.png',name: '我的收藏',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_me_black.png',name: '黑名单',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_ado_about.png',name: '领养相关',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_upload.png',name: '检测更新',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0)
   ];
 
 
@@ -86,10 +91,64 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
       // );
       return ListTile(
         leading: Image.asset(model.icon),
-        title: Text(model.name, style:
+        title:
+        Container(
+        transform: Matrix4.translationValues(-25, 0.0, 0.0),
+        child:Text(model.name, style:
             TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content)),
             ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+          if (model.name == '浏览记录') {
+            lazyAuthToDoThings(context, () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return BrowseListWidget();
+              }));
+            });
+          }else if (model.name == '我的收藏') {
+            lazyAuthToDoThings(context, () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return UserCollectionWidget();
+              }));
+            });
+          }else if (model.name == "黑名单") {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return BlackListPage();
+            }));
+          }else if (model.name == '领养说明') {
+            Navigator.push(context,MaterialPageRoute(builder: (context){
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.instruction));
+            }));
+          }
+          else if (model.name == '用户协议') {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+            }));
+          }else if (model.name == '隐私政策') {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+            }));
+          }else if (model.name == '关于我们') {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
+            }));
+          }else if (model.name == "检测更新") {
+            // if (data.num == 1) {
+            //   showModalBottomSheet(
+            //     context: context,
+            //     isScrollControlled: true,
+            //     builder: (context){
+            //       return uploadAlert();
+            //     },
+            //   );
+            // }else{
+            //   isTap = true;
+            //   uploadNetWorking();
+            // }
+          }
+        },
       );
     }
   }

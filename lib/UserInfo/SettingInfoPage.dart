@@ -31,17 +31,9 @@ class SettingPageWidget extends StatefulWidget {
 class SettingPageState extends State<SettingPageWidget> {
 
   List<UserPageModel> datas = [
-    UserPageModel('assets/icons/icon_view_hist.png', '浏览记录',0),
-    UserPageModel('assets/icons/icon_mi_collection.png', '我的收藏',0),
-    UserPageModel('line', '', 0),
+
     UserPageModel('assets/icons/icon_setting_pswd.png', '修改密码',0),
     UserPageModel('assets/icons/icon_setting_fk.png', '意见反馈',0),
-    UserPageModel('line', '', 0),
-    UserPageModel('assets/icons/icon_mi_sm.png', '领养说明',0),
-    UserPageModel('assets/icons/icon_mi_upload.png', '检测更新',0),
-    UserPageModel('assets/icons/icon_mi_xy.png', '用户协议',0),
-    UserPageModel('assets/icons/icon_pravicy.png', '隐私政策',0),
-    UserPageModel('assets/icons/icon_mi_about.png', '关于我们',0),
     UserPageModel('line', '', 0),
     UserPageModel('', "退出登录",0)
   ];
@@ -51,7 +43,6 @@ class SettingPageState extends State<SettingPageWidget> {
   AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
-  // final ValueChanged changed;
 
 
   @override

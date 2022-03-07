@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/model/BlackPageModel.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+
+
+class BlackListPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return BlackListState();
+  }
+}
+
+class BlackListState extends State<BlackListPage> {
+
+  List<BlackListModel> datas = [];
+  bool isFirstLoad = true;
+  int _page = 1;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    blackListNetworking(1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("黑名单"),
+        elevation: 0.5,
+      ),
+      body: refreshBody(),
+    );
+  }
+
+  Widget refreshBody() {
+    return EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(
+        enableInfiniteLoad:false,
+      ),
+      child: ListView.builder(
+          itemCount: datas.length,
+          itemBuilder: (context,index) {
+            var data = datas[index];
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                //   return TopicDetailWidget(topicId: data.topic_id);
+                // }));
+              },
+              child: Text("cell"),
+            );
+          }
+      ),
+      // firstRefresh: isFirstLoad,
+      // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+      emptyWidget: isFirstLoad ? null : (datas.length > 0   ? null : EmptyPage(() async{
+        await blackListNetworking(1);
+      })),
+      onRefresh: () async {
+        await blackListNetworking(1);
+      },
+      onLoad: () async{
+        await blackListNetworking(_page);
+      },
+    );
+  }
+
+  Future<Null> blackListNetworking(page) async {
+    _page = page;
+    EasyLoading.show();
+    final url = NetWorkingConfig.path(NetPath.blackList);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['page'] = _page;
+    dic['size'] = 10;
+    print(dic);
+    await NetWorking.formDataPost(url, dic, (data) {
+      print(data);
+      EasyLoading.dismiss();
+      if (data['code'] == 200) {
+        var models = (data['data'] as List).map((e) {
+          return BlackListModel.fromJson(e);
+        }).toList();
+        if (page == 1) {
+          datas = models;
+        }else{
+          datas = datas + models;
+        }
+        if (models.length > 0) {
+          _page += 1;
+        }
+
+        setState(() {
+
+        });
+      }
+    }, (error) {
+      EasyLoading.showToast('请求失败');
+    });
+  }
+}

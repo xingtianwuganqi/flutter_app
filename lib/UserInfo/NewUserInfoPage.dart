@@ -96,9 +96,12 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                   IconButton(
                     icon: Icon(Icons.settings,color: isShowTitle ? Colors.black: Colors.white),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return SettingPageWidget();
-                      }));
+                      lazyAuthToDoThings(context, () {
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context) {
+                          return SettingPageWidget();
+                        }));
+                      });
                     },
                   )
                 ],

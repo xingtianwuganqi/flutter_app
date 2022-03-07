@@ -125,6 +125,8 @@ enum NetPath {
   changeRescueState,
   // userid查询userInfo
   userIdGetUserInfo,
+  // 黑名单
+  blackList
 }
 
 class NetWorkingConfig {
@@ -245,6 +247,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/changecompletestatus/';
       case NetPath.userIdGetUserInfo:
         return baseUrl + '/api/v2/useridgetuserinfo/';
+      case NetPath.blackList:
+        return baseUrl + '/api/topic/black/list/';
       default:
         return "";
     }
