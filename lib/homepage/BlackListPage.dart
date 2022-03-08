@@ -56,7 +56,7 @@ class BlackListState extends State<BlackListPage> {
                 //   return TopicDetailWidget(topicId: data.topic_id);
                 // }));
               },
-              child: Text("cell"),
+              child: blackItem(data)
             );
           }
       ),
@@ -74,6 +74,83 @@ class BlackListState extends State<BlackListPage> {
     );
   }
 
+  Widget blackItem(BlackListModel model) {
+    return Column(
+      children: [
+          Container(
+          width: double.infinity,
+          height: 60,
+          child: Row(
+            children: [
+              (model.wx_num != null && model.wx_num.length > 0) ?
+              Padding(
+                padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 20,
+                      child: Text(model.contact,
+                        maxLines:1,
+                        overflow:TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                            color: ColorsUtil.fromEnmu(ColorEnum.title)
+                        )
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 20,
+                      child: Text(model.wx_num,
+                          maxLines:1,
+                          overflow:TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+                              color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                          )
+                      ),
+                    )
+                  ],
+                ),
+              ): Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 15,right: 15),
+                  child: Text(model.contact,
+                      maxLines:1,
+                      overflow:TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                          color: ColorsUtil.fromEnmu(ColorEnum.title)
+                      )
+                  )
+              ),
+              Expanded(child: Container(
+                child: Text(
+                  model.desc,
+                  maxLines:2,
+                  overflow:TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+                    color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                  ),
+                ),
+              ),),
+              Container(
+                padding: EdgeInsets.only(left: 15,right: 15),
+                child: Text(
+                    model.black_type == 1 ? "领养人" : "送养人",
+                    maxLines:1,
+                    overflow:TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                        color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                    )
+                ),
+              )
+            ],
+          ),
+        ),
+        Divider(height: 1,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),)
+      ],
+    );
+  }
+
   Future<Null> blackListNetworking(page) async {
     _page = page;
     EasyLoading.show();
@@ -86,6 +163,9 @@ class BlackListState extends State<BlackListPage> {
       print(data);
       EasyLoading.dismiss();
       if (data['code'] == 200) {
+        if((data['data'] as List).length == 0) {
+          return;
+        }
         var models = (data['data'] as List).map((e) {
           return BlackListModel.fromJson(e);
         }).toList();
@@ -101,6 +181,8 @@ class BlackListState extends State<BlackListPage> {
         setState(() {
 
         });
+      }else{
+
       }
     }, (error) {
       EasyLoading.showToast('请求失败');
