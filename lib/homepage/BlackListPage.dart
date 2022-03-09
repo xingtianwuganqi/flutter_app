@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/homepage/BlackDetailPage.dart';
 import 'package:flutter_720yun/model/BlackPageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
@@ -52,9 +53,9 @@ class BlackListState extends State<BlackListPage> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context){
-                //   return TopicDetailWidget(topicId: data.topic_id);
-                // }));
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return BlackDetailPage(blackType: BlackType.detail,blackId: data.id);
+                }));
               },
               child: blackItem(data)
             );

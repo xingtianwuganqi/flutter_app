@@ -1,3 +1,5 @@
+import 'package:flutter_720yun/homepage/BlackDetailPage.dart';
+
 class BlackListModel {
   final int id;
   final String name;
@@ -39,8 +41,8 @@ class BlackListModel {
 class BlackInfoModel {
   final String desc;
   final String placeholder;
-  final String value;
-  final int type;
+  dynamic value;
+  final BlackType type;
 
 
   BlackInfoModel({

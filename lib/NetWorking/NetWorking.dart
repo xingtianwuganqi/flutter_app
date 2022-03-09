@@ -126,7 +126,9 @@ enum NetPath {
   // userid查询userInfo
   userIdGetUserInfo,
   // 黑名单
-  blackList
+  blackList,
+  // 黑名单详情
+  blackDetail
 }
 
 class NetWorkingConfig {
@@ -249,6 +251,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/useridgetuserinfo/';
       case NetPath.blackList:
         return baseUrl + '/api/topic/black/list/';
+      case NetPath.blackDetail:
+        return baseUrl + '/api/topic/black/detail/';
       default:
         return "";
     }
