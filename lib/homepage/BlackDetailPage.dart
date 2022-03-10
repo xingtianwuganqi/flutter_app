@@ -29,8 +29,12 @@ class BlackDetailState extends State<BlackDetailPage> {
   FocusNode _focusNodePassWord = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _userNameController = new TextEditingController();
-  TextEditingController _userPswdController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _wxNumController = new TextEditingController();
+  TextEditingController _nickNameController = new TextEditingController();
+  TextEditingController _reasonController = new TextEditingController();
+  // TextEditingController _wxNumController = new TextEditingController();
+
 
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -50,6 +54,10 @@ class BlackDetailState extends State<BlackDetailPage> {
     // TODO: implement initState
     super.initState();
     blackDetailNetworking();
+
+    _phoneController.addListener(() {
+
+    });
   }
 
   @override
@@ -62,7 +70,7 @@ class BlackDetailState extends State<BlackDetailPage> {
         actions: [
           TextButton(
               onPressed: (){
-
+                pushButtonClick();
               }, child: Text('举报',
             style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.system)),)
@@ -75,15 +83,96 @@ class BlackDetailState extends State<BlackDetailPage> {
         itemBuilder: (context,index) {
           var data = blackList[index];
           if (data.desc == "line") {
-            return Divider(thickness: 10,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),);
+            return Divider(thickness: 10,height: 10,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),);
           }else if (data.desc == "手机号" || data.desc == "微信号" || data.desc == "微信昵称") {
+            TextEditingController currentController;
+            if (data.desc == "手机号") {
+              currentController = _phoneController;
+            }else if ( data.desc == "微信号" ) {
+              currentController = _wxNumController;
+            }else if (data.desc == "微信昵称") {
+              currentController = _nickNameController;
+            }
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 15,right: 15),
+                  height: 60,
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Text(data.desc,style: TextStyle(
+                          fontSize: FontUtil.fs(FontSize.content),
+                          color: ColorsUtil.fromEnmu(ColorEnum.content)
+                      ),),
+                      Expanded(
+                        child: TextField(
+                          textAlign: TextAlign.right,
+                          controller: currentController,
+                          style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+                              fontSize: FontUtil.fs(FontSize.content)),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: data.placeholder,
+                            hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                                fontSize: FontUtil.fs(FontSize.content)
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  height: 0.5,
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                )
+              ],
+            );
+          }else if (data.desc == "举报理由"){
             return Container(
-              child: Text(data.desc),
+              padding: EdgeInsets.only(left: 15,right: 15),
+              height: 140,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    height: 30,
+                    child: Text(data.desc),
+                  ),
+                  Expanded(
+                    child:
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(top: 5,left: 5,right: 5,bottom: 5),
+                        constraints: BoxConstraints(maxHeight: 100, minHeight: 100),
+                        alignment: Alignment.topLeft,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            border: Border.all(
+                                width: 1,
+                                color: ColorsUtil.fromEnmu(ColorEnum.tableBack)
+                            )
+                        ),
+                        child: TextField(
+                      controller: _reasonController,
+                      maxLength: null,
+                      decoration: InputDecoration.collapsed(
+                        border: InputBorder.none,
+                        hintText: "请输入举报理由",
+                        hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                            fontSize: FontUtil.fs(FontSize.content)
+                        )
+                      ),
+                        )
+                    )
+                  )
+                ],
+              ),
             );
           }else{
-            return Container(
-              child: Text(data.desc),
-            );
+            return Text(data.desc);
           }
         }
         ),
@@ -134,6 +223,22 @@ class BlackDetailState extends State<BlackDetailPage> {
     setState(() {
 
     });
+
+  }
+
+  // 举报按钮点击
+  void pushButtonClick() {
+    if (_phoneController.text.trim().length == 0) {
+      EasyLoading.showToast("请输入失信人手机号");
+      return;
+    }
+
+
+    if (_reasonController.text.trim().length == 0) {
+      EasyLoading.showToast("请输入失信人微信号");
+      return;
+    }
+
 
   }
 }
