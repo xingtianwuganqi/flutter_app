@@ -97,7 +97,7 @@ class BlackDetailState extends State<BlackDetailPage> {
               children: [
                 Container(
                   padding: EdgeInsets.only(left: 15,right: 15),
-                  height: 60,
+                  height: 50,
                   width: double.infinity,
                   child: Row(
                     children: [
@@ -128,6 +128,25 @@ class BlackDetailState extends State<BlackDetailPage> {
                   color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                 )
               ],
+            );
+          }else if (data.desc == "身份") {
+            return Container(
+              padding: EdgeInsets.only(left: 15,right: 15),
+              height: 50,
+              child: Row(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(data.desc),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Switch(
+                    value: true,
+                  )
+                ],
+              ),
             );
           }else if (data.desc == "举报理由"){
             return Container(
