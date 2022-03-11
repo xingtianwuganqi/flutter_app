@@ -34,7 +34,8 @@ class BlackDetailState extends State<BlackDetailPage> {
   TextEditingController _nickNameController = new TextEditingController();
   TextEditingController _reasonController = new TextEditingController();
   // TextEditingController _wxNumController = new TextEditingController();
-
+  // 领养人还是送养人
+  bool isSwitch = false;
 
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -114,7 +115,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: data.placeholder,
-                            hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                            hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark),
                                 fontSize: FontUtil.fs(FontSize.content)
                             ),
                           ),
@@ -142,8 +143,26 @@ class BlackDetailState extends State<BlackDetailPage> {
                   Expanded(
                     child: Container(),
                   ),
-                  Switch(
-                    value: true,
+                  Container(
+                    child: Row(
+                      children: [
+                        Text('领养人',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.note),
+                            fontSize: FontUtil.fs(FontSize.content))),
+                        Switch(
+                          value: isSwitch,
+                          activeColor: Colors.blue,
+                          inactiveThumbColor: Colors.blue,
+                          onChanged: (value) {
+                            isSwitch = !isSwitch;
+                            setState(() {
+
+                            });
+                          },
+                        ),
+                        Text("送养人",style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.note),
+                            fontSize: FontUtil.fs(FontSize.content)))
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -180,7 +199,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                       decoration: InputDecoration.collapsed(
                         border: InputBorder.none,
                         hintText: "请输入举报理由",
-                        hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                        hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark),
                             fontSize: FontUtil.fs(FontSize.content)
                         )
                       ),
@@ -191,7 +210,26 @@ class BlackDetailState extends State<BlackDetailPage> {
               ),
             );
           }else{
-            return Text(data.desc);
+            return Container(
+              padding: EdgeInsets.only(left: 15,right: 15),
+              height: 140,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    height: 30,
+                    child: Text(data.desc),
+                  ),
+                  Expanded(
+                      child:
+                      Container(
+                          
+                      )
+                  )
+                ],
+              ),
+            );
           }
         }
         ),
