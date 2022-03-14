@@ -1,8 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/model/BlackPageModel.dart';
+import 'package:flutter_720yun/model/HomePageModel.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
+import '../model/HomePageModel.dart';
+import '../Common/CommonPage.dart';
+import '../NetWorking/NetWorking.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+
+import 'TagInfoPage.dart';
 
 enum BlackType {
   detail,
@@ -49,6 +60,26 @@ class BlackDetailState extends State<BlackDetailPage> {
 
   BlackListModel blackModel;
   List<BlackInfoModel> blackList = [];
+
+  List<ReleasePhotoModel> _releasePhotos = [
+    ReleasePhotoModel(
+        isAdd: true,
+        progress: 0.0,
+        complete: true,
+        photoKey: '',
+        photoUrl: '',
+        image: null
+    )];
+
+  /// 上传图片
+  // 创建 storage 对象
+  Storage storage = Storage();
+  // 创建 Controller 对象
+  PutController putController = PutController();
+  /// 图片的token
+  String _token;
+  /// pushInfo
+  ReleaseReportInfo _pushInfo;
 
   @override
   void initState() {
@@ -212,7 +243,6 @@ class BlackDetailState extends State<BlackDetailPage> {
           }else{
             return Container(
               padding: EdgeInsets.only(left: 15,right: 15),
-              height: 140,
               width: double.infinity,
               child: Column(
                 children: [
@@ -221,12 +251,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                     height: 30,
                     child: Text(data.desc),
                   ),
-                  Expanded(
-                      child:
-                      Container(
-                          
-                      )
-                  )
+                  photosWidget()
                 ],
               ),
             );
@@ -285,17 +310,250 @@ class BlackDetailState extends State<BlackDetailPage> {
 
   // 举报按钮点击
   void pushButtonClick() {
+
+    var info = isCanPush();
+    if (info == null) {
+      return;
+    }
+    _pushInfo = info;
+    getQiNiuToken();
+
+  }
+
+  ReleaseReportInfo isCanPush() {
+    String phone;
+    String wx_num = "";
+    String nickName = "";
+    int blackType;
+    String reason;
     if (_phoneController.text.trim().length == 0) {
       EasyLoading.showToast("请输入失信人手机号");
-      return;
+      return null;
+    }else{
+      phone = _phoneController.text.trim();
     }
 
+    if (_wxNumController.text.trim().length > 0) {
+      wx_num = _wxNumController.text.trim();
+    }
+
+    blackType = (isSwitch == false) ? 1 : 2;
 
     if (_reasonController.text.trim().length == 0) {
-      EasyLoading.showToast("请输入失信人微信号");
+      EasyLoading.showToast("请输入举报理由");
+      return null;
+    }else {
+      reason = _reasonController.text.trim();
+    }
+
+    if (_releasePhotos.length == 1 && _releasePhotos.first.isAdd == true) {
+      EasyLoading.showToast('请选择图片');
+      return null;
+    }
+
+    var reportInfo = ReleaseReportInfo(
+        phone: phone,
+        wx_num: wx_num,
+        name: nickName,
+        black_type: blackType,
+        desc: reason,
+        photos: '',
+    );
+    return reportInfo;
+  }
+
+
+  Widget photosWidget() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 10),
+      height: _releasePhotos.length > 3 ? ((MediaQuery.of(context).size.width - 50) / 3 + 10) * 2 : (MediaQuery.of(context).size.width - 50) / 3 + 10,
+      child: GridView.builder(
+          physics: new NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+          ),
+          itemCount:_releasePhotos.length,
+          itemBuilder: (context,index){
+            var item = _releasePhotos[index];
+            if (item.isAdd) {
+              return GestureDetector(
+                child: Container(
+                  // width: 20,
+                  // height: 20,
+                  color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  child: Image.asset('assets/icons/icon_hw_navi_add.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                onTap: () async {
+                  await loadAssets();
+                },
+              );
+            }else{
+              return Container(
+                  child: Stack(
+                    children: [
+                      AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                      Positioned(
+                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                          // 删除数据
+                          var isRemove = _releasePhotos.remove(_releasePhotos[index]);
+                          if (isRemove) {
+                            setState(() {
+
+                            });
+                          }
+
+                        },),
+                        top: -10,
+                        right: -10,
+                      ),
+                    ],
+                  )
+              );
+            }
+
+          }),
+    );
+  }
+
+  Future<void> loadAssets() async {
+    if (_releasePhotos.length > 6) {
+      return;
+    }
+    List<Asset> resultList = [];
+    String error = 'No Error Dectected';
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 7 - _releasePhotos.length,
+        enableCamera: false,
+        selectedAssets: resultList,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          // actionBarColor: '#ffa500',
+            actionBarTitle: "App",
+            allViewTitle: "All Photos",
+            useDetailsView: true,
+            selectCircleStrokeColor: "#666666",
+            startInAllView: true),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+      print(error);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      var photos = resultList.map((e) => ReleasePhotoModel(
+          isAdd: false,
+          progress: 0.0,
+          complete: false,
+          photoUrl: '',
+          photoKey: comPhotoKey,
+          image: e
+      )).toList();
+      _releasePhotos.insertAll(0, photos);
+    });
+  }
+
+  Future<Null> getQiNiuToken() async {
+    EasyLoading.show(status:'上传图片...');
+    final url = NetWorkingConfig.path(NetPath.qiniuToken);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    print(dic);
+    await NetWorking.formDataPost(url, dic, (data) {
+      print(data);
+      if (data['code'] == 200) {
+        var model = UploadImgTokenModel.formJson(data['data']);
+        _token = model.token;
+        uploadImgToQiNiu(_token);
+      }
+    }, (error) {
+      EasyLoading.showToast('获取token失败');
+    });
+  }
+
+  /// 上传图片到七牛
+  void uploadImgToQiNiu(String token) {
+    EasyLoading.show(status:'上传图片...');
+    for (int i = 0; i < _releasePhotos.length; i++) {
+      var item = _releasePhotos[i];
+      updateImg(item);
+    }
+  }
+
+  Future<Null> updateImg(ReleasePhotoModel item) async {
+    if (item.isAdd == false) {
+      final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
+      File file = File(filePath);
+      storage.putFile(file, _token, options: PutOptions(
+        controller: putController,
+        key: item.photoKey,
+      )).then((value) {
+        // 更新模型的数据
+        _releasePhotos = _releasePhotos.map((e) {
+          var newModel = e;
+          if (e.photoKey == value.key) {
+            newModel.complete = true;
+            newModel.photoUrl = value.key;
+          }
+          return newModel;
+        }).toList();
+        // 判断_releasePhotos 是不是所有的complete 都变成了true；
+        int isComplete = 0;
+        for (int i = 0;i < _releasePhotos.length;i++) {
+          var item = _releasePhotos[i];
+          if (item.complete == false) {
+            isComplete = 1;
+            break;
+          }
+        }
+        if (isComplete == 0) { // 说明全部传成功了
+          pushInfo(_pushInfo);
+          return;
+        }
+      });
+    }
+  }
+
+  // 开始发布
+  Future<Null> pushInfo(ReleaseReportInfo info) async {
+
+    List<ReleasePhotoModel> photos = [];
+    for(int i = 0;i < _releasePhotos.length;i++) {
+      var item = _releasePhotos[i];
+      if (item.isAdd == false) {
+        photos.add(item);
+      }
+    }
+    String imgStr = photos.map((e) => e.photoUrl).toList().join(',');
+
+    if (imgStr.length == 0) {
       return;
     }
 
+    var url = NetWorkingConfig.path(NetPath.blackCreate);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic["name"] = info.name;
+    dic["contact"] = info.phone;
+    dic["wx_num"] = info.wx_num;
+    dic["desc"] = info.desc;
+    dic["imgs"] = imgStr;
+    dic["black_type"] = info.black_type;
+    dic["from_userId"] = UserManager.instance.userInfo.id;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) { // 发布成功
+        EasyLoading.showToast('提交成功，请等待审核');
+        Future.delayed(Duration(milliseconds: 1500),(){
+          Navigator.pop(context);
+        });
+      }
+    }, (error) {
 
+    });
   }
 }

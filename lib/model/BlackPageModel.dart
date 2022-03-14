@@ -62,22 +62,24 @@ class BlackInfoModel {
   }
 }
 
-/*
+class ReleaseReportInfo {
+  final String phone;
+  final String wx_num;
+  final String name;
+  final int black_type;
+  final String desc;
+  final String photos;
 
-struct BlackInfoModel {
-    var desc: String?
-    var placeholder: String?
-    var value: Any?
-    var type: BlackDetailType?
+  ReleaseReportInfo({this.phone, this.wx_num, this.name, this.black_type, this.desc, this.photos});
+
+  factory ReleaseReportInfo.fromJson(Map<String,dynamic> json) {
+    return ReleaseReportInfo(
+        phone: json['phone'],
+        wx_num: json['wx_num'],
+        name: json['name'],
+        black_type: json['black_type'],
+        desc: json['desc'],
+        photos: json['photos']
+    );
+  }
 }
-
-
-struct ReleaseReportInfo {
-    var phone: String?
-    var wx_num: String?
-    var name: String?
-    var black_type: Int = 1
-    var desc: String?
-    var photos: [ReleasePhotoModel] = []
-}
- */

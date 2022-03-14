@@ -125,7 +125,7 @@ class BlackListState extends State<BlackListPage> {
               ),
               Expanded(child: Container(
                 child: Text(
-                  model.desc,
+                  model.desc ?? "",
                   maxLines:2,
                   overflow:TextOverflow.ellipsis,
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),

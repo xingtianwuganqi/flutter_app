@@ -128,7 +128,9 @@ enum NetPath {
   // 黑名单
   blackList,
   // 黑名单详情
-  blackDetail
+  blackDetail,
+  // 举报
+  blackCreate
 }
 
 class NetWorkingConfig {
@@ -253,6 +255,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/topic/black/list/';
       case NetPath.blackDetail:
         return baseUrl + '/api/topic/black/detail/';
+      case NetPath.blackCreate:
+        return baseUrl + '/api/topic/black/create/';
       default:
         return "";
     }

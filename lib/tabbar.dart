@@ -205,7 +205,7 @@ class tabbarState extends State<tabbar> {
   void _loadConfig() {
 
     if (NetWorkingConfig.urlConfig == UrlConfig.formal) {
-      Printer.enable = true;
+      Printer.enable = false;
     }else{
       Printer.enable = true;
     }
