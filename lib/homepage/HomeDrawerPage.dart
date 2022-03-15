@@ -56,7 +56,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               radius: 25,
               backgroundImage:
               ((userInfo != null && userInfo.avator != null && userInfo.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.showHeadImg(userInfo.avator)) :
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(userInfo.avator)) :
               AssetImage('assets/icons/icon_plh.png')),
               child: Container(
                 alignment: Alignment(0, 0),

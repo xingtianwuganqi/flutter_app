@@ -343,7 +343,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
      return RegExp(regexEmail).hasMatch(input);
   }
 
-  static String showHeadImg(String url) {
+  static String loadImgUrl(String url) {
     var headImg = '';
     if (url.contains("http")) {
       headImg = url;
@@ -352,7 +352,6 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     }
     return headImg;
   }
-
 }
 //
 /// 无参数

@@ -153,7 +153,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
             backgroundColor: Colors.white,
             backgroundImage: context.watch<UserProviderModel>().isLogin ?
             ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(ToolConfig.showHeadImg(UserManager.instance.userInfo.avator)) :
+            CachedNetworkImageProvider(ToolConfig.loadImgUrl(UserManager.instance.userInfo.avator)) :
             AssetImage('assets/icons/icon_plh.png')
             ) :
             AssetImage('assets/icons/icon_plh.png'),
@@ -190,7 +190,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
           radius: 25,
           backgroundColor: Colors.white,
           backgroundImage: otherUserInfo != null ?
-          CachedNetworkImageProvider(ToolConfig.showHeadImg(otherUserInfo.avator)) :
+          CachedNetworkImageProvider(ToolConfig.loadImgUrl(otherUserInfo.avator)) :
           AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, .5),

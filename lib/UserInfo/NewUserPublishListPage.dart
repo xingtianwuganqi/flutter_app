@@ -207,7 +207,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                             backgroundImage:
                             // isLoadingImg ?
                             ((avator != null && avator.length > 0) ?
-                            CachedNetworkImageProvider(ToolConfig.showHeadImg(avator)) :
+                            CachedNetworkImageProvider(ToolConfig.loadImgUrl(avator)) :
                             AssetImage('assets/icons/icon_plh.png')),
                             //   :
                             // AssetImage('assets/icons/icon_plh.png'),
