@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
@@ -35,28 +36,18 @@ class BlackDetailPage extends StatefulWidget {
 }
 
 class BlackDetailState extends State<BlackDetailPage> {
-  //焦点
-  FocusNode _focusNodeUserName = new FocusNode();
-  FocusNode _focusNodePassWord = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _wxNumController = new TextEditingController();
   TextEditingController _nickNameController = new TextEditingController();
   TextEditingController _reasonController = new TextEditingController();
-  // TextEditingController _wxNumController = new TextEditingController();
+
   // 领养人还是送养人
   bool isSwitch = false;
 
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  var _password = '';//用户名
-  var _username = '';//密码
-  var _isShowPwd = false;//是否显示密码
-  var _isShowClear = false;//是否显示输入框尾部的清除按钮
-  var _proSelect = true;
-  var _deviceName = '';
 
   BlackListModel blackModel;
   List<BlackInfoModel> blackList = [];
@@ -85,11 +76,12 @@ class BlackDetailState extends State<BlackDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    blackDetailNetworking();
+    if (widget.blackType == BlackType.detail) {
+      blackDetailNetworking();
+    }else {
+      loadBlackList();
+    }
 
-    _phoneController.addListener(() {
-
-    });
   }
 
   @override
@@ -99,11 +91,11 @@ class BlackDetailState extends State<BlackDetailPage> {
       appBar: AppBar(
         title: Text('举报'),
         elevation: 0.5,
-        actions: [
+        actions: widget.blackType == BlackType.detail ? [] :  [
           TextButton(
               onPressed: (){
                 pushButtonClick();
-              }, child: Text('举报',
+              }, child: Text('提交',
             style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.system)),)
           )
@@ -139,6 +131,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                       ),),
                       Expanded(
                         child: TextField(
+                          enabled: widget.blackType == BlackType.detail ? false: true,
                           textAlign: TextAlign.right,
                           controller: currentController,
                           style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
@@ -184,6 +177,9 @@ class BlackDetailState extends State<BlackDetailPage> {
                           activeColor: Colors.blue,
                           inactiveThumbColor: Colors.blue,
                           onChanged: (value) {
+                            if (widget.blackType == BlackType.detail) {
+                              return;
+                            }
                             isSwitch = !isSwitch;
                             setState(() {
 
@@ -201,7 +197,7 @@ class BlackDetailState extends State<BlackDetailPage> {
           }else if (data.desc == "举报理由"){
             return Container(
               padding: EdgeInsets.only(left: 15,right: 15),
-              height: 140,
+              height: widget.blackType == BlackType.detail ? null : 140,
               width: double.infinity,
               child: Column(
                 children: [
@@ -210,7 +206,23 @@ class BlackDetailState extends State<BlackDetailPage> {
                     height: 30,
                     child: Text(data.desc),
                   ),
-                  Expanded(
+                  widget.blackType == BlackType.detail ? Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(top: 5,left: 5,right: 5,bottom: 5),
+                      alignment: Alignment.topLeft,
+                      child: TextField(
+                        enabled: widget.blackType == BlackType.detail ? false: true,
+                        controller: _reasonController,
+                        maxLength: null,
+                        decoration: InputDecoration.collapsed(
+                            border: InputBorder.none,
+                            hintText: "请输入举报理由",
+                            hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                                fontSize: FontUtil.fs(FontSize.content)
+                            )
+                        ),
+                      )
+                  ) : Expanded(
                     child:
                     Container(
                       margin: EdgeInsets.only(bottom: 10),
@@ -225,15 +237,16 @@ class BlackDetailState extends State<BlackDetailPage> {
                             )
                         ),
                         child: TextField(
-                      controller: _reasonController,
-                      maxLength: null,
-                      decoration: InputDecoration.collapsed(
-                        border: InputBorder.none,
-                        hintText: "请输入举报理由",
-                        hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark),
-                            fontSize: FontUtil.fs(FontSize.content)
-                        )
-                      ),
+                          enabled: widget.blackType == BlackType.detail ? false: true,
+                          controller: _reasonController,
+                          maxLength: null,
+                          decoration: InputDecoration.collapsed(
+                          border: InputBorder.none,
+                          hintText: "请输入举报理由",
+                          hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                              fontSize: FontUtil.fs(FontSize.content)
+                          )
+                          ),
                         )
                     )
                   )
@@ -273,20 +286,40 @@ class BlackDetailState extends State<BlackDetailPage> {
         var model = data['data'];
         var blackInfo = BlackListModel.fromJson(model);
         blackModel = blackInfo;
-        loadBlackList(blackInfo);
+        loadBlackList();
       }
     }, (error) {
       EasyLoading.dismiss();
     });
   }
 
-  void loadBlackList(BlackListModel model) {
-    var contact = widget.blackType == BlackType.create ? null: model.contact;
-    var wx_num = widget.blackType == BlackType.create ? null: model.wx_num;
-    var nickName = widget.blackType == BlackType.create ? null: model.name;
-    var body = widget.blackType == BlackType.create ? null: (model.black_type == 1 ? "领养人" : "送养人");
-    var reason = widget.blackType == BlackType.create ? null: model.desc;
-    var images = widget.blackType == BlackType.create ? null: model.images;
+  void loadBlackList() {
+
+    var contact = widget.blackType == BlackType.create ? null: blackModel.contact;
+    var wx_num = widget.blackType == BlackType.create ? null: blackModel.wx_num;
+    var nickName = widget.blackType == BlackType.create ? null: blackModel.name;
+    var body = widget.blackType == BlackType.create ? null: (blackModel.black_type == 1 ? "领养人" : "送养人");
+    var reason = widget.blackType == BlackType.create ? null: blackModel.desc;
+    var images = widget.blackType == BlackType.create ? null: blackModel.images;
+
+    if (widget.blackType == BlackType.detail) {
+      _phoneController.text = contact;
+      _wxNumController.text = wx_num;
+      _nickNameController.text = nickName;
+      blackModel.black_type == 1 ? isSwitch = false : isSwitch = true;
+      _reasonController.text = reason;
+      print(blackModel.images);
+      _releasePhotos = blackModel.images.map((e) {
+        return ReleasePhotoModel(
+            isAdd: false,
+            progress: 0.0,
+            complete: true,
+            photoKey: '',
+            photoUrl: e,
+            image: null
+        );
+      }).toList();
+    }
 
     var list =
      [
@@ -394,7 +427,17 @@ class BlackDetailState extends State<BlackDetailPage> {
                 },
               );
             }else{
-              return Container(
+              return widget.blackType == BlackType.detail ? Container(
+                child: CachedNetworkImage(
+                  imageUrl: NetWorkingConfig.imgBaseUrl + item.photoUrl,
+                  placeholder: (context,url) => Container(
+                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                  ),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              ) : Container(
                   child: Stack(
                     children: [
                       AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),

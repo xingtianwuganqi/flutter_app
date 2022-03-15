@@ -35,9 +35,24 @@ class BlackListState extends State<BlackListPage> {
       appBar: AppBar(
         title: Text("黑名单"),
         elevation: 0.5,
+        actions: [
+          TextButton(
+              onPressed: (){
+                reportBtnClick();
+              }, child: Text('举报',
+            style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                color: ColorsUtil.fromEnmu(ColorEnum.system)),)
+          )
+        ],
       ),
       body: refreshBody(),
     );
+  }
+
+  reportBtnClick() {
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return BlackDetailPage(blackType: BlackType.create);
+    }));
   }
 
   Widget refreshBody() {

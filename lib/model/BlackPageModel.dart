@@ -30,7 +30,7 @@ class BlackListModel {
       contact: json['contact'],
       desc: json['desc'],
       wx_num: json['wx_num'],
-      // images: json['image'],
+      images: (json['images'] as List)?.map((e) => e as String)?.toList(),
       black_status: json['black_status'],
       from_userId: json['from_userId'],
       black_type: json['black_type']
