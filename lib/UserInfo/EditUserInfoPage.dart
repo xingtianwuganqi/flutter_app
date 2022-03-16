@@ -111,7 +111,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 AssetThumbImageProvider(_assetInfo,height: 80,width: 80) :
                 (UserManager.instance.isLogin ?
                 ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+                CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
                 AssetImage('assets/icons/icon_plh.png')
                 ):
                 Image.asset('assets/icons/icon_plh.png')),

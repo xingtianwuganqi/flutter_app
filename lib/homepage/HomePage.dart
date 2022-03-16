@@ -532,10 +532,10 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
   // }
 
   var imgs = data.imgs.map((e) {
-    return NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgTailUrl;
+    return ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail);
   }).toList();
 
-  var originImgs = data.imgs.map((e) => NetWorkingConfig.imgBaseUrl + e).toList();
+  var originImgs = data.imgs.map((e) => ToolConfig.loadImgUrl(e)).toList();
 
   void tapClick(int index) {
     Navigator.push(context, MaterialPageRoute(builder: (context){

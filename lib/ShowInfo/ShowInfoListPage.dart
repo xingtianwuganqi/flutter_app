@@ -238,7 +238,7 @@ class ShowInfoActionNetworking {
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
   int currentIndex = 0;
   var imgWidgets = data.imgs.map((e) => Container(
-    child: CachedNetworkImage(imageUrl: NetWorkingConfig.imgBaseUrl + e + NetWorkingConfig.imgHeightTail,
+    child: CachedNetworkImage(imageUrl: ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail),
         height: double.infinity,
         width: double.infinity,
         fit: BoxFit.contain,
@@ -262,7 +262,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
               CircleAvatar(
                 radius: 20,
                 backgroundImage: (data.user.avator != null && data.user.avator.length > 0) ?
-                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.user.avator + NetWorkingConfig.imgTailUrl):
+                CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.user.avator,bType: ThumbType.thumbNail)):
                 AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                   alignment: Alignment(0, .5),

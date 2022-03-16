@@ -59,7 +59,7 @@ class MessageListState extends State<MessageListWidget> {
             CircleAvatar(
               radius: 20,
               backgroundImage: (data.from_info.avator != null && data.from_info.avator.length > 0) ?
-              CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + data.from_info.avator + NetWorkingConfig.imgTailUrl) :
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.from_info.avator,bType: ThumbType.thumbNail)) :
               AssetImage('assets/icons/icon_plh.png'),
               child: Container(
                 alignment: Alignment(0, .5),
@@ -189,7 +189,7 @@ class MessageListState extends State<MessageListWidget> {
             Container(
               color: Colors.white,
               margin: EdgeInsets.only(left: 1,top: 1,bottom: 1),
-              child: CachedNetworkImage(imageUrl: (data.topicInfo.imgs != null) ? (NetWorkingConfig.imgBaseUrl + data.topicInfo.imgs.first ?? '') : '',width: 78,height: 78,fit: BoxFit.cover,),
+              child: CachedNetworkImage(imageUrl: (data.topicInfo.imgs != null) ? ToolConfig.loadImgUrl((data.topicInfo.imgs.first ?? '')) : '',width: 78,height: 78,fit: BoxFit.cover,),
             ),
             Expanded(
                 child: Column(
@@ -238,7 +238,7 @@ class MessageListState extends State<MessageListWidget> {
               color: Colors.white,
               margin: EdgeInsets.only(left: 1,top: 1,bottom: 1),
               child: CachedNetworkImage(
-                imageUrl: (NetWorkingConfig.imgBaseUrl + (data.showInfo.imgs.first ?? '') + NetWorkingConfig.imgTailUrl),
+                imageUrl: (ToolConfig.loadImgUrl((data.showInfo.imgs.first ?? ''),bType: ThumbType.thumbNail)),
                 width: 78,
                 height: 78,
                 fit: BoxFit.cover,),

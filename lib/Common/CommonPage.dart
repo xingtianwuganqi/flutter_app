@@ -343,12 +343,30 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
      return RegExp(regexEmail).hasMatch(input);
   }
 
-  static String loadImgUrl(String url) {
+  static String loadImgUrl(String url,{ThumbType bType}) {
     var headImg = '';
     if (url.contains("http")) {
       headImg = url;
     }else{
-      headImg = NetWorkingConfig.imgBaseUrl + url + NetWorkingConfig.imgTailUrl;
+      switch (bType) {
+        case ThumbType.thumbNail: {
+          headImg = NetWorkingConfig.imgBaseUrl + url + NetWorkingConfig.imgNailTail;
+        }
+        break;
+        case ThumbType.thumbFour: {
+          headImg = NetWorkingConfig.imgBaseUrl + url + NetWorkingConfig.imgFourTail;
+        }
+        break;
+        case ThumbType.thumbSeven: {
+          headImg = NetWorkingConfig.imgBaseUrl + url + NetWorkingConfig.imgSevenTail;
+        }
+        break;
+        default: {
+          headImg = NetWorkingConfig.imgBaseUrl + url;
+        }
+        break;
+      }
+
     }
     return headImg;
   }

@@ -133,6 +133,12 @@ enum NetPath {
   blackCreate
 }
 
+enum ThumbType {
+  thumbNail,
+  thumbFour,
+  thumbSeven,
+}
+
 class NetWorkingConfig {
   static final UrlConfig urlConfig = UrlConfig.test;
   static String baseUrl() {
@@ -147,9 +153,10 @@ class NetWorkingConfig {
         return '';
     }
   }
-  static String get imgBaseUrl => 'http://img.rxswift.cn/';
-  static String get imgTailUrl => "?imageView2/0/q/40";
-  static String get imgHeightTail => "?imageView2/0/q/80";
+  static String imgBaseUrl = 'http://img.rxswift.cn/';
+  static String imgNailTail = "?imageView2/0/q/20";
+  static String imgFourTail = "?imageView2/0/q/40";
+  static String imgSevenTail = "?imageView2/0/q/70";
   static String path(NetPath path) {
     var baseUrl = NetWorkingConfig.baseUrl();
     switch (path) {

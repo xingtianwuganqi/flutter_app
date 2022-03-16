@@ -141,7 +141,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 backgroundColor: Colors.white,
                 backgroundImage: context.watch<UserProviderModel>().isLogin ?
                 ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-                CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + (UserManager.instance.userInfo.avator ?? "") + NetWorkingConfig.imgTailUrl) :
+                CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
                     AssetImage('assets/icons/icon_plh.png')
                 ) :
                 AssetImage('assets/icons/icon_plh.png'),

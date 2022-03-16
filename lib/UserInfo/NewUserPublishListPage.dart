@@ -139,7 +139,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     }
 
     var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;
-    var img = NetWorkingConfig.imgBaseUrl + model.imgs[0];
+    var img = ToolConfig.loadImgUrl(model.imgs[0]);
     var content = widget.netType == 1 ? homeModel.content : showModel.instruction;
     var avator = widget.netType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
     var username = widget.netType == 1 ? homeModel.userInfo.username : showModel.user.username;

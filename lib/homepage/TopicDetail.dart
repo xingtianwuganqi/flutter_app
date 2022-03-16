@@ -185,12 +185,12 @@ class TopicDetailState extends State<TopicDetailWidget> {
       List<ImgIndexModel> imgs = [];
       List<ImgIndexModel> originImgs = [];
       for (int i = 0;i < model.imgs.length;i ++ ) {
-        var img = new ImgIndexModel(url: NetWorkingConfig.imgBaseUrl + model.imgs[i] + NetWorkingConfig.imgTailUrl,index: i);
+        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs[i],bType: ThumbType.thumbNail),index: i);
         imgs.add(img);
       }
 
       for (int i = 0;i < model.imgs.length;i ++ ) {
-        var img = new ImgIndexModel(url: NetWorkingConfig.imgBaseUrl + model.imgs[i],index: i);
+        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs[i]),index: i);
         originImgs.add(img);
       }
       void tapClick(int index) {

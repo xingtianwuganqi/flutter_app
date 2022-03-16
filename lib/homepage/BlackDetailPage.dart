@@ -429,7 +429,7 @@ class BlackDetailState extends State<BlackDetailPage> {
             }else{
               return widget.blackType == BlackType.detail ? Container(
                 child: CachedNetworkImage(
-                  imageUrl: NetWorkingConfig.imgBaseUrl + item.photoUrl,
+                  imageUrl: ToolConfig.loadImgUrl(item.photoUrl),
                   placeholder: (context,url) => Container(
                     color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                   ),

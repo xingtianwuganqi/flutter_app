@@ -457,7 +457,7 @@ class CommentState extends State<CommentInfoWidget> {
                     CircleAvatar(
                       radius: 10,
                       backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
-                      CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.commentModel.userInfo.avator + NetWorkingConfig.imgTailUrl) :
+                      CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel.userInfo.avator,bType: ThumbType.thumbNail)) :
                       AssetImage('assets/icons/icon_plh.png'),
                       child: Container(
                         alignment: Alignment(0, 0),
@@ -607,7 +607,7 @@ class CommentState extends State<CommentInfoWidget> {
                     CircleAvatar(
                       radius: 10,
                       backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?
-                      CachedNetworkImageProvider(NetWorkingConfig.imgBaseUrl + model.replyModel.fromInfo.avator + NetWorkingConfig.imgTailUrl) :
+                      CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel.fromInfo.avator,bType: ThumbType.thumbNail)) :
                       AssetImage('assets/icons/icon_plh.png'),
                       child: Container(
                         alignment: Alignment(0, 0),
