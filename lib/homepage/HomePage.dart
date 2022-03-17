@@ -951,20 +951,11 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               ),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context){
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        color: Colors.white,
-                        child: CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,changed: (value){
-                          clicked(value);
-                        },),
-                      );
-                    },
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,changed: (value){
+                      clicked(value);
+                    },);
+                  }));
                 });
               },
             )

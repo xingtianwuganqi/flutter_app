@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
 import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
@@ -28,7 +29,7 @@ class CommentInfoWidget extends StatefulWidget {
   }
 }
 
-class CommentState extends State<CommentInfoWidget> {
+class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
 
   List<CommentInfoModel> dataSource = [];
   int _page = 1;
@@ -41,14 +42,37 @@ class CommentState extends State<CommentInfoWidget> {
 
   /// 点击的类型
   ComTapTypeInfo _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
-  
+
+  double _height = 0;// 这个很简单，就是获取高度，获取的底部安全区域的高度
+  bool _keyboard = false;//键盘的弹起、收回状态
+  // TextEditingController editingController = new TextEditingController();//输入框的编辑
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+
     _focusNode.addListener(() {
       _focusNodeListener();
+    });
+    WidgetsBinding.instance.addObserver(this);
+
+  }
+
+  @override
+  void didChangeMetrics() {
+    // TODO: implement didChangeMetrics
+    super.didChangeMetrics();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        // MediaQuery.of(context).viewInsets.bottom大于0就是代表键盘弹起，0位收回
+        _keyboard = MediaQuery.of(context).viewInsets.bottom > 0;
+        _height = MediaQuery.of(context).viewInsets.bottom;
+        print(_keyboard);
+        print(_height);
+
+      });
     });
   }
 
@@ -57,6 +81,7 @@ class CommentState extends State<CommentInfoWidget> {
     // 移除焦点监听
     _focusNode.removeListener(_focusNodeListener);
     _comController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -76,6 +101,8 @@ class CommentState extends State<CommentInfoWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
+
     return  Scaffold(
       backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
       appBar: AppBar(
@@ -178,12 +205,13 @@ class CommentState extends State<CommentInfoWidget> {
   Widget inputWidget() {
     return Container(
       color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
-        height: 50,
+        padding: EdgeInsets.only(bottom: _keyboard ? _height : 0),
         child: Row(
           children: [
             Expanded(
               child:
               Container(
+                height: 40,
                 margin: EdgeInsets.only(left:10,right: 10,top: 5,bottom: 5),
                 decoration: new BoxDecoration(
                   //背景
@@ -454,16 +482,23 @@ class CommentState extends State<CommentInfoWidget> {
                 padding: EdgeInsets.only(left:15,top: 5,bottom: 0),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
-                      CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel.userInfo.avator,bType: ThumbType.thumbNail)) :
-                      AssetImage('assets/icons/icon_plh.png'),
-                      child: Container(
-                        alignment: Alignment(0, 0),
-                        width: 20,
-                        height: 20,
+                    GestureDetector(
+                      child: CircleAvatar(
+                        radius: 12,
+                        backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel.userInfo.avator,bType: ThumbType.thumbNail)) :
+                        AssetImage('assets/icons/icon_plh.png'),
+                        child: Container(
+                          alignment: Alignment(0, 0),
+                          width: 24,
+                          height: 24,
+                        ),
                       ),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.commentModel.from_uid);
+                        }));
+                      },
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
                     Expanded(
@@ -516,7 +551,7 @@ class CommentState extends State<CommentInfoWidget> {
               // 内容
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 45,right: 10,top: 3,bottom: 3),
+                padding: EdgeInsets.only(left: 50,right: 10,top: 3,bottom: 3),
                 child: Text((model.commentModel.content != null && model.commentModel.content.length > 0) ? model.commentModel.content : '--',
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
@@ -524,7 +559,7 @@ class CommentState extends State<CommentInfoWidget> {
               // 时间
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 45,right: 10,top: 3,bottom: 3),
+                padding: EdgeInsets.only(left: 50,right: 10,top: 3,bottom: 3),
                 child:
                 // Text((model.commentModel.create_time != null && model.commentModel.create_time.length > 0) ? ToolConfig.timeT(model.commentModel.create_time) : '--',
                 //   style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -598,22 +633,29 @@ class CommentState extends State<CommentInfoWidget> {
       color: Colors.white,
       child: GestureDetector(
         child: Container(
-          padding: EdgeInsets.only(left: 45),
+          padding: EdgeInsets.only(left: 50),
           child: Column(
             children: [
               Container(
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?
-                      CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel.fromInfo.avator,bType: ThumbType.thumbNail)) :
-                      AssetImage('assets/icons/icon_plh.png'),
-                      child: Container(
-                        alignment: Alignment(0, 0),
-                        width: 20,
-                        height: 20,
+                    GestureDetector(
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel.fromInfo.avator,bType: ThumbType.thumbNail)) :
+                        AssetImage('assets/icons/icon_plh.png'),
+                        child: Container(
+                          alignment: Alignment(0, 0),
+                          width: 20,
+                          height: 20,
+                        ),
                       ),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.replyModel.from_uid);
+                        }));
+                      },
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
                     Expanded(
