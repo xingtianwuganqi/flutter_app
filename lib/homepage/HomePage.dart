@@ -896,8 +896,8 @@ Widget addressWidget(HomePageModel data) {
     alignment: Alignment.centerLeft,
     child: Text(data.address_info,
       style: TextStyle(
-        fontSize: FontUtil.fs(FontSize.mark),
-        color: ColorsUtil.fromEnmu(ColorEnum.mark),
+        fontSize: FontUtil.fs(FontSize.desc),
+        color: ColorsUtil.fromEnmu(ColorEnum.desc),
       ),
     ),
   );
@@ -914,7 +914,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               icon: (data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
               label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
                 style: TextStyle(
-                  fontSize: FontUtil.fs(FontSize.mark),
+                  fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),              ),
               onPressed: (){
@@ -929,7 +929,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               icon: (data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
               label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
                 style: TextStyle(
-                  fontSize: FontUtil.fs(FontSize.mark),
+                  fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),
               ),
@@ -945,7 +945,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               icon:Image.asset('assets/icons/icon_sh_commen.png'),
               label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
                 style: TextStyle(
-                  fontSize: FontUtil.fs(FontSize.mark),
+                  fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
                 ),
               ),

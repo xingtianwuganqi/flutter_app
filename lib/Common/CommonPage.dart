@@ -240,21 +240,21 @@ class FontUtil {
   static double fs(FontSize value) {
     switch (value) {
       case FontSize.big:
-        return 20.0;
+        return 22.0;
       case FontSize.title:
-        return 16.0;
+        return 18.0;
       case FontSize.content:
-        return 15.0;
+        return 17.0;
       case FontSize.mark:
-        return 14.0;
+        return 16.0;
       case FontSize.desc:
-        return 13.0;
-      case FontSize.time:
-        return 12.0;
-      case FontSize.small:
-        return 11.0;
-      default:
         return 15.0;
+      case FontSize.time:
+        return 14.0;
+      case FontSize.small:
+        return 12.0;
+      default:
+        return 16.0;
     }
   }
 }
