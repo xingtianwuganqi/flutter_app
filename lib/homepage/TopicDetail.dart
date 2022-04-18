@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
+import 'package:flutter_720yun/homepage/BlackListPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
@@ -179,6 +180,22 @@ class TopicDetailState extends State<TopicDetailWidget> {
     );
   }
 
+  Widget raudreventionWidget() {
+    return Container(
+      padding: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 10),
+      color: ColorsUtil.hexColor(0xFFF5DA),
+      child: GestureDetector(
+        child: Text('特别提醒：请勿相信以任何名义(包括运费、押金、定金等)要求的提前转帐与打款的行为。请提高警惕，以防被骗！',
+          style: TextStyle(color: ColorsUtil.hexColor(0xF6831F),fontSize: FontUtil.fs(FontSize.content)),),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return BlackListPage();
+          }));
+        },
+      )
+    );
+  }
+
   List<Widget> imageWidgets(HomePageModel model) {
     if (model != null && model.imgs != null && (model.imgs.length > 0)) {
       List<Widget> data = [];
@@ -226,6 +243,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
       )?.toList();
       if (widget.pageType == MyPageType.myPage) {
         data.add(remindTextWidget());
+      }else{
+        data.add(raudreventionWidget());
       }
       data.add(userInfoWidget(homeModel));
       data.add(textInfoWidget(homeModel));
