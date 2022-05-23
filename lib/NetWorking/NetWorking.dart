@@ -130,7 +130,9 @@ enum NetPath {
   // 黑名单详情
   blackDetail,
   // 举报
-  blackCreate
+  blackCreate,
+  // 获取验证码
+  getVerificationCode
 }
 
 enum ThumbType {
