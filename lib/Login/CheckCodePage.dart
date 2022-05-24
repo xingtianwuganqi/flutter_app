@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,8 +56,15 @@ class _CheckCodeState extends State<CheckCodePage> {
   var _phone = '';//手机号
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = true;
-  var _deviceName = '';
-  UserInfoModel _userModel;
+
+  // 倒计时的秒数
+  var _timeNum = 61;
+
+  // 倒计时期间还是未获取，timeStatus = false， 未开始倒计时；timeStatus = true, 开始倒计时
+  var timeStatus = false;
+
+  ///声明变量
+  Timer _timer;
 
   @override
   void initState() {
@@ -89,6 +98,24 @@ class _CheckCodeState extends State<CheckCodePage> {
       });
     });
 
+
+  }
+
+  // 开始倒计时
+  void startTime() {
+    ///循环执行
+    ///间隔1秒
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      ///定时任务
+      _timeNum = _timeNum - 1;
+      setState(() {
+        if (_timeNum == 0) {
+          _timer.cancel();
+          timeStatus = false;
+          _timeNum = 61;
+        }
+      });
+    });
   }
 
   void dispose() {
@@ -98,6 +125,7 @@ class _CheckCodeState extends State<CheckCodePage> {
     _focusNodePassWord.removeListener(_focusNodeListener);
     _userPhoneController.dispose();
     _userCodeController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -229,46 +257,77 @@ class _CheckCodeState extends State<CheckCodePage> {
                   return v.trim().isNotEmpty ? null : "请输入正确手机号";
                 }
             ),
-            Container(
-              color: Colors.blue,
-              height: 60,
-              child: Row(
-                children: [
-                  TextFormField(
-                    focusNode: _focusNodePassWord,
-                    controller: _userCodeController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: "请输入验证码",
-                      hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
-                      ),
-                      prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                TextFormField(
+                  focusNode: _focusNodePassWord,
+                  controller: _userCodeController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "请输入验证码",
+                    hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
                     ),
-                    onSaved: (String name) {
-                      _code = name;
-                    },
-                    // 校验用户名（不能为空）
-                    validator: (v) {
-                      return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
-                    },
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                    ),
+                    prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
                   ),
-                  GestureDetector(
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        color: ColorsUtil.fromEnmu(ColorEnum.system),
+                  onSaved: (String name) {
+                    _code = name;
+                  },
+                  // 校验用户名（不能为空）
+                  validator: (v) {
+                    return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                  },
+                ),
+                Positioned(
+                    right: 0,
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 32,
+                        decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: new Border.all(width: 1, color: timeStatus == false ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.desc)),
+                        ),
+                        child: Text(timeStatus == false ? '获取验证码' : _timeNum.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color:  timeStatus == false ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.desc)),),
                       ),
-                      child: Text('获取验证码'),
-                    ),
-                  )
-                ],
-              ),
+                      onTap: () {
+                        if (timeStatus == true) {
+                          return;
+                        }
+                        timeStatus = true;
+                        startTime();
+                      },
+                    )
+                )
+              ],
             )
+
+            // Container(
+            //   color: Colors.blue,
+            //   height: 60,
+            //   child: Row(
+            //     children: [
+            //       ,
+            //       GestureDetector(
+            //         child: Container(
+            //           decoration: new BoxDecoration(
+            //             borderRadius: BorderRadius.all(Radius.circular(5)),
+            //             color: ColorsUtil.fromEnmu(ColorEnum.system),
+            //           ),
+            //           child: Text('获取验证码'),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
