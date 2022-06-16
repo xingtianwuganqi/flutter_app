@@ -132,7 +132,9 @@ enum NetPath {
   // 举报
   blackCreate,
   // 获取验证码
-  getVerificationCode
+  getVerificationCode,
+  // 校验验证码
+  checkVerificationCode,
 }
 
 enum ThumbType {
@@ -266,6 +268,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/topic/black/detail/';
       case NetPath.blackCreate:
         return baseUrl + '/api/topic/black/create/';
+      case NetPath.getVerificationCode:
+        return baseUrl + '/api/v2/tecent/code/';
+      case NetPath.checkVerificationCode:
+        return baseUrl + '/api/v2/tecent/check/';
       default:
         return "";
     }

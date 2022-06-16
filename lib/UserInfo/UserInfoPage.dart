@@ -147,14 +147,14 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                 ),
               ),
               title: context.watch<UserProviderModel>().isLogin ?
               Text(UserManager.instance.userInfo.username ?? "",
-                style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
-              Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
+                style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),) :
+              Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),),
               trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
           ),
         ),

@@ -275,6 +275,8 @@ enum MyPageType {
   otherPage
 }
 
+var codeStr = "伍c七Alz1θVx2ψLHNpfωv九nξ捌τD六053λwGμrMνRuegsη八γ陆jOBX8ρ三E9πFS零bδοmkχ7K6PβϵϕoZ五iυU一Jq柒ydYt四QhW4玖κCIαζTaι二σ";
+
 
 class ToolConfig {
   static String random({int length=8}) {
@@ -320,6 +322,8 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
       return time;
     }
   }
+
+
 
   static Future<String> deviceName() async{
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
@@ -369,6 +373,45 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 
     }
     return headImg;
+  }
+
+
+
+  static String encryptionString(String codeStr) {
+    //实例化Random类并赋值给变量rng；
+    var rng = new Random();
+//打印变量 rng，随机数范围(0-99);
+    var index = rng.nextInt(100);
+    print(index);
+    // 获取当前字符
+    List<String> currentList = codeStr.split('');
+    print(currentList);
+    var currentStr = currentList[index];
+    // 第一次编码
+    List<int> l1 = utf8.encode(currentStr);
+    String currentOne = base64Encode(l1);
+    String indexStr = 'index_' + index.toString();
+    // index编码
+    List<int> index1 = utf8.encode(indexStr);
+    String indexOne = base64Encode(index1);
+    // index 二次编码
+    List<int> index2 = utf8.encode(indexOne);
+    String indexTwo = base64Encode(index2);
+
+    DateTime today = new DateTime.now();
+    String dateStr = "${today.year.toString()}年${today.month.toString().padLeft(
+        2, '0')}年${today.day.toString().padLeft(2, '0')}年";
+    print(dateStr);
+
+    // date 二次编码
+    List<int> date1 = utf8.encode(dateStr);
+    String enString = base64Encode(date1);
+    String currentTwo = currentOne;
+    List<String> enArr = enString.split('');
+    enArr.insert(2, r"$" + currentOne);
+    enArr.insert(enArr.length - 3, r"$" + currentTwo);
+    enArr.add(r"$"+indexTwo);
+    return enArr.join();
   }
 }
 //

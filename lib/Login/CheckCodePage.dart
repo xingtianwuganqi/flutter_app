@@ -132,11 +132,33 @@ class _CheckCodeState extends State<CheckCodePage> {
   Future<Null> getCodeNetWorking() async {
     _focusNodeUserName.unfocus();
     _focusNodePassWord.unfocus();
-    EasyLoading.show(status: '正在登录...');
-    if (!_proSelect) {
-      EasyLoading.showToast('请阅读并勾选用户协议与隐私协议');
-      return ;
+    if (_phone.length == 0)  {
+      EasyLoading.showToast('请输入手机号');
+      return;
     }
+    final url = NetWorkingConfig.path(NetPath.getVerificationCode);
+    var dic = {
+      "code": ToolConfig.encryptionString(codeStr),
+      "phone": _phone
+    };
+    EasyLoading.show(status: '正在获取...');
+    await NetWorking.post(url, (data) {
+      EasyLoading.dismiss();
+      if (data["code"] == 200) {
+        startTime();
+        EasyLoading.showToast("验证码获取成功");
+      }else{
+        /// 失败
+        EasyLoading.showToast(data['message'] ?? '获取失败');
+      }
+    }, (error) {
+      EasyLoading.dismiss();
+    },params: dic);
+  }
+
+  Future<Null> checkCodeNetWorking() async {
+    _focusNodeUserName.unfocus();
+    _focusNodePassWord.unfocus();
     if (_phone.length == 0)  {
       EasyLoading.showToast('请输入手机号');
       return;
@@ -145,40 +167,34 @@ class _CheckCodeState extends State<CheckCodePage> {
       EasyLoading.showToast('请输入验证码');
       return;
     }
-    String deviceInfo = await ToolConfig.deviceName();
-    final url = NetWorkingConfig.path(NetPath.getVerificationCode);
-    /*
-    parameter["phoneNum"] = phone
-            parameter["email"] = email
-            parameter["password"] = pswd
-            parameter["phone_type"] = PhoneType.getDeviceModel()
-     */
+    final url = NetWorkingConfig.path(NetPath.checkVerificationCode);
+
     var dic = {
       "code":_code,
       "phone": _phone
     };
+    EasyLoading.show(status: '正在加载...');
     await NetWorking.post(url, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
-        EasyLoading.showToast("获取成功");
+        EasyLoading.showToast("校验成功");
+        if (widget.fromType == CodeFromType.register) {
+          Future.delayed(Duration(seconds: 1) ,(){
+            // 跳转到注册页
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context){
+                  return RegisterWidget(phone: _phone);
+                })
+            );
+          });
+        }
       }else{
         /// 登录失败
-        EasyLoading.showToast(data['message'] ?? '获取失败');
+        EasyLoading.showToast(data['message'] ?? '校验失败');
       }
     }, (error) {
       EasyLoading.dismiss();
     },params: dic);
-  }
-
-  // Future<String> getDeviceInfo() async{
-  //   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  //   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-  //   Printer.printMapJsonLog(androidInfo.model);
-  //   return androidInfo.model.toString();
-  // }
-
-  Future<Null> loginNetWorking() async {
-
   }
 
   //   // 监听焦点
@@ -197,14 +213,12 @@ class _CheckCodeState extends State<CheckCodePage> {
   Widget build(BuildContext context) {
 
     String pageTitle = '';
-    if (widget.fromType == CodeFromType.register){
-      pageTitle = '获取验证码';
-    }else if (widget.fromType == CodeFromType.findPswd){
-      pageTitle = '获取验证码';
-    }else if (widget.fromType == CodeFromType.bindPhone) {
+    if (widget.fromType == CodeFromType.bindPhone) {
       pageTitle = '绑定手机号';
     }else if (widget.fromType == CodeFromType.checkPhone) {
       pageTitle = '校验手机号';
+    }else{
+      pageTitle = '校验验证码';
     }
 
     // TODO: implement build
@@ -302,32 +316,19 @@ class _CheckCodeState extends State<CheckCodePage> {
                         if (timeStatus == true) {
                           return;
                         }
-                        timeStatus = true;
-                        startTime();
+                        // 获取验证码
+                        // getCodeNetWorking();
+                        // 测试跳转到注册页
+                        Navigator.push(context,
+                            new MaterialPageRoute(builder: (context){
+                              return RegisterWidget(phone: _phone);
+                            })
+                        );
                       },
                     )
                 )
               ],
             )
-
-            // Container(
-            //   color: Colors.blue,
-            //   height: 60,
-            //   child: Row(
-            //     children: [
-            //       ,
-            //       GestureDetector(
-            //         child: Container(
-            //           decoration: new BoxDecoration(
-            //             borderRadius: BorderRadius.all(Radius.circular(5)),
-            //             color: ColorsUtil.fromEnmu(ColorEnum.system),
-            //           ),
-            //           child: Text('获取验证码'),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // )
           ],
         ),
       ),
@@ -340,7 +341,7 @@ class _CheckCodeState extends State<CheckCodePage> {
       ),
       child: TextButton(
         child: Text(pageTitle,style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
-        onPressed: loginNetWorking,
+        onPressed: checkCodeNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),
     );

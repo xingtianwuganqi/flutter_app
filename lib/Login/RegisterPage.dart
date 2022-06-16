@@ -13,6 +13,9 @@ import '../Common/CommonPage.dart';
 import '../tabbar.dart';
 
 class RegisterWidget extends StatefulWidget {
+  final String phone;
+  RegisterWidget({this.phone});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -28,7 +31,7 @@ class _RegisterState extends State<RegisterWidget> {
   FocusNode _focusNodeConfirm  = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _userNameController = new TextEditingController();
+  TextEditingController _userNameController;
   TextEditingController _userPswdController = new TextEditingController();
   TextEditingController _confirmController  = new TextEditingController();
 
@@ -48,7 +51,7 @@ class _RegisterState extends State<RegisterWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _userNameController = new TextEditingController(text: widget.phone);
     startSet();
 
   }
@@ -201,13 +204,17 @@ class _RegisterState extends State<RegisterWidget> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
+                enabled: widget.phone != null ? false : true,
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "请输入手机号码或邮箱",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
+                  ),
+                  disabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
                   ),
                   focusedBorder: UnderlineInputBorder(
