@@ -30,7 +30,8 @@ enum CodeFromType {
 class CheckCodePage extends StatefulWidget {
 
   CodeFromType fromType;
-  CheckCodePage(this.fromType);
+  final phone;
+  CheckCodePage(this.fromType,{this.phone});
 
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +47,7 @@ class _CheckCodeState extends State<CheckCodePage> {
   FocusNode _focusNodePassWord = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _userPhoneController = new TextEditingController();
+  TextEditingController _userPhoneController;
   TextEditingController _userCodeController = new TextEditingController();
 
   //表单状态
@@ -70,6 +71,11 @@ class _CheckCodeState extends State<CheckCodePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _userPhoneController = new TextEditingController(text: widget.phone);
+    if (widget.phone != null && widget.phone.length > 0) {
+      _phone = widget.phone;
+    }
+
     _focusNodeUserName.addListener(() {
       _focusNodeListener();
     });
@@ -105,15 +111,24 @@ class _CheckCodeState extends State<CheckCodePage> {
   void startTime() {
     ///循环执行
     ///间隔1秒
+    print(_timer);
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       ///定时任务
       _timeNum = _timeNum - 1;
-      setState(() {
-        if (_timeNum == 0) {
+      print('time is None');
+      print(_timeNum);
+      if (_timeNum == 0) {
+        if (_timer.isActive) {
           _timer.cancel();
-          timeStatus = false;
-          _timeNum = 61;
         }
+        timeStatus = false;
+        _timeNum = null;
+        _timeNum = 61;
+        print('time is');
+        print(_timeNum);
+      }
+      setState(() {
+
       });
     });
   }
@@ -125,7 +140,9 @@ class _CheckCodeState extends State<CheckCodePage> {
     _focusNodePassWord.removeListener(_focusNodeListener);
     _userPhoneController.dispose();
     _userCodeController.dispose();
-    _timer.cancel();
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+    }
     super.dispose();
   }
 
@@ -145,8 +162,11 @@ class _CheckCodeState extends State<CheckCodePage> {
     await NetWorking.post(url, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
-        startTime();
+        _focusNodePassWord.requestFocus();
         EasyLoading.showToast("验证码获取成功");
+        // 开启倒计时
+        timeStatus = true;
+        startTime();
       }else{
         /// 失败
         EasyLoading.showToast(data['message'] ?? '获取失败');
@@ -170,8 +190,8 @@ class _CheckCodeState extends State<CheckCodePage> {
     final url = NetWorkingConfig.path(NetPath.checkVerificationCode);
 
     var dic = {
-      "code":_code,
-      "phone": _phone
+      "code":_code.trim(),
+      "phone": _phone.trim()
     };
     EasyLoading.show(status: '正在加载...');
     await NetWorking.post(url, (data) {
@@ -239,6 +259,7 @@ class _CheckCodeState extends State<CheckCodePage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
+                enabled: widget.phone != null ? false : true,
                 focusNode: _focusNodeUserName,
                 controller: _userPhoneController,
                 keyboardType: TextInputType.phone,
@@ -314,16 +335,22 @@ class _CheckCodeState extends State<CheckCodePage> {
                       ),
                       onTap: () {
                         if (timeStatus == true) {
+                          print('time end');
                           return;
                         }
-                        // 获取验证码
-                        // getCodeNetWorking();
+                        if (widget.fromType == CodeFromType.register) {
+                          if (_userPhoneController.text == null || _userPhoneController.text.length == 0) {
+                            EasyLoading.showToast("请输入手机号");
+                            return;
+                          }
+                        }
+                        getCodeNetWorking();
                         // 测试跳转到注册页
-                        Navigator.push(context,
-                            new MaterialPageRoute(builder: (context){
-                              return RegisterWidget(phone: _phone);
-                            })
-                        );
+                        // Navigator.push(context,
+                        //     new MaterialPageRoute(builder: (context){
+                        //       return RegisterWidget(phone: _phone);
+                        //     })
+                        // );
                       },
                     )
                 )

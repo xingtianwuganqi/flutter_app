@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/CommonWidget/PhotoViewGalleryScreen.dart';
+import 'package:flutter_720yun/Login/CheckCodePage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -524,6 +525,20 @@ class TopicDetailState extends State<TopicDetailWidget> {
         });
       }else{
         EasyLoading.showToast(data['message'] ?? '获取联系方式失败');
+        // 延时跳转
+        Future.delayed(Duration(milliseconds: 100),(){
+          if (data['code'] == 210) { // 未验证手机号
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
+            }));
+          }else if (data['code'] == 209) { // 未绑定手机号
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CheckCodePage(CodeFromType.bindPhone);
+            }));
+          }
+        });
+
+
       }
     }, (error) {
       EasyLoading.showToast('网络出错');

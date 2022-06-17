@@ -52,6 +52,10 @@ class _RegisterState extends State<RegisterWidget> {
     // TODO: implement initState
     super.initState();
     _userNameController = new TextEditingController(text: widget.phone);
+    // 如果有默认值则赋值
+    if (widget.phone != null && widget.phone.length > 0) {
+      _username = widget.phone;
+    }
     startSet();
 
   }
@@ -109,7 +113,7 @@ class _RegisterState extends State<RegisterWidget> {
       return ;
     }
     if (_username.length == 0)  {
-      EasyLoading.showToast('请输入手机号码或邮箱');
+      EasyLoading.showToast('请输入手机号码');
       return;
     }
     if (_password.length == 0 || _password.length < 6)  {
@@ -136,7 +140,8 @@ class _RegisterState extends State<RegisterWidget> {
       "phone_type":deviceInfo
     };
     if (ToolConfig.isEmail(_username)) {
-      dic['email'] = _username;
+      EasyLoading.showToast('暂不支持邮箱注册');
+      return;
     }else{
       dic['phoneNum'] = _username;
     }
@@ -392,6 +397,7 @@ class _RegisterState extends State<RegisterWidget> {
           onTap: () {
             _focusNodeUserName.unfocus();
             _focusNodePassWord.unfocus();
+            _focusNodeConfirm.unfocus();
           },
           child: new ListView(
             children: <Widget>[
