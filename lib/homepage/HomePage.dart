@@ -72,27 +72,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      // appBar: new AppBar(
-      //   title: Container(
-      //     decoration: BoxDecoration(
-      //       color: Colors.grey[100],
-      //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-      //     ),
-      //     padding: EdgeInsets.only(left: 20,right: 20),
-      //     width: double.infinity,
-      //     height: 35,
-      //     child:TextButton.icon(
-      //       icon: Image.asset('assets/icons/icon_wx_search.png'),
-      //       label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-      //       onPressed: () {
-      //         Navigator.push(context, MaterialPageRoute(builder: (context){
-      //           return SearchPageWidget();
-      //         }));
-      //       },
-      //     ),
-      //   ),
-      //   elevation: 0.5,
-      // ),
+      appBar: new AppBar(
+        title: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          ),
+          padding: EdgeInsets.only(left: 20,right: 20),
+          width: double.infinity,
+          height: 35,
+          child:TextButton.icon(
+            icon: Image.asset('assets/icons/icon_wx_search.png'),
+            label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return SearchPageWidget();
+              }));
+            },
+          ),
+        ),
+        elevation: 0.5,
+      ),
       floatingActionButton: FloatingActionButton(
         child:
         Image.asset('assets/icons/icon_home_write.png'),

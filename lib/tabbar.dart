@@ -41,7 +41,7 @@ class tabbarState extends State<tabbar> {
     if (UserManager.instance.userInfo != null) {
       userId = UserManager.instance.userInfo.id;
     }
-    pages.add(HomeMainPage());
+    pages.add(HomePage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage(changed: (value){
       _unreadNum = value;
