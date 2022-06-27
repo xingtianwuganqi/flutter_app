@@ -678,7 +678,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: Text('忘记密码？',style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.system)),),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return LoginCheckPhonePage();
+                return CheckCodePage(CodeFromType.findPswd);
               }));
             },
           ),

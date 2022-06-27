@@ -333,7 +333,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
         return build.model;
       } else if (Platform.isIOS) {
         IosDeviceInfo data = await deviceInfoPlugin.iosInfo;
-        return data.name;
+        return data.systemVersion;
       }
     } on PlatformException {
       return 'platform version null';

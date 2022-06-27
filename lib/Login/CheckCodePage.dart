@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_720yun/Login/LoginChangePswdPage.dart';
 import 'package:flutter_720yun/Login/LoginCheckPhonePage.dart';
 import 'package:flutter_720yun/Login/RegisterPage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
@@ -207,6 +208,16 @@ class _CheckCodeState extends State<CheckCodePage> {
                 })
             );
           });
+        }else if (widget.fromType == CodeFromType.findPswd) {
+          // 跳转到找回密码
+          Future.delayed(Duration(seconds: 1) ,(){
+            // 跳转到注册页
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context){
+                  return LoginChangePswdPage(phoneStr: _phone);
+                })
+            );
+          });
         }
       }else{
         /// 登录失败
@@ -233,12 +244,19 @@ class _CheckCodeState extends State<CheckCodePage> {
   Widget build(BuildContext context) {
 
     String pageTitle = '';
+    String buttonTitle = '';
     if (widget.fromType == CodeFromType.bindPhone) {
       pageTitle = '绑定手机号';
+      buttonTitle = '绑定手机号';
     }else if (widget.fromType == CodeFromType.checkPhone) {
       pageTitle = '校验手机号';
+      buttonTitle = '校验手机号';
+    }else if (widget.fromType == CodeFromType.findPswd) {
+      pageTitle = '找回密码';
+      buttonTitle = '校验手机号';
     }else{
       pageTitle = '校验验证码';
+      buttonTitle = '校验手机号';
     }
 
     // TODO: implement build
@@ -367,7 +385,7 @@ class _CheckCodeState extends State<CheckCodePage> {
         color: ColorsUtil.fromEnmu(ColorEnum.system),
       ),
       child: TextButton(
-        child: Text(pageTitle,style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
+        child: Text(buttonTitle,style: TextStyle(color: Colors.white,fontSize: FontUtil.fs(FontSize.title)),),
         onPressed: checkCodeNetWorking,
       ),
       margin: EdgeInsets.only(left: 20,right: 20),

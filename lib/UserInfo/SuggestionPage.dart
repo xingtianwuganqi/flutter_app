@@ -146,8 +146,17 @@ class SuggestionState extends State<SuggesstionWidget> {
   }
 
   Future<Null> suggestionNetworking() async{
+    String deviceInfo = await ToolConfig.deviceName();
     final url = NetWorkingConfig.path(NetPath.suggestion);
-    final dic = {'token': UserManager.instance.token,'content': _sugController.text,'contact': _contactController.text};
+    final dic = {
+      'token': UserManager.instance.token,
+      'content': _sugController.text,
+      'contact': _contactController.text,
+      'appType': 'android',
+      'appVersion': paramDic['appVersion'] ?? '' + '-' + paramDic['androidVersion'],
+      'iOSVersion': '-',
+      'phone_type': deviceInfo
+    };
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('提交成功');
