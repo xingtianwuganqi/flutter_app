@@ -58,8 +58,12 @@ class TagInfoState extends State<TagInfoPage> {
                   backgroundColor: data.isSelect ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.tableBack),
                   onPressed: (){
                     if (!data.isSelect) {
-                      data.isSelect = true;
-                      _filters.add(data);
+                      if (judgeDataCanAppend(data) == true) {
+                        data.isSelect = true;
+                        _filters.add(data);
+                      }else{
+                        return;
+                      }
                     }else{
                       data.isSelect = false;
                       _filters.removeWhere((element) {
@@ -68,7 +72,8 @@ class TagInfoState extends State<TagInfoPage> {
                     }
                     dataSource[index] = data;
                     setState(() {
-                      widget.changed(_filters);
+                      var selectItems = dataSource.where((element) => element.isSelect == true).toList();
+                      widget.changed(selectItems);
                     });
                   },
                 );
@@ -79,6 +84,23 @@ class TagInfoState extends State<TagInfoPage> {
         )
       )
     );
+  }
+
+  bool judgeDataCanAppend(TagInfoModel data) {
+    if (data.tag_type == 0) {
+      return true;
+    }
+    var otherModel = _filters.where((element) => element.tag_type != 0).toList();
+    if (otherModel != null && otherModel.length > 0) {
+      var tag = otherModel.first;
+      if (tag.id == data.id) {
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return true;
+    }
   }
 
   Future<Null> tagsInfoNetworking() async {
