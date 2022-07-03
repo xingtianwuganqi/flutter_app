@@ -17,6 +17,8 @@ import '../UserInfo/ViolationsListPage.dart';
 import '../CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
+
+import 'HomeDrawerPage.dart';
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -70,10 +72,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return new Scaffold(
+    return Scaffold(
       appBar: new AppBar(
-        title: Container(
+        leading: Builder(
+          builder: (context){
+            return IconButton(
+                icon:Icon( Icons.dehaze_rounded),
+                onPressed: (){
+                  Scaffold.of(context).openDrawer();
+                }
+            );
+          },
+        ),
+        title:
+        Container(
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -113,8 +125,59 @@ class _HomePageState extends State<HomePage> {
         },
         tooltip: 'Increment',
       ),
-      body: refreshBody()
+      drawer: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Drawer(
+          child: HomeDrawerPage(),
+        ),
+      ),
+      body: refreshBody(),
     );
+    // TODO: implement build
+    // return new Scaffold(
+    //   appBar: new AppBar(
+    //     title: Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.grey[100],
+    //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    //       ),
+    //       padding: EdgeInsets.only(left: 20,right: 20),
+    //       width: double.infinity,
+    //       height: 35,
+    //       child:TextButton.icon(
+    //         icon: Image.asset('assets/icons/icon_wx_search.png'),
+    //         label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
+    //         onPressed: () {
+    //           Navigator.push(context, MaterialPageRoute(builder: (context){
+    //             return SearchPageWidget();
+    //           }));
+    //         },
+    //       ),
+    //     ),
+    //     elevation: 0.5,
+    //   ),
+    //   floatingActionButton: FloatingActionButton(
+    //     child:
+    //     Image.asset('assets/icons/icon_home_write.png'),
+    //     // IconButton(
+    //     //   icon: Image.asset('assets/icons/icon_home_write.png'),
+    //     // ),
+    //     backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
+    //     onPressed: (){
+    //       lazyAuthToDoThings(context, (){
+    //         Navigator.push(context, MaterialPageRoute(builder: (context){
+    //           return ReleaseTopicPage();
+    //         })).then((value) async {
+    //           if (value == 'refresh') {
+    //             await homePageListNetWroking(1);
+    //           }
+    //         });
+    //       });
+    //     },
+    //     tooltip: 'Increment',
+    //   ),
+    //   body: refreshBody()
+    // );
   }
 
   // NotificationListener(
@@ -497,7 +560,9 @@ Widget textInfoWidget(HomePageModel data) {
           child:
           //禁止点击
           IgnorePointer(
-            child: ExpandableText(
+            child:
+              // Text(data.content ?? "")
+            ExpandableText(
               (data.content ?? '').trim(),
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),

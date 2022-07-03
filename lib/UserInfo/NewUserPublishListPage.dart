@@ -115,7 +115,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
         padding: EdgeInsets.only(top: 15),
       ),
       firstRefresh: isFirstLoad,
-      firstRefreshWidget: FirstLoadWidget(),
+      firstRefreshWidget: null,
       emptyWidget: publishList.length > 0 ? null : EmptyPage(() async {
         listNetworking(1);
       }), //

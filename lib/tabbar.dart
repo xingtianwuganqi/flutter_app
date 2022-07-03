@@ -79,23 +79,23 @@ class tabbarState extends State<tabbar> {
         Image.asset('assets/icons/icon_tabbar_cat_se.png',width: 25,height: 25) :
         Image.asset('assets/icons/icon_tabbar_cat_un.png', width: 25, height: 25,),
           // ignore: deprecated_member_use
-          title: Text("首页"),
+          label: "首页",
         ),
         BottomNavigationBarItem(icon: _selectedIndex == 1 ?
         Image.asset('assets/icons/icon_tabbar_dog_se.png',width: 25,height: 25) :
         Image.asset('assets/icons/icon_tabbar_dog_un.png', width: 25, height: 25,)
             // ignore: deprecated_member_use
-            ,title: Text("秀宠")),
+            ,label: "秀宠"),
 
         BottomNavigationBarItem(icon: unreadSelectIcon(_selectedIndex == 2)
             // _selectedIndex == 2 ?
             // Image.asset('assets/icons/icon_tabbar_msg_se.png',width: 25,height: 25) :
             // Image.asset('assets/icons/icon_tabbar_msg_un.png', width: 25, height: 25,)
             // ignore: deprecated_member_use
-            ,title: Text("消息")),
+            ,label: "消息"),
         BottomNavigationBarItem(icon: newVersionIcon(_selectedIndex == 3),
             // ignore: deprecated_member_use
-            title: Text("我的"))
+            label: "我的")
       ],
       currentIndex: _selectedIndex,
       fixedColor: ColorsUtil.fromEnmu(ColorEnum.system),

@@ -5,14 +5,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+// import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
+import '../Common/ImagePicker.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'TagInfoPage.dart';
 
@@ -46,7 +47,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       complete: true,
       photoKey: '',
       photoUrl: '',
-      image: null
+      // image: null
   )];
 
   OverlayEntry overlayEntry;
@@ -299,7 +300,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
               return Container(
                 child: Stack(
                   children: [
-                    AssetThumb(asset: item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toInt()),
+                    AssetEntityImage(item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble()),
                     Positioned(
                         child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
                             // 删除数据
@@ -510,22 +512,10 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     if (_releasePhotos.length > 6) {
       return;
     }
-    List<Asset> resultList = [];
+    List<AssetEntity> resultList = [];
     String error = 'No Error Dectected';
     try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 7 - _releasePhotos.length,
-        enableCamera: false,
-        selectedAssets: resultList,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
-          // actionBarColor: '#ffa500',
-            actionBarTitle: "App",
-            allViewTitle: "All Photos",
-            useDetailsView: true,
-            selectCircleStrokeColor: "#666666",
-            startInAllView: true),
-      );
+      resultList = await ImagePicker.instance.selectAssets(context, 7 - _releasePhotos.length);
     } on Exception catch (e) {
       error = e.toString();
       print(error);
@@ -618,43 +608,43 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     EasyLoading.show(status:'上传图片...');
     for (int i = 0; i < _releasePhotos.length; i++) {
       var item = _releasePhotos[i];
-      updateImg(item);
+      // updateImg(item);
     }
   }
 
-  Future<Null> updateImg(ReleasePhotoModel item) async {
-    if (item.isAdd == false) {
-      final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
-      File file = File(filePath);
-      storage.putFile(file, _token, options: PutOptions(
-        controller: putController,
-        key: item.photoKey,
-      )).then((value) {
-        // 更新模型的数据
-        _releasePhotos = _releasePhotos.map((e) {
-          var newModel = e;
-          if (e.photoKey == value.key) {
-            newModel.complete = true;
-            newModel.photoUrl = value.key;
-          }
-          return newModel;
-        }).toList();
-        // 判断_releasePhotos 是不是所有的complete 都变成了true；
-        int isComplete = 0;
-        for (int i = 0;i < _releasePhotos.length;i++) {
-          var item = _releasePhotos[i];
-          if (item.complete == false) {
-            isComplete = 1;
-            break;
-          }
-        }
-        if (isComplete == 0) { // 说明全部传成功了
-          releaseTopicNetworking();
-          return;
-        }
-      });
-    }
-  }
+  // Future<Null> updateImg(ReleasePhotoModel item) async {
+  //   if (item.isAdd == false) {
+  //     final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
+  //     File file = File(filePath);
+  //     storage.putFile(file, _token, options: PutOptions(
+  //       controller: putController,
+  //       key: item.photoKey,
+  //     )).then((value) {
+  //       // 更新模型的数据
+  //       _releasePhotos = _releasePhotos.map((e) {
+  //         var newModel = e;
+  //         if (e.photoKey == value.key) {
+  //           newModel.complete = true;
+  //           newModel.photoUrl = value.key;
+  //         }
+  //         return newModel;
+  //       }).toList();
+  //       // 判断_releasePhotos 是不是所有的complete 都变成了true；
+  //       int isComplete = 0;
+  //       for (int i = 0;i < _releasePhotos.length;i++) {
+  //         var item = _releasePhotos[i];
+  //         if (item.complete == false) {
+  //           isComplete = 1;
+  //           break;
+  //         }
+  //       }
+  //       if (isComplete == 0) { // 说明全部传成功了
+  //         releaseTopicNetworking();
+  //         return;
+  //       }
+  //     });
+  //   }
+  // }
 
   bool isCanPushInfo() {
     if (_contentController.text == null || _contentController.text.length == 0) {

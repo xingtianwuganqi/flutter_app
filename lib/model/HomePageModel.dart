@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
 
 import 'UserModel.dart';
 class HomePageModel {
@@ -126,7 +127,7 @@ class ReleasePhotoModel {
   bool complete = false;
   String photoKey = '';
   String photoUrl = '';
-  Asset image;
+  AssetEntity image;
 
   ReleasePhotoModel({
     this.isAdd,

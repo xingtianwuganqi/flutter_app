@@ -15,7 +15,7 @@ import '../NetWorking/NetWorking.dart';
 import 'WebviewPage.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:install_plugin/install_plugin.dart';
+// import 'package:install_plugin/install_plugin.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -355,14 +355,14 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       return;
     }
 
-    InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
-        .then((result) {
-      Printer.printMapJsonLog('install apk $result');
-      EasyLoading.dismiss();
-    }).catchError((error) {
-      Printer.printMapJsonLog('install apk error: $error');
-      EasyLoading.dismiss();
-    });
+    // InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
+    //     .then((result) {
+    //   Printer.printMapJsonLog('install apk $result');
+    //   EasyLoading.dismiss();
+    // }).catchError((error) {
+    //   Printer.printMapJsonLog('install apk error: $error');
+    //   EasyLoading.dismiss();
+    // });
   }
 
   /// 展示下载进度

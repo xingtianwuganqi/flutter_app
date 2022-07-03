@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'WebviewPage.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:install_plugin/install_plugin.dart';
+// import 'package:install_plugin/install_plugin.dart';
 import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
@@ -56,7 +56,7 @@ class SettingPageState extends State<SettingPageWidget> {
           child: ListTile(
               title: Container(
                   transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                  child: Text(data.title,style: TextStyle(fontSize: 14,color: Colors.black)),
+                  child: Text(data.title,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.black)),
                 ),
               leading: Image.asset(data.icon),
               trailing: Icon(Icons.keyboard_arrow_right)
@@ -69,7 +69,7 @@ class SettingPageState extends State<SettingPageWidget> {
           color: Colors.white,
           alignment: Alignment.center,
           padding: EdgeInsets.only(top: 15,bottom: 15),
-          child: Text(data.title),
+          child: Text(data.title, style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.black)),
         );
       }else if (data.icon == 'line') {
         return Divider(thickness: 10.0,color: Colors.grey[100]);
@@ -269,14 +269,14 @@ class SettingPageState extends State<SettingPageWidget> {
       return;
     }
 
-    InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
-        .then((result) {
-      Printer.printMapJsonLog('install apk $result');
-      EasyLoading.dismiss();
-    }).catchError((error) {
-      Printer.printMapJsonLog('install apk error: $error');
-      EasyLoading.dismiss();
-    });
+    // InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
+    //     .then((result) {
+    //   Printer.printMapJsonLog('install apk $result');
+    //   EasyLoading.dismiss();
+    // }).catchError((error) {
+    //   Printer.printMapJsonLog('install apk error: $error');
+    //   EasyLoading.dismiss();
+    // });
   }
 
   /// 展示下载进度

@@ -381,6 +381,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 15,top: 10,right: 10,bottom: 0),
           child:
+            // Text(data.instruction ?? "")
           ExpandableText(
             data.instruction ?? "" ,
             style: TextStyle(

@@ -113,14 +113,14 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                 pinned: true,
                 delegate: StickyTabBarDelegate(
                   child: TabBar(
-                    // labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
-                    // unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.note),
                     labelStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),fontSize: 17,fontWeight: FontWeight.w600),
                     unselectedLabelStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.note),fontSize: 16),
                     controller: _tabController,
                     indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorWeight: 4,
+                    labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
+                    unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.note),
                     tabs: tabs.map((e) => Tab(text: e)).toList(),
                   ),
                 ),

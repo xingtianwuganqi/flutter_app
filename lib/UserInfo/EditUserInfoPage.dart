@@ -5,16 +5,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/Common/ImagePicker.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+// import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 
 class EditUserWidget extends StatefulWidget {
@@ -42,7 +44,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
   String _token;
 
-  Asset _assetInfo;
+  AssetEntity _assetInfo;
   String _avator;
 
   @override
@@ -108,7 +110,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 radius: 30,
                 backgroundColor: Colors.white,
                 backgroundImage: _assetInfo != null ?
-                AssetThumbImageProvider(_assetInfo,height: 80,width: 80) :
+                AssetEntityImage(_assetInfo,height: 80,width: 80) :
                 (UserManager.instance.isLogin ?
                 ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
                 CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
@@ -180,16 +182,16 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 }
 
                 /// 如果没有选新头像
-                if (_assetInfo != null) {
-                  if (_token != null) {
-                    uploadImgToQiNiu(_token);
-                  } else {
-                    // 先获取token，再上传
-                    getQiNiuToken();
-                  }
-                }else{
-                  updateUserInfoNetworking(_avator);
-                }
+                // if (_assetInfo != null) {
+                //   if (_token != null) {
+                //     // uploadImgToQiNiu(_token);
+                //   } else {
+                //     // 先获取token，再上传
+                //     getQiNiuToken();
+                //   }
+                // }else{
+                //   updateUserInfoNetworking(_avator);
+                // }
               },
               child: Text('保存',
                 style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -213,24 +215,12 @@ class EditUserWidgetState extends State<EditUserWidget> {
       )
     );
   }
-  // 选择头像
+//  选择头像
   Future<void> loadAssets() async {
-    List<Asset> resultList = [];
+    List<AssetEntity> resultList = [];
     String error = 'No Error Dectected';
     try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 1,
-        enableCamera: false,
-        selectedAssets: resultList,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
-            // actionBarColor: '#ffa500',
-            actionBarTitle: "App",
-            allViewTitle: "All Photos",
-            useDetailsView: true,
-            selectCircleStrokeColor: "#666666",
-            startInAllView: true),
-      );
+      resultList = await ImagePicker.instance.selectAssets(context, 1);
     } on Exception catch (e) {
       error = e.toString();
     }
@@ -250,29 +240,29 @@ class EditUserWidgetState extends State<EditUserWidget> {
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
         _token = model.token;
-        uploadImgToQiNiu(_token);
+        // uploadImgToQiNiu(_token);
       }
     }, (error) {
       EasyLoading.showToast('获取token失败');
     });
   }
 
-  /// 上传图片到七牛
-  Future<Null> uploadImgToQiNiu(String token) async {
-    EasyLoading.show(status:'上传图片...');
-    // 使用 storage 的 putFile
-    String photoKey = comPhotoKey;
-    final filePath = await FlutterAbsolutePath.getAbsolutePath(_assetInfo.identifier);
-    File file = File(filePath);
-    storage.putFile(file, token, options: PutOptions(
-      controller: putController,
-      key: photoKey,
-    )).then((value) {
-      // 上传成功
-      _avator = value.key;
-      updateUserInfoNetworking(_avator);
-    });
-  }
+  // /// 上传图片到七牛
+  // Future<Null> uploadImgToQiNiu(String token) async {
+  //   EasyLoading.show(status:'上传图片...');
+  //   // 使用 storage 的 putFile
+  //   String photoKey = comPhotoKey;
+  //   final filePath = await FlutterAbsolutePath.getAbsolutePath(_assetInfo.identifier);
+  //   File file = File(filePath);
+  //   storage.putFile(file, token, options: PutOptions(
+  //     controller: putController,
+  //     key: photoKey,
+  //   )).then((value) {
+  //     // 上传成功
+  //     _avator = value.key;
+  //     updateUserInfoNetworking(_avator);
+  //   });
+  // }
 
   Future<Null> updateUserInfoNetworking(String avator) async {
     EasyLoading.show(status: '更新用户信息...');
