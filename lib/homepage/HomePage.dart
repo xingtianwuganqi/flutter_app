@@ -36,11 +36,13 @@ class _HomePageState extends State<HomePage> {
 
   ///加载图片的标识
   bool isLoadingImage = true;
+  AppVersionModel appVersionInfo;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    uploadNetWorking();
   }
 
   bool notificationFunction(Notification notification) {
@@ -76,11 +78,29 @@ class _HomePageState extends State<HomePage> {
       appBar: new AppBar(
         leading: Builder(
           builder: (context){
-            return IconButton(
-                icon:Icon( Icons.dehaze_rounded),
-                onPressed: (){
-                  Scaffold.of(context).openDrawer();
-                }
+            return Stack(
+              children: [
+                IconButton(
+                  icon:Icon( Icons.dehaze_rounded),
+                  onPressed: (){
+                    Scaffold.of(context).openDrawer();
+                  }
+                ),
+                appVersionInfo != null ? Positioned(
+                  child: Container(
+                    height: 16,
+                    width: 16,
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      color: Colors.redAccent,
+                    ),
+                    child: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
+                    ),
+                  top: 0,
+                  right: 0,
+                ):Container()
+              ],
             );
           },
         ),
@@ -133,59 +153,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: refreshBody(),
     );
-    // TODO: implement build
-    // return new Scaffold(
-    //   appBar: new AppBar(
-    //     title: Container(
-    //       decoration: BoxDecoration(
-    //         color: Colors.grey[100],
-    //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-    //       ),
-    //       padding: EdgeInsets.only(left: 20,right: 20),
-    //       width: double.infinity,
-    //       height: 35,
-    //       child:TextButton.icon(
-    //         icon: Image.asset('assets/icons/icon_wx_search.png'),
-    //         label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-    //         onPressed: () {
-    //           Navigator.push(context, MaterialPageRoute(builder: (context){
-    //             return SearchPageWidget();
-    //           }));
-    //         },
-    //       ),
-    //     ),
-    //     elevation: 0.5,
-    //   ),
-    //   floatingActionButton: FloatingActionButton(
-    //     child:
-    //     Image.asset('assets/icons/icon_home_write.png'),
-    //     // IconButton(
-    //     //   icon: Image.asset('assets/icons/icon_home_write.png'),
-    //     // ),
-    //     backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
-    //     onPressed: (){
-    //       lazyAuthToDoThings(context, (){
-    //         Navigator.push(context, MaterialPageRoute(builder: (context){
-    //           return ReleaseTopicPage();
-    //         })).then((value) async {
-    //           if (value == 'refresh') {
-    //             await homePageListNetWroking(1);
-    //           }
-    //         });
-    //       });
-    //     },
-    //     tooltip: 'Increment',
-    //   ),
-    //   body: refreshBody()
-    // );
   }
-
-  // NotificationListener(
-  // ///子Widget中的滚动组件滑动时就会分发滚动通知
-  // child: refreshBody(),
-  // ///每当有滑动通知时就会回调此方法
-  // onNotification: notificationFunction,
-  // ),
 
   Widget refreshBody() {
     return EasyRefresh(
@@ -294,6 +262,30 @@ class _HomePageState extends State<HomePage> {
 
     });
 
+  }
+
+  Future<Null> uploadNetWorking() async{
+    final url = NetWorkingConfig.path(NetPath.appUpload);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        var model = data['data'];
+        var info = AppVersionModel.fromJson(model);
+        var localVersion = dic['androidVersion'];
+        if (info.version > int.parse(localVersion)) {
+          // 有新版本，提示
+          appVersionInfo = info;
+          setState(() {
+
+          });
+        }else{
+
+        }
+
+      }
+    }, (error) {
+
+    });
   }
 }
 

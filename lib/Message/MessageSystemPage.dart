@@ -101,8 +101,8 @@ class MessageSystemState extends State<MessageSystemPage> {
               ),
               linkStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.urlColor)),
               onLinkTap: (url) async {
-                if (await canLaunch(url)) {
-                  await launch(url);
+                if (await canLaunchUrl(Uri.parse(url))) {
+                  await launchUrl(Uri.parse(url));
                 } else {
                   Printer.printMapJsonLog('error');
                 }

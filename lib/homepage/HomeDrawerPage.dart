@@ -7,6 +7,9 @@ import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../model/UserModel.dart';
 
 class HomeDrawerPage extends StatefulWidget {
   @override
@@ -30,6 +33,14 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0)
   ];
 
+  AppVersionModel appVersionInfo;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    uploadNetWorking();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +86,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
         ),
       );
     }else {
-      // return Container(
-      //     width: double.infinity,
-      //     height: 50,
-      //     child: Row(
-      //       children: [
-      //         Padding(padding: EdgeInsets.only(left: 15, right: 10),
-      //           child: Image.asset('assets/icons/icon_show_gb.png'),),
-      //         Text(model.name, style:
-      //         TextStyle(fontSize: FontUtil.fs(FontSize.content),
-      //             color: ColorsUtil.fromEnmu(ColorEnum.content)),
-      //         ),
-      //       ],
-      //     )
-      // );
+
       return ListTile(
         leading: Image.asset(model.icon),
         title:
@@ -99,6 +97,16 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
                 color: ColorsUtil.fromEnmu(ColorEnum.content)),
             ),
         ),
+        trailing: model.unreadNum > 0 ? Container(
+            height: 16,
+            width: 16,
+            alignment: Alignment.center,
+            decoration: new BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              color: Colors.redAccent,
+            ),
+            child: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
+          ): null,
         onTap: () {
           Navigator.pop(context);
           if (model.name == '浏览记录') {
@@ -135,23 +143,49 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
             }));
           }else if (model.name == "检测更新") {
-            // if (data.num == 1) {
-            //   showModalBottomSheet(
-            //     context: context,
-            //     isScrollControlled: true,
-            //     builder: (context){
-            //       return uploadAlert();
-            //     },
-            //   );
-            // }else{
-            //   isTap = true;
-            //   uploadNetWorking();
-            // }
+            if (model.unreadNum > 0){
+              // 打开浏览器
+              _launchUrl();
+            }
           }
         },
       );
     }
   }
 
+  Future<Null> uploadNetWorking() async{
+    final url = NetWorkingConfig.path(NetPath.appUpload);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        var model = data['data'];
+        var info = AppVersionModel.fromJson(model);
+        var localVersion = dic['androidVersion'];
+        if (info.version > int.parse(localVersion)) {
+          // 有新版本，提示
+          var list = datas.map((e) {
+            var newValue = e;
+            if (e.name == "检测更新") {
+              newValue.unreadNum = 1;
+            }
+            return newValue;
+          }).toList();
+          datas = list;
+          setState(() {
+
+          });
+        }else{
+
+        }
+
+      }
+    }, (error) {
+
+    });
+  }
+
+  void _launchUrl() async {
+    if (!await launchUrl(Uri.parse("https://www.pgyer.com/pPyO"))) throw 'load error';
+  }
 
 }
