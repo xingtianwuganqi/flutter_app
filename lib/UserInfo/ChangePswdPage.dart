@@ -87,6 +87,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
               padding: EdgeInsets.only(left: 15,right: 15),
               child: TextField(
                 focusNode: _originPswd,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 controller: _originController,
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
@@ -115,6 +116,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
               child: TextField(
                 focusNode: _password,
                 controller: _pswdController,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
                 decoration: InputDecoration(

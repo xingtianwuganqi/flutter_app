@@ -111,6 +111,7 @@ class SearchPageState extends State<SearchPageWidget> {
                     controller: _searchController,
                     focusNode: _focusNodeSearchKey,
                     textInputAction: TextInputAction.search,
+                    cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                     onSubmitted: (value) {
                       beginSearch(1);
                     },

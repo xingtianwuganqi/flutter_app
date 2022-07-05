@@ -34,31 +34,41 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           title: '',
           theme:
-          // ThemeData(
-          //   // This is the theme of your application.
-          //   //
-          //   // Try running your application with "flutter run". You'll see the
-          //   // application has a blue toolbar. Then, without quitting the app, try
-          //   // changing the primarySwatch below to Colors.green and then invoke
-          //   // "hot reload" (press "r" in the console where you ran "flutter run",
-          //   // or simply save your changes to "hot reload" in a Flutter IDE).
-          //   // Notice that the counter didn't reset back to zero; the application
-          //   // is not restarted.
-          //   // primarySwatch:  Colors.blue,
-          //   primaryColor: Colors.white,
-          //   // 使用 Scaffold 构件的页面，统一设置背景颜色
-          //   scaffoldBackgroundColor: Colors.white,
-          //   splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
-          //   highlightColor: Colors.transparent,
-          // )
-
           ThemeData(
-            colorScheme: ColorScheme.light(
-                primary: Colors.white,
-                onPrimary: Colors.black,
-                onBackground: Colors.white,
-                secondary: Colors.amber),
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            // primarySwatch:  Colors.blue,
+            appBarTheme: AppBarTheme(
+                color: Colors.white,
+                foregroundColor: Colors.black87
+            ),
+            primaryColor: Colors.white,
+            primarySwatch: MaterialColor(0xffffa500,color), // 刷新控件的颜色
+            // 使用 Scaffold 构件的页面，统一设置背景颜色
+            scaffoldBackgroundColor: Colors.white,
+            splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
+            highlightColor: Colors.transparent,
           )
+
+          // ThemeData(
+          //   // colorScheme: ColorScheme(
+          //   //   primary: Colors.white,
+          //   //
+          //   // )
+          //   // colorScheme: ColorScheme.light(
+          //   //     primary: Colors.white,
+          //   //     onPrimary: Colors.black,
+          //   //     onBackground: Colors.white,
+          //   //     secondary: ColorsUtil.fromEnmu(ColorEnum.system),
+          //   // ),
+          // )
           ,
           home: tabbar(),
           builder: EasyLoading.init(),
@@ -154,3 +164,18 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+Map<int, Color> color =
+{
+  50:Color.fromRGBO(136,14,79, .1),
+  100:Color.fromRGBO(136,14,79, .2),
+  200:Color.fromRGBO(136,14,79, .3),
+  300:Color.fromRGBO(136,14,79, .4),
+  400:Color.fromRGBO(136,14,79, .5),
+  500:Color.fromRGBO(136,14,79, .6),
+  600:Color.fromRGBO(136,14,79, .7),
+  700:Color.fromRGBO(136,14,79, .8),
+  800:Color.fromRGBO(136,14,79, .9),
+  900:Color.fromRGBO(136,14,79, 1),
+};
+

@@ -43,17 +43,20 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
    // listen 如果給 false 可以讓他不監聽 notifyListeners 而重新渲染
     // 监听用户登录
     Provider.of<UserProviderModel>(context,listen: false).addListener(() {
-      if (Provider.of<UserProviderModel>(context,listen: false).user != null) {
-        widget.userId = Provider.of<UserProviderModel>(context,listen: false).user.id;
-        if (widget.pageType == MyPageType.myPage) {
-          widget.userId = 0;
+      if (widget.pageType == MyPageType.myPage) {
+        if (Provider.of<UserProviderModel>(context,listen: false).user != null) {
+          widget.userId = Provider.of<UserProviderModel>(context,listen: false).user.id;
           listNetworking(pageNum);
+        }else{
+          print('退出登录');
+          pageNum = 1;
+          publishList = [];
+          setState((){
+
+          });
         }
       }else{
-        if (widget.pageType == MyPageType.myPage) {
-          widget.userId = 0;
-          listNetworking(pageNum);
-        }
+        listNetworking(pageNum);
       }
     });
   }

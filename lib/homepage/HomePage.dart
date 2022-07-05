@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
     return new _HomePageState();
   }
 }
-
+//SingleTickerProviderStateMixin
 class _HomePageState extends State<HomePage> {
 
 
@@ -38,10 +38,17 @@ class _HomePageState extends State<HomePage> {
   bool isLoadingImage = true;
   AppVersionModel appVersionInfo;
 
+  // AnimationController controller;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // controller = AnimationController(////创建 Animation对象
+    //     duration: const Duration(milliseconds: 2000), //时长
+    //     vsync: this);
+
     uploadNetWorking();
   }
 
@@ -156,8 +163,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget refreshBody() {
+    // Animation<Color> animation;
+    // var colorTween = ColorTween(begin: ColorsUtil.fromEnmu(ColorEnum.system), end: Colors.yellow);
+    // animation = colorTween.animate(controller);
     return EasyRefresh(
-      header: MaterialHeader(),
+      header:
+      MaterialHeader(),
       footer: MaterialFooter(
         enableInfiniteLoad:false,
       ),

@@ -283,6 +283,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                 TextField(
                   focusNode: _contentFocusNode,
                   controller: _contentController,
+                  cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                   maxLines: null,
                   decoration: InputDecoration.collapsed(
                       hintText: "请输入简单说明",

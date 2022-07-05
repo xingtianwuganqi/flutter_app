@@ -58,7 +58,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
     _focusNodeUserName.unfocus();
     EasyLoading.show(status: '环境检测中...');
     if (_username.length == 0)  {
-      EasyLoading.showToast('请输入手机号码或邮箱');
+      EasyLoading.showToast('请输入手机号码');
       return;
     }
     String deviceInfo = await ToolConfig.deviceName();
@@ -123,6 +123,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
             TextFormField(
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请输入手机号码或邮箱",

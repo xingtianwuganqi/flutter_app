@@ -151,6 +151,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
                     child: TextField(maxLines: 1,
                       focusNode: _focusNodeUserName,
                       controller: _nicknameController,
+                      cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                       decoration: InputDecoration(
                           hintText: "请输入昵称",
                           border: InputBorder.none

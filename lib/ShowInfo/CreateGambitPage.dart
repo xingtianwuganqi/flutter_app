@@ -93,6 +93,7 @@ class CreateGambitState extends State<CreateGambitPage> {
                       TextField(maxLines: 1,
                         style: TextStyle(fontSize: 15,textBaseline: TextBaseline.alphabetic),
                         focusNode: _focusNode,
+                        cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                         controller: _comController,
                         decoration: InputDecoration(
                             border: InputBorder.none,

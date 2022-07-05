@@ -192,7 +192,8 @@ class _LoginWidgetState extends State<LoginWidget> {
             TextFormField(
               focusNode: _focusNodeUserName,
               controller: _userNameController,
-              keyboardType: TextInputType.emailAddress,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
+                keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: "请输入手机号码",
                 hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -617,6 +618,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ), TextFormField(
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
+              cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
               controller: _userPswdController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(

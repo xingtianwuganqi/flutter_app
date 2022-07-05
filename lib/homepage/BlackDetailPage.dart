@@ -136,6 +136,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                         child: TextField(
                           enabled: widget.blackType == BlackType.detail ? false: true,
                           textAlign: TextAlign.right,
+                          cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                           controller: currentController,
                           style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
                               fontSize: FontUtil.fs(FontSize.content)),
@@ -216,6 +217,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                       child: TextField(
                         enabled: widget.blackType == BlackType.detail ? false: true,
                         controller: _reasonController,
+                        cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                         maxLength: null,
                         decoration: InputDecoration.collapsed(
                             border: InputBorder.none,
@@ -242,6 +244,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                         child: TextField(
                           enabled: widget.blackType == BlackType.detail ? false: true,
                           controller: _reasonController,
+                          cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                           maxLength: null,
                           decoration: InputDecoration.collapsed(
                           border: InputBorder.none,

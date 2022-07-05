@@ -180,7 +180,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                     width: 100,
                     height: 40,
                     alignment: Alignment.centerLeft,
-                    child: Text('添加标签 >',style: TextStyle(fontSize: 15,
+                    child: Text('添加标签 >',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                       color: ColorsUtil.fromEnmu(ColorEnum.system),),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
@@ -205,12 +205,13 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                       TextField(
                         focusNode: _contentFocusNode,
                         controller: _contentController,
+                        cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                         maxLines: null,
                         decoration: InputDecoration.collapsed(
                             hintText: "请简单介绍下宠物，例如：\n名字：xxx\n年龄：xxx\n性别：xxx\n品种：xxx\n健康信息：xxx\n领养要求：xxx",
-                            hintStyle: TextStyle(color: Colors.black12)
+                            hintStyle: TextStyle(color: Colors.black12,fontSize: FontUtil.fs(FontSize.content))
                         ),
-                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content)),
+                        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content)),
                       ),
                       Positioned(
                         child: Text('$textCount/1000',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
@@ -339,6 +340,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         maxLines: 1,
         controller: _phoneController,
         focusNode: _phoneFocusNode,
+        cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
         decoration: InputDecoration.collapsed(
           hintText: '请输入联系方式,例如：手机号：xxx 或 微信：xxx',
             hintStyle: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))

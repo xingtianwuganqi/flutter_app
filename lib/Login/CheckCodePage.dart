@@ -280,6 +280,7 @@ class _CheckCodeState extends State<CheckCodePage> {
                 enabled: widget.phone != null ? false : true,
                 focusNode: _focusNodeUserName,
                 controller: _userPhoneController,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "请输入手机号码",
@@ -316,6 +317,7 @@ class _CheckCodeState extends State<CheckCodePage> {
                 TextFormField(
                   focusNode: _focusNodePassWord,
                   controller: _userCodeController,
+                  cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "请输入验证码",

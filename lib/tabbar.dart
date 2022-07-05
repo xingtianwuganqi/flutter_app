@@ -1,17 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
-import 'package:flutter_720yun/Login/LoginPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
-import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
-import 'package:flutter_720yun/UserInfo/UserInfoPage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
-import 'homepage/HomeMainPage.dart';
-// import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 
 // JPush jpush = new JPush();
@@ -49,16 +43,6 @@ class tabbarState extends State<tabbar> {
 
       });
     },));
-    // pages.add(UserInfoWidget(changed: (value){
-    //   var dic = Map.from(paramDic);
-    //   var localVersion = dic['androidVersion'];
-    //   if (int.parse(localVersion) < value) {
-    //     _newVersion = 1;
-    //   }
-    //   setState(() {
-    //
-    //   });
-    // },));
     pages.add(NewUserInfoPage(pageType: MyPageType.myPage, userId: userId));
   }
 
@@ -78,23 +62,16 @@ class tabbarState extends State<tabbar> {
         BottomNavigationBarItem(icon: _selectedIndex == 0 ?
         Image.asset('assets/icons/icon_tabbar_cat_se.png',width: 25,height: 25) :
         Image.asset('assets/icons/icon_tabbar_cat_un.png', width: 25, height: 25,),
-          // ignore: deprecated_member_use
           label: "首页",
         ),
         BottomNavigationBarItem(icon: _selectedIndex == 1 ?
         Image.asset('assets/icons/icon_tabbar_dog_se.png',width: 25,height: 25) :
         Image.asset('assets/icons/icon_tabbar_dog_un.png', width: 25, height: 25,)
-            // ignore: deprecated_member_use
             ,label: "秀宠"),
 
         BottomNavigationBarItem(icon: unreadSelectIcon(_selectedIndex == 2)
-            // _selectedIndex == 2 ?
-            // Image.asset('assets/icons/icon_tabbar_msg_se.png',width: 25,height: 25) :
-            // Image.asset('assets/icons/icon_tabbar_msg_un.png', width: 25, height: 25,)
-            // ignore: deprecated_member_use
             ,label: "消息"),
         BottomNavigationBarItem(icon: newVersionIcon(_selectedIndex == 3),
-            // ignore: deprecated_member_use
             label: "我的")
       ],
       currentIndex: _selectedIndex,

@@ -186,7 +186,8 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
             TextFormField(
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
-                keyboardType: TextInputType.emailAddress,
+              cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
+              keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请输入6位或6位以上新密码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
@@ -216,6 +217,7 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
+              cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "请再次输入新密码",

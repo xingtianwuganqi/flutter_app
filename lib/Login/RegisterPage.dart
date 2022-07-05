@@ -212,9 +212,10 @@ class _RegisterState extends State<RegisterWidget> {
                 enabled: widget.phone != null ? false : true,
                 focusNode: _focusNodeUserName,
                 controller: _userNameController,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  hintText: "请输入手机号码或邮箱",
+                  hintText: "请输入手机号码",
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),width: 0.5),
@@ -248,6 +249,7 @@ class _RegisterState extends State<RegisterWidget> {
               obscureText: !_isShowPwd,
               focusNode: _focusNodePassWord,
               controller: _userPswdController,
+              cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: "请输入6位或6位以上密码",
@@ -284,6 +286,7 @@ class _RegisterState extends State<RegisterWidget> {
                 obscureText: !_isShowConfirm,
                 focusNode: _focusNodeConfirm,
                 controller: _confirmController,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "请再次输入密码",
