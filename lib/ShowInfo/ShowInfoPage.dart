@@ -33,12 +33,14 @@ class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProvi
     return Scaffold(
       appBar: AppBar(
         title: SizedBox(
-          width: 120,
+          width: 140,
           height: 44,
           child: TabBar(
             indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
+            indicatorPadding: EdgeInsets.only(left: 10,right: 10),
             controller: _tabController,
             labelColor: Colors.black,
+            labelStyle: TextStyle(fontSize: FontUtil.fs(FontSize.content)),
             tabs: tabs.map((e) => Tab(text: e,)).toList(),
           ),
         ),

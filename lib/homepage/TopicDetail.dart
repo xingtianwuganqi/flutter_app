@@ -40,12 +40,23 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   HomePageModel homeModel;
 
+  TapGestureRecognizer _protocolRecognizer = new TapGestureRecognizer();
+  TapGestureRecognizer _moreRecognizer = new TapGestureRecognizer();
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     homePageListNetWroking();
     addViewHistoryNetWorking();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _protocolRecognizer.dispose();
+    _moreRecognizer.dispose();
   }
 
   /// 用户信息
@@ -185,15 +196,33 @@ class TopicDetailState extends State<TopicDetailWidget> {
     return Container(
       padding: EdgeInsets.only(left: 15,top: 10,right: 15,bottom: 10),
       color: ColorsUtil.hexColor(0xFFF5DA),
-      child: GestureDetector(
-        child: Text('特别提醒：请勿相信以任何名义(包括运费、押金、定金等)要求的提前转帐与打款的行为。请提高警惕，以防被骗！',
-          style: TextStyle(color: ColorsUtil.hexColor(0xF6831F),fontSize: FontUtil.fs(FontSize.content)),),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return BlackListPage();
-          }));
-        },
-      )
+      child: RichText(
+        text: TextSpan(
+          text: '特别提醒：请勿相信以任何名义(包括运费、押金、定金等)要求的提前转帐与打款的行为。请提高警惕，以防被骗！',
+            style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+                fontWeight: FontWeight.normal,
+                color: ColorsUtil.fromEnmu(ColorEnum.system)),
+            recognizer: _protocolRecognizer
+            ..onTap = (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return WebViewPage(url: NetWorkingConfig.baseUrl() + '/api/prevention/');
+            }));
+          },
+          children: [
+            TextSpan(
+              text: "查看案例->",
+              style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+                  fontWeight: FontWeight.bold,
+                  color: ColorsUtil.fromEnmu(ColorEnum.system)),
+              recognizer: _moreRecognizer..onTap=(){
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return BlackListPage();
+                }));
+              }
+            )
+          ]
+        ),
+      ),
     );
   }
 

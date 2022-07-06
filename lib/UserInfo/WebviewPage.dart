@@ -31,7 +31,10 @@ class WebViewPageState extends State<WebViewPage> {
       ),
       body: Container(
         color: Colors.white,
+        width: double.infinity,
+        height: double.infinity,
         child:  WebView(
+          backgroundColor: Colors.white,
           initialUrl: widget.url,
           //JS执行模式 是否允许JS执行
           javascriptMode: JavascriptMode.unrestricted,
@@ -39,7 +42,7 @@ class WebViewPageState extends State<WebViewPage> {
             _controller = controller;
           },
           onPageFinished: (url) {
-            _controller.evaluateJavascript("document.title").then((result){
+            _controller.runJavascriptReturningResult("document.title").then((result){
               setState(() {
                 _webTitle = result;
               });
