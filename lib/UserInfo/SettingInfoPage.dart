@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'WebviewPage.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-// import 'package:install_plugin/install_plugin.dart';
 import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
@@ -208,27 +207,6 @@ class SettingPageState extends State<SettingPageWidget> {
     });
   }
 
-  // /// 检查是否有权限，用于安卓
-  // Future<bool> checkPermission() async {
-  //   if (_flatform == 'android') {
-  //     PermissionStatus permission = await PermissionHandler()
-  //         .checkPermissionStatus(PermissionGroup.storage);
-  //     if (permission != PermissionStatus.granted) {
-  //       Map<PermissionGroup, PermissionStatus> permissions =
-  //       await PermissionHandler()
-  //           .requestPermissions([PermissionGroup.storage]);
-  //       if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
-  //         return true;
-  //       }
-  //     } else {
-  //       return true;
-  //     }
-  //   } else {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   /// 下载安卓更新包
   Future<File> downloadAndroid(String url) async {
     /// 创建存储文件
@@ -268,15 +246,6 @@ class SettingPageState extends State<SettingPageWidget> {
       Printer.printMapJsonLog('make sure the apk file is set');
       return;
     }
-
-    // InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
-    //     .then((result) {
-    //   Printer.printMapJsonLog('install apk $result');
-    //   EasyLoading.dismiss();
-    // }).catchError((error) {
-    //   Printer.printMapJsonLog('install apk error: $error');
-    //   EasyLoading.dismiss();
-    // });
   }
 
   /// 展示下载进度

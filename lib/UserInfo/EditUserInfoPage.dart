@@ -146,7 +146,8 @@ class EditUserWidgetState extends State<EditUserWidget> {
               Row(
                 children: [
                   Padding(padding: EdgeInsets.only(left: 15)),
-                  Text('昵称: '),
+                  Text('昵称: ',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+                      fontSize: FontUtil.fs(FontSize.content))),
                   Expanded(
                     child: TextField(maxLines: 1,
                       focusNode: _focusNodeUserName,
@@ -156,7 +157,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
                           hintText: "请输入昵称",
                           border: InputBorder.none
                       ),
-                      style: TextStyle(fontSize: FontUtil.fs(FontSize.content)),
+                      style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content), fontSize: FontUtil.fs(FontSize.content)),
 
                     ),
                   )
@@ -249,21 +250,20 @@ class EditUserWidgetState extends State<EditUserWidget> {
   }
 
   // /// 上传图片到七牛
-  // Future<Null> uploadImgToQiNiu(String token) async {
-  //   EasyLoading.show(status:'上传图片...');
-  //   // 使用 storage 的 putFile
-  //   String photoKey = comPhotoKey;
-  //   final filePath = await FlutterAbsolutePath.getAbsolutePath(_assetInfo.identifier);
-  //   File file = File(filePath);
-  //   storage.putFile(file, token, options: PutOptions(
-  //     controller: putController,
-  //     key: photoKey,
-  //   )).then((value) {
-  //     // 上传成功
-  //     _avator = value.key;
-  //     updateUserInfoNetworking(_avator);
-  //   });
-  // }
+  Future<Null> uploadImgToQiNiu(String token) async {
+    EasyLoading.show(status:'上传图片...');
+    // 使用 storage 的 putFile
+    String photoKey = comPhotoKey;
+    File file = await _assetInfo.file;
+    storage.putFile(file, token, options: PutOptions(
+      controller: putController,
+      key: photoKey,
+    )).then((value) {
+      // 上传成功
+      _avator = value.key;
+      updateUserInfoNetworking(_avator);
+    });
+  }
 
   Future<Null> updateUserInfoNetworking(String avator) async {
     EasyLoading.show(status: '更新用户信息...');

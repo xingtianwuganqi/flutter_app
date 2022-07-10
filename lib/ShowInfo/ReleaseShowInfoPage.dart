@@ -12,6 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../Common/ImagePicker.dart';
+import '../Login/CheckCodePage.dart';
 import 'GambitSelectPage.dart';
 
 class ReleaseShowInfoPage extends StatefulWidget {
@@ -384,7 +385,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                 ),
                 onTap: () async {
                   _contentFocusNode.unfocus();
-                  // await loadAssets();
+                  await loadAssets();
                 },
               );
             }else{
@@ -484,6 +485,16 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
         Future.delayed(Duration(milliseconds: 1500),(){
           Navigator.pop(context,"refresh");
         });
+      }else if (data['code'] == 209) { // 未绑定手机号
+        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.bindPhone);
+        }));
+      }else if (data['code'] == 210) { // 未校验手机号
+        EasyLoading.showToast(data['message'] ?? '未校验手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+        }));
       }else{
         EasyLoading.showToast(data['message'] ?? '发布失败');
       }
@@ -513,44 +524,43 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     EasyLoading.show(status:'上传图片...');
     for (int i = 0; i < _releasePhotos.length; i++) {
       var item = _releasePhotos[i];
-      // updateImg(item);
+      updateImg(item);
     }
   }
 
-  // Future<Null> updateImg(ReleasePhotoModel item) async {
-  //   if (item.isAdd == false) {
-  //     final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
-  //     File file = File(filePath);
-  //     storage.putFile(file, _token, options: PutOptions(
-  //       controller: putController,
-  //       key: item.photoKey,
-  //     )).then((value) {
-  //       // 上传成功
-  //       // 更新模型的数据
-  //       _releasePhotos = _releasePhotos.map((e) {
-  //         var newModel = e;
-  //         if (e.photoKey == value.key) {
-  //           newModel.complete = true;
-  //           newModel.photoUrl = value.key;
-  //         }
-  //         return newModel;
-  //       }).toList();
-  //       // 判断_releasePhotos 是不是所有的complete 都变成了true；
-  //       int isComplete = 0;
-  //       for (int i = 0;i < _releasePhotos.length;i++) {
-  //         var item = _releasePhotos[i];
-  //         if (item.complete == false) {
-  //           isComplete = 1;
-  //           break;
-  //         }
-  //       }
-  //       if (isComplete == 0) { // 说明全部传成功了
-  //         releaseShowNetworking();
-  //         return;
-  //       }
-  //     });
-  //   }
-  // }
+  Future<Null> updateImg(ReleasePhotoModel item) async {
+    if (item.isAdd == false) {
+      final file = await item.image.file;
+      storage.putFile(file, _token, options: PutOptions(
+        controller: putController,
+        key: item.photoKey,
+      )).then((value) {
+        // 上传成功
+        // 更新模型的数据
+        _releasePhotos = _releasePhotos.map((e) {
+          var newModel = e;
+          if (e.photoKey == value.key) {
+            newModel.complete = true;
+            newModel.photoUrl = value.key;
+          }
+          return newModel;
+        }).toList();
+        // 判断_releasePhotos 是不是所有的complete 都变成了true；
+        int isComplete = 0;
+        for (int i = 0;i < _releasePhotos.length;i++) {
+          var item = _releasePhotos[i];
+          if (item.complete == false) {
+            isComplete = 1;
+            break;
+          }
+        }
+        if (isComplete == 0) { // 说明全部传成功了
+          releaseShowNetworking();
+          return;
+        }
+      });
+    }
+  }
 
   bool isCanPushInfo() {
     if (_contentController.text == null || _contentController.text.length == 0) {

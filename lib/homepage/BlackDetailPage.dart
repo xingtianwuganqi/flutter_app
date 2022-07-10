@@ -519,43 +519,42 @@ class BlackDetailState extends State<BlackDetailPage> {
     EasyLoading.show(status:'上传图片...');
     for (int i = 0; i < _releasePhotos.length; i++) {
       var item = _releasePhotos[i];
-      // updateImg(item);
+      updateImg(item);
     }
   }
 
-  // Future<Null> updateImg(ReleasePhotoModel item) async {
-  //   if (item.isAdd == false) {
-  //     final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
-  //     File file = File(filePath);
-  //     storage.putFile(file, _token, options: PutOptions(
-  //       controller: putController,
-  //       key: item.photoKey,
-  //     )).then((value) {
-  //       // 更新模型的数据
-  //       _releasePhotos = _releasePhotos.map((e) {
-  //         var newModel = e;
-  //         if (e.photoKey == value.key) {
-  //           newModel.complete = true;
-  //           newModel.photoUrl = value.key;
-  //         }
-  //         return newModel;
-  //       }).toList();
-  //       // 判断_releasePhotos 是不是所有的complete 都变成了true；
-  //       int isComplete = 0;
-  //       for (int i = 0;i < _releasePhotos.length;i++) {
-  //         var item = _releasePhotos[i];
-  //         if (item.complete == false) {
-  //           isComplete = 1;
-  //           break;
-  //         }
-  //       }
-  //       if (isComplete == 0) { // 说明全部传成功了
-  //         pushInfo(_pushInfo);
-  //         return;
-  //       }
-  //     });
-  //   }
-  // }
+  Future<Null> updateImg(ReleasePhotoModel item) async {
+    if (item.isAdd == false) {
+      File file = await item.image.file;
+      storage.putFile(file, _token, options: PutOptions(
+        controller: putController,
+        key: item.photoKey,
+      )).then((value) {
+        // 更新模型的数据
+        _releasePhotos = _releasePhotos.map((e) {
+          var newModel = e;
+          if (e.photoKey == value.key) {
+            newModel.complete = true;
+            newModel.photoUrl = value.key;
+          }
+          return newModel;
+        }).toList();
+        // 判断_releasePhotos 是不是所有的complete 都变成了true；
+        int isComplete = 0;
+        for (int i = 0;i < _releasePhotos.length;i++) {
+          var item = _releasePhotos[i];
+          if (item.complete == false) {
+            isComplete = 1;
+            break;
+          }
+        }
+        if (isComplete == 0) { // 说明全部传成功了
+          pushInfo(_pushInfo);
+          return;
+        }
+      });
+    }
+  }
 
   // 开始发布
   Future<Null> pushInfo(ReleaseReportInfo info) async {

@@ -592,10 +592,10 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return CheckCodePage(CodeFromType.bindPhone);
         }));
-      }else if (data['code'] == 210) { // 未验证手机号
-        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+      }else if (data['code'] == 210) { // 未校验手机号
+        EasyLoading.showToast(data['message'] ?? '未校验手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CheckCodePage(CodeFromType.checkPhone);
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
         }));
       }else{
         EasyLoading.showToast(data['message'] ?? '发布失败');

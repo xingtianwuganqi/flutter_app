@@ -11,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../Login/CheckCodePage.dart';
 import '../model/CommentModel.dart';
 
 class CommentInfoWidget extends StatefulWidget {
@@ -402,7 +403,17 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
           // _replyComModel = null;
           // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
-      }else{
+      }else if (data['code'] == 209) { // 未绑定手机号
+        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.bindPhone);
+        }));
+      }else if (data['code'] == 210) { // 未校验手机号
+        EasyLoading.showToast(data['message'] ?? '未校验手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+        }));
+      } else{
         EasyLoading.showToast('发表失败');
       }
     }, (error) {
@@ -447,6 +458,16 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
           // _replyComModel = null;
           // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
+      }else if (data['code'] == 209) { // 未绑定手机号
+        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.bindPhone);
+        }));
+      }else if (data['code'] == 210) { // 未校验手机号
+        EasyLoading.showToast(data['message'] ?? '未校验手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+        }));
       }else{
         EasyLoading.showToast("发表失败");
 

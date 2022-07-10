@@ -49,6 +49,9 @@ class MyApp extends StatelessWidget {
                 color: Colors.white,
                 foregroundColor: Colors.black87
             ),
+            bottomAppBarTheme: BottomAppBarTheme(
+              color: Colors.white,
+            ),
             primaryColor: Colors.white,
             primarySwatch: MaterialColor(0xffffa500,color), // 刷新控件的颜色
             // 使用 Scaffold 构件的页面，统一设置背景颜色
@@ -56,19 +59,6 @@ class MyApp extends StatelessWidget {
             splashColor: Colors.transparent, // 点击时的高亮效果设置为透明
             highlightColor: Colors.transparent,
           )
-
-          // ThemeData(
-          //   // colorScheme: ColorScheme(
-          //   //   primary: Colors.white,
-          //   //
-          //   // )
-          //   // colorScheme: ColorScheme.light(
-          //   //     primary: Colors.white,
-          //   //     onPrimary: Colors.black,
-          //   //     onBackground: Colors.white,
-          //   //     secondary: ColorsUtil.fromEnmu(ColorEnum.system),
-          //   // ),
-          // )
           ,
           home: tabbar(),
           builder: EasyLoading.init(),

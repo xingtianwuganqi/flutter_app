@@ -556,7 +556,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
         EasyLoading.showToast(data['message'] ?? '获取联系方式失败');
         // 延时跳转
         Future.delayed(Duration(milliseconds: 100),(){
-          if (data['code'] == 210) { // 未验证手机号
+          if (data['code'] == 210) { // 未校验手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
             }));
