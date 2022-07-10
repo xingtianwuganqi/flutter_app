@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ImagePicker {
@@ -28,6 +29,7 @@ class ImagePicker {
 
   Future<List<AssetEntity>> selectAssets(context, num) async {
     AssetPickerConfig config = AssetPickerConfig(
+      themeColor: Colors.white,
       maxAssets: num
     );
     final List<AssetEntity> result = await  AssetPicker.pickAssets(

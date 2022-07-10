@@ -101,32 +101,78 @@ class MessageCommentModel {
 }
 
 class UnreadModel {
-  UnreadModel({this.sys_unread, this.like_unread, this.collec_unread, this.com_unread});
+  UnreadModel({this.sys_unread, this.like_unread, this.collec_unread, this.com_unread, this.sys_un_list});
   final int sys_unread;
   final int like_unread;
   final int collec_unread;
   final int com_unread;
+  final List<SysUnreadMsgModel> sys_un_list;
   factory UnreadModel.fromJson(Map<String,dynamic> json) {
     return UnreadModel(
       sys_unread: json['sys_unread'],
       like_unread: json['like_unread'],
       collec_unread: json['collec_unread'],
       com_unread: json['com_unread'],
+      sys_un_list: (json['sys_un_list'] as List)?.map((e) => SysUnreadMsgModel.fromJson(e))?.toList(),
+    );
+  }
+}
 
+class SysUnreadMsgModel {
+  /*
+    未读消息列表
+    platform: 平台 0 全部 ，1苹果，2安卓
+    system_id: 系统消息的id
+    version: 未读的系统，如果比这个系统数大，这条未读将不显示,0: 全部显示
+    msg_type: 0. 公共通知    1.个人通知
+    user_id: 个人user_id
+    hidden: 隐藏：0：隐藏，1：显示
+   */
+  SysUnreadMsgModel({
+    this.id,
+    this.create_time,
+    this.platform,
+    this.system_id,
+    this.version,
+    this.msg_type,
+    this.user_id,
+    this.hidden
+  });
+  final int id;
+  final String create_time;
+  final int platform;
+  final int system_id;
+  final int version;
+  final int msg_type;
+  final int user_id;
+  final int hidden;
+
+  factory SysUnreadMsgModel.fromJson(Map<String,dynamic> json) {
+    return SysUnreadMsgModel(
+      id: json['id'],
+      create_time: json['create_time'],
+      platform: json['platform'],
+      system_id: json['system_id'],
+      version: json['version'],
+      msg_type: json['msg_type'],
+      user_id: json['user_id'],
+      hidden: json['hidden']
     );
   }
 }
 
 class SystemMsgModel {
+  final int id;
   final String create_time;
   final String content;
   final int msg_type;
   final int user_id;
 
-  SystemMsgModel({this.create_time,this.content,this.msg_type,this.user_id});
+  SystemMsgModel({this.id, this.create_time,this.content,this.msg_type,this.user_id});
   factory SystemMsgModel.fromJson(Map<String,dynamic> json)
   {
     return SystemMsgModel(
+      id: json['id'],
       create_time: json['create_time'],
       content: json['content'],
       msg_type: json['msg_type'],

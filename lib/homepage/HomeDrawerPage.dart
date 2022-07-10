@@ -26,7 +26,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_view_hist.png',name: '浏览记录',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_collection.png',name: '我的收藏',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_me_black.png',name: '黑名单',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_ado_about.png',name: '领养相关',type: 0,unreadNum: 0),
+    // MessagePageModel(icon: 'assets/icons/icon_ado_about.png',name: '领养相关',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_upload.png',name: '检测更新',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),

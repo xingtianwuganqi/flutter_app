@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/Login/CheckCodePage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
 // import 'package:flutter_absolute_path/flutter_absolute_path.dart';
@@ -14,7 +15,7 @@ import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-
+import 'package:file_picker/file_picker.dart';
 import 'TagInfoPage.dart';
 
 
@@ -301,10 +302,13 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
               return Container(
                 child: Stack(
                   children: [
-                    AssetEntityImage(item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
-                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble()),
+                    AssetEntityImage(item.image,
+                        width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                      fit: BoxFit.cover,
+                    ),
                     Positioned(
-                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.black54,size: 20,), onPressed: () {
                             // 删除数据
                           var isRemove = _releasePhotos.remove(_releasePhotos[index]);
                           if (isRemove) {
@@ -341,6 +345,9 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         controller: _phoneController,
         focusNode: _phoneFocusNode,
         cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
+        style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
+          fontSize: FontUtil.fs(FontSize.content)
+        ),
         decoration: InputDecoration.collapsed(
           hintText: '请输入联系方式,例如：手机号：xxx 或 微信：xxx',
             hintStyle: TextStyle(color: Colors.black26,fontSize: FontUtil.fs(FontSize.content))
@@ -408,7 +415,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       padding: EdgeInsets.only(bottom: 10,top: 5),
       child: Text('禁止出现商业广告，低俗，色情，暴力，具有侮辱性语言或与宠物无关的内容，违规者帖子会被删除',
         style: TextStyle(
-            fontSize: 15,
+            fontSize: FontUtil.fs(FontSize.desc),
             color: ColorsUtil.fromEnmu(ColorEnum.desc)),
       ),
     );
@@ -580,6 +587,16 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         Future.delayed(Duration(milliseconds: 1500),(){
           Navigator.pop(context,"refresh");
         });
+      }else if (data['code'] == 209) { // 未绑定手机号
+        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.bindPhone);
+        }));
+      }else if (data['code'] == 210) { // 未验证手机号
+        EasyLoading.showToast(data['message'] ?? '未绑定手机号');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CheckCodePage(CodeFromType.checkPhone);
+        }));
       }else{
         EasyLoading.showToast(data['message'] ?? '发布失败');
       }
@@ -610,43 +627,42 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     EasyLoading.show(status:'上传图片...');
     for (int i = 0; i < _releasePhotos.length; i++) {
       var item = _releasePhotos[i];
-      // updateImg(item);
+      updateImg(item);
     }
   }
 
-  // Future<Null> updateImg(ReleasePhotoModel item) async {
-  //   if (item.isAdd == false) {
-  //     final filePath = await FlutterAbsolutePath.getAbsolutePath(item.image.identifier);
-  //     File file = File(filePath);
-  //     storage.putFile(file, _token, options: PutOptions(
-  //       controller: putController,
-  //       key: item.photoKey,
-  //     )).then((value) {
-  //       // 更新模型的数据
-  //       _releasePhotos = _releasePhotos.map((e) {
-  //         var newModel = e;
-  //         if (e.photoKey == value.key) {
-  //           newModel.complete = true;
-  //           newModel.photoUrl = value.key;
-  //         }
-  //         return newModel;
-  //       }).toList();
-  //       // 判断_releasePhotos 是不是所有的complete 都变成了true；
-  //       int isComplete = 0;
-  //       for (int i = 0;i < _releasePhotos.length;i++) {
-  //         var item = _releasePhotos[i];
-  //         if (item.complete == false) {
-  //           isComplete = 1;
-  //           break;
-  //         }
-  //       }
-  //       if (isComplete == 0) { // 说明全部传成功了
-  //         releaseTopicNetworking();
-  //         return;
-  //       }
-  //     });
-  //   }
-  // }
+  Future<Null> updateImg(ReleasePhotoModel item) async {
+    if (item.isAdd == false) {
+      File file = await item.image.file;
+      storage.putFile(file, _token, options: PutOptions(
+        controller: putController,
+        key: item.photoKey,
+      )).then((value) {
+        // 更新模型的数据
+        _releasePhotos = _releasePhotos.map((e) {
+          var newModel = e;
+          if (e.photoKey == value.key) {
+            newModel.complete = true;
+            newModel.photoUrl = value.key;
+          }
+          return newModel;
+        }).toList();
+        // 判断_releasePhotos 是不是所有的complete 都变成了true；
+        int isComplete = 0;
+        for (int i = 0;i < _releasePhotos.length;i++) {
+          var item = _releasePhotos[i];
+          if (item.complete == false) {
+            isComplete = 1;
+            break;
+          }
+        }
+        if (isComplete == 0) { // 说明全部传成功了
+          releaseTopicNetworking();
+          return;
+        }
+      });
+    }
+  }
 
   bool isCanPushInfo() {
     if (_contentController.text == null || _contentController.text.length == 0) {

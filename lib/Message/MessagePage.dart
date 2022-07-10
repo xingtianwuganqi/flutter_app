@@ -183,14 +183,16 @@ class MessagePageState extends State<MessagePage> with RouteAware {
   Future<Null> _authUnreadMsgNetworking() async{
     final url = NetWorkingConfig.path(NetPath.authUnreadMsg);
     var dic = new Map<String, dynamic>.from(paramDic);
-    await NetWorking.formDataPost(url, dic, (data) {
+    await NetWorking.formDataPost(url, dic, (data) async {
       if (data['code'] == 200) {
         var model = UnreadModel.fromJson(data['data']);
-        datas[0].unreadNum = model.sys_unread;
+        // 先判断是否是当前平台
+        var sysunread = await ToolConfig.getSystemUnreadNumber(model.sys_un_list);
+        datas[0].unreadNum = sysunread;
         datas[1].unreadNum = model.like_unread;
         datas[2].unreadNum = model.collec_unread;
         datas[3].unreadNum = model.com_unread;
-        var num = (model.sys_unread ?? 0) + (model.collec_unread ?? 0) + (model.like_unread ?? 0) + (model.com_unread ?? 0);
+        var num = sysunread + (model.collec_unread ?? 0) + (model.like_unread ?? 0) + (model.com_unread ?? 0);
         widget.changed(num);
         setState(() {
 

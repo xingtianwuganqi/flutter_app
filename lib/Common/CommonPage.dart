@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Login/LoginPage.dart';
+import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -412,6 +413,76 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     enArr.insert(enArr.length - 3, r"$" + currentTwo);
     enArr.add(r"$"+indexTwo);
     return enArr.join();
+  }
+
+  /// 判断是否已读
+  static Future<int> getSystemUnreadNumber( List<SysUnreadMsgModel> unreadList ) async {
+    List<String> unreadDatas = [];
+    // for
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> datas = prefs.getStringList('system_read');
+      if (datas != null) {
+        // 如果有已读，看保存的已读是不是当前的消息
+        for (var i = 0;i < unreadList.length; i ++) {
+          var unreadInfo = unreadList[i];
+          if ((unreadInfo.platform == 0 || unreadInfo.platform == 2) && paramDic['androidVersion'].toInt() > unreadInfo.version) {
+            if (datas.contains(unreadInfo.id.toString())) {
+              break;
+            }else{
+              unreadDatas.add(unreadInfo.id.toString());
+            }
+          }else {
+            break;
+          }
+        }
+        if (unreadDatas.length > 0) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setStringList("system_unread", unreadDatas);
+        }
+        return unreadDatas.length;
+      }else{
+        for (var i = 0;i < unreadList.length; i ++) {
+          var unreadInfo = unreadList[i];
+          if ((unreadInfo.platform == 0 || unreadInfo.platform == 2) && paramDic['androidVersion'].toInt() > unreadInfo.version) {
+            if (datas.contains(unreadInfo.id.toString())) {
+              break;
+            }else{
+              unreadDatas.add(unreadInfo.id.toString());
+            }
+          }else {
+            break;
+          }
+        }
+        if (unreadDatas.length > 0) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setStringList("system_unread", unreadDatas);
+        }
+        return unreadDatas.length;
+      }
+    }catch(e){
+      return 0;
+    }
+  }
+
+  static Future<Null> setSystemUnread(List<SystemMsgModel> unreadList) async {
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> datas = prefs.getStringList('system_unread');
+      if (datas != null) {
+        List<String> readArr = [];
+        var sysListInfo = unreadList.map((e) => e.id.toString()).toList();
+        datas.forEach((element) {
+          if (sysListInfo.contains(element)) {
+            readArr.add(element);
+          }
+        });
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setStringList("system_read", readArr);
+      }
+    }catch(e){
+
+    }
   }
 }
 //
