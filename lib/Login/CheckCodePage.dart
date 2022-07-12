@@ -155,12 +155,12 @@ class _CheckCodeState extends State<CheckCodePage> {
       return;
     }
     final url = NetWorkingConfig.path(NetPath.getVerificationCode);
-    var dic = {
-      "code": ToolConfig.encryptionString(codeStr),
-      "phone": _phone
-    };
+    var dic = new Map<String,dynamic>.from(paramDic);
+    dic["code"] = ToolConfig.encryptionString(codeStr);
+    dic["phone"] = _phone;
+
     EasyLoading.show(status: '正在获取...');
-    await NetWorking.post(url, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         _focusNodePassWord.requestFocus();
@@ -174,7 +174,7 @@ class _CheckCodeState extends State<CheckCodePage> {
       }
     }, (error) {
       EasyLoading.dismiss();
-    },params: dic);
+    });
   }
 
   Future<Null> checkCodeNetWorking() async {
@@ -188,14 +188,19 @@ class _CheckCodeState extends State<CheckCodePage> {
       EasyLoading.showToast('请输入验证码');
       return;
     }
-    final url = NetWorkingConfig.path(NetPath.checkVerificationCode);
+    var url = NetWorkingConfig.path(NetPath.checkVerificationCode);
+    if (widget.fromType == CodeFromType.checkPhone) {
+      url = NetWorkingConfig.path(NetPath.checkPhoneStationCode);
+    }else if (widget.fromType == CodeFromType.bindPhone) {
+      url = NetWorkingConfig.path(NetPath.bindPhoneStationCode);
+    }
 
-    var dic = {
-      "code":_code.trim(),
-      "phone": _phone.trim()
-    };
+    var dic = new Map<String,dynamic>.from(paramDic);
+    dic["code"] = _code.trim();
+    dic["phone"] =  _phone.trim();
+
     EasyLoading.show(status: '正在加载...');
-    await NetWorking.post(url, (data) {
+    await NetWorking.formDataPost(url, dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         EasyLoading.showToast("校验成功");
@@ -218,6 +223,12 @@ class _CheckCodeState extends State<CheckCodePage> {
                 })
             );
           });
+        }else if (widget.fromType == CodeFromType.checkPhone || widget.fromType == CodeFromType.bindPhone) {
+          // 跳转到原页面
+          Future.delayed(Duration(seconds: 1) ,(){
+            // 跳转到注册页
+            Navigator.pop(context);
+          });
         }
       }else{
         /// 登录失败
@@ -225,7 +236,7 @@ class _CheckCodeState extends State<CheckCodePage> {
       }
     }, (error) {
       EasyLoading.dismiss();
-    },params: dic);
+    });
   }
 
   //   // 监听焦点

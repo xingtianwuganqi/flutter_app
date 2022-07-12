@@ -135,6 +135,10 @@ enum NetPath {
   getVerificationCode,
   // 校验验证码
   checkVerificationCode,
+  // 校验手机号
+  checkPhoneStationCode,
+  // 绑定手机号
+  bindPhoneStationCode,
 }
 
 enum ThumbType {
@@ -272,6 +276,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/tecent/code/';
       case NetPath.checkVerificationCode:
         return baseUrl + '/api/v2/tecent/check/';
+      case NetPath.checkPhoneStationCode:
+        return baseUrl + '/api/v2/login/checkphone/';
+      case NetPath.bindPhoneStationCode:
+        return baseUrl + '/api/v2/login/bindphone/';
       default:
         return "";
     }
