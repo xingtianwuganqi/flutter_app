@@ -242,10 +242,10 @@ class TopicDetailState extends State<TopicDetailWidget> {
       }
       void tapClick(int index) {
         var imgUrls = originImgs.map((e) => e.url).toList();
-        Navigator.push(context, MaterialPageRoute(builder: (context){
+          Navigator.push(context, MaterialPageRoute(builder: (context){
           return PhotoViewGalleryScreen(
-            images:imgUrls,//传入图片list
-            index: index,//传入当前点击的图片的index
+          images:imgUrls,//传入图片list
+          index: index,//传入当前点击的图片的index
           );
         }));
       }
@@ -349,15 +349,16 @@ class TopicDetailState extends State<TopicDetailWidget> {
               },
             );
           }),
-          IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
-            showShareSheetView();
-          }),
+          // IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
+          //   showShareSheetView();
+          // }),
         ];
       }else{
         return [
-          IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
-            showShareSheetView();
-          }),
+          // IconButton(icon: Icon(Icons.share_rounded,color: ColorsUtil.fromEnmu(ColorEnum.content)), onPressed: (){
+          //   // showShareSheetView();
+          // }),
+          Container()
         ];
       }
     }
@@ -447,7 +448,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             scrollable: true,
             title: Text('领养须知'),
             content: StatefulBuilder(builder: (context, StateSetter setState){
-              return Text('        不要相信任何理由的提前转账要求，如定金、运费等。'
+              return Text('不要相信任何理由的提前转账要求，如定金、运费等。'
                   '若是红包领养，请当面给送养人。领养更多是一种爱心行为，'
                   '一些必要的程序，如领养协议、互换身份证复印件等必不可少。'
                   '宠物是生命不是物品或工具，一切领养活动都应在为生命负责的态度下进行。'

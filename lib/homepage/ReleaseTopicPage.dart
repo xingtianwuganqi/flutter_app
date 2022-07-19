@@ -439,7 +439,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: "        请详细阅读",
+                              text: "请详细阅读",
                               style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
                             ),
                             TextSpan(
@@ -454,7 +454,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                                 },
                             ),
                             TextSpan(
-                              text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n        禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
+                              text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
                               style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
 
                             ),

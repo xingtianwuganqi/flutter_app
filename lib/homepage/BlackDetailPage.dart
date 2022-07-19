@@ -10,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 import '../Common/ImagePicker.dart';
+import '../CommonWidget/PhotoViewGalleryScreen.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
@@ -403,6 +404,17 @@ class BlackDetailState extends State<BlackDetailPage> {
 
 
   Widget photosWidget() {
+
+    void tapClick(int index) {
+      var imgUrls = _releasePhotos.map((e) => ToolConfig.loadImgUrl(e.photoUrl)).toList();
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return PhotoViewGalleryScreen(
+          images:imgUrls,//传入图片list
+          index: index,//传入当前点击的图片的index
+        );
+      }));
+    }
+
     return Container(
       padding: EdgeInsets.only(bottom: 10),
       height: _releasePhotos.length > 3 ? ((MediaQuery.of(context).size.width - 50) / 3 + 10) * 2 : (MediaQuery.of(context).size.width - 50) / 3 + 10,
@@ -433,22 +445,33 @@ class BlackDetailState extends State<BlackDetailPage> {
                 },
               );
             }else{
-              return widget.blackType == BlackType.detail ? Container(
-                child: CachedNetworkImage(
-                  imageUrl: ToolConfig.loadImgUrl(item.photoUrl),
-                  placeholder: (context,url) => Container(
-                    color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+              return widget.blackType == BlackType.detail ?
+              GestureDetector(
+                child: Container(
+                  child: CachedNetworkImage(
+                    imageUrl: ToolConfig.loadImgUrl(item.photoUrl),
+                    placeholder: (context,url) => Container(
+                      color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
+                    ),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
                   ),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ) : Container(
+                ) ,
+                onTap: (){
+                  tapClick(index);
+                },
+              )
+                  : Container(
                   child: Stack(
                     children: [
-                      AssetEntityImage(item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble()),
+                      AssetEntityImage(item.image,
+                          width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                          height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                        fit: BoxFit.cover,
+                      ),
                       Positioned(
-                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.black54,size: 20,), onPressed: () {
                           // 删除数据
                           var isRemove = _releasePhotos.remove(_releasePhotos[index]);
                           if (isRemove) {

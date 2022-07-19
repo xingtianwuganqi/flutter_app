@@ -180,7 +180,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                       height: 18,
                       alignment: Alignment.center,
                       child: Text('已完成',style: TextStyle(color: Colors.white,
-                          fontSize: FontUtil.fs(FontSize.desc),
+                          fontSize: FontUtil.fs(FontSize.small),
                           fontWeight: FontWeight.w500)),
                     ): Container(),
                   )

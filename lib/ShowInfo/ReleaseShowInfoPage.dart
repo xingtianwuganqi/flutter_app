@@ -178,7 +178,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: "        请详细阅读",
+                              text: "请详细阅读",
                               style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
                             ),
                             TextSpan(
@@ -193,7 +193,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                                 },
                             ),
                             TextSpan(
-                              text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n        禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
+                              text: '，特别是用户权利和义务部分，发布内容时请严格遵守用户协议。\n禁止出现商业广告、低俗、色情、暴力、具有侮辱性语音或与宠物无关等内容，违规者帖子会被删除！',
                               style: TextStyle(fontSize: FontUtil.fs(FontSize.mark), color: ColorsUtil.fromEnmu(ColorEnum.content)),
                             ),
                           ],
@@ -393,10 +393,13 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                 child:
                 Stack(
                   children: [
-                    AssetEntityImage(item.image,width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
-                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble()),
+                    AssetEntityImage(item.image,
+                        width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                      fit: BoxFit.cover,
+                    ),
                     Positioned(
-                      child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.white,size: 20,), onPressed: () {
+                      child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.black54,size: 20,), onPressed: () {
                         // 删除数据
                         var isRemove = _releasePhotos.remove(_releasePhotos[index]);
                         if (isRemove) {
