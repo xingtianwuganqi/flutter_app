@@ -9,8 +9,8 @@ import 'package:flutter_printer/flutter_printer.dart';
 
 BaseOptions options = new BaseOptions(
   baseUrl: NetWorkingConfig.baseUrl(),
-  connectTimeout: 5000,
-  receiveTimeout: 3000,
+  connectTimeout: 10000,
+  receiveTimeout: 5000,
 );
 
 Dio dio = new Dio(options);
@@ -49,6 +49,8 @@ class NetWorking {
       Printer.printMapJsonLog(response.data);
       successBack(response.data);
     }catch(e){
+      failBack(e);
+      Printer.printMapJsonLog("----======-----");
       Printer.printMapJsonLog(e);
       if (e is DioError) {
         // 退出登录
@@ -57,7 +59,6 @@ class NetWorking {
           UserManager.instance.logout();
         }
       }
-      failBack(e);
     }
   }
 }
