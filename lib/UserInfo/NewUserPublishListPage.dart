@@ -9,9 +9,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:provider/provider.dart';
 
+import '../Common/SingletonPage.dart';
+
 class NewUserPublishListPage extends StatefulWidget {
   final MyPageType pageType;
-  final int netType;
+  final int netType; // 1:领养，2:秀宠;
   int userId;
 
   NewUserPublishListPage({Key key,@required this.pageType, @required this.netType, this.userId}): super(key: key);
@@ -59,6 +61,30 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
         listNetworking(pageNum);
       }
     });
+
+    // eventbus 监听发帖
+    if (widget.pageType == MyPageType.myPage && widget.netType == 1) {
+      bus.on('topReleaseSuccess',(arg) {
+        pageNum = 1;
+        listNetworking(pageNum);
+      });
+    }else if (widget.pageType == MyPageType.myPage && widget.netType == 2) {
+      bus.on('showReleaseSuccess', (arg) {
+        pageNum = 1;
+        listNetworking(pageNum);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if (widget.pageType == MyPageType.myPage && widget.netType == 1) {
+      bus.off("topReleaseSuccess");
+    }else if (widget.pageType == MyPageType.myPage && widget.netType == 2) {
+      bus.off('showReleaseSuccess');
+    }
   }
 
   void listNetworking(page) {
@@ -309,7 +335,6 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 
       }
     }, (error) {
-      // EasyLoading.showToast('获取token失败');
     });
   }
 

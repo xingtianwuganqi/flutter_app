@@ -10,7 +10,7 @@ import 'package:flutter_720yun/homepage/AddressSelectPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
-import '../Common/ImagePicker.dart';
+import '../Common/SingletonPage.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../NetWorking/NetWorking.dart';
@@ -584,6 +584,8 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('发布成功');
+        // 发送通知，更新个人中心页面
+        bus.emit('topReleaseSuccess');
         Future.delayed(Duration(milliseconds: 1500),(){
           Navigator.pop(context,"refresh");
         });

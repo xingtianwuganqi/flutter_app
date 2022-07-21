@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
-import 'package:flutter_720yun/Common/ImagePicker.dart';
+import 'package:flutter_720yun/Common/SingletonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';

@@ -9,7 +9,7 @@ import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
-import '../Common/ImagePicker.dart';
+import '../Common/SingletonPage.dart';
 import '../CommonWidget/PhotoViewGalleryScreen.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';

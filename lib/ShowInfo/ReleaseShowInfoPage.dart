@@ -11,7 +11,7 @@ import 'package:flutter_720yun/model/ShowModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qiniu_flutter_sdk/qiniu_flutter_sdk.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import '../Common/ImagePicker.dart';
+import '../Common/SingletonPage.dart';
 import '../Login/CheckCodePage.dart';
 import 'GambitSelectPage.dart';
 
@@ -485,6 +485,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         EasyLoading.showToast('发布成功');
+        bus.emit("showReleaseSuccess");
         Future.delayed(Duration(milliseconds: 1500),(){
           Navigator.pop(context,"refresh");
         });
