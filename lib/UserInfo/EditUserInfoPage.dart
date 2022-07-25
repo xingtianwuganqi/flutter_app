@@ -99,32 +99,44 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
+    Widget headImage() {
+      if (_assetInfo != null ) {
+        return Container(
+          child: AssetEntityImage(_assetInfo,height: 80,width: 80,fit: BoxFit.cover,) ,
+          decoration: new BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
+          clipBehavior: Clip.antiAlias,
+        );
+      }else{
+        return CircleAvatar(
+          radius: 40,
+          backgroundColor: Colors.white,
+          backgroundImage:
+          (UserManager.instance.isLogin ?
+          ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
+          CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
+          AssetImage('assets/icons/icon_plh.png')
+          ):
+          Image.asset('assets/icons/icon_plh.png')),
+          child: Container(
+            alignment: Alignment(0, .5),
+            width: 80,
+            height: 80,
+          ),
+        );
+      }
+    }
+
     Widget headWidget() {
       return GestureDetector(
         child: new Container(
           padding: EdgeInsets.only(top: 10),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white,
-                backgroundImage: _assetInfo != null ?
-                AssetEntityImage(_assetInfo,height: 80,width: 80) :
-                (UserManager.instance.isLogin ?
-                ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-                CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
-                AssetImage('assets/icons/icon_plh.png')
-                ):
-                Image.asset('assets/icons/icon_plh.png')),
-                child: Container(
-                  alignment: Alignment(0, .5),
-                  width: 80,
-                  height: 80,
-                ),
-              ),
+              headImage(),
               Padding(padding: EdgeInsets.only(top: 15,bottom: 15),
-                child: Text("点击更换头像",style: TextStyle(fontSize: 14),),
+                child: Text("点击更换头像",style: TextStyle(fontSize: FontUtil.fs(FontSize.desc)),),
               ),
               Divider(color: ColorsUtil.fromEnmu(ColorEnum.defIcon),height: 0.5,)
             ],
@@ -136,6 +148,8 @@ class EditUserWidgetState extends State<EditUserWidget> {
         },
       );
     }
+
+
 
     Widget nickNameWidget() {
       return Container(
@@ -184,16 +198,16 @@ class EditUserWidgetState extends State<EditUserWidget> {
                 }
 
                 /// 如果没有选新头像
-                // if (_assetInfo != null) {
-                //   if (_token != null) {
-                //     // uploadImgToQiNiu(_token);
-                //   } else {
-                //     // 先获取token，再上传
-                //     getQiNiuToken();
-                //   }
-                // }else{
-                //   updateUserInfoNetworking(_avator);
-                // }
+                if (_assetInfo != null) {
+                  if (_token != null) {
+                    uploadImgToQiNiu(_token);
+                  } else {
+                    // 先获取token，再上传
+                    getQiNiuToken();
+                  }
+                }else{
+                  updateUserInfoNetworking(_avator);
+                }
               },
               child: Text('保存',
                 style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -228,10 +242,11 @@ class EditUserWidgetState extends State<EditUserWidget> {
     }
     if (!mounted) return;
 
+    if (resultList.length > 0 ){
+      _assetInfo = resultList.first;
+    }
     setState(() {
-      if (resultList.length > 0 ){
-        _assetInfo = resultList.first;
-      }
+
     });
   }
 
@@ -242,7 +257,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
         _token = model.token;
-        // uploadImgToQiNiu(_token);
+        uploadImgToQiNiu(_token);
       }
     }, (error) {
       EasyLoading.showToast('获取token失败');

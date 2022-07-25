@@ -87,7 +87,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
           headerSliverBuilder: (BuildContext context ,bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 150.0,
+                expandedHeight: 170.0,
                 pinned: true,
                 elevation: 0.5,
                 floating: false,
@@ -145,11 +145,11 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
     return GestureDetector(
       child: Container(
         color: ColorsUtil.fromEnmu(ColorEnum.system),
-        alignment: Alignment(0, .7),
+        alignment: Alignment(0, .6),
         padding: EdgeInsets.only(left: 10,right: 6),
         child: ListTile(
           leading: CircleAvatar(
-            radius: 25,
+            radius: 40,
             backgroundColor: Colors.white,
             backgroundImage: context.watch<UserProviderModel>().isLogin ?
             ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
@@ -159,8 +159,8 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
             AssetImage('assets/icons/icon_plh.png'),
             child: Container(
               alignment: Alignment(0, .5),
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
             ),
           ),
           title: context.watch<UserProviderModel>().isLogin ?
@@ -183,19 +183,19 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   Widget OtherUserInfoWidget() {
     return Container(
       color: ColorsUtil.fromEnmu(ColorEnum.system),
-      alignment: Alignment(0, .7),
+      alignment: Alignment(0, .6),
       padding: EdgeInsets.only(left: 10,right: 6),
       child: ListTile(
         leading: CircleAvatar(
-          radius: 25,
+          radius: 40,
           backgroundColor: Colors.white,
           backgroundImage: otherUserInfo != null ?
           CachedNetworkImageProvider(ToolConfig.loadImgUrl(otherUserInfo.avator)) :
           AssetImage('assets/icons/icon_plh.png'),
           child: Container(
             alignment: Alignment(0, .5),
-            width: 50,
-            height: 50,
+            width: 80,
+            height: 80,
           ),
         ),
         title: otherUserInfo != null ?
