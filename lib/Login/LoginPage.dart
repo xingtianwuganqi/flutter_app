@@ -117,12 +117,12 @@ class _LoginWidgetState extends State<LoginWidget> {
             parameter["password"] = pswd
             parameter["phone_type"] = PhoneType.getDeviceModel()
      */
-    var dic = {
-      "password":generateMD5(_password),
-      "phone_type": deviceInfo
-    };
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic["password"] = generateMD5(_password);
+    dic["phone_type"] = "android";
     if (ToolConfig.isEmail(_username)) {
-      dic['email'] = _username;
+      EasyLoading.showToast('暂不支持邮箱登录');
+      return;
     }else{
       dic['phoneNum'] = _username;
     }

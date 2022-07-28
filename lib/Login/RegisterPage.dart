@@ -134,11 +134,15 @@ class _RegisterState extends State<RegisterWidget> {
             parameter["phone_type"] = PhoneType.getDeviceModel()
 
      */
-    var dic = {
-      "password":generateMD5(_password),
-      "confirm_password": generateMD5(_confirm),
-      "phone_type":deviceInfo
-    };
+    // var dic = {
+    //   "password":generateMD5(_password),
+    //   "confirm_password": generateMD5(_confirm),
+    //   "phone_type":deviceInfo
+    // };
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['password'] = generateMD5(_password);
+    dic['confirm_password'] = generateMD5(_confirm);
+    dic['phone_type'] = 'android';
     if (ToolConfig.isEmail(_username)) {
       EasyLoading.showToast('暂不支持邮箱注册');
       return;
