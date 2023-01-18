@@ -90,7 +90,6 @@ class ViolationListState extends State<ViolationsListWidget> {
               child: Container(
                 padding: EdgeInsets.only(top: 20),
                 alignment: Alignment.center,
-                height: 100,
                 child: Column(
                   children: [
                     Container(
@@ -122,7 +121,7 @@ class ViolationListState extends State<ViolationsListWidget> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
                                   }));
                               },
                           ),

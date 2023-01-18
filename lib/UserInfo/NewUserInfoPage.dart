@@ -91,8 +91,8 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                 pinned: true,
                 elevation: 0.5,
                 floating: false,
-                title: isShowTitle ? Text('我的') : null,
-                actions: [
+                title: (widget.pageType == MyPageType.myPage) ? (isShowTitle ? Text('我的') : null) : null,
+                actions: (widget.pageType == MyPageType.myPage) ? [
                   IconButton(
                     icon: Icon(Icons.settings,color: isShowTitle ? Colors.black: Colors.white),
                     onPressed: () {
@@ -104,7 +104,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
                       });
                     },
                   )
-                ],
+                ] : null,
                 flexibleSpace: FlexibleSpaceBar(
                   background: widget.pageType == MyPageType.myPage ? UserInfoWidget() : OtherUserInfoWidget(),
                 ),
@@ -146,28 +146,23 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
       child: Container(
         color: ColorsUtil.fromEnmu(ColorEnum.system),
         alignment: Alignment(0, .6),
-        padding: EdgeInsets.only(left: 10,right: 6),
         child: ListTile(
           leading: CircleAvatar(
             radius: 40,
             backgroundColor: Colors.white,
-            backgroundImage: context.watch<UserProviderModel>().isLogin ?
+            foregroundImage: context.watch<UserProviderModel>().isLogin ?
             ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
             CachedNetworkImageProvider(ToolConfig.loadImgUrl(UserManager.instance.userInfo.avator)) :
             AssetImage('assets/icons/icon_plh.png')
             ) :
             AssetImage('assets/icons/icon_plh.png'),
-            child: Container(
-              alignment: Alignment(0, .5),
-              width: 80,
-              height: 80,
-            ),
+            child: null,
           ),
           title: context.watch<UserProviderModel>().isLogin ?
           Text(UserManager.instance.userInfo.username ?? "",
             style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),) :
           Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),),
-          trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
+          trailing: Icon(Icons.keyboard_arrow_right,color: Colors.white),
         ),
       ),
       onTap: () {
@@ -183,26 +178,20 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   Widget OtherUserInfoWidget() {
     return Container(
       color: ColorsUtil.fromEnmu(ColorEnum.system),
-      alignment: Alignment(0, .6),
-      padding: EdgeInsets.only(left: 10,right: 6),
+      alignment: Alignment(0, .5),
       child: ListTile(
         leading: CircleAvatar(
           radius: 40,
           backgroundColor: Colors.white,
-          backgroundImage: otherUserInfo != null ?
+          foregroundImage: otherUserInfo != null ?
           CachedNetworkImageProvider(ToolConfig.loadImgUrl(otherUserInfo.avator)) :
           AssetImage('assets/icons/icon_plh.png'),
-          child: Container(
-            alignment: Alignment(0, .5),
-            width: 80,
-            height: 80,
-          ),
+          child: null,
         ),
         title: otherUserInfo != null ?
         Text(otherUserInfo.username ?? "",
           style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
         Text('--',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
-        trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
       ),
     );
   }
