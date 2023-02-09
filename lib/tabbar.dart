@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/homepage/HomeMainPage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'homepage/HomePage.dart';
@@ -35,7 +36,8 @@ class tabbarState extends State<tabbar> {
     if (UserManager.instance.userInfo != null) {
       userId = UserManager.instance.userInfo.id;
     }
-    pages.add(HomePage());
+    // pages.add(HomePage());
+    pages.add(HomeMainPage());
     pages.add(ShowInfoPageWidget());
     pages.add(MessagePage(changed: (value){
       _unreadNum = value;

@@ -3,7 +3,7 @@ import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'SearchPage.dart';
 import 'package:flutter_720yun/homepage/HomeDrawerPage.dart';
-
+import 'package:flutter_720yun/Common/KeepAliveWrapper.dart';
 class HomeMainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -13,7 +13,7 @@ class HomeMainPage extends StatefulWidget {
 }
 
 class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderStateMixin {
-  List tabs = ["推荐","同城"];
+  List tabs = ["推荐","同城","找宠"];
   TabController _tabController;
 
   @override
@@ -64,22 +64,6 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
           ),
         ),
         bottom: AppBarBottomComponent(tabController: _tabController,tabs: tabs),
-        // TabBar(
-        //   controller: _tabController, // 4 需要配置 controller！！！
-        //   // isScrollable: true,
-        //   tabs:tabs.map((e) => Tab(text: e)).toList(),
-        //   // labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
-        //   // unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.content),
-        //   labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w800,color: ColorsUtil.fromEnmu(ColorEnum.title)),
-        //   unselectedLabelStyle: TextStyle(fontSize: 16,color: ColorsUtil.fromEnmu(ColorEnum.content)),
-        //   indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
-        //   indicatorSize: TabBarIndicatorSize.label,
-        //   indicatorWeight: 6,
-        //   isScrollable: true,
-        // ),
-        // PreferredSizeWidget(
-        //
-        // ),
         elevation: 0.5,
       ),
       drawer: Container(
@@ -93,8 +77,9 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
         child: TabBarView(
           controller: _tabController,
           children: [
-            HomePage(),
-            HomePage()
+            KeepAliveWrapper(child: HomePage()),
+            KeepAliveWrapper(child: HomePage()),
+            KeepAliveWrapper(child: HomePage()),
           ],
         ),
       ),

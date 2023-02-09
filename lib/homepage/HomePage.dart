@@ -81,86 +81,88 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        leading: Builder(
-          builder: (context){
-            return Stack(
-              children: [
-                IconButton(
-                  icon:Icon( Icons.dehaze_rounded),
-                  onPressed: (){
-                    Scaffold.of(context).openDrawer();
-                  }
-                ),
-                appVersionInfo != null ? Positioned(
-                  child: Container(
-                    height: 16,
-                    width: 16,
-                    alignment: Alignment.center,
-                    decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Colors.redAccent,
-                    ),
-                    child: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
-                    ),
-                  top: 0,
-                  right: 0,
-                ):Container()
-              ],
-            );
-          },
-        ),
-        title:
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          ),
-          padding: EdgeInsets.only(left: 20,right: 20),
-          width: double.infinity,
-          height: 35,
-          child:TextButton.icon(
-            icon: Image.asset('assets/icons/icon_wx_search.png'),
-            label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return SearchPageWidget();
-              }));
-            },
-          ),
-        ),
-        elevation: 0.5,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child:
-        Image.asset('assets/icons/icon_home_write.png'),
-        // IconButton(
-        //   icon: Image.asset('assets/icons/icon_home_write.png'),
-        // ),
-        backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
-        onPressed: (){
-          lazyAuthToDoThings(context, (){
-            Navigator.push(context, MaterialPageRoute(builder: (context){
-              return ReleaseTopicPage();
-            })).then((value) async {
-              if (value == 'refresh') {
-                await homePageListNetWroking(1);
-              }
-            });
-          });
-        },
-        tooltip: 'Increment',
-      ),
-      drawer: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        child: Drawer(
-          child: HomeDrawerPage(),
-        ),
-      ),
-      body: refreshBody(),
-    );
+    return refreshBody();
   }
+  //   return Scaffold(
+  //     appBar: new AppBar(
+  //       leading: Builder(
+  //         builder: (context){
+  //           return Stack(
+  //             children: [
+  //               IconButton(
+  //                 icon:Icon( Icons.dehaze_rounded),
+  //                 onPressed: (){
+  //                   Scaffold.of(context).openDrawer();
+  //                 }
+  //               ),
+  //               appVersionInfo != null ? Positioned(
+  //                 child: Container(
+  //                   height: 16,
+  //                   width: 16,
+  //                   alignment: Alignment.center,
+  //                   decoration: new BoxDecoration(
+  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
+  //                     color: Colors.redAccent,
+  //                   ),
+  //                   child: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
+  //                   ),
+  //                 top: 0,
+  //                 right: 0,
+  //               ):Container()
+  //             ],
+  //           );
+  //         },
+  //       ),
+  //       title:
+  //       Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.grey[100],
+  //           borderRadius: BorderRadius.all(Radius.circular(20.0)),
+  //         ),
+  //         padding: EdgeInsets.only(left: 20,right: 20),
+  //         width: double.infinity,
+  //         height: 35,
+  //         child:TextButton.icon(
+  //           icon: Image.asset('assets/icons/icon_wx_search.png'),
+  //           label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
+  //           onPressed: () {
+  //             Navigator.push(context, MaterialPageRoute(builder: (context){
+  //               return SearchPageWidget();
+  //             }));
+  //           },
+  //         ),
+  //       ),
+  //       elevation: 0.5,
+  //     ),
+  //     floatingActionButton: FloatingActionButton(
+  //       child:
+  //       Image.asset('assets/icons/icon_home_write.png'),
+  //       // IconButton(
+  //       //   icon: Image.asset('assets/icons/icon_home_write.png'),
+  //       // ),
+  //       backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
+  //       onPressed: (){
+  //         lazyAuthToDoThings(context, (){
+  //           Navigator.push(context, MaterialPageRoute(builder: (context){
+  //             return ReleaseTopicPage();
+  //           })).then((value) async {
+  //             if (value == 'refresh') {
+  //               await homePageListNetWroking(1);
+  //             }
+  //           });
+  //         });
+  //       },
+  //       tooltip: 'Increment',
+  //     ),
+  //     drawer: Container(
+  //       width: MediaQuery.of(context).size.width * 0.7,
+  //       child: Drawer(
+  //         child: HomeDrawerPage(),
+  //       ),
+  //     ),
+  //     body: refreshBody(),
+  //   );
+  // }
 
   Widget refreshBody() {
     // Animation<Color> animation;
