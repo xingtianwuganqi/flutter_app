@@ -78,7 +78,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
           controller: _tabController,
           children: [
             KeepAliveWrapper(child: HomePage()),
-            KeepAliveWrapper(child: HomePage()),
+            KeepAliveWrapper(child: HomePage(pageType: HomePageType.localPage)),
             KeepAliveWrapper(child: HomePage()),
           ],
         ),

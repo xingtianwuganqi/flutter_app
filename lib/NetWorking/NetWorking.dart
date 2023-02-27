@@ -140,6 +140,8 @@ enum NetPath {
   checkPhoneStationCode,
   // 绑定手机号
   bindPhoneStationCode,
+  /// 同城列表
+  localCityList
 }
 
 enum ThumbType {
@@ -281,6 +283,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/login/checkphone/';
       case NetPath.bindPhoneStationCode:
         return baseUrl + '/api/v2/login/bindphone/';
+      case NetPath.localCityList:
+        return baseUrl + '/api/v2/addresstopiclist/';
       default:
         return "";
     }

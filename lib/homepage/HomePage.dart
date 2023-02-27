@@ -19,7 +19,18 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 
 import 'HomeDrawerPage.dart';
+
+enum HomePageType {
+  homePageList,
+  localPage
+}
+
+
 class HomePage extends StatefulWidget {
+  final HomePageType pageType;
+
+  const HomePage({Key key, this.pageType=HomePageType.homePageList }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -37,8 +48,6 @@ class _HomePageState extends State<HomePage> {
   ///加载图片的标识
   bool isLoadingImage = true;
   AppVersionModel appVersionInfo;
-
-  // AnimationController controller;
 
 
   @override
@@ -83,86 +92,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return refreshBody();
   }
-  //   return Scaffold(
-  //     appBar: new AppBar(
-  //       leading: Builder(
-  //         builder: (context){
-  //           return Stack(
-  //             children: [
-  //               IconButton(
-  //                 icon:Icon( Icons.dehaze_rounded),
-  //                 onPressed: (){
-  //                   Scaffold.of(context).openDrawer();
-  //                 }
-  //               ),
-  //               appVersionInfo != null ? Positioned(
-  //                 child: Container(
-  //                   height: 16,
-  //                   width: 16,
-  //                   alignment: Alignment.center,
-  //                   decoration: new BoxDecoration(
-  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
-  //                     color: Colors.redAccent,
-  //                   ),
-  //                   child: Text('1',style: TextStyle(color: Colors.white,fontSize: 10),),
-  //                   ),
-  //                 top: 0,
-  //                 right: 0,
-  //               ):Container()
-  //             ],
-  //           );
-  //         },
-  //       ),
-  //       title:
-  //       Container(
-  //         decoration: BoxDecoration(
-  //           color: Colors.grey[100],
-  //           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-  //         ),
-  //         padding: EdgeInsets.only(left: 20,right: 20),
-  //         width: double.infinity,
-  //         height: 35,
-  //         child:TextButton.icon(
-  //           icon: Image.asset('assets/icons/icon_wx_search.png'),
-  //           label: Text('搜索',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),),
-  //           onPressed: () {
-  //             Navigator.push(context, MaterialPageRoute(builder: (context){
-  //               return SearchPageWidget();
-  //             }));
-  //           },
-  //         ),
-  //       ),
-  //       elevation: 0.5,
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       child:
-  //       Image.asset('assets/icons/icon_home_write.png'),
-  //       // IconButton(
-  //       //   icon: Image.asset('assets/icons/icon_home_write.png'),
-  //       // ),
-  //       backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
-  //       onPressed: (){
-  //         lazyAuthToDoThings(context, (){
-  //           Navigator.push(context, MaterialPageRoute(builder: (context){
-  //             return ReleaseTopicPage();
-  //           })).then((value) async {
-  //             if (value == 'refresh') {
-  //               await homePageListNetWroking(1);
-  //             }
-  //           });
-  //         });
-  //       },
-  //       tooltip: 'Increment',
-  //     ),
-  //     drawer: Container(
-  //       width: MediaQuery.of(context).size.width * 0.7,
-  //       child: Drawer(
-  //         child: HomeDrawerPage(),
-  //       ),
-  //     ),
-  //     body: refreshBody(),
-  //   );
-  // }
 
   Widget refreshBody() {
     // Animation<Color> animation;
@@ -178,59 +107,77 @@ class _HomePageState extends State<HomePage> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return  GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data, (topicId,value) {
-                if (value is HomeLikeStatusModel) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.liked = value.like == 1 ? true : false;
-                      if (newModel.liked) {
-                        newModel.likes_num += 1;
-                      }else if (newModel.liked == false){
-                        if(newModel.likes_num > 0) {
-                          newModel.likes_num -= 1;
+            if (data.topic_id == -1) {
+              return Container(
+                padding: EdgeInsets.only(right: 15),
+                height: 60,
+                child: Row(
+                  children: [
+                    Padding(padding: EdgeInsets.only(left: 15,right: 15),
+                      child: Image.asset("assets/icons/icon_topic_local.png"),
+                    ),
+                    Text("当前城市：北京市"),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Icon(Icons.chevron_right_rounded)
+                  ],
+                ),
+              );
+            }else{
+              return  GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: homePageItemWidget(context, data, (topicId,value) {
+                  if (value is HomeLikeStatusModel) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.liked = value.like == 1 ? true : false;
+                        if (newModel.liked) {
+                          newModel.likes_num += 1;
+                        }else if (newModel.liked == false){
+                          if(newModel.likes_num > 0) {
+                            newModel.likes_num -= 1;
+                          }
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if (value is HomeCollectionStatusModel){
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.collectioned = value.collection == 1 ? true : false;
-                      if (newModel.collectioned) {
-                        newModel.collection_num += 1;
-                      }else if (newModel.collectioned == false){
-                        if(newModel.collection_num > 0) {
-                          newModel.collection_num -= 1;
+                      return newModel;
+                    }).toList();
+                  }else if (value is HomeCollectionStatusModel){
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.collectioned = value.collection == 1 ? true : false;
+                        if (newModel.collectioned) {
+                          newModel.collection_num += 1;
+                        }else if (newModel.collectioned == false){
+                          if(newModel.collection_num > 0) {
+                            newModel.collection_num -= 1;
+                          }
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if(value is int) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.commNum = value;
-                    }
-                    return newModel;
-                  }).toList();
-                }
-                setState(() {
+                      return newModel;
+                    }).toList();
+                  }else if(value is int) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.commNum = value;
+                      }
+                      return newModel;
+                    }).toList();
+                  }
+                  setState(() {
 
-                });
-              }),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return TopicDetailWidget(topicId: data.topic_id);
-                }));
-              },
-            );
-
+                  });
+                }),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TopicDetailWidget(topicId: data.topic_id);
+                  }));
+                },
+              );
+            }
           }
       ),
       firstRefresh: isFirstLoad,
@@ -239,15 +186,18 @@ class _HomePageState extends State<HomePage> {
         await homePageListNetWroking(1);
       }),
       onRefresh:() async {
-        await homePageListNetWroking(1);
+        widget.pageType == HomePageType.homePageList ? await homePageListNetWroking(1) :
+        await localCityListNetworking(1, "北京");
       },
       onLoad: () async{
-        await homePageListNetWroking(page);
+        widget.pageType == HomePageType.homePageList ? await homePageListNetWroking(page) :
+        await localCityListNetworking(page, "北京");
       },
 
     );
   }
 
+  // 首页网络请求
   Future<Null> homePageListNetWroking(int num) async {
     page = num;
     final url = NetWorkingConfig.path(NetPath.topiclist);
@@ -260,6 +210,38 @@ class _HomePageState extends State<HomePage> {
       if (data['code'] == 200) {
         var models = data['data'];
         var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
+        page > 1 ? homeModels += datas : homeModels = datas;
+        if (models.length > 0) {
+          page += 1;
+        }
+        setState(() {
+          isFirstLoad = false;
+
+        });
+      }else{
+        isFirstLoad = false;
+      }
+    },(error){
+
+    });
+  }
+
+  // 同城
+  Future<Null> localCityListNetworking(int page,String address) async {
+    final url = NetWorkingConfig.path(NetPath.localCityList);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['address'] = address;
+    dic['page'] = page;
+    dic['size'] = 10;
+    print(dic);
+    ///创建Map 封装参数
+    await NetWorking.formDataPost(url, dic,(data){
+      if (data['code'] == 200) {
+        var models = data['data'];
+        var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
+        if (page == 1) {
+          datas.insert(0, HomePageModel(topic_id: -1));
+        }
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
           page += 1;
