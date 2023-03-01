@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/homepage/FindPetPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'SearchPage.dart';
@@ -79,7 +80,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
           children: [
             KeepAliveWrapper(child: HomePage()),
             KeepAliveWrapper(child: HomePage(pageType: HomePageType.localPage)),
-            KeepAliveWrapper(child: HomePage()),
+            KeepAliveWrapper(child: FindPetPage()),
           ],
         ),
       ),

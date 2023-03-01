@@ -353,3 +353,17 @@ class ImgIndexModel {
   //
   // }
 }
+
+class CityListModel {
+  final String code;
+  final String name;
+
+  CityListModel({this.code, this.name});
+
+  factory CityListModel.fromJson(Map<String, dynamic> json) {
+    return CityListModel(
+      code: json['code'],
+      name: json['name']
+    );
+  }
+}

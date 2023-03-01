@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_720yun/Comment/CommentPage.dart';
+import 'package:flutter_720yun/homepage/CitySelectPage.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../NetWorking/NetWorking.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
@@ -49,6 +51,7 @@ class _HomePageState extends State<HomePage> {
   bool isLoadingImage = true;
   AppVersionModel appVersionInfo;
 
+  String _cityName;
 
   @override
   void initState() {
@@ -59,6 +62,9 @@ class _HomePageState extends State<HomePage> {
     //     vsync: this);
 
     uploadNetWorking();
+    if (widget.pageType == HomePageType.localPage) {
+      getUserCity();
+    }
   }
 
   bool notificationFunction(Notification notification) {
@@ -90,7 +96,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return refreshBody();
+    // return refreshBody();
+    return Stack(
+      children: [
+        refreshBody(),
+        Positioned(
+          bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              child: IconButton(
+                icon: Image.asset('assets/icons/icon_home_write.png'),
+              ),
+              backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
+              onPressed: (){
+                lazyAuthToDoThings(context, (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return ReleaseTopicPage();
+                  })).then((value) async {
+                    if (value == 'refresh') {
+                      widget.pageType == HomePageType.homePageList ? await homePageListNetWroking(1) :
+                      await localCityListNetworking(1, _cityName);
+                    }
+                  });
+                });
+              },
+              tooltip: widget.pageType == HomePageType.homePageList ? 'homeIncrement' : 'SecondIncrement',
+              heroTag: widget.pageType == HomePageType.homePageList ? 'homeOther' : 'SecondOther',
+            )
+        )
+      ],
+    );
   }
 
   Widget refreshBody() {
@@ -108,21 +143,38 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context,index) {
             var data = homeModels[index];
             if (data.topic_id == -1) {
-              return Container(
-                padding: EdgeInsets.only(right: 15),
-                height: 60,
-                child: Row(
-                  children: [
-                    Padding(padding: EdgeInsets.only(left: 15,right: 15),
-                      child: Image.asset("assets/icons/icon_topic_local.png"),
-                    ),
-                    Text("当前城市：北京市"),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Icon(Icons.chevron_right_rounded)
-                  ],
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  padding: EdgeInsets.only(right: 15),
+                  height: 60,
+                  child: Row(
+                    children: [
+                      Padding(padding: EdgeInsets.only(left: 15,right: 15),
+                        child: Image.asset("assets/icons/icon_topic_local.png"),
+                      ),
+                      Text("当前城市：$_cityName",
+                        style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                            fontWeight: FontWeight.w600),),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Icon(Icons.chevron_right_rounded)
+                    ],
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CitySelectPage();
+                  })).then((value) async {
+                    if (value == 'refresh') {
+                      getUserCity().then((value) {
+                        widget.pageType == HomePageType.homePageList ? homePageListNetWroking(1) :
+                        localCityListNetworking(1, _cityName);
+                      });
+                    }
+                  });
+                },
               );
             }else{
               return  GestureDetector(
@@ -187,11 +239,11 @@ class _HomePageState extends State<HomePage> {
       }),
       onRefresh:() async {
         widget.pageType == HomePageType.homePageList ? await homePageListNetWroking(1) :
-        await localCityListNetworking(1, "北京");
+        await localCityListNetworking(1, _cityName);
       },
       onLoad: () async{
         widget.pageType == HomePageType.homePageList ? await homePageListNetWroking(page) :
-        await localCityListNetworking(page, "北京");
+        await localCityListNetworking(page, _cityName);
       },
 
     );
@@ -257,6 +309,15 @@ class _HomePageState extends State<HomePage> {
 
     });
 
+  }
+
+  Future<void> getUserCity() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var cityName = prefs.getString("userLocalCity");
+    _cityName = cityName ?? "北京市";
+    setState(() {
+
+    });
   }
 
   Future<Null> uploadNetWorking() async{

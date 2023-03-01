@@ -141,7 +141,9 @@ enum NetPath {
   // 绑定手机号
   bindPhoneStationCode,
   /// 同城列表
-  localCityList
+  localCityList,
+  /// 找宠列表
+  findPetList
 }
 
 enum ThumbType {
@@ -285,6 +287,8 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/login/bindphone/';
       case NetPath.localCityList:
         return baseUrl + '/api/v2/addresstopiclist/';
+      case NetPath.findPetList:
+        return baseUrl + '/api/v2/findpet/list';
       default:
         return "";
     }
