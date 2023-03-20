@@ -8,4 +8,9 @@
     @retrofit2.http.* <methods>;
 }
 
+-keep public class com.anythink.flutter.**
+-keepclassmembers class com.anythink.flutter.** {
+   public *;
+}
+
 -ignorewarnings

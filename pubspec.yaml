@@ -44,6 +44,8 @@ dependencies:
   flutter_easyrefresh: ^2.2.1
   wechat_assets_picker: ^7.3.2
   file_picker: ^4.6.1
+  anythink_sdk:
+    path: plugins/anythink_sdk/
 
   #  install_plugin: ^2.0.1
   #  flutter_absolute_path: ^1.0.6
