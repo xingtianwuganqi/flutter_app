@@ -26,29 +26,58 @@ class FindPetState extends State<FindPetPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    // TODO: implement build
-    return EasyRefresh(
-      header: MaterialHeader(),
+    return Stack(
+      children: [
+        EasyRefresh(
+        header: MaterialHeader(),
         footer: MaterialFooter(
           enableInfiniteLoad: false
         ),
         child: ListView.builder(
           itemCount: _findList.length,
-            itemBuilder: (context,index){
-          return Container();
+          itemBuilder: (context,index){
+          var data = _findList[index];
+          if (data.findId == -1) {
+            return findHeaderWidget();
+          }else{
+            return Container();
+          }
+          }),
+        firstRefresh: isFirstLoad,
+        firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
+        emptyWidget:
+        _findList.length > 0 ? null : EmptyPage(() async {
+        await findPetListNetworking(1);
         }),
-      firstRefresh: isFirstLoad,
-      firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
-      emptyWidget: _findList.length > 0 ? null : EmptyPage(() async {
+        // null,
+        onRefresh:() async {
         await findPetListNetworking(1);
-      }),
-      onRefresh:() async {
-        await findPetListNetworking(1);
-      },
-      onLoad: () async{
+        },
+        onLoad: () async{
         await findPetListNetworking(_page);
-      },
+        },
+        )
+      ],
+    );
+    // TODO: implement build
+  }
+
+  Widget findHeaderWidget() {
+    return Container(
+      height: 86,
+        decoration: BoxDecoration(
+          color: ColorsUtil.fromEnmu(ColorEnum.system),
+          borderRadius: BorderRadius.circular(Radius.circular(8) as double)
+        ),
+      child: Row(
+        children: [
+          Text("找宠小助手",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
+          Expanded(child: Container()),
+          Stack(
+
+          )
+        ],
+      ),
     );
   }
 
@@ -59,24 +88,30 @@ class FindPetState extends State<FindPetPage> {
     dic["page"] = page;
     dic["size"] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
+      print(data);
       if (data['code'] == 200) {
         var models = data['data'];
-        var datas = (models as List).map((e) => FindPetListModel.fromJson(e));
+        var dataSourses = (models as List).map((e) => FindPetListModel.fromJson(e));
         if (_page == 1) {
-          _findList = data;
+          var findHeader = FindPetListModel(findId: -1);
+          _findList = [findHeader] + dataSourses;
         }else{
-          _findList = _findList + data;
+          _findList = _findList + dataSourses;
         }
-        if (datas.length > 0) {
+        if (dataSourses.length > 0) {
           _page += 1;
         }
-        setState(() {
-          isFirstLoad = false;
-        });
 
       }
-    }, (error) {
+      isFirstLoad = false;
+      setState(() {
 
+      });
+    }, (error) {
+      print(error);
+      setState(() {
+
+      });
     });
   }
 }
