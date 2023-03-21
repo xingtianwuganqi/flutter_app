@@ -44,6 +44,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+//            abiFilters 'armeabi-v7a','x86'
+            abiFilters 'armeabi-v7a','armeabi'
+        }
     }
 
 //    buildTypes {
@@ -88,4 +92,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     api fileTree(dir: 'plugins/anythink_sdk/android/libs', include: ['*.aar', '*.jar'])
     api "com.android.support:appcompat-v7:28.0.0"
+    api 'com.android.support:localbroadcastmanager:28.0.0'
 }

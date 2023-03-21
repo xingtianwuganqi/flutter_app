@@ -226,36 +226,36 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
                 }
             }
 
-            NativeRender atUnityRender = new NativeRender(mActivity, pViewInfo);
-            try {
-                if (pViewInfo.dislikeView != null) {
-                    initDislikeView(pViewInfo.dislikeView);
-
-                    atUnityRender.setDislikeView(mDislikeView);
-                }
-
-                nativeAd.renderAdView(anyThinkNativeAdView, atUnityRender);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-//            add dislike button
-            if (pViewInfo.dislikeView != null && mDislikeView != null) {
-                if (mDislikeView.getParent() != null) {
-                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
-                }
-
-                anyThinkNativeAdView.addView(mDislikeView);
-            }
-
-            if (pViewInfo.adLogoView != null) {
-                FrameLayout.LayoutParams adLogoLayoutParams = new FrameLayout.LayoutParams(pViewInfo.adLogoView.mWidth, pViewInfo.adLogoView.mHeight);
-                adLogoLayoutParams.leftMargin = pViewInfo.adLogoView.mX;
-                adLogoLayoutParams.topMargin = pViewInfo.adLogoView.mY;
-                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), adLogoLayoutParams);
-            } else {
-                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), null);
-            }
+//            NativeRender atUnityRender = new NativeRender(mActivity, pViewInfo);
+//            try {
+//                if (pViewInfo.dislikeView != null) {
+//                    initDislikeView(pViewInfo.dislikeView);
+//
+//                    atUnityRender.setDislikeView(mDislikeView);
+//                }
+//
+//                nativeAd.renderAdView(anyThinkNativeAdView, atUnityRender);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+////            add dislike button
+//            if (pViewInfo.dislikeView != null && mDislikeView != null) {
+//                if (mDislikeView.getParent() != null) {
+//                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
+//                }
+//
+//                anyThinkNativeAdView.addView(mDislikeView);
+//            }
+//
+//            if (pViewInfo.adLogoView != null) {
+//                FrameLayout.LayoutParams adLogoLayoutParams = new FrameLayout.LayoutParams(pViewInfo.adLogoView.mWidth, pViewInfo.adLogoView.mHeight);
+//                adLogoLayoutParams.leftMargin = pViewInfo.adLogoView.mX;
+//                adLogoLayoutParams.topMargin = pViewInfo.adLogoView.mY;
+//                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), adLogoLayoutParams);
+//            } else {
+//                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), null);
+//            }
 
             if (pViewInfo.rootView != null) {
                 try {
