@@ -70,7 +70,7 @@ class FindPetListModel {
         likeNum: json["likeNum"],
         collectionNum: json["collectionNum"],
         commNum: json["commNum"],
-        open: json["open"],
+        open: false,
         contact_info: json["contact_info"],
         getedcontact: json["getedcontact"],
         userInfo: UserInfoModel.fromJson(json["userInfo"])

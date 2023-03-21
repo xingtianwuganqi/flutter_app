@@ -91,7 +91,7 @@ class FindPetState extends State<FindPetPage> {
       print(data);
       if (data['code'] == 200) {
         var models = data['data'];
-        var dataSourses = (models as List).map((e) => FindPetListModel.fromJson(e));
+        var dataSourses = (models as List).map((e) => FindPetListModel.fromJson(e)).toList();
         if (_page == 1) {
           var findHeader = FindPetListModel(findId: -1);
           _findList = [findHeader] + dataSourses;
