@@ -31,14 +31,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/configuration_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/banner_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/init_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/interstitial_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/listenerManager.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/native_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/manager/rewarder_sdk.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/topsize.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/init/ATAdInitManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/init/ATAdInitManger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/NativeRender.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/NativeRender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tabbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tabbar.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +70,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/README.md" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/android/app/build.gradle" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/android/app/proguard-rules.pro" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" root0="FORCE_HIGHLIGHTING" />
@@ -77,8 +87,6 @@
     <setting file="file://$PROJECT_DIR$/lib/main.dart" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/lib/tabbar.dart" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/pubspec.yaml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/studio.vmoptions" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/flutter/.pub-cache/hosted/pub.dartlang.org/wechat_assets_picker-7.3.2/lib/src/constants/config.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/app.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/app_bar.dart" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/tabs.dart" root0="SKIP_INSPECTION" />
@@ -97,16 +105,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "/Users/jingjun/Desktop/Githup/flutter_app",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/jingjun/Desktop/Githup/flutter_app&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/android/app/src/main/res/xml" />

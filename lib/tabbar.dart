@@ -8,7 +8,9 @@ import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
-
+import 'package:anythink_sdk/at_index.dart';
+import 'manager/init_sdk.dart';
+import 'manager/banner_sdk.dart';
 // JPush jpush = new JPush();
 
 class tabbar extends StatefulWidget {
@@ -46,6 +48,8 @@ class tabbarState extends State<tabbar> {
       });
     },));
     pages.add(NewUserInfoPage(pageType: MyPageType.myPage, userId: userId));
+
+    // 加载广告
   }
 
   @override
@@ -207,4 +211,11 @@ class tabbarState extends State<tabbar> {
     // ..customAnimation = CustomAnimation();
   }
 
+  // 加载广告
+  void setUPAD() {
+    InitManger.setLogEnabled();
+    InitManger.initTopon();
+
+    BannerManager.loadBannerWith();
+  }
 }
