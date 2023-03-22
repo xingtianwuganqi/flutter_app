@@ -111,6 +111,22 @@ class FindPetState extends State<FindPetPage> {
     );
   }
 
+  Widget findPetItem() {
+    return GestureDetector(
+      child: Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> findPetListNetworking(int page) async {
     _page = page;
     final url = NetWorkingConfig.path(NetPath.findPetList);
