@@ -50,6 +50,7 @@ class tabbarState extends State<tabbar> {
     pages.add(NewUserInfoPage(pageType: MyPageType.myPage, userId: userId));
 
     // 加载广告
+    setUPAD();
   }
 
   @override
@@ -213,9 +214,22 @@ class tabbarState extends State<tabbar> {
 
   // 加载广告
   void setUPAD() {
-    InitManger.setLogEnabled();
-    InitManger.initTopon();
+    // InitManger.setLogEnabled();
+    // InitManger.initTopon();
+    //
+    // BannerManager.loadBannerWith();
+    _initTopon();
 
-    BannerManager.loadBannerWith();
+  }
+
+  _initTopon() async {
+    await ATInitManger
+        .initAnyThinkSDK(
+        appidStr: 'a641a7925cd0e3',
+        appidkeyStr: '34957f626411ed7ac73916e8b4031128')
+        .then((value) {
+      print('初始化完成');
+      print(value);
+    });
   }
 }

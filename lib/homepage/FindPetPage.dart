@@ -3,6 +3,7 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
+import 'package:flutter_720yun/routers/router_banner.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -96,9 +97,13 @@ class FindPetState extends State<FindPetPage> {
                           icon: Icon(Icons.arrow_circle_right_sharp,color: ColorsUtil.hexColor(0x6D4241),size: 20,),
                           label: Text("去找宠"),
                         onPressed: (){
+                          // Navigator.push(context, MaterialPageRoute(builder: (context){
+                          //   return FindPetDetailPage();
+                          // }));
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return FindPetDetailPage();
+                            return BannerRouter();
                           }));
+                          // Navigator.pushNamed(context, "/rewardRouter");
                         },
                     ),
                   ),
