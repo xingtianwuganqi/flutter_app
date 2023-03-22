@@ -14,8 +14,8 @@ class FindPetListModel {
   final String desc;
   final String contact;
   final UserInfoModel userInfo;
-  final int liked;
-  final int collection;
+  final bool liked;
+  final bool collection;
   final int likeNum;
   final int collectionNum;
   final int commNum;
@@ -25,7 +25,7 @@ class FindPetListModel {
   final bool open;
   //
   final String contact_info;
-  final int getedcontact;
+  final bool getedcontact;
   //
   // var id: Int?
 

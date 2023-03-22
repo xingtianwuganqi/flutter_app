@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -64,17 +65,46 @@ class FindPetState extends State<FindPetPage> {
 
   Widget findHeaderWidget() {
     return Container(
-      height: 86,
+      margin: EdgeInsets.only(left: 15,top: 15,right: 15, bottom: 15),
+      height: 70,
         decoration: BoxDecoration(
           color: ColorsUtil.fromEnmu(ColorEnum.system),
-          borderRadius: BorderRadius.circular(Radius.circular(8) as double)
+          borderRadius: BorderRadius.all(Radius.circular(8))
         ),
       child: Row(
         children: [
-          Text("找宠小助手",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
+          Padding(padding: EdgeInsets.only(left: 15)),
+          Text("找宠小助手",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.w700),),
           Expanded(child: Container()),
           Stack(
-
+            children: [
+              Image.asset('assets/icons/icon_find_line.png',width: 200,height: 70,fit: BoxFit.fitWidth,),
+              Positioned(
+                height: 70,
+                width: 110,
+                right: 15,
+                  child:
+                Container(
+                  alignment: Alignment.center,
+                  child:Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: ElevatedButton.icon(
+                        style: ButtonStyle(textStyle: MaterialStateProperty.all(
+                          TextStyle(color: ColorsUtil.hexColor(0x683A3B),fontWeight: FontWeight.w700,fontSize: 14)),
+                          backgroundColor: MaterialStateProperty.all(ColorsUtil.hexColor(0xFFF0D6))
+                          ),
+                          icon: Icon(Icons.arrow_circle_right_sharp,color: ColorsUtil.hexColor(0x6D4241),size: 20,),
+                          label: Text("去找宠"),
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return FindPetDetailPage();
+                          }));
+                        },
+                    ),
+                  ),
+                ),
+              )
+            ],
           )
         ],
       ),
@@ -88,7 +118,6 @@ class FindPetState extends State<FindPetPage> {
     dic["page"] = page;
     dic["size"] = 10;
     await NetWorking.formDataPost(url, dic, (data) {
-      print(data);
       if (data['code'] == 200) {
         var models = data['data'];
         var dataSourses = (models as List).map((e) => FindPetListModel.fromJson(e)).toList();
@@ -108,7 +137,6 @@ class FindPetState extends State<FindPetPage> {
 
       });
     }, (error) {
-      print(error);
       setState(() {
 
       });
