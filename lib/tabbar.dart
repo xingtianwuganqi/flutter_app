@@ -214,11 +214,11 @@ class tabbarState extends State<tabbar> {
 
   // 加载广告
   void setUPAD() {
-    // InitManger.setLogEnabled();
-    // InitManger.initTopon();
+    InitManger.setLogEnabled();
+    InitManger.initTopon();
     //
     // BannerManager.loadBannerWith();
-    _initTopon();
+    // _initTopon();
 
   }
 

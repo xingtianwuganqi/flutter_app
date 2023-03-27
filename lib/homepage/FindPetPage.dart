@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
-import 'package:flutter_720yun/routers/router_banner.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../UserInfo/NewUserInfoPage.dart';
 
 class FindPetPage extends StatefulWidget {
   @override
@@ -42,7 +44,7 @@ class FindPetState extends State<FindPetPage> {
           if (data.findId == -1) {
             return findHeaderWidget();
           }else{
-            return Container();
+            return findPetItem(data);
           }
           }),
         firstRefresh: isFirstLoad,
@@ -67,7 +69,7 @@ class FindPetState extends State<FindPetPage> {
   Widget findHeaderWidget() {
     return Container(
       margin: EdgeInsets.only(left: 15,top: 15,right: 15, bottom: 15),
-      height: 70,
+      height: 60,
         decoration: BoxDecoration(
           color: ColorsUtil.fromEnmu(ColorEnum.system),
           borderRadius: BorderRadius.all(Radius.circular(8))
@@ -81,7 +83,7 @@ class FindPetState extends State<FindPetPage> {
             children: [
               Image.asset('assets/icons/icon_find_line.png',width: 200,height: 70,fit: BoxFit.fitWidth,),
               Positioned(
-                height: 70,
+                height: 60,
                 width: 110,
                 right: 15,
                   child:
@@ -97,13 +99,9 @@ class FindPetState extends State<FindPetPage> {
                           icon: Icon(Icons.arrow_circle_right_sharp,color: ColorsUtil.hexColor(0x6D4241),size: 20,),
                           label: Text("去找宠"),
                         onPressed: (){
-                          // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //   return FindPetDetailPage();
-                          // }));
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return BannerRouter();
+                            return FindPetDetailPage();
                           }));
-                          // Navigator.pushNamed(context, "/rewardRouter");
                         },
                     ),
                   ),
@@ -111,6 +109,62 @@ class FindPetState extends State<FindPetPage> {
               )
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Widget findPetItem(FindPetListModel data) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                userInfoWidget(data)
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget userInfoWidget(FindPetListModel data) {
+    return Container(
+      child: Row(
+        children: [
+          GestureDetector(
+            child: CircleAvatar(
+              radius: 18,
+              backgroundImage:
+              ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
+              AssetImage('assets/icons/icon_plh.png')),
+              //   :
+              // AssetImage('assets/icons/icon_plh.png'),
+              child: Container(
+                alignment: Alignment(0, 0),
+                width: 36,
+                height: 36,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
+              }));
+            },
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: EdgeInsets.only(left: 10),child:  Text(data.userInfo.username ?? ""),),
+              Padding(padding: EdgeInsets.only(left: 10),child:  Text(ToolConfig.timeT(data.update_time) ?? ""),)
+            ],
+          ),
+          // Expanded(child: Container()),
+          IconButton(icon: Icon(Icons.more_horiz_rounded),)
         ],
       ),
     );
