@@ -68,7 +68,7 @@ class FindPetState extends State<FindPetPage> {
 
   Widget findHeaderWidget() {
     return Container(
-      margin: EdgeInsets.only(left: 15,top: 15,right: 15, bottom: 15),
+      margin: EdgeInsets.only(left: 15,top: 10,right: 15, bottom: 10),
       height: 60,
         decoration: BoxDecoration(
           color: ColorsUtil.fromEnmu(ColorEnum.system),
@@ -132,6 +132,7 @@ class FindPetState extends State<FindPetPage> {
   }
   
   Widget userInfoWidget(FindPetListModel data) {
+    var width = MediaQuery.of(context).size.width - 112;
     return Container(
       child: Row(
         children: [
@@ -156,14 +157,18 @@ class FindPetState extends State<FindPetPage> {
               }));
             },
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(padding: EdgeInsets.only(left: 10),child:  Text(data.userInfo.username ?? ""),),
-              Padding(padding: EdgeInsets.only(left: 10),child:  Text(ToolConfig.timeT(data.update_time) ?? ""),)
-            ],
+          Container(
+            width: width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo.username ?? "",style:
+                TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w600,color: ColorsUtil.fromEnmu(ColorEnum.title)),),),
+                Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time) ?? "",style:
+    TextStyle(fontSize: FontUtil.fs(FontSize.time),color: ColorsUtil.fromEnmu(ColorEnum.content)),)),
+              ],
+            ),
           ),
-          // Expanded(child: Container()),
           IconButton(icon: Icon(Icons.more_horiz_rounded),)
         ],
       ),
