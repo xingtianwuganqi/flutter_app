@@ -120,11 +120,8 @@ class FindPetState extends State<FindPetPage> {
         padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
         child: Column(
           children: [
-            Row(
-              children: [
-                userInfoWidget(data)
-              ],
-            )
+            userInfoWidget(data),
+            petTypeWdiget(data),
           ],
         ),
       ),
@@ -172,6 +169,45 @@ class FindPetState extends State<FindPetPage> {
           IconButton(icon: Icon(Icons.more_horiz_rounded),)
         ],
       ),
+    );
+  }
+
+  Widget petTypeWdiget(FindPetListModel model) {
+    return Container(
+      padding: EdgeInsets.only(top: 2,bottom: 2),
+      child: Row(
+        children: [
+          Padding(padding: EdgeInsets.only(right: 5),
+            child: Text("想领养",style:
+            TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                color: ColorsUtil.fromEnmu(ColorEnum.content)),
+            ),
+          ),
+          Wrap(
+            spacing: 10,
+            children:
+              [Container(
+                decoration: BoxDecoration(
+                    color: ColorsUtil.fromEnmu(ColorEnum.system),
+                    borderRadius: BorderRadius.all(Radius.circular(3.0))
+                ),
+                padding: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
+                child: Text(model.pet_type == 1 ? "猫咪" : "狗狗",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+              )]
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget textDescWidget() {
+    return Container(
+
     );
   }
 
