@@ -71,6 +71,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
       } else {
         print('flutter banner no cache');
+        BannerManager.loadBannerWith();
       }
 
     });

@@ -9,6 +9,7 @@ import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../UserInfo/SupportUsPage.dart';
 import '../model/UserModel.dart';
 
 class HomeDrawerPage extends StatefulWidget {
@@ -30,7 +31,8 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_mi_upload.png',name: '检测更新',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0)
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '支持我们',type: 0,unreadNum: 0)
   ];
 
   AppVersionModel appVersionInfo;
@@ -147,6 +149,10 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               // 打开浏览器
               _launchUrl();
             }
+          }else if (model.name == "支持我们") {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return SupportUsPage();
+            }));
           }
         },
       );
