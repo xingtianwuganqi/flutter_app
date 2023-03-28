@@ -238,16 +238,16 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-//
-////            add dislike button
-//            if (pViewInfo.dislikeView != null && mDislikeView != null) {
-//                if (mDislikeView.getParent() != null) {
-//                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
-//                }
-//
-//                anyThinkNativeAdView.addView(mDislikeView);
-//            }
-//
+
+//            add dislike button
+            if (pViewInfo.dislikeView != null && mDislikeView != null) {
+                if (mDislikeView.getParent() != null) {
+                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
+                }
+
+                anyThinkNativeAdView.addView(mDislikeView);
+            }
+
 //            if (pViewInfo.adLogoView != null) {
 //                FrameLayout.LayoutParams adLogoLayoutParams = new FrameLayout.LayoutParams(pViewInfo.adLogoView.mWidth, pViewInfo.adLogoView.mHeight);
 //                adLogoLayoutParams.leftMargin = pViewInfo.adLogoView.mX;

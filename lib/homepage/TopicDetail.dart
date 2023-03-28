@@ -57,7 +57,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
     homePageListNetWroking();
     addViewHistoryNetWorking();
     _checkReadyToShow();
-    ListenerManager.bannerListen();
   }
 
   _checkReadyToShow() {
@@ -305,7 +304,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;
       data.add(Container(
-        padding: EdgeInsets.only(left: 15,right: 15),
+        // padding: EdgeInsets.only(left: 15,right: 15),
         height: 70,
         width: double.infinity,
         child: _getBannerView(),

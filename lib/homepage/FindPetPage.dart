@@ -4,11 +4,14 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
+import 'package:flutter_720yun/routers/router_reward.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../UserInfo/NewUserInfoPage.dart';
 import '../routers/router_banner.dart';
+import '../routers/router_interstitial.dart';
+import '../routers/router_native.dart';
 
 class FindPetPage extends StatefulWidget {
   @override
@@ -102,7 +105,7 @@ class FindPetState extends State<FindPetPage> {
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
                             // return FindPetDetailPage();
-                            return BannerRouter();
+                            return InterstitialRouter();
                           }));
                         },
                     ),

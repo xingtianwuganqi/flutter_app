@@ -11,6 +11,7 @@ import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 import 'package:anythink_sdk/at_index.dart';
 import 'manager/init_sdk.dart';
 import 'manager/banner_sdk.dart';
+import 'manager/listenerManager.dart';
 // JPush jpush = new JPush();
 
 class tabbar extends StatefulWidget {
@@ -216,6 +217,7 @@ class tabbarState extends State<tabbar> {
   void setUPAD() {
     InitManger.setLogEnabled();
     InitManger.initTopon();
+    // 添加监听
     BannerManager.loadBannerWith();
   }
 }
