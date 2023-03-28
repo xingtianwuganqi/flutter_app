@@ -216,20 +216,6 @@ class tabbarState extends State<tabbar> {
   void setUPAD() {
     InitManger.setLogEnabled();
     InitManger.initTopon();
-    //
-    // BannerManager.loadBannerWith();
-    // _initTopon();
-
-  }
-
-  _initTopon() async {
-    await ATInitManger
-        .initAnyThinkSDK(
-        appidStr: 'a641a7925cd0e3',
-        appidkeyStr: '34957f626411ed7ac73916e8b4031128')
-        .then((value) {
-      print('初始化完成');
-      print(value);
-    });
+    BannerManager.loadBannerWith();
   }
 }
