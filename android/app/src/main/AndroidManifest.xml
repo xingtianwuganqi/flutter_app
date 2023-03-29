@@ -38,6 +38,7 @@
         android:label="真命天喵宠物领养送养平台"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         android:networkSecurityConfig="@xml/network_security_config">
         <uses-library
             android:name="org.apache.http.legacy"

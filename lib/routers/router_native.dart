@@ -1,6 +1,7 @@
 import 'package:anythink_sdk/at_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_720yun/manager/listenerManager.dart';
 
 import '../configuration_sdk.dart';
 import '../manager/native_sdk.dart';
@@ -17,6 +18,7 @@ class _NativeRouterState extends State<NativeRouter> {
   @override
   void initState() {
     super.initState();
+    ListenerManager.nativeListen();
   }
 
   bool flag = false;

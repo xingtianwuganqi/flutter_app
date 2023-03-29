@@ -122,11 +122,15 @@ class FindPetState extends State<FindPetPage> {
   Widget findPetItem(FindPetListModel data) {
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
+        padding: EdgeInsets.only(left: 15,bottom: 10),
         child: Column(
           children: [
             userInfoWidget(data),
             petTypeWdiget(data),
+            textDescWidget(data),
+            contactButton(data),
+            statusWidget(data),
+            lineWidget(),
           ],
         ),
       ),
@@ -167,7 +171,7 @@ class FindPetState extends State<FindPetPage> {
                 Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo.username ?? "",style:
                 TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w600,color: ColorsUtil.fromEnmu(ColorEnum.title)),),),
                 Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time) ?? "",style:
-    TextStyle(fontSize: FontUtil.fs(FontSize.time),color: ColorsUtil.fromEnmu(ColorEnum.content)),)),
+    TextStyle(fontSize: FontUtil.fs(FontSize.time),color: ColorsUtil.fromEnmu(ColorEnum.desc)),)),
               ],
             ),
           ),
@@ -179,7 +183,7 @@ class FindPetState extends State<FindPetPage> {
 
   Widget petTypeWdiget(FindPetListModel model) {
     return Container(
-      padding: EdgeInsets.only(top: 2,bottom: 2),
+      padding: EdgeInsets.only(left: 46, top: 2,bottom: 2),
       child: Row(
         children: [
           Padding(padding: EdgeInsets.only(right: 5),
@@ -210,9 +214,99 @@ class FindPetState extends State<FindPetPage> {
     );
   }
 
-  Widget textDescWidget() {
+  // 文本
+  Widget textDescWidget(FindPetListModel data) {
     return Container(
+      padding: EdgeInsets.only(left: 46, top: 2,bottom: 2,right: 15),
+      alignment: Alignment.centerLeft,
+      child: Text(data.desc,
+        style: TextStyle(fontSize: FontUtil.fs(FontSize.content,),
+            color: ColorsUtil.fromEnmu(ColorEnum.content),
+          height: 1.6
+        ),
+      ),
+    );
+  }
+  
+  // 获取联系方式按钮
+  Widget contactButton(FindPetListModel data) {
+    return Container(
+      padding: EdgeInsets.only(left: 46,right: 15,top: 2,bottom: 2),
+      height: 36,
+      child:
+      SizedBox.expand(
+          child: TextButton(
+            child: Text('获取TA的联系方式',style:
+            TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold),),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system).withOpacity(0.6)),
+            ),
+          )
+      )
+      ,
+    );
+  }
 
+
+  // 获取联系方式按钮
+  Widget statusWidget(FindPetListModel data) {
+    return Container(
+      padding: EdgeInsets.only(left: 46,right: 15),
+      height: 36,
+      child: Row(
+        children: [
+          Expanded(
+              child: TextButton.icon(
+                icon:(data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
+                label: Text((data?.likeNum ?? 0) > (0) ? data.likeNum.toString() : "点赞",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                    color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                  ),
+                ),
+                onPressed: (){
+                  
+                },
+              )
+          ),
+          Expanded(
+              child: TextButton.icon(
+                icon:(data?.collection ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
+                label: Text((data?.collectionNum ?? 0) > (0) ? data.collectionNum.toString() : "收藏",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                    color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                  ),
+                ),
+                onPressed: (){
+                  
+                },
+              )
+          ),
+          Expanded(
+              child: TextButton.icon(
+                icon:Image.asset('assets/icons/icon_sh_commen.png'),
+                label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
+                  style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                    color: ColorsUtil.fromEnmu(ColorEnum.mark),
+                  ),
+                ),
+                onPressed: (){
+                  
+                },
+              )
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 线
+  Widget lineWidget() {
+    return Container(
+      child: Divider(
+        indent: 46,
+        endIndent: 15,
+        color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+      ),
     );
   }
 
