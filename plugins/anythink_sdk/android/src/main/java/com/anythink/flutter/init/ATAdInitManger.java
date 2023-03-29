@@ -81,6 +81,7 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                     }
 
 //                    ATSDK.setExcludeMyOfferPkgList(bundleIdList);
+                    ATSDK.setExcludePackageList(bundleIdList);
                 }
                 break;
             case "deniedUploadDeviceInfo":

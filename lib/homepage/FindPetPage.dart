@@ -10,6 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../UserInfo/NewUserInfoPage.dart';
 import '../routers/router_banner.dart';
+import '../routers/router_home.dart';
 import '../routers/router_interstitial.dart';
 import '../routers/router_native.dart';
 
@@ -104,8 +105,7 @@ class FindPetState extends State<FindPetPage> {
                           label: Text("去找宠"),
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            // return FindPetDetailPage();
-                            return InterstitialRouter();
+                            return AdTestPage();
                           }));
                         },
                     ),
