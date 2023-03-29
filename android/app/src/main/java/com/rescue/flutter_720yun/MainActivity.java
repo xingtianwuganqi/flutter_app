@@ -1,4 +1,4 @@
-package com.example.anythink_sdk_example;
+package com.anythink.sdk.demo;
 
 //import android.os.Bundle;
 //import io.flutter.app.FlutterActivity;
