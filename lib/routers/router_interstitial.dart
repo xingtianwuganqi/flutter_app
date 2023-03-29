@@ -44,7 +44,7 @@ class _InterstitialRouterState extends State<InterstitialRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: InterstitialManager.showSceneInterstitialAd,
+                      onPressed: InterstitialManager.showInterstitialAd,
                       child: Text("Show",
                           style: TextStyle(
                             color: Colors.black,
