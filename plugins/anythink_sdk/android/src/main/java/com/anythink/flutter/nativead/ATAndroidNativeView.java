@@ -25,10 +25,10 @@ public class ATAndroidNativeView implements PlatformView {
             boolean isAdaptiveHeight = (Boolean) args.get(Const.PlatformViewKeys.isAdaptiveHeight);
             Map<String, Object> settings = (Map<String, Object>) args.get(Const.PlatformViewKeys.ExtraMap);
 
-            MsgTools.pirntMsg("ATAndroidNativeView: " + placementID + ", scenario: " + scenario + ", settings: " + settings + ", isAdaptiveHeight: " + isAdaptiveHeight);
+            MsgTools.printMsg("ATAndroidNativeView: " + placementID + ", scenario: " + scenario + ", settings: " + settings + ", isAdaptiveHeight: " + isAdaptiveHeight);
 
             if (TextUtils.isEmpty(placementID)) {
-                MsgTools.pirntMsg("ATAndroidNativeView: placementId = null");
+                MsgTools.printMsg("ATAndroidNativeView: placementId = null");
                 return;
             }
 

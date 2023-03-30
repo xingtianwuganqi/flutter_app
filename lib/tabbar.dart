@@ -218,6 +218,6 @@ class tabbarState extends State<tabbar> {
     InitManger.setLogEnabled();
     InitManger.initTopon();
     // 添加监听
-    BannerManager.loadBannerWith();
+    // BannerManager.loadBannerWith();
   }
 }

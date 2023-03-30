@@ -7,7 +7,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item android:drawable="@drawable/anythink_btn_close_pressed" android:state_pressed="true"/>
     <item android:drawable="@drawable/anythink_btn_close_normal"/>
 </selector>

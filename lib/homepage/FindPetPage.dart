@@ -9,8 +9,8 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../UserInfo/NewUserInfoPage.dart';
+import '../router_home.dart';
 import '../routers/router_banner.dart';
-import '../routers/router_home.dart';
 import '../routers/router_interstitial.dart';
 import '../routers/router_native.dart';
 

@@ -31,16 +31,56 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/router_home.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/SelfRenderViewUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/configuration_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/configuration_sdk.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/banner_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manager/banner_sdk.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/init_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manager/init_sdk.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/interstitial_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manager/interstitial_sdk.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/manager/native_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manager/native_sdk.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/rewarder_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manager/rewarder_sdk.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/Routers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routers/Routers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_banner.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routers/router_banner.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_home.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_interstitial.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routers/router_interstitial.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/routers/router_native.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routers/router_native.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tabbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tabbar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATFlutterEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATFlutterEventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATPlatformViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATPlatformViewManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/AnythinkSdkPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/AnythinkSdkPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/HandleAnyThinkMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/HandleAnyThinkMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAdBannerManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAdBannerManger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAndroidBannerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAndroidBannerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerViewFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/init/ATAdInitManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/init/ATAdInitManger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATAdInterstitialManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATAdInterstitialManger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATInterstitialHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATInterstitialHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAdNativeManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAdNativeManger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAndroidNativeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAndroidNativeView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeViewFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ViewInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ViewInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATAdRewardVideoManger.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATAdRewardVideoManger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATRewardVideoHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATRewardVideoHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Const.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/FlutterPluginUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/FlutterPluginUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/MsgTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/MsgTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable/anythink_btn_close.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable/anythink_btn_close.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +95,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Gradle Kotlin DSL Build Script" />
-        <option value="Dart File" />
         <option value="Class" />
+        <option value="Dart File" />
       </list>
     </option>
   </component>
@@ -113,10 +153,10 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib" />
       <recent name="$PROJECT_DIR$/android/app/src/main/res/xml" />
       <recent name="$PROJECT_DIR$/plugins/anythink_sdk/android" />
       <recent name="$PROJECT_DIR$/plugins" />
-      <recent name="$PROJECT_DIR$/lib" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

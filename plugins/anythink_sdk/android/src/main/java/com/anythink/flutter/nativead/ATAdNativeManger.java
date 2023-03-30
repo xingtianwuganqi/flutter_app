@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.anythink.flutter.HandleAnyThinkMethod;
 import com.anythink.flutter.utils.Const;
-import com.anythink.flutter.utils.MsgTools;
 
 import org.json.JSONException;
 

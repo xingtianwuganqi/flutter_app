@@ -1,7 +1,6 @@
 import 'package:anythink_sdk/at_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_720yun/manager/listenerManager.dart';
 
 import '../configuration_sdk.dart';
 import '../manager/native_sdk.dart';
@@ -18,7 +17,6 @@ class _NativeRouterState extends State<NativeRouter> {
   @override
   void initState() {
     super.initState();
-    ListenerManager.nativeListen();
   }
 
   bool flag = false;
@@ -75,7 +73,8 @@ class _NativeRouterState extends State<NativeRouter> {
           y: 40,
           textSize: 15,
           textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1"
+          backgroundColorStr: "#2095F1",
+          textAlignmentStr: "center",
         ),
         ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
             topSizeTool.getWidth() - 20, topSizeTool.getWidth() * 0.6,
@@ -136,8 +135,8 @@ class _NativeRouterState extends State<NativeRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: NativeManager.removeNativeAd,
-                      // onPressed: _remove,
+                      // onPressed: NativeManager.removeNativeAd,
+                      onPressed: _remove,
                       child: Text("Remove",
                           style: TextStyle(
                             color: Colors.black,

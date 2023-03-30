@@ -9,11 +9,9 @@ class RewarderTool{
     await ATRewardedManager.loadRewardedVideo(
         placementID: Configuration.rewarderPlacementID,
         extraMap: {
-          ATRewardedManager.kATAdLoadingExtraUserDataKeywordKey(): '1234',
+          // ATRewardedManager.kATAdLoadingExtraMediaExtraKey(): '1234',
           ATRewardedManager.kATAdLoadingExtraUserIDKey(): '1234',
-        }).then((value) {
-      print('flutter Rewarded video loading video end');
-    });
+        });
   }
 
   rewardVideocheck() async{
@@ -54,10 +52,7 @@ class RewarderTool{
     await ATRewardedManager
         .showRewardedVideo(
       placementID: Configuration.rewarderPlacementID,
-    )
-        .then((value) {
-      print('flutter showRewardedVideo: $value');
-    });
+    );
   }
 
   showSceneRewardedAd() async {
@@ -65,9 +60,6 @@ class RewarderTool{
         .showSceneRewardedVideo(
       sceneID: Configuration.rewarderSceneID,
       placementID: Configuration.rewarderPlacementID,
-    )
-        .then((value) {
-      print('flutter showSceneRewardedAd: $value');
-    });
+    );
   }
 }
