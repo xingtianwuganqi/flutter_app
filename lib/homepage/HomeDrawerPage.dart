@@ -7,6 +7,7 @@ import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
+import 'package:flutter_720yun/router_home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../UserInfo/SupportUsPage.dart';
@@ -32,7 +33,9 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '支持我们',type: 0,unreadNum: 0)
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '支持我们',type: 0,unreadNum: 0),
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
+
   ];
 
   AppVersionModel appVersionInfo;
@@ -152,6 +155,10 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
           }else if (model.name == "支持我们") {
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return SupportUsPage();
+            }));
+          }else if (model.name == "广告") {
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return AdTestPage();
             }));
           }
         },

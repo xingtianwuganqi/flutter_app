@@ -105,7 +105,7 @@ class FindPetState extends State<FindPetPage> {
                           label: Text("去找宠"),
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return AdTestPage();
+                            return FindPetDetailPage();
                           }));
                         },
                     ),

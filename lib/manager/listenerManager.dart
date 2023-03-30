@@ -3,6 +3,7 @@ import 'package:anythink_sdk/at_banner_response.dart';
 import 'package:anythink_sdk/at_index.dart';
 import 'package:anythink_sdk/at_interstitial_response.dart';
 import 'package:anythink_sdk/at_listener.dart';
+import 'package:flutter_720yun/manager/native_sdk.dart';
 
 
 final ListenerManager = ListenerTool();
@@ -171,6 +172,7 @@ class ListenerTool {
           print("flutter nativeAdExitFullScreenVideoInAd ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
           break;
         case NativeStatus.nativeAdDidShowNativeAd:
+          NativeManager.loadNativeWith();
           print("flutter nativeAdDidShowNativeAd ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
           break;
         case NativeStatus.nativeAdDidStartPlayingVideo:
