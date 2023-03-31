@@ -23,7 +23,8 @@ class FindPetDetailState extends State<FindPetDetailPage> {
       body: CustomScrollView(
         slivers: [
           findPetHeader(),
-
+          petTypeWidget(),
+          descWidget()
         ],
       ),
     );
@@ -77,18 +78,74 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   // 宠物类型
   Widget petTypeWidget() {
     var petType = Container(
-      color: ColorsUtil.hexColor(0xF0EBDA),
+      padding: EdgeInsets.only(left: 15,right: 15),
+      color: Colors.white,
       height: 50,
-      child: Row(
+      child: Column(
         children: [
-          Text('种类',),
-          // IconButton(onPressed: onPressed, icon: icon)
+          Row(
+            children: [
+              Text('种类：',),
+              Expanded(
+                  child: TextButton.icon(
+                    icon: Icon(Icons.access_alarm_outlined,size: 20,),
+                    label: Text('猫咪'),
+                  )
+              ),
+              Expanded(
+                  child: TextButton.icon(
+                    icon: Icon(Icons.access_alarm_outlined,size: 20,),
+                    label: Text('狗狗'),
+                  )
+              )
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 15,right: 15),
+            height: 0.5,
+            color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+          )
         ],
       ),
     );
 
     return SliverToBoxAdapter(
       child: petType,
+    );
+  }
+
+  // 宠物类型
+  Widget descWidget() {
+    var descType = Container(
+      // alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 15,right: 15),
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('描述'),
+          Container(
+
+            height: 200,
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: '请输入简短的描述',
+                hintStyle: ,
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 15,right: 15),
+            height: 0.5,
+            color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+          )
+        ],
+      ),
+    );
+
+    return SliverToBoxAdapter(
+      child: descType,
     );
   }
 }
