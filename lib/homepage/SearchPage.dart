@@ -1,3 +1,5 @@
+import 'package:anythink_sdk/at_native.dart';
+import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
@@ -7,8 +9,10 @@ import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../NetWorking/NetWorking.dart';
 import 'package:dio/dio.dart';
+import '../configuration_sdk.dart';
 import '../model/HomePageModel.dart';
 import '../Login/LoginPage.dart';
+import '../topsize.dart';
 import 'TopicDetail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -363,58 +367,62 @@ class SearchPageState extends State<SearchPageWidget> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return TopicDetailWidget(topicId: data.topic_id);
-                }));
-              },
-              child: homePageItemWidget(context,data,(topicId,value) {
-                if (value is HomeLikeStatusModel) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.liked = value.like == 1 ? true : false;
-                      if (newModel.liked) {
-                        newModel.likes_num += 1;
-                      }else if (newModel.liked == false){
-                        if(newModel.likes_num > 0) {
-                          newModel.likes_num -= 1;
+            if (data.topic_id == -2) {
+              return nativeADWidget();
+            }else{
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TopicDetailWidget(topicId: data.topic_id);
+                  }));
+                },
+                child: homePageItemWidget(context,data,(topicId,value) {
+                  if (value is HomeLikeStatusModel) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.liked = value.like == 1 ? true : false;
+                        if (newModel.liked) {
+                          newModel.likes_num += 1;
+                        }else if (newModel.liked == false){
+                          if(newModel.likes_num > 0) {
+                            newModel.likes_num -= 1;
+                          }
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if (value is HomeCollectionStatusModel){
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.collectioned = value.collection == 1 ? true : false;
-                      if (newModel.collectioned) {
-                        newModel.collection_num += 1;
-                      }else if (newModel.collectioned == false){
-                        if(newModel.collection_num > 0) {
-                          newModel.collection_num -= 1;
+                      return newModel;
+                    }).toList();
+                  }else if (value is HomeCollectionStatusModel){
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.collectioned = value.collection == 1 ? true : false;
+                        if (newModel.collectioned) {
+                          newModel.collection_num += 1;
+                        }else if (newModel.collectioned == false){
+                          if(newModel.collection_num > 0) {
+                            newModel.collection_num -= 1;
+                          }
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if(value is int) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.commNum = value;
-                    }
-                    return newModel;
-                  }).toList();
-                }
-                setState(() {
+                      return newModel;
+                    }).toList();
+                  }else if(value is int) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.commNum = value;
+                      }
+                      return newModel;
+                    }).toList();
+                  }
+                  setState(() {
 
-                });
-              }),
-            );
+                  });
+                }),
+              );
+            }
           }
       ),
       // firstRefresh: isFirstLoad,
@@ -492,6 +500,23 @@ class SearchPageState extends State<SearchPageWidget> {
         for (int i = 0;i < models.length; i++ ){
           datas.add(new HomePageModel.fromJson(models[i]));
         }
+        if (_page == 1) {
+          ATNativeManager.nativeAdReady(
+            placementID: Configuration.nativePlacementID,
+          ).then((value) {
+            if (value == true) {
+              if (datas.length > 5) {
+                datas.insert(5, HomePageModel(topic_id: -2));
+              }else{
+                datas.add(HomePageModel(topic_id: -2));
+              }
+              print("广告加载完毕");
+              setState(() {
+
+              });
+            }
+          });
+        }
         _page == 1 ?  homeModels = datas : homeModels = homeModels + datas;
         if (datas.length > 0) {
           _page += 1;
@@ -507,6 +532,59 @@ class SearchPageState extends State<SearchPageWidget> {
       EasyLoading.showToast('网络出错');
     });
 
+  }
+  Widget nativeADWidget() {
+    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
+    return Container(
+      width: double.infinity,
+      height: 100 + imageH,
+      child: PlatformNativeWidget(Configuration.nativePlacementID, {
+        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
+            topSizeTool.getWidth(), 340,
+            backgroundColorStr: '#FFFFFF'
+        ),
+        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
+            40, 40,
+            x: 15, y: 40, backgroundColorStr: 'clearColor'),
+        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
+          topSizeTool.getWidth() - 160,
+          20,
+          x: 61,
+          y: 40,
+          textSize: 15,
+        ),
+        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
+          topSizeTool.getWidth() - 160, 20,
+          x: 61, y:60,
+          textSize: 15,
+          textColorStr: "#999999",
+        ),
+        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
+          80,
+          36,
+          x: topSizeTool.getWidth() - 95,
+          y: 40,
+          textSize: 15,
+          textColorStr: "#FFFFFF",
+          backgroundColorStr: "#2095F1",
+          textAlignmentStr: "center",
+        ),
+        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
+            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
+            x: 61, y: 86, backgroundColorStr: '#000000'),
+        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
+            20, 10,
+            x: 10,
+            y: 10,
+            backgroundColorStr: '#00000000'),
+        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
+          20,
+          20,
+          x: topSizeTool.getWidth() - 35,
+          y: 10,
+        ),
+      },sceneID: Configuration.nativeSceneID),
+    );
   }
 
 

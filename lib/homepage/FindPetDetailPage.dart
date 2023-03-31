@@ -85,7 +85,10 @@ class FindPetDetailState extends State<FindPetDetailPage> {
         children: [
           Row(
             children: [
-              Text('种类：',),
+              Text('种类：',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
+                  fontSize: FontUtil.fs(FontSize.content),
+                  fontWeight: FontWeight.bold
+              ),),
               Expanded(
                   child: TextButton.icon(
                     icon: Icon(Icons.access_alarm_outlined,size: 20,),
@@ -123,19 +126,31 @@ class FindPetDetailState extends State<FindPetDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('描述'),
+          Padding(padding: EdgeInsets.only(top: 10,bottom: 5),
+            child: Text('描述',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
+              fontSize: FontUtil.fs(FontSize.content),
+              fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
           Container(
-
+            decoration: BoxDecoration(
+              //设置四周圆角 角度
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              //设置四周边框
+              border: new Border.all(width: 1, color: ColorsUtil.fromEnmu(ColorEnum.tableBack)),
+            ),
             height: 200,
             child: TextField(
               decoration: InputDecoration(
                 hintText: '请输入简短的描述',
-                hintStyle: ,
+                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),
                 border: InputBorder.none,
               ),
             ),
           ),
           Container(
+            margin: EdgeInsets.only(top: 5),
             padding: EdgeInsets.only(left: 15,right: 15),
             height: 0.5,
             color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
@@ -146,6 +161,45 @@ class FindPetDetailState extends State<FindPetDetailPage> {
 
     return SliverToBoxAdapter(
       child: descType,
+    );
+  }
+
+
+  Widget addressWidget() {
+    var addressType = Container(
+      // alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 15,right: 15),
+      color: Colors.white,
+      height: 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(padding: EdgeInsets.only(left: 15,right: 10),
+                child: Text('地址',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
+                    fontSize: FontUtil.fs(FontSize.content),
+                    fontWeight: FontWeight.bold
+                ),
+                ),
+              ),
+              Container(
+                child: Text('请选择地址',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),)),
+              )
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            padding: EdgeInsets.only(left: 15,right: 15),
+            height: 0.5,
+            color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+          )
+        ],
+      ),
+    );
+
+    return SliverToBoxAdapter(
+      child: addressType,
     );
   }
 }

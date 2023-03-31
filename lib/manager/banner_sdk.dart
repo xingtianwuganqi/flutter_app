@@ -11,8 +11,8 @@ class BannerTool {
         extraMap: {
           ATCommon.isNativeShow() : true,
           ATCommon.getAdSizeKey(): ATBannerManager.createLoadBannerAdSize(
-              TopSize().getWidth(), TopSize().getWidth() * (50 / 320)),
-          ATBannerManager.getAdaptiveWidthKey(): TopSize().getWidth(),
+              TopSize().getWidth() - 30, (TopSize().getWidth() - 30) * (50 / 320)),
+          ATBannerManager.getAdaptiveWidthKey(): TopSize().getWidth() - 30,
           ATBannerManager.getAdaptiveOrientationKey(): ATBannerManager.adaptiveOrientationCurrent(),
         });
   }

@@ -357,31 +357,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget nativeADWidget() {
+    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
     return Container(
       width: double.infinity,
-      height: 340,
+      height: 100 + imageH,
       child: PlatformNativeWidget(Configuration.nativePlacementID, {
         ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
             topSizeTool.getWidth(), 340,
             backgroundColorStr: '#FFFFFF'
         ),
         ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
-            50, 50,
-            x: 10, y: 40, backgroundColorStr: 'clearColor'),
+            40, 40,
+            x: 15, y: 40, backgroundColorStr: 'clearColor'),
         ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 190,
+          topSizeTool.getWidth() - 160,
           20,
-          x: 70,
+          x: 61,
           y: 40,
           textSize: 15,
         ),
         ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 190, 20,
-            x: 70, y:70, textSize: 15),
+            topSizeTool.getWidth() - 160, 20,
+            x: 61, y:60,
+          textSize: 15,
+          textColorStr: "#999999",
+        ),
         ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
-          100,
-          50,
-          x: topSizeTool.getWidth() - 110,
+          80,
+          36,
+          x: topSizeTool.getWidth() - 95,
           y: 40,
           textSize: 15,
           textColorStr: "#FFFFFF",
@@ -389,8 +393,8 @@ class _HomePageState extends State<HomePage> {
           textAlignmentStr: "center",
         ),
         ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 20, topSizeTool.getWidth() * 0.6,
-            x: 10, y: 100, backgroundColorStr: '#00000000'),
+            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
+            x: 61, y: 86, backgroundColorStr: '#000000'),
         ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
             20, 10,
             x: 10,
@@ -399,7 +403,7 @@ class _HomePageState extends State<HomePage> {
         ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
           20,
           20,
-          x: topSizeTool.getWidth() - 30,
+          x: topSizeTool.getWidth() - 35,
           y: 10,
         ),
       },sceneID: Configuration.nativeSceneID),

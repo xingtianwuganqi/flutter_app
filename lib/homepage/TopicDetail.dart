@@ -305,8 +305,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
       data.add(textInfoWidget(homeModel));
       data += imgWidgets;
       data.add(Container(
-        // padding: EdgeInsets.only(left: 15,right: 15),
-        height: 70,
+        padding: EdgeInsets.only(left: 15,right: 15),
+        height: 90,
         width: double.infinity,
         child: _getBannerView(),
       ));
