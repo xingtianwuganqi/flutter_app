@@ -105,7 +105,18 @@ class FindPetState extends State<FindPetPage> {
                           label: Text("去找宠"),
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return FindPetDetailPage();
+                            return FindPetDetailPage(changed: (value) {
+                              if (value is int) {
+                                if (value == 1) {
+                                  findPetListNetworking(1);
+                                }
+                              }else if (value is FindPetDetailModel) {
+                                _findList.removeWhere((element) => element.findId == value.id);
+                                setState(() {
+
+                                });
+                              }
+                            },);
                           }));
                         },
                     ),

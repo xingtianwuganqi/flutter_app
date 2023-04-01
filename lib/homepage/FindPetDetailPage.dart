@@ -1,8 +1,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
+import 'package:flutter_720yun/NetWorking/NetWorking.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../model/FindPetListModel.dart';
+import 'AddressSelectPage.dart';
 
 class FindPetDetailPage extends StatefulWidget {
+  /*
+  1.发布成功，更新effective未失效，刷新列表
+  2.删除数据
+   */
+  final ValueChanged changed;
+  const FindPetDetailPage({Key key, this.changed}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -12,6 +23,38 @@ class FindPetDetailPage extends StatefulWidget {
 
 class FindPetDetailState extends State<FindPetDetailPage> {
 
+  // FindPetDetailModel detailModel;
+  int petType = 1;
+  FindPetDetailModel model = FindPetDetailModel(pet_type: 1);
+  EditPageType pageType = EditPageType.create;
+  final TextEditingController descController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+
+  FocusNode _descFocus = FocusNode();
+  FocusNode _contactFocus = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadFindPetInfoNetworking();
+
+    descController.addListener(() {
+      model.desc = descController.text;
+    });
+
+    contactController.addListener(() {
+      model.contact = contactController.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    descController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -19,51 +62,117 @@ class FindPetDetailState extends State<FindPetDetailPage> {
       appBar: AppBar(
         title: Text("找宠小助手"),
         elevation: 0.2,
+        actions: [
+          pageType == EditPageType.create ? Container() : IconButton(onPressed: () {
+            resignFirstFocus();
+            updateEffective(model);
+          }, icon: Icon(Icons.more_horiz_rounded)),
+        ],
       ),
       body: CustomScrollView(
         slivers: [
-          findPetHeader(),
-          petTypeWidget(),
-          descWidget()
+          findPetHeader(model),
+          petTypeWidget(model),
+          descWidget(model),
+          addressWidget(model),
+          contactWidget(model),
+          pushBtnWidget(model)
         ],
       ),
     );
   }
 
+  // 更新有效无效
+  void updateEffective(FindPetDetailModel model) {
+    var desc = "";
+    var action = '';
+    if (model.effective == 0) {
+      desc = "打开找宠信息后，您的找宠信息将在找宠列表显示。";
+      action = "打开";
+    }else{
+      desc = '关闭找宠信息后，您的信息将在找宠列表隐藏。您可以再次编辑或打开找宠信息，使您的找宠信息在找宠列表中显示！';
+      action = "关闭";
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      builder: (context){
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: 190,
+          color: Colors.white,
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Text(desc,
+                    style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),fontSize: FontUtil.fs(FontSize.content),
+                    ),),
+                ),
+              ),
+              Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+                updateEffectiveNetworking(model.effective);
+              }, child: Text(action,style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+              Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   // MARK: 头部视图
-  Widget findPetHeader() {
+  Widget findPetHeader(FindPetDetailModel model) {
     var header = Container(
       color: ColorsUtil.hexColor(0xF0EBDA),
       padding: EdgeInsets.only(left: 15,right: 15),
       child: Row(
         children: [
-          GestureDetector(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Image.asset('assets/icons/icon_cat_header.png',width: 50,height: 50,),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                // return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
-              }));
-            },
-          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(25),
+            child: Image.asset('assets/icons/icon_cat_header.png',width: 50,height: 50,),
+        ),
           Expanded(child:  
-            Container(
-              margin: EdgeInsets.only(top: 15,left: 15,right: 15,bottom: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: ColorsUtil.hexColor(0xCBCFB5),
-              ),
-              child: Container(
-                child: Padding(padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
-                  child: Text('没有找到想要的宠物？\n可以提交相关信息给小助手\n有合适的宠物后会通知您~',
-                    style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
-                        color: ColorsUtil.fromEnmu(ColorEnum.content),height: 1.3),
+            Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 15,left: 15,right: 15,bottom: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    color: ColorsUtil.hexColor(0xCBCFB5),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10,left: 10,right: 10,bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      color: Colors.white,
+                    ),
+                    child: Padding(padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+                      child: Text('没有找到想要的宠物？\n可以提交相关信息给小助手\n有合适的宠物后会通知您~',
+                        style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
+                            color: ColorsUtil.fromEnmu(ColorEnum.content),height: 1.3),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  top: 10,
+                  right: 1,
+                    child: (model.effective == 0) ? Image.asset('assets/icons/icon_find_hadclose@3x.png',
+                      width: 70,
+                      height: 70,
+                    ): Container(),
+                )
+              ],
             )
           )
         ],
@@ -76,8 +185,8 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   }
 
   // 宠物类型
-  Widget petTypeWidget() {
-    var petType = Container(
+  Widget petTypeWidget(FindPetDetailModel model) {
+    var petWidgt = Container(
       padding: EdgeInsets.only(left: 15,right: 15),
       color: Colors.white,
       height: 50,
@@ -90,15 +199,25 @@ class FindPetDetailState extends State<FindPetDetailPage> {
                   fontWeight: FontWeight.bold
               ),),
               Expanded(
-                  child: TextButton.icon(
-                    icon: Icon(Icons.access_alarm_outlined,size: 20,),
-                    label: Text('猫咪'),
-                  )
+                child: TextButton.icon(
+                  // icon: Icon(Icons.access_alarm_outlined,size: 20,),
+                  icon: petType == 1 ? Image.asset('assets/icons/icon_pet_select@3x.png',width: 20,height: 20,) : Image.asset('assets/icons/icon_pet_unselect@3x.png',width: 20,height: 20,),
+                  label: Text('猫咪',style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                    color: ColorsUtil.fromEnmu(ColorEnum.desc))),
+                  onPressed: () {
+                    changePetType(1);
+                  },
+                ),
               ),
               Expanded(
                   child: TextButton.icon(
-                    icon: Icon(Icons.access_alarm_outlined,size: 20,),
-                    label: Text('狗狗'),
+                    icon: petType == 1 ? Image.asset('assets/icons/icon_pet_unselect@3x.png',width: 20,height: 20,) : Image.asset('assets/icons/icon_pet_select@3x.png',width: 20,height: 20,),
+                    label: Text('狗狗',style: TextStyle(fontSize: FontUtil.fs(FontSize.mark),
+                      color: ColorsUtil.fromEnmu(ColorEnum.desc)
+                    ),),
+                    onPressed: () {
+                      changePetType(2);
+                    },
                   )
               )
             ],
@@ -113,12 +232,21 @@ class FindPetDetailState extends State<FindPetDetailPage> {
     );
 
     return SliverToBoxAdapter(
-      child: petType,
+      child: petWidgt,
     );
   }
 
+  // 改变宠物类型
+  void changePetType(int type) {
+    petType = type;
+    model.pet_type = petType;
+    setState(() {
+
+    });
+  }
+
   // 宠物类型
-  Widget descWidget() {
+  Widget descWidget(FindPetDetailModel model) {
     var descType = Container(
       // alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 15,right: 15),
@@ -140,12 +268,20 @@ class FindPetDetailState extends State<FindPetDetailPage> {
               //设置四周边框
               border: new Border.all(width: 1, color: ColorsUtil.fromEnmu(ColorEnum.tableBack)),
             ),
-            height: 200,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: '请输入简短的描述',
-                hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),
-                border: InputBorder.none,
+            height: 150,
+            padding: EdgeInsets.all(10),
+            child: Expanded(
+              child: TextField(
+                decoration: InputDecoration.collapsed(
+                  hintText: '请输入简短的描述',
+                  hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),
+                  // border: InputBorder.none,
+                ),
+                controller: descController,
+                maxLines: null,
+                cursorColor: ColorsUtil.fromEnmu(ColorEnum.desc),
+                focusNode: _descFocus,
+                keyboardType: TextInputType.multiline,
               ),
             ),
           ),
@@ -165,7 +301,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   }
 
 
-  Widget addressWidget() {
+  Widget addressWidget(FindPetDetailModel model) {
     var addressType = Container(
       // alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 15,right: 15),
@@ -176,20 +312,50 @@ class FindPetDetailState extends State<FindPetDetailPage> {
         children: [
           Row(
             children: [
-              Padding(padding: EdgeInsets.only(left: 15,right: 10),
-                child: Text('地址',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
+              Padding(padding: EdgeInsets.only(right: 10),
+                child: Text('地址：',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
                     fontSize: FontUtil.fs(FontSize.content),
                     fontWeight: FontWeight.bold
                 ),
                 ),
               ),
-              Container(
-                child: Text('请选择地址',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),)),
+              Expanded(child:
+                GestureDetector(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    height: 49,
+                    child:
+                    Text((model.address == null || model.address.length == 0) ? '请选择地址' : model.address ?? "", style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                      fontSize: FontUtil.fs(FontSize.content),
+
+                    )
+                    ),
+                  ),
+                  onTap: () {
+                    resignFirstFocus();
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context){
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          color: Colors.white,
+                          child: AddressSelectPage(changed: (address) {
+                            model.address = address;
+                            setState(() {
+
+                            });
+                          },),
+                        );
+                      },
+                    );
+                  },
+                )
               )
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 5),
             padding: EdgeInsets.only(left: 15,right: 15),
             height: 0.5,
             color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
@@ -202,4 +368,178 @@ class FindPetDetailState extends State<FindPetDetailPage> {
       child: addressType,
     );
   }
+
+  /*
+
+   */
+
+  Widget contactWidget(FindPetDetailModel model) {
+    var contactType = Container(
+      padding: EdgeInsets.only(left: 15,right: 15),
+      color: Colors.white,
+      height: 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(padding: EdgeInsets.only(right: 10),
+                child: Text('联系方式：',style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
+                    fontSize: FontUtil.fs(FontSize.content),
+                    fontWeight: FontWeight.bold
+                ),
+                ),
+              ),
+              Expanded(child: Container(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: '请输入联系方式',
+                    hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),
+                    border: InputBorder.none,
+                  ),
+                  controller: contactController,
+                  focusNode: _contactFocus,
+                ),
+              ))
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 15,right: 15),
+            height: 0.5,
+            color: ColorsUtil.fromEnmu(ColorEnum.tableBack),
+          )
+        ],
+      ),
+    );
+
+    return SliverToBoxAdapter(
+      child: contactType,
+    );
+  }
+
+  Widget pushBtnWidget(FindPetDetailModel model) {
+    var desc = pageType == EditPageType.create ? "提交" : "修改并提交";
+    var pushBtn = Container(
+      padding: EdgeInsets.only(top: 15,left: 15,right: 15),
+      color: Colors.white,
+      height: 60,
+      child: TextButton(
+        child: Text(desc,style: TextStyle(fontSize: FontUtil.fs(FontSize.title,),
+            color: Colors.white,fontWeight: FontWeight.bold
+          ),
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system))
+        ),
+        onPressed: () {
+          pushActionNetworking();
+        },
+      ),
+    );
+
+    return SliverToBoxAdapter(
+      child: pushBtn,
+    );
+  }
+
+  void resignFirstFocus() {
+    _descFocus.unfocus();
+    _contactFocus.unfocus();
+  }
+
+  Future<void> loadFindPetInfoNetworking() async {
+    final url = NetWorkingConfig.path(NetPath.loadFintPetInfo);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic["token"] = UserManager().token;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+
+        pageType = EditPageType.detail;
+        model = FindPetDetailModel.fromJson(data['data']);
+        // 赋初始值
+        petType = model.pet_type;
+        descController.text = model.desc;
+        contactController.text = model.contact;
+      }else{
+        pageType = EditPageType.create;
+      }
+      setState(() {
+
+      });
+    }, (error) {
+
+    });
+  }
+
+  Future<void> updateEffectiveNetworking(int effective) async {
+    final url = NetWorkingConfig.path(NetPath.changeFindPetEffective);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['token'] = UserManager().token;
+    dic['effective'] = effective == 1 ? 0 : 1;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+          model.effective = effective == 1 ? 0 : 1;
+          if (model.effective == 1) {
+            widget.changed(1);
+          }else{
+            widget.changed(model);
+          }
+          setState(() {
+
+          });
+      }else{
+
+      }
+    }, (error) {
+
+    });
+  }
+
+  Future<void> pushActionNetworking() async {
+    if (model.desc == null || model.desc.length == 0) {
+      EasyLoading.showToast("请填写简单描述");
+      return;
+    }
+    if (model.address == null || model.address.length == 0) {
+      EasyLoading.showToast("请选择地址");
+      return;
+    }
+    if (model.contact == null || model.contact.length == 0) {
+      EasyLoading.showToast("请填写联系方式");
+      return;
+    }
+    final url = NetWorkingConfig.path(NetPath.createFindPet);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['token'] = UserManager().token;
+    dic['pet_type'] = petType;
+    dic['address'] = model.address;
+    dic['desc'] = model.desc;
+    dic['contact'] = model.contact;
+    EasyLoading.show(status: '正在发布...');
+    await NetWorking.formDataPost(url, dic, (data) {
+      EasyLoading.dismiss();
+      EasyLoading.showToast("发布成功");
+      if (data['code'] == 200) {
+        widget.changed(1);
+        Future.delayed(Duration(seconds: 1),(){
+          Navigator.pop(context);
+        });
+      }
+    }, (error) {
+
+    });
+    /*
+    parameter["token"] = UserManager.shared.token
+            parameter["pet_type"] = pet_type
+            parameter["address"] = address
+            parameter["desc"] = desc
+            parameter["contact"] = contact
+     */
+
+  }
+}
+
+enum EditPageType {
+  create,
+  detail,
 }

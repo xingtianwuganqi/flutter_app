@@ -143,7 +143,13 @@ enum NetPath {
   /// 同城列表
   localCityList,
   /// 找宠列表
-  findPetList
+  findPetList,
+  /// 查询是否已发布找宠信息
+  loadFintPetInfo,
+  /// 发布找宠信息
+  createFindPet,
+  /// 更新找宠信息是否有效
+  changeFindPetEffective,
 }
 
 enum ThumbType {
@@ -153,7 +159,7 @@ enum ThumbType {
 }
 
 class NetWorkingConfig {
-  static final UrlConfig urlConfig = UrlConfig.formal;
+  static final UrlConfig urlConfig = UrlConfig.test;
   static String baseUrl() {
     switch (urlConfig) {
       case UrlConfig.formal:
@@ -289,6 +295,12 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/addresstopiclist/';
       case NetPath.findPetList:
         return baseUrl + '/api/v2/findpet/list';
+      case NetPath.loadFintPetInfo:
+        return baseUrl + '/api/v2/searchpet/info';
+      case NetPath.createFindPet:
+        return baseUrl + '/api/v2/searchpet/create';
+      case NetPath.changeFindPetEffective:
+        return baseUrl + '/api/v2/searchpet/effective';
       default:
         return "";
     }
