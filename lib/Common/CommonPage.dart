@@ -298,6 +298,9 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 
    */
   static String timeT(String time) {
+    if (time == null) {
+      return "";
+    }
     if (time.length > 19 ) {
       // var d1 = new DateTime(2021,4,10,10,17,25);
       var d1 = DateTime.now();

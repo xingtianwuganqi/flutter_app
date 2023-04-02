@@ -150,6 +150,11 @@ enum NetPath {
   createFindPet,
   /// 更新找宠信息是否有效
   changeFindPetEffective,
+  /// 找宠列表点赞
+  findPetLikeAction,
+  /// 找宠列表收藏
+  findPetCollectionAction,
+
 }
 
 enum ThumbType {
@@ -301,6 +306,10 @@ class NetWorkingConfig {
         return baseUrl + '/api/v2/searchpet/create';
       case NetPath.changeFindPetEffective:
         return baseUrl + '/api/v2/searchpet/effective';
+      case NetPath.findPetLikeAction:
+        return baseUrl + '/api/v2/find/action/like';
+      case NetPath.findPetCollectionAction:
+        return baseUrl + '/api/v2/find/action/collect';
       default:
         return "";
     }

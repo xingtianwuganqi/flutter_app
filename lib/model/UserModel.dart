@@ -171,7 +171,7 @@ class ViolationModel {
 
 
 
-///# 1.领养举报 2.领养评论 3.领养回复 4.秀宠举报 5.秀宠评论 6.秀宠回复
+///# 1.领养举报 2.领养评论 3.领养回复 4.秀宠举报 5.秀宠评论 6.秀宠回复, 7.找宠举报, 8.找宠评论, 9.找宠回复
 enum Report_type {
   rescue_page, // 1
   rescue_comment, // 2
@@ -179,6 +179,9 @@ enum Report_type {
   show_page,// 4
   show_comment,// 5
   show_reply,// 6
+  find_pet_list, // 7
+  find_pet_comment, // 8
+  find_pet_reply, // 9
 }
 
 

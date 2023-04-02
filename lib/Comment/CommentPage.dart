@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/ViolationsListPage.dart';
-import 'package:flutter_720yun/model/MessageModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -263,6 +261,9 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
       case CommentType.show_comment:
         commentType = 2;
         break;
+      case CommentType.find_comment:
+        commentType = 3;
+        break;
       default:
         commentType = 1;
         break;
@@ -375,6 +376,9 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
         break;
       case CommentType.show_comment:
         commentType = 2;
+        break;
+      case CommentType.find_comment:
+        commentType = 3;
         break;
       default:
         commentType = 1;
@@ -547,8 +551,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                                   var report_type = Report_type.rescue_comment;
                                   if (widget.commentType == CommentType.topic_comment) {
                                     report_type = Report_type.rescue_comment;
-                                  }else{
+                                  }else if (widget.commentType == CommentType.show_comment){
                                     report_type = Report_type.show_comment;
+                                  }else if (widget.commentType == CommentType.find_comment) {
+                                    report_type = Report_type.find_pet_comment;
                                   }
                                   Navigator.pop(context);
                                   lazyAuthToDoThings(context, (){
@@ -704,8 +710,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                                   var report_type = Report_type.rescue_reply;
                                   if (widget.commentType == CommentType.topic_comment) {
                                     report_type = Report_type.rescue_reply;
-                                  }else{
+                                  }else if (widget.commentType == CommentType.show_comment){
                                     report_type = Report_type.show_reply;
+                                  }else if (widget.commentType == CommentType.find_comment) {
+                                    report_type = Report_type.find_pet_reply;
                                   }
                                   Navigator.pop(context);
                                   lazyAuthToDoThings(context, (){

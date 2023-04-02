@@ -92,6 +92,7 @@ class MessageSystemState extends State<MessageSystemPage> {
         children: [
           titleInfoWidget(data),
           Container(
+            alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 15,right: 15,top: 3,bottom: 10),
             child:
             LinkText(

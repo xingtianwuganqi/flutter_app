@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
@@ -8,7 +9,12 @@ import 'package:flutter_720yun/routers/router_reward.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../Comment/CommentPage.dart';
 import '../UserInfo/NewUserInfoPage.dart';
+import '../UserInfo/ViolationsListPage.dart';
+import '../model/CommentModel.dart';
+import '../model/HomePageModel.dart';
+import '../model/UserModel.dart';
 import '../router_home.dart';
 import '../routers/router_banner.dart';
 import '../routers/router_interstitial.dart';
@@ -30,7 +36,6 @@ class FindPetState extends State<FindPetPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    findPetListNetworking(1);
   }
 
   @override
@@ -186,7 +191,37 @@ class FindPetState extends State<FindPetPage> {
               ],
             ),
           ),
-          IconButton(icon: Icon(Icons.more_horiz_rounded),)
+          IconButton(icon: Icon(Icons.more_horiz_rounded),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context){
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 110,
+                    color: Colors.white,
+                    child: ListView(
+                      children: [
+                        Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                        TextButton(onPressed: (){
+                          Navigator.pop(context);
+                          lazyAuthToDoThings(context, (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return ViolationsListWidget(reportType: Report_type.find_pet_list,reportId: data.findId);
+                            }));
+                          });
+                        }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                        Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
+                        TextButton(onPressed: (){
+                          Navigator.pop(context);
+                        }, child: Text('取消',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          )
         ],
       ),
     );
@@ -230,12 +265,29 @@ class FindPetState extends State<FindPetPage> {
     return Container(
       padding: EdgeInsets.only(left: 46, top: 2,bottom: 2,right: 15),
       alignment: Alignment.centerLeft,
-      child: Text(data.desc,
-        style: TextStyle(fontSize: FontUtil.fs(FontSize.content,),
+      child:
+      ExpandableText(
+        data.desc ?? "" ,
+        style: TextStyle(
+            fontSize: FontUtil.fs(FontSize.content),
             color: ColorsUtil.fromEnmu(ColorEnum.content),
-          height: 1.6
+            height: 1.6
         ),
-      ),
+        expandText: '展开',
+        collapseText: '收起',
+        maxLines: 7,
+        linkColor: Colors.blue,
+        linkEllipsis: false,
+        expanded: false,
+        expandOnTextTap: false,
+        collapseOnTextTap: false,
+      )
+      // Text(data.desc,
+      //   style: TextStyle(fontSize: FontUtil.fs(FontSize.content,),
+      //       color: ColorsUtil.fromEnmu(ColorEnum.content),
+      //     height: 1.6
+      //   ),
+      // ),
     );
   }
   
@@ -247,7 +299,7 @@ class FindPetState extends State<FindPetPage> {
       child:
       SizedBox.expand(
           child: TextButton(
-            child: Text('获取TA的联系方式',style:
+            child: Text(data.getedcontact ? data.contact_info : '获取TA的联系方式',style:
             TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold),),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system).withOpacity(0.6)),
@@ -259,7 +311,7 @@ class FindPetState extends State<FindPetPage> {
   }
 
 
-  // 获取联系方式按钮
+  // 点赞收藏评论 按钮
   Widget statusWidget(FindPetListModel data) {
     return Container(
       padding: EdgeInsets.only(left: 46,right: 15),
@@ -275,7 +327,9 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  
+                  lazyAuthToDoThings(context, {
+                    findPetLikeAction(data, data.liked ? 1 : 0)
+                  });
                 },
               )
           ),
@@ -288,7 +342,9 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  
+                  lazyAuthToDoThings(context, {
+                    findPetCollectionAction(data, data.collection ? 1 : 0)
+                  });
                 },
               )
           ),
@@ -301,7 +357,13 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  
+                  lazyAuthToDoThings(context, {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return CommentInfoWidget(commentType: CommentType.find_comment,topicId: data.findId,toUid: data.userInfo.id,changed: (value){
+                        // clicked(value);
+                      },);
+                    }))
+                  });
                 },
               )
           ),
@@ -350,6 +412,110 @@ class FindPetState extends State<FindPetPage> {
       setState(() {
 
       });
+    });
+  }
+
+  // 点赞
+  Future<void> findPetLikeAction(FindPetListModel model, int like_mark) async {
+    final mark = like_mark == 0 ? 1 : 0;
+    final url = NetWorkingConfig.path(NetPath.findPetLikeAction);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['token'] = UserManager().token;
+    dic['like_mark'] = mark;
+    dic['find_id'] = model.findId;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        // 点赞或取消点赞成功
+        // 更新数据源
+        _findList = _findList.map((e){
+          if (e.findId == model.findId) {
+            e.liked = (mark == 1);
+            if (mark == 1) {
+              e.likeNum = (e.likeNum ?? 0) + 1;
+            }else {
+              if (e.likeNum > 1) {
+                e.likeNum = e.likeNum - 1;
+              } else {
+                e.likeNum = 0;
+              }
+            }
+          }
+          return e;
+        }).toList();
+        setState(() {
+
+        });
+      }else{
+
+      }
+    }, (error) {
+
+    });
+  }
+
+  // 收藏
+  Future<void> findPetCollectionAction(FindPetListModel model, int collection_mark) async {
+    final mark = collection_mark == 0 ? 1 : 0;
+    final url = NetWorkingConfig.path(NetPath.findPetCollectionAction);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['token'] = UserManager().token;
+    dic['collect_mark'] = mark;
+    dic['find_id'] = model.findId;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        // 点赞或取消点赞成功
+        // 更新数据源
+        _findList = _findList.map((e){
+          if (e.findId == model.findId) {
+            e.collection = (mark == 1);
+            if (mark == 1) {
+              e.collectionNum = (e.collectionNum ?? 0) + 1;
+            }else {
+              if (e.collectionNum > 1) {
+                e.collectionNum = e.collectionNum - 1;
+              } else {
+                e.collectionNum = 0;
+              }
+            }
+          }
+          return e;
+        }).toList();
+        setState(() {
+
+        });
+      }else{
+
+      }
+    }, (error) {
+
+    });
+  }
+
+  /// 获取联系方式
+  Future<void> getContactNetworking(FindPetListModel model) async {
+    final url = NetWorkingConfig.path(NetPath.getContact);
+    var dic = new Map<String, dynamic>.from(paramDic);
+    dic['token'] = UserManager().token;
+    dic['topic_id'] = model.findId;
+    dic['topic_type'] = 2;
+    await NetWorking.formDataPost(url, dic, (data) {
+      if (data['code'] == 200) {
+        var contactModel = ContactModel.fromJson(data['data']);
+
+        // 获取联系方式成功
+        _findList = _findList.map((e){
+          if (e.findId == model.findId) {
+            e.getedcontact = true;
+            e.contact_info = model.contact;
+          }
+          return e;
+        }).toList();
+        setState(() {
+
+        });
+      }
+    }, (error) {
+
     });
   }
 }

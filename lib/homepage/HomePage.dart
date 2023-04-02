@@ -305,7 +305,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 同城
-  Future<Null> localCityListNetworking(int page,String address) async {
+  Future<Null> localCityListNetworking(int num,String address) async {
+    this.page = num;
     final url = NetWorkingConfig.path(NetPath.localCityList);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['address'] = address;
@@ -572,7 +573,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
             radius: 18,
             backgroundImage:
             // isLoadingImg ?
-            ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+            ((data.userInfo != null && data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
             CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
             AssetImage('assets/icons/icon_plh.png')),
             //   :
@@ -598,7 +599,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(data.userInfo.username ?? "",
+                    Text(data.userInfo != null ? data.userInfo.username ?? "" : "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.title),
@@ -710,7 +711,7 @@ Widget textInfoWidget(HomePageModel data) {
             child:
               // Text(data.content ?? "")
             ExpandableText(
-              (data.content ?? '').trim(),
+              (data.content != null ? data.content ?? '' : '').trim(),
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
@@ -742,6 +743,10 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
   //     ),
   //   );
   // }
+
+  if  (data.imgs == null) {
+    return Container();
+  }
 
   var imgs = data.imgs.map((e) {
     return ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail);

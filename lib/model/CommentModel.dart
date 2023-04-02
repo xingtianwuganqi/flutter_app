@@ -98,7 +98,8 @@ class ReplyListModel {
 /// 评论类型
 enum CommentType {
    topic_comment, // 1
-   show_comment  // 2
+   show_comment,  // 2
+   find_comment, // 3
 }
 
 class ComRepListModel {
