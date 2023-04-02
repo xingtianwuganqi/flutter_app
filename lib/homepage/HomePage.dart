@@ -263,6 +263,7 @@ class _HomePageState extends State<HomePage> {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
+    dic['order'] = '0';
     print(dic);
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, dic,(data){
