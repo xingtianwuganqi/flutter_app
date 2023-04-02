@@ -9,7 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="BranchesTreeState">
     <expand>
@@ -31,28 +31,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/icon_mi_help.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_720yun.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_720yun.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/.symlinks/plugins/path_provider" beforeDir="false" afterPath="$PROJECT_DIR$/ios/.symlinks/plugins/path_provider" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/.symlinks/plugins/sqflite" beforeDir="false" afterPath="$PROJECT_DIR$/ios/.symlinks/plugins/sqflite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/UserInfo/NewUserInfoPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UserInfo/NewUserInfoPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/UserInfo/NewUserPublishListPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UserInfo/NewUserPublishListPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/UserInfo/SupportUsPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UserInfo/SupportUsPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/FindPetDetailPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/FindPetDetailPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/HomeDrawerPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/HomeDrawerPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/HomePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tabbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tabbar.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,12 +62,43 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Gradle Kotlin DSL Build Script" />
+        <option value="Class" />
         <option value="Dart File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/README.md" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/android/app/build.gradle" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/android/app/proguard-rules.pro" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/Comment/CommentPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/ShowInfo/ReleaseShowInfoPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/ShowInfo/ShowInfoListPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/ShowInfo/ShowInfoPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/UserInfo/EditUserInfoPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/UserInfo/SettingInfoPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/UserInfo/UserInfoPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/homepage/FindPetPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/homepage/HomePage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/homepage/ReleaseTopicPage.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/homepage/TopicDetail.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/main.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/lib/tabbar.dart" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/pubspec.yaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/app.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/app_bar.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/tabs.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/text_theme.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/material/theme_data.dart" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/flutter/packages/flutter/lib/src/widgets/bottom_navigation_bar_item.dart" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="1ptHO8deA1gvpqrGDR1LRq7IzOM" />
   <component name="ProjectLevelVcsManager">
@@ -82,23 +108,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="ResourceManagerPrefKey.ResourceType" value="DRAWABLE" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mac/Documents/GitHub/flutter_app&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib" />
+      <recent name="$PROJECT_DIR$/android/app/src/main/res/xml" />
+      <recent name="$PROJECT_DIR$/plugins/anythink_sdk/android" />
+      <recent name="$PROJECT_DIR$/plugins" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -122,44 +150,9 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state width="1382" height="182" key="GridCell.Tab.0.bottom" timestamp="1638857032334">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state width="1382" height="182" key="GridCell.Tab.0.bottom/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638857032334" />
-    <state width="1398" height="5" key="GridCell.Tab.0.bottom/0.25.1440.821@0.25.1440.821" timestamp="1638720364861" />
-    <state width="1382" height="182" key="GridCell.Tab.0.center" timestamp="1638857032332">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state width="1382" height="182" key="GridCell.Tab.0.center/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638857032332" />
-    <state width="1398" height="5" key="GridCell.Tab.0.center/0.25.1440.821@0.25.1440.821" timestamp="1638720364861" />
-    <state width="1382" height="182" key="GridCell.Tab.0.left" timestamp="1638857032332">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state width="1382" height="182" key="GridCell.Tab.0.left/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638857032332" />
-    <state width="1398" height="5" key="GridCell.Tab.0.left/0.25.1440.821@0.25.1440.821" timestamp="1638720364860" />
-    <state width="1382" height="182" key="GridCell.Tab.0.right" timestamp="1638857032333">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state width="1382" height="182" key="GridCell.Tab.0.right/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638857032333" />
-    <state width="1398" height="5" key="GridCell.Tab.0.right/0.25.1440.821@0.25.1440.821" timestamp="1638720364861" />
-    <state x="229" y="71" key="SettingsEditor" timestamp="1638845142040">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state x="229" y="71" key="SettingsEditor/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638845142040" />
-    <state x="299" y="45" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1638847073871">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state x="299" y="45" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638847073871" />
-    <state x="420" y="190" width="615" height="490" key="find.popup" timestamp="1638847079433">
-      <screen x="0" y="25" width="1440" height="820" />
-    </state>
-    <state x="420" y="190" width="615" height="490" key="find.popup/0.25.1440.820/-260.-1055.1920.1055@0.25.1440.820" timestamp="1638847079433" />
   </component>
   <component name="masterDetails">
     <states>

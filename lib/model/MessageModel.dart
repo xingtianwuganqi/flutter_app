@@ -3,6 +3,7 @@ import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 
 import 'CommentModel.dart';
+import 'FindPetListModel.dart';
 import 'UserModel.dart';
 /*
 struct MessageListModel: HandyJSON {
@@ -31,6 +32,7 @@ class MessageListModel {
   final bool is_read;
   final HomePageModel topicInfo;
   final ShowInfoModel showInfo;
+  final FindPetDetailModel findInfo;
   final ReplyListModel replyInfo;
   final MessageCommentModel commentInfo;
   final int reply_type;
@@ -46,6 +48,7 @@ class MessageListModel {
     this.is_read,
     this.topicInfo,
     this.showInfo,
+    this.findInfo,
     this.replyInfo,
     this.commentInfo,
     this.reply_type,
@@ -63,6 +66,7 @@ class MessageListModel {
       is_read: json['is_read'],
       topicInfo: json['topicInfo'] != null ? HomePageModel.fromJson(json['topicInfo']) : null,
       showInfo: json['showInfo'] != null ? ShowInfoModel.fromJson(json['showInfo']) : null,
+      findInfo: json['findInfo'] != null ? FindPetDetailModel.fromJson(json['findInfo']) : null,
       replyInfo: json['replyInfo'] != null ? ReplyListModel.fromJson(json['replyInfo']) : null,
       commentInfo: json['commentInfo'] != null ? MessageCommentModel.fromJson(json['commentInfo']) : null,
       reply_type: json['reply_type'],

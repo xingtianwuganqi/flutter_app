@@ -202,13 +202,15 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                         color: ColorsUtil.fromEnmu(ColorEnum.system),
                         borderRadius: BorderRadius.circular(14)
                       ),
-                      width: 44,
-                      height: 18,
                       alignment: Alignment.center,
-                      child: Text('已完成',style: TextStyle(color: Colors.white,
-                          fontSize: FontUtil.fs(FontSize.small),
-                          fontWeight: FontWeight.w500)),
-                    ): Container(),
+                      // height: 28,
+                      child: Padding(
+                        child: Text('已完成',style: TextStyle(color: Colors.white,
+                            fontSize: FontUtil.fs(FontSize.small),
+                            fontWeight: FontWeight.w500)),
+                        padding: EdgeInsets.only(left: 8,right: 8,bottom: 3,top: 4),
+                      ),
+                      ): Container(),
                   )
                 ],
               ),

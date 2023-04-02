@@ -12,7 +12,7 @@ description: A new Flutter application.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # flutter工程版本，加号前是版本号，加号后是版本名字
-version: 1.0.1+5
+version: 1.0.2+6
 
 environment:
   # dart sdk，一般设置一个最小兼容版本
@@ -44,6 +44,9 @@ dependencies:
   flutter_easyrefresh: ^2.2.1
   wechat_assets_picker: ^7.3.2
   file_picker: ^4.6.1
+  platform_info: ^3.2.0
+  anythink_sdk:
+    path: plugins/anythink_sdk/
 
   #  install_plugin: ^2.0.1
   #  flutter_absolute_path: ^1.0.6

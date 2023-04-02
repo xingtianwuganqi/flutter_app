@@ -1,3 +1,5 @@
+import 'package:anythink_sdk/at_native.dart';
+import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_720yun/homepage/CitySelectPage.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
+import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_printer/flutter_printer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../NetWorking/NetWorking.dart';
+import '../configuration_sdk.dart';
 import '../model/HomePageModel.dart';
 import '../Common/CommonPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
@@ -20,6 +24,7 @@ import '../CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
 
+import '../topsize.dart';
 import 'HomeDrawerPage.dart';
 
 enum HomePageType {
@@ -176,6 +181,8 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               );
+            }else if (data.topic_id == -2){
+              return nativeADWidget();
             }else{
               return  GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -256,16 +263,36 @@ class _HomePageState extends State<HomePage> {
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['page'] = page;
     dic['size'] = 10;
+    dic['order'] = '0';
     print(dic);
     ///创建Map 封装参数
     await NetWorking.formDataPost(url, dic,(data){
       if (data['code'] == 200) {
         var models = data['data'];
         var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
+        // if (page == 1) {
+        //   ATNativeManager.nativeAdReady(
+        //     placementID: Configuration.nativePlacementID,
+        //   ).then((value) {
+        //     if (value == true) {
+        //       if (datas.length > 5) {
+        //         datas.insert(5, HomePageModel(topic_id: -2));
+        //       }else{
+        //         datas.add(HomePageModel(topic_id: -2));
+        //       }
+        //       print("广告加载完毕");
+        //       setState(() {
+        //
+        //       });
+        //     }
+        //   });
+        // }
+
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
           page += 1;
         }
+        
         setState(() {
           isFirstLoad = false;
 
@@ -279,7 +306,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 同城
-  Future<Null> localCityListNetworking(int page,String address) async {
+  Future<Null> localCityListNetworking(int num,String address) async {
+    this.page = num;
     final url = NetWorkingConfig.path(NetPath.localCityList);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['address'] = address;
@@ -294,10 +322,29 @@ class _HomePageState extends State<HomePage> {
         if (page == 1) {
           datas.insert(0, HomePageModel(topic_id: -1));
         }
+        // if (page == 1) {
+        //   ATNativeManager.nativeAdReady(
+        //     placementID: Configuration.nativePlacementID,
+        //   ).then((value) {
+        //     if (value == true) {
+        //       if (datas.length > 5) {
+        //         datas.insert(5, HomePageModel(topic_id: -2));
+        //       }else{
+        //         datas.add(HomePageModel(topic_id: -2));
+        //       }
+        //       print("广告加载完毕");
+        //       setState(() {
+        //
+        //       });
+        //     }
+        //   });
+        // }
+
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
           page += 1;
         }
+
         setState(() {
           isFirstLoad = false;
 
@@ -309,6 +356,60 @@ class _HomePageState extends State<HomePage> {
 
     });
 
+  }
+
+  Widget nativeADWidget() {
+    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
+    return Container(
+      width: double.infinity,
+      height: 100 + imageH,
+      child: PlatformNativeWidget(Configuration.nativePlacementID, {
+        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
+            topSizeTool.getWidth(), 340,
+            backgroundColorStr: '#FFFFFF'
+        ),
+        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
+            40, 40,
+            x: 15, y: 40, backgroundColorStr: 'clearColor'),
+        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
+          topSizeTool.getWidth() - 160,
+          20,
+          x: 61,
+          y: 40,
+          textSize: 15,
+        ),
+        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
+            topSizeTool.getWidth() - 160, 20,
+            x: 61, y:60,
+          textSize: 15,
+          textColorStr: "#999999",
+        ),
+        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
+          80,
+          36,
+          x: topSizeTool.getWidth() - 95,
+          y: 40,
+          textSize: 15,
+          textColorStr: "#FFFFFF",
+          backgroundColorStr: "#2095F1",
+          textAlignmentStr: "center",
+        ),
+        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
+            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
+            x: 61, y: 86, backgroundColorStr: '#000000'),
+        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
+            20, 10,
+            x: 10,
+            y: 10,
+            backgroundColorStr: '#00000000'),
+        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
+          20,
+          20,
+          x: topSizeTool.getWidth() - 35,
+          y: 10,
+        ),
+      },sceneID: Configuration.nativeSceneID),
+    );
   }
 
   Future<void> getUserCity() async {
@@ -473,7 +574,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
             radius: 18,
             backgroundImage:
             // isLoadingImg ?
-            ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
+            ((data.userInfo != null && data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
             CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
             AssetImage('assets/icons/icon_plh.png')),
             //   :
@@ -499,7 +600,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(data.userInfo.username ?? "",
+                    Text(data.userInfo != null ? data.userInfo.username ?? "" : "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.title),
@@ -611,7 +712,7 @@ Widget textInfoWidget(HomePageModel data) {
             child:
               // Text(data.content ?? "")
             ExpandableText(
-              (data.content ?? '').trim(),
+              (data.content != null ? data.content ?? '' : '').trim(),
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content),
@@ -643,6 +744,10 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
   //     ),
   //   );
   // }
+
+  if  (data.imgs == null) {
+    return Container();
+  }
 
   var imgs = data.imgs.map((e) {
     return ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail);
