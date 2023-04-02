@@ -309,37 +309,38 @@ class FindPetState extends State<FindPetPage> {
   
   // 获取联系方式按钮
   Widget contactButton(FindPetListModel data) {
-    return Container(
-      padding: EdgeInsets.only(left: 46,right: 15,top: 2,bottom: 2),
-      height: 36,
-      child:
-      SizedBox.expand(
-          child: TextButton(
-            child: Text(data.getedcontact ? data.contact_info : '获取TA的联系方式',style:
+    return GestureDetector(
+      child: Container(
+          margin: EdgeInsets.only(left: 46,right: 15,top: 5,bottom: 3),
+          width: MediaQuery.of(context).size.width - 75,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: ColorsUtil.fromEnmu(ColorEnum.system).withOpacity(0.6),
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+          ),
+          child: Padding(
+            child: Text((data != null && data.getedcontact == true) ? (data.contact_info ?? "") : '获取TA的联系方式',style:
             TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold),),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system).withOpacity(0.6)),
-            ),
-            onPressed: () {
-              lazyAuthToDoThings(context, (){
-                if (data.getedcontact == true) {
-                  /// 已经获取了联系方式
-                  //复制
-                  Future.delayed(Duration(milliseconds: 100),(){
-                    Clipboard.setData(ClipboardData(text: data.contact_info ?? ""));
-                  });
-                  EasyLoading.showToast('已复制');
-                  return;
-                }else{
-                  getContactNetworking(data);
-                }
-              });
-
-            },
+            padding: EdgeInsets.only(top: 8,bottom: 8),
           )
-      )
-      ,
+      ),
+      onTap: () {
+        lazyAuthToDoThings(context, (){
+          if (data.getedcontact == true) {
+            /// 已经获取了联系方式
+            //复制
+            Future.delayed(Duration(milliseconds: 100),(){
+              Clipboard.setData(ClipboardData(text: data.contact_info ?? ""));
+            });
+            EasyLoading.showToast('已复制');
+            return;
+          }else{
+            getContactNetworking(data);
+          }
+        });
+      },
     );
+
   }
 
 
@@ -538,7 +539,7 @@ class FindPetState extends State<FindPetPage> {
         _findList = _findList.map((e){
           if (e.findId == model.findId) {
             e.getedcontact = true;
-            e.contact_info = model.contact;
+            e.contact_info = contactModel.contact;
           }
           return e;
         }).toList();
