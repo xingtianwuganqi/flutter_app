@@ -33,16 +33,16 @@
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Comment/CommentPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Comment/CommentPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Common/CommonPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/CommonPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Message/MessageListPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Message/MessageListPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Message/MessageSystemPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Message/MessageSystemPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/NetWorking/NetWorking.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/homepage/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/HomePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/CommentModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/CommentModel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/MessageModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/MessageModel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/UserModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/UserModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
