@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/HomeMainPage.dart';
+import 'package:flutter_720yun/manager/interstitial_sdk.dart';
 import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
@@ -219,8 +220,10 @@ class tabbarState extends State<tabbar> {
     InitManger.setLogEnabled();
     InitManger.initTopon();
     // 添加监听
-    // BannerManager.loadBannerWith();
-    NativeManager.loadNativeWith();
-    ListenerManager.nativeListen();
+    BannerManager.loadBannerWith();
+    InterstitialManager.loadInterstitialAd();
+    // NativeManager.loadNativeWith();
+    // ListenerManager.nativeListen();
+
   }
 }

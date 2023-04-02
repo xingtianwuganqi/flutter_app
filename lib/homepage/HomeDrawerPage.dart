@@ -33,8 +33,8 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '支持我们',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
+    MessagePageModel(icon: 'assets/icons/icon_mi_help.png',name: '支持我们',type: 0,unreadNum: 0),
+    // MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
 
   ];
 
@@ -93,7 +93,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     }else {
 
       return ListTile(
-        leading: Image.asset(model.icon),
+        leading: Image.asset(model.icon,width: 22,height: 22,),
         title:
         Container(
         transform: Matrix4.translationValues(-25, 0.0, 0.0),

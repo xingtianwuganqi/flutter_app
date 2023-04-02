@@ -1,6 +1,10 @@
+import 'package:anythink_sdk/at_rewarded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/manager/rewarder_sdk.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../configuration_sdk.dart';
 
 class SupportUsPage extends StatefulWidget {
   @override
@@ -44,7 +48,9 @@ class SupportUsState extends State<SupportUsPage> {
             Expanded(child: Container()),
             ElevatedButton(
                 onPressed: (){
-                  RewarderManager.showSceneRewardedAd();
+                  // RewarderManager.checkRewardedVideoLoadStatus();
+                  // RewarderManager.showSceneRewardedAd();
+                  rewardedVideoReady();
                 },
                 child: Text("支持我们",
                     style: TextStyle(
@@ -62,5 +68,19 @@ class SupportUsState extends State<SupportUsPage> {
         ),
       ),
     );
+  }
+
+  rewardedVideoReady() async {
+    await ATRewardedManager
+        .rewardedVideoReady(
+      placementID: Configuration.rewarderPlacementID,
+    )
+        .then((value) {
+      if (value == true) {
+        RewarderManager.showSceneRewardedAd();
+      }else{
+        EasyLoading.showToast("感谢支持，请稍后再试");
+      }
+    });
   }
 }

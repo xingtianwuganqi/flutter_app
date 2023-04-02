@@ -1,24 +1,27 @@
+import 'package:anythink_sdk/at_interstitial.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
+import 'package:flutter_720yun/manager/interstitial_sdk.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
-import 'package:flutter_720yun/routers/router_reward.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../Comment/CommentPage.dart';
+import '../Login/CheckCodePage.dart';
 import '../UserInfo/NewUserInfoPage.dart';
 import '../UserInfo/ViolationsListPage.dart';
+import '../configuration_sdk.dart';
 import '../model/CommentModel.dart';
 import '../model/HomePageModel.dart';
 import '../model/UserModel.dart';
-import '../router_home.dart';
-import '../routers/router_banner.dart';
-import '../routers/router_interstitial.dart';
-import '../routers/router_native.dart';
+
+
 
 class FindPetPage extends StatefulWidget {
   @override
@@ -36,6 +39,17 @@ class FindPetState extends State<FindPetPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    hasInterstitialAdReady();
+  }
+
+  hasInterstitialAdReady() async {
+    await ATInterstitialManager.hasInterstitialAdReady(
+      placementID: Configuration.interstitialPlacementID,
+    ).then((value) {
+      if (value == true) {
+        InterstitialManager.showSceneInterstitialAd();
+      }
+    });
   }
 
   @override
@@ -109,20 +123,22 @@ class FindPetState extends State<FindPetPage> {
                           icon: Icon(Icons.arrow_circle_right_sharp,color: ColorsUtil.hexColor(0x6D4241),size: 20,),
                           label: Text("去找宠"),
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return FindPetDetailPage(changed: (value) {
-                              if (value is int) {
-                                if (value == 1) {
-                                  findPetListNetworking(1);
-                                }
-                              }else if (value is FindPetDetailModel) {
-                                _findList.removeWhere((element) => element.findId == value.id);
-                                setState(() {
+                          lazyAuthToDoThings(context, (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return FindPetDetailPage(changed: (value) {
+                                if (value is int) {
+                                  if (value == 1) {
+                                    findPetListNetworking(1);
+                                  }
+                                }else if (value is FindPetDetailModel) {
+                                  _findList.removeWhere((element) => element.findId == value.id);
+                                  setState(() {
 
-                                });
-                              }
-                            },);
-                          }));
+                                  });
+                                }
+                              },);
+                            }));
+                          });
                         },
                     ),
                   ),
@@ -304,6 +320,22 @@ class FindPetState extends State<FindPetPage> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system).withOpacity(0.6)),
             ),
+            onPressed: () {
+              lazyAuthToDoThings(context, (){
+                if (data.getedcontact == true) {
+                  /// 已经获取了联系方式
+                  //复制
+                  Future.delayed(Duration(milliseconds: 100),(){
+                    Clipboard.setData(ClipboardData(text: data.contact_info ?? ""));
+                  });
+                  EasyLoading.showToast('已复制');
+                  return;
+                }else{
+                  getContactNetworking(data);
+                }
+              });
+
+            },
           )
       )
       ,
@@ -327,8 +359,8 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  lazyAuthToDoThings(context, {
-                    findPetLikeAction(data, data.liked ? 1 : 0)
+                  lazyAuthToDoThings(context, () {
+                    findPetLikeAction(data, data.liked ? 1 : 0);
                   });
                 },
               )
@@ -342,8 +374,8 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  lazyAuthToDoThings(context, {
-                    findPetCollectionAction(data, data.collection ? 1 : 0)
+                  lazyAuthToDoThings(context, (){
+                    findPetCollectionAction(data, data.collection ? 1 : 0);
                   });
                 },
               )
@@ -357,12 +389,12 @@ class FindPetState extends State<FindPetPage> {
                   ),
                 ),
                 onPressed: (){
-                  lazyAuthToDoThings(context, {
+                  lazyAuthToDoThings(context, (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
                       return CommentInfoWidget(commentType: CommentType.find_comment,topicId: data.findId,toUid: data.userInfo.id,changed: (value){
                         // clicked(value);
                       },);
-                    }))
+                    }));
                   });
                 },
               )
@@ -420,7 +452,7 @@ class FindPetState extends State<FindPetPage> {
     final mark = like_mark == 0 ? 1 : 0;
     final url = NetWorkingConfig.path(NetPath.findPetLikeAction);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['token'] = UserManager().token;
+    dic['token'] = UserManager.instance.token;
     dic['like_mark'] = mark;
     dic['find_id'] = model.findId;
     await NetWorking.formDataPost(url, dic, (data) {
@@ -458,7 +490,7 @@ class FindPetState extends State<FindPetPage> {
     final mark = collection_mark == 0 ? 1 : 0;
     final url = NetWorkingConfig.path(NetPath.findPetCollectionAction);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['token'] = UserManager().token;
+    dic['token'] = UserManager.instance.token;
     dic['collect_mark'] = mark;
     dic['find_id'] = model.findId;
     await NetWorking.formDataPost(url, dic, (data) {
@@ -495,7 +527,7 @@ class FindPetState extends State<FindPetPage> {
   Future<void> getContactNetworking(FindPetListModel model) async {
     final url = NetWorkingConfig.path(NetPath.getContact);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['token'] = UserManager().token;
+    dic['token'] = UserManager.instance.token;
     dic['topic_id'] = model.findId;
     dic['topic_type'] = 2;
     await NetWorking.formDataPost(url, dic, (data) {
@@ -512,6 +544,20 @@ class FindPetState extends State<FindPetPage> {
         }).toList();
         setState(() {
 
+        });
+      }else{
+        EasyLoading.showToast(data['message'] ?? '获取联系方式失败');
+        // 延时跳转
+        Future.delayed(Duration(milliseconds: 100),(){
+          if (data['code'] == 210) { // 未校验手机号
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
+            }));
+          }else if (data['code'] == 209) { // 未绑定手机号
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CheckCodePage(CodeFromType.bindPhone);
+            }));
+          }
         });
       }
     }, (error) {

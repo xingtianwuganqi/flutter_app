@@ -53,6 +53,9 @@ class FindPetDetailState extends State<FindPetDetailPage> {
     // TODO: implement dispose
     super.dispose();
     descController.dispose();
+    contactController.dispose();
+    _contactFocus.dispose();
+    _descFocus.dispose();
   }
 
   @override
@@ -450,7 +453,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   Future<void> loadFindPetInfoNetworking() async {
     final url = NetWorkingConfig.path(NetPath.loadFintPetInfo);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic["token"] = UserManager().token;
+    dic["token"] = UserManager.instance.token;
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
 
@@ -474,7 +477,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   Future<void> updateEffectiveNetworking(int effective) async {
     final url = NetWorkingConfig.path(NetPath.changeFindPetEffective);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['token'] = UserManager().token;
+    dic['token'] = UserManager.instance.token;
     dic['effective'] = effective == 1 ? 0 : 1;
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
@@ -510,7 +513,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
     }
     final url = NetWorkingConfig.path(NetPath.createFindPet);
     var dic = new Map<String, dynamic>.from(paramDic);
-    dic['token'] = UserManager().token;
+    dic['token'] = UserManager.instance.token;
     dic['pet_type'] = petType;
     dic['address'] = model.address;
     dic['desc'] = model.desc;

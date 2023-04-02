@@ -269,23 +269,23 @@ class _HomePageState extends State<HomePage> {
       if (data['code'] == 200) {
         var models = data['data'];
         var datas = (models as List).map((e) => HomePageModel.fromJson(e)).toList();
-        if (page == 1) {
-          ATNativeManager.nativeAdReady(
-            placementID: Configuration.nativePlacementID,
-          ).then((value) {
-            if (value == true) {
-              if (datas.length > 5) {
-                datas.insert(5, HomePageModel(topic_id: -2));
-              }else{
-                datas.add(HomePageModel(topic_id: -2));
-              }
-              print("广告加载完毕");
-              setState(() {
-
-              });
-            }
-          });
-        }
+        // if (page == 1) {
+        //   ATNativeManager.nativeAdReady(
+        //     placementID: Configuration.nativePlacementID,
+        //   ).then((value) {
+        //     if (value == true) {
+        //       if (datas.length > 5) {
+        //         datas.insert(5, HomePageModel(topic_id: -2));
+        //       }else{
+        //         datas.add(HomePageModel(topic_id: -2));
+        //       }
+        //       print("广告加载完毕");
+        //       setState(() {
+        //
+        //       });
+        //     }
+        //   });
+        // }
 
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
@@ -321,23 +321,23 @@ class _HomePageState extends State<HomePage> {
         if (page == 1) {
           datas.insert(0, HomePageModel(topic_id: -1));
         }
-        if (page == 1) {
-          ATNativeManager.nativeAdReady(
-            placementID: Configuration.nativePlacementID,
-          ).then((value) {
-            if (value == true) {
-              if (datas.length > 5) {
-                datas.insert(5, HomePageModel(topic_id: -2));
-              }else{
-                datas.add(HomePageModel(topic_id: -2));
-              }
-              print("广告加载完毕");
-              setState(() {
-
-              });
-            }
-          });
-        }
+        // if (page == 1) {
+        //   ATNativeManager.nativeAdReady(
+        //     placementID: Configuration.nativePlacementID,
+        //   ).then((value) {
+        //     if (value == true) {
+        //       if (datas.length > 5) {
+        //         datas.insert(5, HomePageModel(topic_id: -2));
+        //       }else{
+        //         datas.add(HomePageModel(topic_id: -2));
+        //       }
+        //       print("广告加载完毕");
+        //       setState(() {
+        //
+        //       });
+        //     }
+        //   });
+        // }
 
         page > 1 ? homeModels += datas : homeModels = datas;
         if (models.length > 0) {
