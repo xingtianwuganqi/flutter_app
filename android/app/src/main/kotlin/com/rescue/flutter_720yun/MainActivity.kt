@@ -1,4 +1,4 @@
-package com.rescue.flutter_720yun
+package com.anythink.sdk.demo
 
 import io.flutter.embedding.android.FlutterActivity
 
