@@ -160,6 +160,7 @@ class FindPetState extends State<FindPetPage> {
             userInfoWidget(data),
             petTypeWdiget(data),
             textDescWidget(data),
+            addressWidget(data),
             contactButton(data),
             statusWidget(data),
             lineWidget(),
@@ -287,7 +288,7 @@ class FindPetState extends State<FindPetPage> {
         style: TextStyle(
             fontSize: FontUtil.fs(FontSize.content),
             color: ColorsUtil.fromEnmu(ColorEnum.content),
-            height: 1.6
+            height: 1.4
         ),
         expandText: '展开',
         collapseText: '收起',
@@ -339,6 +340,17 @@ class FindPetState extends State<FindPetPage> {
           )
       )
       ,
+    );
+  }
+
+  Widget addressWidget(FindPetListModel model) {
+    return Container(
+      padding: EdgeInsets.only(left: 46,right: 15,top: 4,bottom: 4),
+      alignment: Alignment.centerLeft,
+      child: Text(model.address,style: TextStyle(
+        fontSize: FontUtil.fs(FontSize.desc),
+        color: ColorsUtil.fromEnmu(ColorEnum.desc),
+      ),),
     );
   }
 
