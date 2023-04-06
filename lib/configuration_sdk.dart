@@ -10,7 +10,7 @@ class Configuration {
   static String rewarderPlacementID = Platform.I.buildMode == BuildMode.debug ? 'b62b03c000844f' : 'b6427e89198d2a';
   static String interstitialPlacementID = Platform.I.buildMode == BuildMode.debug ? 'b62b0397ba87a8' : 'b6427ea8e97ae1';
   static String bannerPlacementID = Platform.I.buildMode == BuildMode.debug ? 'b62b03bacdcf28' : 'b641a834fd5243';
-  static String nativePlacementID = Platform.I.buildMode == BuildMode.debug ? 'b62ea2e2ae729e' : 'b6427ea4423ea0';
+  static String nativePlacementID = Platform.I.buildMode == BuildMode.debug ? 'b62ea2e1248bfa' : 'b6427ea4423ea0';
 
 
   static String rewarderSceneID = Platform.I.buildMode == BuildMode.debug ? '' : '';

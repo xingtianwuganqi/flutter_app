@@ -1,4 +1,4 @@
-package com.rescue.flutter_720yun;
+package com.anythink.sdk.demo;
 
 //import android.os.Bundle;
 //import io.flutter.app.FlutterActivity;

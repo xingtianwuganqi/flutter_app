@@ -40,11 +40,11 @@ class FindPetDetailState extends State<FindPetDetailPage> {
     loadFindPetInfoNetworking();
 
     descController.addListener(() {
-      model.desc = descController.text;
+      model.desc = descController.text.trim();
     });
 
     contactController.addListener(() {
-      model.contact = contactController.text;
+      model.contact = contactController.text.trim();
     });
   }
 
@@ -273,8 +273,9 @@ class FindPetDetailState extends State<FindPetDetailPage> {
             ),
             height: 150,
             padding: EdgeInsets.all(10),
-            child: Expanded(
-              child: TextField(
+            child:
+             // Expanded(child:
+              TextField(
                 decoration: InputDecoration.collapsed(
                   hintText: '请输入简短的描述',
                   hintStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc)),
@@ -286,7 +287,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
                 focusNode: _descFocus,
                 keyboardType: TextInputType.multiline,
               ),
-            ),
+            // ),
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
@@ -435,7 +436,8 @@ class FindPetDetailState extends State<FindPetDetailPage> {
           backgroundColor: MaterialStateProperty.all(ColorsUtil.fromEnmu(ColorEnum.system))
         ),
         onPressed: () {
-          pushActionNetworking();
+          resignFirstFocus();
+          checkDataSources();
         },
       ),
     );
@@ -443,6 +445,81 @@ class FindPetDetailState extends State<FindPetDetailPage> {
     return SliverToBoxAdapter(
       child: pushBtn,
     );
+  }
+
+  void showAlert() {
+    var alert = AlertDialog(
+      title: Text("特别提醒"),
+      //title 的内边距，默认 left: 24.0,top: 24.0, right 24.0
+      //默认底部边距 如果 content 不为null 则底部内边距为0
+      //            如果 content 为 null 则底部内边距为20
+      titlePadding: EdgeInsets.all(10),
+      //标题文本样式
+      titleTextStyle: TextStyle(color: Colors.black87, fontSize: 16),
+      //中间显示的内容
+      content: Text("请勿相信以任何名义(包括运费、押金、定金等)要求的提前转帐与打款的行为，不要提前转账或打款，若是红包领养，请当面给送养人。请提高警惕，以防被骗！",
+        style: TextStyle(
+          color: ColorsUtil.hexColor(0xF6831F),
+          fontSize: FontUtil.fs(FontSize.content),
+          height: 1.4
+        ),
+      ),
+      //中间显示的内容边距
+      //默认 EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0)
+      contentPadding: EdgeInsets.all(10),
+      //中间显示内容的文本样式
+      contentTextStyle: TextStyle(color: Colors.black54, fontSize: 14),
+      //底部按钮区域
+      actions: <Widget>[
+        TextButton(
+          child: Text("取消",
+            style: TextStyle(
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              fontSize: FontUtil.fs(FontSize.content),
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: Text("继续发布",
+            style: TextStyle(
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              fontSize: FontUtil.fs(FontSize.content),
+            ),
+          ),
+          onPressed: () {
+            //关闭 返回true
+            Navigator.of(context).pop(true);
+            pushActionNetworking();
+          },
+        ),
+      ],
+    );
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void checkDataSources() {
+    if (model.desc == null || model.desc.length == 0) {
+      EasyLoading.showToast("请填写简单描述");
+      return;
+    }
+    if (model.address == null || model.address.length == 0) {
+      EasyLoading.showToast("请选择地址");
+      return;
+    }
+    if (model.contact == null || model.contact.length == 0) {
+      EasyLoading.showToast("请填写联系方式");
+      return;
+    }
+    showAlert();
   }
 
   void resignFirstFocus() {
@@ -499,18 +576,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   }
 
   Future<void> pushActionNetworking() async {
-    if (model.desc == null || model.desc.length == 0) {
-      EasyLoading.showToast("请填写简单描述");
-      return;
-    }
-    if (model.address == null || model.address.length == 0) {
-      EasyLoading.showToast("请选择地址");
-      return;
-    }
-    if (model.contact == null || model.contact.length == 0) {
-      EasyLoading.showToast("请填写联系方式");
-      return;
-    }
+
     final url = NetWorkingConfig.path(NetPath.createFindPet);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['token'] = UserManager.instance.token;

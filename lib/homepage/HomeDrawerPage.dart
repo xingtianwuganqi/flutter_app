@@ -34,8 +34,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_help.png',name: '支持我们',type: 0,unreadNum: 0),
-    // MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
-
+    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
   ];
 
   AppVersionModel appVersionInfo;
