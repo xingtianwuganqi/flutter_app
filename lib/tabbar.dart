@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
@@ -6,6 +9,7 @@ import 'package:flutter_720yun/manager/interstitial_sdk.dart';
 import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
+import 'UserInfo/WebviewPage.dart';
 import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
@@ -14,6 +18,7 @@ import 'package:anythink_sdk/at_index.dart';
 import 'manager/init_sdk.dart';
 import 'manager/banner_sdk.dart';
 import 'manager/listenerManager.dart';
+import 'package:permission_handler/permission_handler.dart';
 // JPush jpush = new JPush();
 
 class tabbar extends StatefulWidget {
@@ -30,6 +35,9 @@ class tabbarState extends State<tabbar> {
   int _unreadNum = 0;
   int _newVersion = 0;
   List<Widget> pages = [];
+
+  TapGestureRecognizer _tgr1 = new TapGestureRecognizer();
+  TapGestureRecognizer _tgr2 = new TapGestureRecognizer();
 
   @override
   void initState() {
@@ -53,7 +61,16 @@ class tabbarState extends State<tabbar> {
     pages.add(NewUserInfoPage(pageType: MyPageType.myPage, userId: userId));
 
     // 加载广告
-    setUPAD();
+    // setUPAD();
+    getUserAgreeStatus();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _tgr1.dispose();
+    _tgr2.dispose();
   }
 
   @override
@@ -215,6 +232,122 @@ class tabbarState extends State<tabbar> {
     // ..customAnimation = CustomAnimation();
   }
 
+  void getUserAgreeStatus() {
+    ToolConfig.getUserGreenStatus().then((value) {
+      if (value == 1) {
+        setUPAD();
+      }else{
+        userAgreenDialog();
+      }
+    });
+  }
+
+  void userAgreenDialog() {
+    String userPrivateProtocol = '''，帮助您了解我们为您提供的服务，我们将如何处理个人信息以及您享有的权利。我们将会严格按照相关法律法规要求，采取各种安全措施来保护您的个人信息。\n点击"同意"按钮，表示您已知情并同意一下协议和一下约定：\n1.为了保障软件的安全运行和账号安全，我们会申请收集您的设备信息。\n2.上传图片需要申请您的存储权限。\n3.申请设备信息，方便为您推荐个性化广告。\n4.我们尊重您的选择权，您可以访问修改，删除您的个人信息并管理您的授权。''';
+    var alert = AlertDialog(
+      title: Text("个人隐私保护提示"),
+      titlePadding: EdgeInsets.all(10),
+      //标题文本样式
+      titleTextStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title), fontSize: 16,fontWeight: FontWeight.bold),
+      //中间显示的内容
+      content:
+       Container(
+         height: 200,
+         width: double.infinity,
+         child: SingleChildScrollView(
+           child: RichText(
+             text: TextSpan(
+                 text: '欢迎使用真命天喵！我们将通过',style:TextStyle(
+                 color: ColorsUtil.fromEnmu(ColorEnum.content),
+                 fontSize: 16,
+                 height: 1.5
+             ),
+                 children: [
+                   TextSpan(
+                     text: '《用户协议》',style:TextStyle(
+                       color: ColorsUtil.fromEnmu(ColorEnum.urlColor),
+                       fontSize: 16,
+                       height: 1.5
+                   ),
+                     recognizer: _tgr1..onTap = () {
+                       Navigator.push(context, MaterialPageRoute(builder: (context){
+                         return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                       }));
+                   }
+                   ),
+                   TextSpan(text: '和',style:TextStyle(
+                       color: ColorsUtil.fromEnmu(ColorEnum.content),
+                       fontSize: 16,
+                       height: 1.5
+                   )),
+                   TextSpan(text: '《隐私协议》',style:TextStyle(
+                       color: ColorsUtil.fromEnmu(ColorEnum.urlColor),
+                       fontSize: FontUtil.fs(FontSize.content),
+                       height: 1.5
+                   ),recognizer: _tgr2..onTap = () {
+                     Navigator.push(context, MaterialPageRoute(builder: (context){
+                       return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                     }));                   }
+                   ),
+                   TextSpan(text: userPrivateProtocol,style:TextStyle(
+                       color: ColorsUtil.fromEnmu(ColorEnum.content),
+                       fontSize: 16,
+                       height: 1.5
+                   )),
+                 ]
+             ),
+           ),
+         )
+         // child: ,
+       ),
+      //中间显示的内容边距
+      //默认 EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0)
+      contentPadding: EdgeInsets.all(10),
+      //中间显示内容的文本样式
+      contentTextStyle: TextStyle(color: Colors.black54, fontSize: 14),
+      scrollable: true,
+      //底部按钮区域
+      actions: <Widget>[
+        TextButton(
+          child: Text("不同意",
+            style: TextStyle(
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              fontSize: FontUtil.fs(FontSize.content),
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: Text("同意",
+            style: TextStyle(
+              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              fontSize: FontUtil.fs(FontSize.content),
+            ),
+          ),
+          onPressed: () {
+            //关闭 返回true
+            Navigator.of(context).pop(true);
+            ToolConfig.setUserGreenStatus(1);
+            setUPAD();
+          },
+        ),
+      ],
+    );
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: alert,
+        );
+      },
+    );
+  }
+
   // 加载广告
   void setUPAD() {
     InitManger.setLogEnabled();
@@ -226,4 +359,7 @@ class tabbarState extends State<tabbar> {
     // ListenerManager.nativeListen();
 
   }
+
+
+
 }

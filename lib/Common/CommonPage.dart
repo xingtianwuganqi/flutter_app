@@ -487,6 +487,29 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 
     }
   }
+
+  static setUserGreenStatus(int value) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setInt('user_agree', value);
+    }catch (e){
+
+    }
+  }
+
+  static Future<int> getUserGreenStatus() async {
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int data = prefs.getInt('user_agree');
+      if (data != null && data == 1) {
+        return 1;
+      }else{
+        return 0;
+      }
+    }catch(e){
+      return 0;
+    }
+  }
 }
 //
 /// 无参数
