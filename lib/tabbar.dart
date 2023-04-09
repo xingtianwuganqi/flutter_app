@@ -311,18 +311,18 @@ class tabbarState extends State<tabbar> {
         TextButton(
           child: Text("不同意",
             style: TextStyle(
-              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              color: ColorsUtil.fromEnmu(ColorEnum.title),
               fontSize: FontUtil.fs(FontSize.content),
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pop(false);
+            // Navigator.of(context).pop(false);
           },
         ),
         TextButton(
           child: Text("同意",
             style: TextStyle(
-              color: ColorsUtil.fromEnmu(ColorEnum.content),
+              color: ColorsUtil.fromEnmu(ColorEnum.title),
               fontSize: FontUtil.fs(FontSize.content),
             ),
           ),
