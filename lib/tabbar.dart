@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -317,6 +318,8 @@ class tabbarState extends State<tabbar> {
           ),
           onPressed: () {
             // Navigator.of(context).pop(false);
+            exit(0);
+            // ToolConfig.setUserAgreenStatus(0);
           },
         ),
         TextButton(
@@ -329,7 +332,7 @@ class tabbarState extends State<tabbar> {
           onPressed: () {
             //关闭 返回true
             Navigator.of(context).pop(true);
-            ToolConfig.setUserGreenStatus(1);
+            ToolConfig.setUserAgreenStatus(1);
             setUPAD();
           },
         ),

@@ -488,7 +488,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     }
   }
 
-  static setUserGreenStatus(int value) async {
+  static setUserAgreenStatus(int value) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setInt('user_agree', value);
