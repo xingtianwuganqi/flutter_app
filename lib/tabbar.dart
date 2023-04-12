@@ -246,7 +246,7 @@ class tabbarState extends State<tabbar> {
   }
 
   void userAgreenDialog() {
-    String userPrivateProtocol = '''，帮助您了解我们为您提供的服务，我们将如何处理个人信息以及您享有的权利。我们将会严格按照相关法律法规要求，采取各种安全措施来保护您的个人信息。\n点击"同意"按钮，表示您已知情并同意一下协议和一下约定：\n1.为了保障软件的安全运行和账号安全，我们会申请收集您的设备信息。\n2.上传图片需要申请您的相册或存储权限。\n3.申请设备信息，方便为您推荐个性化广告。\n4.我们尊重您的选择权，您可以访问修改，删除您的个人信息并管理您的授权。''';
+    String userPrivateProtocol = '''，帮助您了解我们为您提供的服务，我们将如何处理个人信息以及您享有的权利。我们将会严格按照相关法律法规要求，采取各种安全措施来保护您的个人信息。\n点击"同意"按钮，表示您已知情并同意以下协议和以下约定：\n1.为了保障软件的安全运行和账号安全，我们会申请收集您的设备信息。\n2.上传图片需要申请您的相册或存储权限。\n3.申请设备信息，方便为您推荐个性化广告。\n4.我们尊重您的选择权，您可以访问修改，删除您的个人信息并管理您的授权。''';
     var alert = AlertDialog(
       title: Text("个人隐私保护提示"),
       titlePadding: EdgeInsets.all(10),
@@ -318,6 +318,7 @@ class tabbarState extends State<tabbar> {
             style: TextStyle(
               color: ColorsUtil.fromEnmu(ColorEnum.title),
               fontSize: FontUtil.fs(FontSize.content),
+              fontWeight: FontWeight.bold
             ),
           ),
           onPressed: () {
@@ -331,6 +332,7 @@ class tabbarState extends State<tabbar> {
             style: TextStyle(
               color: ColorsUtil.fromEnmu(ColorEnum.title),
               fontSize: FontUtil.fs(FontSize.content),
+                fontWeight: FontWeight.bold
             ),
           ),
           onPressed: () {
