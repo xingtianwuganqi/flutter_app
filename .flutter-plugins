@@ -1,13 +1,13 @@
 # This is a generated file; do not edit or check into version control.
 anythink_sdk=/Users/jingjun/Desktop/Githup/flutter_app/plugins/anythink_sdk/
 device_info=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/device_info-2.0.3/
-file_picker=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.6.1/
+file_picker=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-5.2.9/
 flutter_plugin_android_lifecycle=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.9/
 path_provider=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.14/
 path_provider_android=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.24/
 path_provider_foundation=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_foundation-2.2.0/
 path_provider_linux=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.10/
-path_provider_windows=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.7/
+path_provider_windows=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.5/
 permission_handler=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-10.2.0/
 permission_handler_android=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_android-10.2.0/
 permission_handler_apple=/Users/jingjun/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_apple-9.0.8/

@@ -43,8 +43,9 @@ dependencies:
   expandable_text: ^2.3.0
   flutter_easyrefresh: ^2.2.1
   wechat_assets_picker: ^7.3.2
-  file_picker: ^4.6.1
+  file_picker: ^5.2.9
   platform_info: ^3.2.0
+#  share_plus: ^6.3.2
   anythink_sdk:
     path: plugins/anythink_sdk/
 
