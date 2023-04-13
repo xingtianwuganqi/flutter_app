@@ -8,8 +8,8 @@ import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
 import 'package:flutter_720yun/router_home.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../UserInfo/SupportUsPage.dart';
 import '../model/UserModel.dart';
 
@@ -34,7 +34,8 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_help.png',name: '支持我们',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0)
+    // MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0),
+    // MessagePageModel(icon: 'assets/icons/icon_mi_tui@3x.png',name: '推荐给朋友',type: 0,unreadNum: 0)
   ];
 
   AppVersionModel appVersionInfo;
@@ -159,11 +160,30 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return AdTestPage();
             }));
+          }else if (model.name == "推荐给朋友") {
+            // Share.share('https://www.pgyer.com/pPyO');
+            // _onShare(context);
           }
         },
       );
     }
   }
+
+  // void _onShare(BuildContext context) async {
+  //   // A builder is used to retrieve the context immediately
+  //   // surrounding the ElevatedButton.
+  //   //
+  //   // The context's `findRenderObject` returns the first
+  //   // RenderObject in its descendent tree when it's not
+  //   // a RenderObjectWidget. The ElevatedButton's RenderObject
+  //   // has its position and size after it's built.
+  //   final box = context.findRenderObject() as RenderBox;
+  //
+  //
+  //     await Share.share("https://www.pgyer.com/pPyO",
+  //         subject: "https://www.pgyer.com/pPyO",
+  //         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  // }
 
   Future<Null> uploadNetWorking() async{
     final url = NetWorkingConfig.path(NetPath.appUpload);
