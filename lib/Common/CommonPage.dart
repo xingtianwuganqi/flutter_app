@@ -163,7 +163,7 @@ static func apiBasicParameters() -> [String:Any] {
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
   'appVersion': '1.0.2',
-  'androidVersion': '6', // 与pubspec 文件中的version 相同
+  'androidVersion': '8', // 与pubspec 文件中的version 相同
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 
@@ -485,6 +485,29 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
       }
     }catch(e){
 
+    }
+  }
+
+  static setUserAgreenStatus(int value) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setInt('user_agree', value);
+    }catch (e){
+
+    }
+  }
+
+  static Future<int> getUserGreenStatus() async {
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int data = prefs.getInt('user_agree');
+      if (data != null && data == 1) {
+        return 1;
+      }else{
+        return 0;
+      }
+    }catch(e){
+      return 0;
     }
   }
 }
