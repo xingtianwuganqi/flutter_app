@@ -416,9 +416,15 @@ class TopicDetailState extends State<TopicDetailWidget> {
           child: Column(
             children: [
               Expanded(
-                  child: ListView(
+                  child:
+                  // ListView(
+                  //   children: imageWidgets(homeModel),
+                  // )
+                SingleChildScrollView(
+                  child: Column(
                     children: imageWidgets(homeModel),
-                  )
+                  ),
+                )
               ),
               Container(
                 child: Column(

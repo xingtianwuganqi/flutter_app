@@ -479,7 +479,8 @@ class _CheckCodeState extends State<CheckCodePage> {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                          String filePath = 'assets/files/privacyPolicy.html';
+                          return WebViewPage(filePath: filePath);
                         }));
                       },
                   ),
