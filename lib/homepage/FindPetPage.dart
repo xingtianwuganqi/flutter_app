@@ -1,4 +1,3 @@
-import 'package:anythink_sdk/at_interstitial.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
-import 'package:flutter_720yun/manager/interstitial_sdk.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -39,17 +37,6 @@ class FindPetState extends State<FindPetPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    hasInterstitialAdReady();
-  }
-
-  hasInterstitialAdReady() async {
-    await ATInterstitialManager.hasInterstitialAdReady(
-      placementID: Configuration.interstitialPlacementID,
-    ).then((value) {
-      if (value == true) {
-        InterstitialManager.showSceneInterstitialAd();
-      }
-    });
   }
 
   @override

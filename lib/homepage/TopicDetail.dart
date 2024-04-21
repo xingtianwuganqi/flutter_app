@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_banner.dart';
-import 'package:anythink_sdk/at_platformview/at_banner_platform_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +6,9 @@ import 'package:flutter_720yun/CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:flutter_720yun/Login/CheckCodePage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
-import 'package:flutter_720yun/manager/banner_sdk.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
 import '../configuration_sdk.dart';
-import '../manager/listenerManager.dart';
 import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
@@ -56,25 +52,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
     super.initState();
     homePageListNetWroking();
     addViewHistoryNetWorking();
-    _checkReadyToShow();
-  }
-
-  _checkReadyToShow() {
-    ATBannerManager.bannerAdReady(
-
-      placementID: Configuration.bannerPlacementID,
-    ).then((value) {
-      if (value) {
-        setState(() {
-          flag = true;
-        });
-
-      } else {
-        print('flutter banner no cache');
-        BannerManager.loadBannerWith();
-      }
-
-    });
   }
 
   @override
@@ -308,23 +285,13 @@ class TopicDetailState extends State<TopicDetailWidget> {
         padding: EdgeInsets.only(left: 15,right: 15),
         height: 90,
         width: double.infinity,
-        child: _getBannerView(),
+        child: Container(),
       ));
       return data;
     }else{
       return [];
     }
 
-  }
-
-  Widget _getBannerView() {
-    if (!flag) {
-      return Container();
-    } else {
-      return PlatformBannerWidget(
-          Configuration.bannerPlacementID,sceneID: Configuration.bannerSceneID
-      );
-    }
   }
 
   @override

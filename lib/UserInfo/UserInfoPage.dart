@@ -5,7 +5,6 @@ import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/SettingInfoPage.dart';
-import 'package:flutter_720yun/UserInfo/SupportUsPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/UserInfo/UserPublishPage.dart';
 import 'package:flutter_720yun/model/UserModel.dart';

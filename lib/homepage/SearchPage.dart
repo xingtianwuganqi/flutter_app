@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_native.dart';
-import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
@@ -367,9 +365,7 @@ class SearchPageState extends State<SearchPageWidget> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            if (data.topic_id == -2) {
-              return nativeADWidget();
-            }else{
+
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
@@ -423,7 +419,6 @@ class SearchPageState extends State<SearchPageWidget> {
                 }),
               );
             }
-          }
       ),
       // firstRefresh: isFirstLoad,
       // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
@@ -492,32 +487,15 @@ class SearchPageState extends State<SearchPageWidget> {
     dic['keyword'] = keyword;
     dic['page'] = _page;
     dic['size'] = 10;
-    await NetWorking.formDataPost(url, dic,(data){
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         List<HomePageModel> datas = [];
         var models = data['data'];
-        for (int i = 0;i < models.length; i++ ){
+        for (int i = 0; i < models.length; i++) {
           datas.add(new HomePageModel.fromJson(models[i]));
         }
-        if (_page == 1) {
-          ATNativeManager.nativeAdReady(
-            placementID: Configuration.nativePlacementID,
-          ).then((value) {
-            if (value == true) {
-              if (datas.length > 5) {
-                datas.insert(5, HomePageModel(topic_id: -2));
-              }else{
-                datas.add(HomePageModel(topic_id: -2));
-              }
-              print("广告加载完毕");
-              setState(() {
-
-              });
-            }
-          });
-        }
-        _page == 1 ?  homeModels = datas : homeModels = homeModels + datas;
+        _page == 1 ? homeModels = datas : homeModels = homeModels + datas;
         if (datas.length > 0) {
           _page += 1;
         }
@@ -525,67 +503,11 @@ class SearchPageState extends State<SearchPageWidget> {
         setState(() {
           isFirstLoad = false;
         });
-      }else{
+      } else {
         EasyLoading.showToast(data['message'] ?? '');
       }
-    },(error){
+    }, (error) {
       EasyLoading.showToast('网络出错');
     });
-
   }
-  Widget nativeADWidget() {
-    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
-    return Container(
-      width: double.infinity,
-      height: 100 + imageH,
-      child: PlatformNativeWidget(Configuration.nativePlacementID, {
-        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth(), 340,
-            backgroundColorStr: '#FFFFFF'
-        ),
-        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
-            40, 40,
-            x: 15, y: 40, backgroundColorStr: 'clearColor'),
-        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160,
-          20,
-          x: 61,
-          y: 40,
-          textSize: 15,
-        ),
-        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160, 20,
-          x: 61, y:60,
-          textSize: 15,
-          textColorStr: "#999999",
-        ),
-        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
-          80,
-          36,
-          x: topSizeTool.getWidth() - 95,
-          y: 40,
-          textSize: 15,
-          textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1",
-          textAlignmentStr: "center",
-        ),
-        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
-            x: 61, y: 86, backgroundColorStr: '#000000'),
-        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
-            20, 10,
-            x: 10,
-            y: 10,
-            backgroundColorStr: '#00000000'),
-        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
-          20,
-          20,
-          x: topSizeTool.getWidth() - 35,
-          y: 10,
-        ),
-      },sceneID: Configuration.nativeSceneID),
-    );
-  }
-
-
 }

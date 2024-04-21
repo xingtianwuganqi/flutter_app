@@ -31,24 +31,182 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/rescue/flutter_720yun/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/rescue/flutter_720yun/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Login/CheckCodePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Login/CheckCodePage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Login/LoginPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Login/LoginPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Login/RegisterPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Login/RegisterPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Comment/CommentPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Comment/CommentPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Common/CommonPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/CommonPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Common/KeepAliveWrapper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/KeepAliveWrapper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Common/SingletonPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/SingletonPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/CommonWidget/PhotoViewGalleryScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CommonWidget/PhotoViewGalleryScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/UserInfo/SupportUsPage.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/UserInfo/UserInfoPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UserInfo/UserInfoPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/AddressSelectPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/AddressSelectPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/FindPetPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/homepage/HomeDrawerPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/HomeDrawerPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/HomePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/SearchPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/SearchPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/homepage/TopicDetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/homepage/TopicDetail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/banner_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/init_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/interstitial_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/listenerManager.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/native_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manager/rewarder_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/CommentModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/CommentModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/HomePageModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/HomePageModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/UserModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/UserModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/router_home.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/Routers.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_banner.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_interstitial.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_native.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/routers/router_reward.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tabbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tabbar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/.metadata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_banner.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_china_core.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_core.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_interstitial.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_native.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_network_pangle_china.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_rewardvideo.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/anythink_splash.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/open_ad_sdk_5.1.0.2.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs/tramini_sdk.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/libs_compile/flutter.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATFlutterEventManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/ATPlatformViewManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/AnythinkSdkPlugin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/HandleAnyThinkMethod.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAdBannerManger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATAndroidBannerView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/banner/ATBannerViewFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/init/ATAdInitManger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATAdInterstitialManger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/interstitial/ATInterstitialHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAdNativeManger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATAndroidNativeView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ATNativeViewFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/SelfRenderViewUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/nativead/ViewInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATAdRewardVideoManger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/reward/ATRewardVideoHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Const.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/FlutterPluginUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/MsgTools.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/java/com/anythink/flutter/utils/Utils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable-xhdpi/anythink_btn_close_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable-xhdpi/anythink_btn_close_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable/ad_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/android/src/main/res/drawable/anythink_btn_close.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATFSendSignalManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATFSendSignalManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFBannerDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFBannerDelegate.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFInterstitialDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFInterstitialDelegate.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFNativeDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFNativeDelegate.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFRewardedVideoDelegate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Delegate/ATFRewardedVideoDelegate.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFBannerPlatformView.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFBannerPlatformView.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFBannerPlatformViewFactory.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFBannerPlatformViewFactory.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFPlatfromBannerManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Banner/ATFPlatfromBannerManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFNativePlatformView.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFNativePlatformView.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFNativePlatformViewFactory.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFNativePlatformViewFactory.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFPlatfromNativeManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/ATFPlatfromNativeManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/View&amp;Mode/ATFNativeAttributeMode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/View&amp;Mode/ATFNativeAttributeMode.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/View&amp;Mode/ATFNativeSelfRenderView.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/FlutterPlatform/Native/View&amp;Mode/ATFNativeSelfRenderView.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFBannerManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFBannerManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFInitManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFInitManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFInterstitialManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFInterstitialManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFNativeManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFNativeManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFRewardedVideoManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/NativeShowManger/ATFRewardedVideoManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Tool/ATFBannerTool.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Tool/ATFBannerTool.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Tool/ATFNativeTool.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADSubclass/Tool/ATFNativeTool.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+BannerAd.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+BannerAd.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+Initchannel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+Initchannel.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+InterstitialAd.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+InterstitialAd.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+NativeAd.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+NativeAd.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+RewardedVideo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger+RewardedVideo.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/ADistributionFlutterInfo/ATFAdManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/Data/ATFCoconfigurManger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/Data/ATFCoconfigurManger.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/Data/ATFDisposeDataTool.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/ATSDK/Data/ATFDisposeDataTool.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/AnythinkSdkPlugin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/AnythinkSdkPlugin.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/Common/ATFCommonTool.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/Common/ATFCommonTool.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/Common/ATFConfiguration.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/Common/UIView+ATFLayoutMethods.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/Classes/Common/UIView+ATFLayoutMethods.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/ios/anythink_sdk.podspec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/anythink_sdk.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_banner.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_banner_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_base_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_common.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_download_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_index.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_init.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_init_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_interstitial.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_interstitial_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_listener.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_native.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_native_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_platformview/at_banner_platform_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_platformview/at_native_platform_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_rewarded.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/lib/at_rewarded_response.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/anythink_sdk/pubspec.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="testRunner" value="GRADLE" />
@@ -104,17 +262,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/mac/Documents/GitHub/flutter_app&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "dev",
+    "io.flutter.reload.alreadyRun": "true",
+    "last_opened_file_path": "/Users/mac/Documents/GitHub/flutter_app",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib" />

@@ -3,14 +3,14 @@ import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_720yun/model/ShowModel.dart';
 
 class UserInfoModel {
-  final String username;
-  final String avator;
-  final String token;
-  final String phone_number;
-  final String email;
-  final String create_time;
-  final int id;
-  final String wx_id;
+  String? username;
+  String? avator;
+  String? token;
+  String? phone_number;
+  String? email;
+  String? create_time;
+  int? id;
+  String? wx_id;
 
   UserInfoModel({
     this.username,
@@ -26,13 +26,13 @@ class UserInfoModel {
   factory UserInfoModel.fromJson(Map<String,dynamic> json){
     return UserInfoModel(
         username: json["username"],
-      avator: json["avator"],
-      token: json["token"],
-      phone_number: json["phone_number"],
-      email: json["email"],
-      create_time: json["create_time"],
-      id: json["id"],
-      wx_id: json["wx_id"]
+        avator: json["avator"],
+        token: json["token"],
+        phone_number: json["phone_number"],
+        email: json["email"],
+        create_time: json["create_time"],
+        id: json["id"],
+        wx_id: json["wx_id"]
       );
   }
 
@@ -89,9 +89,9 @@ class UserInfoModel {
  */
 
 class AuthHistoryModel {
-  final int history_id;
-  final int topic_id;
-  final HomePageModel topicInfo;
+  int? history_id;
+  int? topic_id;
+  HomePageModel? topicInfo;
 
   AuthHistoryModel({
     this.history_id,
@@ -109,9 +109,9 @@ class AuthHistoryModel {
 }
 
 class AuthCollectRescueModel {
-  final int collection_id;
-  final int topic_id;
-  final HomePageModel topicInfo;
+  int? collection_id;
+  int? topic_id;
+  HomePageModel? topicInfo;
 
   AuthCollectRescueModel({
     this.collection_id,
@@ -129,9 +129,9 @@ class AuthCollectRescueModel {
 }
 
 class AuthCollectShowInfoModel {
-  final int showcollect_id;
-  final int topic_id;
-  final ShowInfoModel showInfo;
+  int? showcollect_id;
+  int? topic_id;
+  ShowInfoModel? showInfo;
 
   AuthCollectShowInfoModel({
     this.showcollect_id,
@@ -150,9 +150,9 @@ class AuthCollectShowInfoModel {
 
 
 class ViolationModel {
-  final int id;
-  final String vio_name ;
-  bool selected;
+  int? id;
+  String? vio_name ;
+  bool? selected;
 
   ViolationModel({
     this.id,
@@ -197,9 +197,9 @@ class UserPageModel {
 }
 
 class AppVersionModel {
-  final int id;
-  final String app_type;
-  final int version;
+  int? id;
+  String? app_type;
+  int? version;
 
   AppVersionModel({this.id,this.app_type,this.version});
   factory AppVersionModel.fromJson(Map<String,dynamic> json) {

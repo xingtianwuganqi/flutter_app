@@ -1,25 +1,18 @@
-
-// class CommentInfoModel {
-//
-// }
-
-import 'package:flutter_720yun/model/MessageModel.dart';
-
 import 'UserModel.dart';
 
 class CommentInfoModel {
-  final int comment_id;
-  final String create_time;
-  final int topic_id;
-  final int topic_type; // 秀宠1，后面加领养的回复
-  final String content;
-  final int from_uid;
-  final List<ReplyListModel> replys;
-  bool isOpend; // 回复是否折叠，true 是全部展示,false 时展示折叠cell
-  final List<ReplyListModel> showReply;
-  final UserInfoModel userInfo;
-  final int reply_count;
-  int next_page;
+  int? comment_id;
+  String? create_time;
+  int? topic_id;
+  int? topic_type; // 秀宠1，后面加领养的回复
+  String? content;
+  int? from_uid;
+  List<ReplyListModel>? replys;
+  bool? isOpend; // 回复是否折叠，true 是全部展示,false 时展示折叠cell
+  List<ReplyListModel>? showReply;
+  UserInfoModel? userInfo;
+  int? reply_count;
+  int? next_page;
 
   CommentInfoModel({
     this.comment_id,
@@ -44,7 +37,7 @@ class CommentInfoModel {
       topic_type: json['topic_type'],
       content: json['content'] as String,
       from_uid: json['from_uid'],
-      replys: (json['replys'] as List)?.map((e) => ReplyListModel.fromJson(e))?.toList(),//
+      replys: (json['replys'] as List).map((e) => ReplyListModel.fromJson(e)).toList(),//
       isOpend: (json['reply_count'] ?? 0) > json['replys'].length ? false : true,
       showReply: [],
       userInfo: UserInfoModel.fromJson(json['userInfo']),
@@ -56,18 +49,18 @@ class CommentInfoModel {
 
 class ReplyListModel {
   final int id;
-  final int comment_id;
-  final int reply_id; // #表示回复目标的 id，如果 reply_type 是 comment 的话，那么 reply_id ＝ commit_id，如果 reply_type 是 reply 的话，这表示这条回复的父回复。
-  final int reply_type; // #表示回复的类型，因为回复可以是针对评论的回复（comment），也可以是针对回复的回复（reply）， 通过这个字段来区分两种情景。
-  final String content;
-  final int from_uid;
-  final int to_uid;
-  final UserInfoModel fromInfo;
-  final UserInfoModel toInfo;
-  final String create_time;
+  int? comment_id;
+  int? reply_id; // #表示回复目标的 id，如果 reply_type 是 comment 的话，那么 reply_id ＝ commit_id，如果 reply_type 是 reply 的话，这表示这条回复的父回复。
+  int? reply_type; // #表示回复的类型，因为回复可以是针对评论的回复（comment），也可以是针对回复的回复（reply）， 通过这个字段来区分两种情景。
+  String? content;
+  int? from_uid;
+  int? to_uid;
+  UserInfoModel? fromInfo;
+  UserInfoModel? toInfo;
+  String? create_time;
 
   ReplyListModel({
-    this.id,
+    required this.id,
     this.comment_id,
     this.reply_id,
     this.reply_type,
@@ -104,11 +97,11 @@ enum CommentType {
 
 class ComRepListModel {
   int type;
-  final CommentInfoModel commentModel;
-  final ReplyListModel replyModel;
+  CommentInfoModel? commentModel;
+  ReplyListModel? replyModel;
 
   ComRepListModel({
-    this.type,
+    required this.type,
     this.commentModel,
     this.replyModel
   });
@@ -120,18 +113,21 @@ enum ComTapType {
 }
 
 class ComTapTypeInfo {
-  ComTapType tapType;
-  String name;
-  ComTapTypeInfo({this.tapType,this.name});
+  ComTapType? tapType;
+  String? name;
+  ComTapTypeInfo({
+    this.tapType,
+    this.name
+  });
 }
 
 /// 回复时的数据模型
 class ReplyComModel {
-  final String content;
-  final int comment_id;
-  final int reply_id;
-  final int reply_type; //  1回复评论， 2回复回复, comment_id == replyId ? 1 : 2
-  final int to_uid;
+  String? content;
+  int? comment_id;
+  int? reply_id;
+  int? reply_type; //  1回复评论， 2回复回复, comment_id == replyId ? 1 : 2
+  int? to_uid;
 
   ReplyComModel({
     this.content,

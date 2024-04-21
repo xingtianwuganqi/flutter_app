@@ -14,12 +14,12 @@ import '../model/CommentModel.dart';
 
 class CommentInfoWidget extends StatefulWidget {
 
-  final CommentType commentType;
-  final int topicId;
-  final int toUid;
-  final ValueChanged changed;
+  CommentType? commentType;
+  int? topicId;
+  int? toUid;
+  ValueChanged? changed;
 
-  CommentInfoWidget({Key key,@required this.commentType,@required this.topicId,@required this.toUid,this.changed}): super(key:key);
+  CommentInfoWidget({required Key key,this.commentType,this.topicId, this.toUid, this.changed}): super(key:key);
 
   @override
   State<StatefulWidget> createState() {
@@ -37,7 +37,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
   FocusNode _focusNode = FocusNode();
   TextEditingController _comController = TextEditingController();
   // 回复时的模型
-  ReplyComModel _replyComModel;
+  ReplyComModel? _replyComModel;
 
   /// 点击的类型
   ComTapTypeInfo _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
@@ -307,27 +307,27 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
     });
   }
 
-  Future<Null> moreReplyNetworking(CommentInfoModel model) async{
+  Future<Null> moreReplyNetworking(CommentInfoModel? model) async{
     final url = NetWorkingConfig.path(NetPath.moreReplyInfo);
     var dic = Map<String,dynamic>.from(paramDic);
-    dic['comment_id'] = model.comment_id;
-    dic['page'] = model.next_page;
+    dic['comment_id'] = model?.comment_id;
+    dic['page'] = model?.next_page;
 
     await NetWorking.formDataPost(url, dic, (data) {
       Printer.printMapJsonLog('-----');
       Printer.printMapJsonLog(data);
       if (data['code'] == 200) {
         var models = data['data'] as List;
-        var moreReply =  models.map((e) => ReplyListModel.fromJson(e))?.toList();
+        var moreReply =  models.map((e) => ReplyListModel.fromJson(e)).toList();
         /// 先清空所有的数据
         listData = [];
         for (int i=0;i<dataSource.length;i++) {
           var comInfo = dataSource[i];
-          if (comInfo.comment_id == model.comment_id) {
-            comInfo.replys.addAll(moreReply);
+          if (comInfo.comment_id == model?.comment_id) {
+            comInfo.replys?.addAll(moreReply as Iterable<ReplyListModel>);
             if (models.length > 0) {
-              comInfo.next_page = comInfo.next_page + 1;
-              comInfo.isOpend = comInfo.reply_count == (comInfo.replys.length ?? 0);
+              comInfo.next_page = comInfo.next_page ?? 0 + 1;
+              comInfo.isOpend = comInfo.reply_count == (comInfo.replys?.length ?? 0);
             }
           }
           dataSource[i] = comInfo;
@@ -347,17 +347,19 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
   void commentListData(CommentInfoModel model) {
     var comModel = ComRepListModel(type: 1,commentModel: model);
     listData.add(comModel);
-    if (model.replys.length > 0) {
-      var replyInfos = model.replys.map((e) => ComRepListModel(type: 2,replyModel: e)).toList();
-      listData.addAll(replyInfos);
+    if ((model.replys?.length ?? 0) > 0) {
+      var replyInfos = model.replys?.map((e) => ComRepListModel(type: 2,replyModel: e)).toList();
+      listData.addAll(replyInfos as Iterable<ComRepListModel>);
     }
 
-    if (!model.isOpend) {
+    if (model.isOpend ?? false) {
       var com = ComRepListModel(type: 3,commentModel: model);
       listData.add(com);
     }
     if (listData.length > 0 && widget.changed != null) {
-      widget.changed(listData.length);
+      if (widget.changed != null) {
+        widget.changed!(listData.length);
+      }
     }
   }
 
@@ -390,7 +392,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
       'content': _comController.text,
       'topic_id': widget.topicId,
       'topic_type': commentType,
-      'from_uid': UserManager.instance.userInfo.id,
+      'from_uid': UserManager.instance.userInfo?.id,
       'to_uid': widget.toUid
     };
     await NetWorking.formDataPost(url, dic, (data) {
@@ -415,7 +417,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
       }else if (data['code'] == 210) { // 未校验手机号
         EasyLoading.showToast(data['message'] ?? '未校验手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo?.phone_number ?? 0);
         }));
       } else{
         EasyLoading.showToast('发表失败');
@@ -437,16 +439,16 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
   }
 
   /// 回复评论
-  Future<Null> replyCommentNetworking(ReplyComModel model) async {
+  Future<Null> replyCommentNetworking(ReplyComModel? model) async {
     final url = NetWorkingConfig.path(NetPath.replyComment);
     final dic = {
       'token': UserManager.instance.token,
       'content': _comController.text,
-      'comment_id': model.comment_id,
-      'reply_id': model.reply_id,
-      'reply_type': model.reply_type,
-      'to_uid': model.to_uid,
-      'from_uid': UserManager.instance.userInfo.id,
+      'comment_id': model?.comment_id,
+      'reply_id': model?.reply_id,
+      'reply_type': model?.reply_type,
+      'to_uid': model?.to_uid,
+      'from_uid': UserManager.instance.userInfo?.id,
     };
 
     await NetWorking.formDataPost(url, dic, (data) {
@@ -470,7 +472,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
       }else if (data['code'] == 210) { // 未校验手机号
         EasyLoading.showToast(data['message'] ?? '未校验手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo?.phone_number);
         }));
       }else{
         EasyLoading.showToast("发表失败");
@@ -486,7 +488,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
     for (int i = 0;i < dataSource.length; i++){
       var data = dataSource[i];
       if (data.comment_id == model.comment_id) {
-        data.replys.insert(0, model);
+        data.replys?.insert(0, model);
         dataSource[i] = data;
       }
     }
@@ -511,9 +513,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                     GestureDetector(
                       child: CircleAvatar(
                         radius: 12,
-                        backgroundImage: (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel.userInfo.avator,bType: ThumbType.thumbNail)) :
-                        AssetImage('assets/icons/icon_plh.png'),
+                        backgroundImage:
+                        // (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel!.userInfo?.avator ?? "",bType: ThumbType.thumbNail)),
+                        // AssetImage('assets/icons/icon_plh.png'),
                         child: Container(
                           alignment: Alignment(0, 0),
                           width: 24,
@@ -522,13 +525,13 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                       ),
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.commentModel.from_uid);
+                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.commentModel?.from_uid ?? 0);
                         }));
                       },
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
                     Expanded(
-                        child: Text((model.commentModel.userInfo.username != null && model.commentModel.userInfo.username.length > 0) ? model.commentModel.userInfo.username : '佚名',
+                        child: Text(model.commentModel?.userInfo?.username  ?? '佚名',
                           style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),),
                     ),
                     IconButton(icon: Icon(Icons.more_horiz_outlined,
@@ -559,7 +562,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                                   Navigator.pop(context);
                                   lazyAuthToDoThings(context, (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                                      return ViolationsListWidget(reportType: report_type,reportId: model.commentModel.comment_id);
+                                      return ViolationsListWidget(reportType: report_type,reportId: model.commentModel?.comment_id ?? 0);
                                     }));
                                   });
                                 }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
@@ -580,7 +583,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 50,right: 10,top: 3,bottom: 3),
-                child: Text((model.commentModel.content != null && model.commentModel.content.length > 0) ? model.commentModel.content : '--',
+                child: Text(model.commentModel?.content ?? '--',
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
               ),
@@ -594,7 +597,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                 // ),
                 Row(
                   children: [
-                    Text((model.commentModel.create_time != null && model.commentModel.create_time.length > 0) ? ToolConfig.timeT(model.commentModel.create_time) : '--',
+                    Text(ToolConfig.timeT(model.commentModel?.create_time ?? "--"),
                       style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
@@ -628,14 +631,14 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
   void tapCommentButton(ComRepListModel model) {
     // 点击评论
     FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
-    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel.userInfo.username}");
+    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.commentModel?.userInfo?.username}");
 
     /// 回复时需要的数据
     _replyComModel = ReplyComModel(
-        comment_id: model.commentModel.comment_id,
-        reply_id: model.commentModel.comment_id,
+        comment_id: model.commentModel?.comment_id,
+        reply_id: model.commentModel?.comment_id,
         reply_type: 1,
-        to_uid: model.commentModel.userInfo.id
+        to_uid: model.commentModel?.userInfo?.id
     );
 
     setState(() {
@@ -647,12 +650,12 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
     var userTitle = '';
     var fromName = '';
     var toName = '';
-    if (model.replyModel.fromInfo.username != null && model.replyModel.fromInfo.username.length > 0) {
-      fromName = model.replyModel.fromInfo.username;
+    if (model.replyModel?.fromInfo?.username != null && (model.replyModel?.fromInfo?.username?.length ?? 0) > 0) {
+      fromName = model.replyModel?.fromInfo?.username ?? "";
     }
 
-    if (model.replyModel.toInfo.username != null && model.replyModel.toInfo.username.length > 0) {
-      toName = model.replyModel.toInfo.username;
+    if (model.replyModel?.toInfo?.username != null && (model.replyModel?.toInfo?.username?.length ?? 0) > 0) {
+      toName = model.replyModel?.toInfo?.username ?? "";
     }
 
     userTitle = fromName + '  回复  ' + toName;
@@ -670,9 +673,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                     GestureDetector(
                       child: CircleAvatar(
                         radius: 10,
-                        backgroundImage: (model.replyModel.fromInfo.avator != null && model.replyModel.fromInfo.avator.length > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel.fromInfo.avator,bType: ThumbType.thumbNail)) :
-                        AssetImage('assets/icons/icon_plh.png'),
+                        backgroundImage:
+                        // (model.replyModel?.fromInfo?.avator != null && (model.replyModel?.fromInfo?.avator?.length ?? 0) > 0) ?
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel?.fromInfo?.avator ?? "",bType: ThumbType.thumbNail)),
+                        // AssetImage('assets/icons/icon_plh.png'),
                         child: Container(
                           alignment: Alignment(0, 0),
                           width: 20,
@@ -681,7 +685,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                       ),
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.replyModel.from_uid);
+                          return NewUserInfoPage(pageType: MyPageType.otherPage,userId: model.replyModel?.from_uid ?? 0);
                         }));
                       },
                     ),
@@ -718,7 +722,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                                   Navigator.pop(context);
                                   lazyAuthToDoThings(context, (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                                      return ViolationsListWidget(reportType: report_type,reportId: model.replyModel.reply_id);
+                                      return ViolationsListWidget(reportType: report_type,reportId: model.replyModel?.reply_id ?? 0);
                                     }));
                                   });
                                 }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
@@ -739,7 +743,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 30,right: 10,top: 3,bottom: 3),
-                child: Text((model.replyModel.content != null && model.replyModel.content.length > 0) ? model.replyModel.content : '--',
+                child: Text(model.replyModel?.content ??  '--',
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
               ),
@@ -750,7 +754,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                 padding: EdgeInsets.only(left: 30,right: 10,top: 3,bottom: 3),
                 child: Row(
                   children: [
-                    Text((model.replyModel.create_time != null && model.replyModel.create_time.length > 0) ? ToolConfig.timeT(model.replyModel.create_time) : '--',
+                    Text(ToolConfig.timeT(model.replyModel?.create_time ?? ""),
                       style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),color: ColorsUtil.fromEnmu(ColorEnum.mark)),
                     ),
                     Padding(padding: EdgeInsets.only(left: 10)),
@@ -786,14 +790,14 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
     // 点击回复
     FocusScope.of(context).requestFocus(_focusNode);// 获取焦点
     /// 点击了回复
-    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel.fromInfo.username}");
+    _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: "回复${model.replyModel?.fromInfo?.username}");
 
     /// 回复时需要的数据
     _replyComModel = ReplyComModel(
-        comment_id: model.replyModel.comment_id,
-        reply_id: model.replyModel.reply_id,
+        comment_id: model.replyModel?.comment_id,
+        reply_id: model.replyModel?.reply_id,
         reply_type: 2,
-        to_uid: model.replyModel.from_uid
+        to_uid: model.replyModel?.from_uid
     );
 
     setState(() {

@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_native.dart';
-import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_720yun/homepage/CitySelectPage.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
-import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -181,8 +178,6 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               );
-            }else if (data.topic_id == -2){
-              return nativeADWidget();
             }else{
               return  GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -356,60 +351,6 @@ class _HomePageState extends State<HomePage> {
 
     });
 
-  }
-
-  Widget nativeADWidget() {
-    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
-    return Container(
-      width: double.infinity,
-      height: 100 + imageH,
-      child: PlatformNativeWidget(Configuration.nativePlacementID, {
-        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth(), 340,
-            backgroundColorStr: '#FFFFFF'
-        ),
-        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
-            40, 40,
-            x: 15, y: 40, backgroundColorStr: 'clearColor'),
-        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160,
-          20,
-          x: 61,
-          y: 40,
-          textSize: 15,
-        ),
-        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 160, 20,
-            x: 61, y:60,
-          textSize: 15,
-          textColorStr: "#999999",
-        ),
-        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
-          80,
-          36,
-          x: topSizeTool.getWidth() - 95,
-          y: 40,
-          textSize: 15,
-          textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1",
-          textAlignmentStr: "center",
-        ),
-        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
-            x: 61, y: 86, backgroundColorStr: '#000000'),
-        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
-            20, 10,
-            x: 10,
-            y: 10,
-            backgroundColorStr: '#00000000'),
-        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
-          20,
-          20,
-          x: topSizeTool.getWidth() - 35,
-          y: 10,
-        ),
-      },sceneID: Configuration.nativeSceneID),
-    );
   }
 
   Future<void> getUserCity() async {

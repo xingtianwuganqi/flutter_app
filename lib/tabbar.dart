@@ -8,8 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/HomeMainPage.dart';
-import 'package:flutter_720yun/manager/interstitial_sdk.dart';
-import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_printer/flutter_printer.dart';
 import 'UserInfo/WebviewPage.dart';
@@ -17,11 +15,6 @@ import 'homepage/HomePage.dart';
 import 'Message/MessagePage.dart';
 import 'package:flutter_720yun/ShowInfo/ShowInfoPage.dart';
 import 'package:flutter_720yun/UserInfo/NewUserInfoPage.dart';
-import 'package:anythink_sdk/at_index.dart';
-import 'manager/init_sdk.dart';
-import 'manager/banner_sdk.dart';
-import 'manager/listenerManager.dart';
-import 'package:permission_handler/permission_handler.dart';
 // JPush jpush = new JPush();
 
 class tabbar extends StatefulWidget {
@@ -238,7 +231,7 @@ class tabbarState extends State<tabbar> {
   void getUserAgreeStatus() {
     ToolConfig.getUserGreenStatus().then((value) {
       if (value == 1) {
-        setUPAD();
+
       }else{
         userAgreenDialog();
       }
@@ -339,7 +332,6 @@ class tabbarState extends State<tabbar> {
             //关闭 返回true
             Navigator.of(context).pop(true);
             ToolConfig.setUserAgreenStatus(1);
-            setUPAD();
           },
         ),
       ],
@@ -370,17 +362,6 @@ class tabbarState extends State<tabbar> {
     // ).toString());
   // }
 
-  // 加载广告
-  void setUPAD() {
-    InitManger.setLogEnabled();
-    InitManger.initTopon();
-    // 添加监听
-    BannerManager.loadBannerWith();
-    InterstitialManager.loadInterstitialAd();
-    // NativeManager.loadNativeWith();
-    // ListenerManager.nativeListen();
-
-  }
 
 
 

@@ -7,10 +7,10 @@ import 'package:photo_view/photo_view_gallery.dart';
 class PhotoViewGalleryScreen extends StatefulWidget {
   List images=[];
   int index=0;
-  String heroTag;
-  PageController controller;
+  String? heroTag;
+  PageController? controller;
 
-  PhotoViewGalleryScreen({Key key,@required this.images,this.index,this.controller,this.heroTag}) : super(key: key){
+  PhotoViewGalleryScreen({required Key key,required this.images,required this.index,this.controller,this.heroTag}) : super(key: key){
     controller=PageController(initialPage: index);
   }
 
@@ -60,7 +60,7 @@ class _PhotoViewGalleryScreenState extends State<PhotoViewGalleryScreen> {
                         value: event == null
                             ? 0
                             : event.cumulativeBytesLoaded /
-                            event.expectedTotalBytes,
+                            (event.expectedTotalBytes ?? 0),
                       ),
                     ),
                   ),

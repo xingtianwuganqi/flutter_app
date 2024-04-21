@@ -7,10 +7,8 @@ import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
-import 'package:flutter_720yun/router_home.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../UserInfo/SupportUsPage.dart';
 import '../model/UserModel.dart';
 
 class HomeDrawerPage extends StatefulWidget {
@@ -154,11 +152,11 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
             }
           }else if (model.name == "支持我们") {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return SupportUsPage();
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
             }));
           }else if (model.name == "广告") {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return AdTestPage();
+              return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
             }));
           }else if (model.name == "推荐给朋友") {
             // Share.share('https://www.pgyer.com/pPyO');
