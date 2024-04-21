@@ -16,7 +16,7 @@ version: 1.0.2+8
 
 environment:
   # dart sdk，一般设置一个最小兼容版本
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=3.3.3 <4.0.0'
 
 dependencies:
   flutter:
