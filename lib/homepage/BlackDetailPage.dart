@@ -27,10 +27,11 @@ enum BlackType {
 
 class BlackDetailPage extends StatefulWidget {
   BlackType blackType;
-  final int blackId;
-  BlackDetailPage({Key key,
-  this.blackType,this.blackId
-  }):super(key: key);
+  int? blackId;
+  BlackDetailPage(
+    this.blackType,
+     {this.blackId}
+  );
 
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +54,7 @@ class BlackDetailState extends State<BlackDetailPage> {
   //表单状态
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  BlackListModel blackModel;
+  BlackListModel? blackModel;
   List<BlackInfoModel> blackList = [];
 
   List<ReleasePhotoModel> _releasePhotos = [
@@ -72,9 +73,9 @@ class BlackDetailState extends State<BlackDetailPage> {
   // 创建 Controller 对象
   PutController putController = PutController();
   /// 图片的token
-  String _token;
+  String? _token;
   /// pushInfo
-  ReleaseReportInfo _pushInfo;
+  ReleaseReportInfo? _pushInfo;
 
   @override
   void initState() {
@@ -113,7 +114,7 @@ class BlackDetailState extends State<BlackDetailPage> {
           if (data.desc == "line") {
             return Divider(thickness: 10,height: 10,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),);
           }else if (data.desc == "手机号" || data.desc == "微信号" || data.desc == "微信昵称") {
-            TextEditingController currentController;
+            TextEditingController currentController = TextEditingController();
             if (data.desc == "手机号") {
               currentController = _phoneController;
             }else if ( data.desc == "微信号" ) {
@@ -129,7 +130,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      Text(data.desc,style: TextStyle(
+                      Text(data.desc ?? "",style: TextStyle(
                           fontSize: FontUtil.fs(FontSize.content),
                           color: ColorsUtil.fromEnmu(ColorEnum.content)
                       ),),
@@ -167,7 +168,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: Text(data.desc),
+                    child: Text(data.desc ?? ""),
                   ),
                   Expanded(
                     child: Container(),
@@ -209,7 +210,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     height: 30,
-                    child: Text(data.desc),
+                    child: Text(data.desc ?? ""),
                   ),
                   widget.blackType == BlackType.detail ? Container(
                       margin: EdgeInsets.only(bottom: 10),
@@ -269,7 +270,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     height: 30,
-                    child: Text(data.desc),
+                    child: Text(data.desc ?? ""),
                   ),
                   photosWidget()
                 ],
@@ -302,21 +303,21 @@ class BlackDetailState extends State<BlackDetailPage> {
 
   void loadBlackList() {
 
-    var contact = widget.blackType == BlackType.create ? null: blackModel.contact;
-    var wx_num = widget.blackType == BlackType.create ? null: blackModel.wx_num;
-    var nickName = widget.blackType == BlackType.create ? null: blackModel.name;
-    var body = widget.blackType == BlackType.create ? null: (blackModel.black_type == 1 ? "领养人" : "送养人");
-    var reason = widget.blackType == BlackType.create ? null: blackModel.desc;
-    var images = widget.blackType == BlackType.create ? null: blackModel.images;
+    var contact = widget.blackType == BlackType.create ? null: blackModel?.contact;
+    var wx_num = widget.blackType == BlackType.create ? null: blackModel?.wx_num;
+    var nickName = widget.blackType == BlackType.create ? null: blackModel?.name;
+    var body = widget.blackType == BlackType.create ? null: (blackModel?.black_type == 1 ? "领养人" : "送养人");
+    var reason = widget.blackType == BlackType.create ? null: blackModel?.desc;
+    var images = widget.blackType == BlackType.create ? null: blackModel?.images;
 
     if (widget.blackType == BlackType.detail) {
-      _phoneController.text = contact;
-      _wxNumController.text = wx_num;
-      _nickNameController.text = nickName;
-      blackModel.black_type == 1 ? isSwitch = false : isSwitch = true;
-      _reasonController.text = reason;
-      print(blackModel.images);
-      _releasePhotos = blackModel.images.map((e) {
+      _phoneController.text = contact ?? "";
+      _wxNumController.text = wx_num ?? "";
+      _nickNameController.text = nickName ?? "";
+      blackModel?.black_type == 1 ? isSwitch = false : isSwitch = true;
+      _reasonController.text = reason ?? "";
+      print(blackModel?.images);
+      _releasePhotos = blackModel!.images!.map((e) {
         return ReleasePhotoModel(
             isAdd: false,
             progress: 0.0,
@@ -360,7 +361,7 @@ class BlackDetailState extends State<BlackDetailPage> {
 
   }
 
-  ReleaseReportInfo isCanPush() {
+  ReleaseReportInfo? isCanPush() {
     String phone;
     String wx_num = "";
     String nickName = "";
@@ -368,7 +369,7 @@ class BlackDetailState extends State<BlackDetailPage> {
     String reason;
     if (_phoneController.text.trim().length == 0) {
       EasyLoading.showToast("请输入失信人手机号");
-      return null;
+      return null ;
     }else{
       phone = _phoneController.text.trim();
     }
@@ -406,12 +407,9 @@ class BlackDetailState extends State<BlackDetailPage> {
   Widget photosWidget() {
 
     void tapClick(int index) {
-      var imgUrls = _releasePhotos.map((e) => ToolConfig.loadImgUrl(e.photoUrl)).toList();
+      var imgUrls = _releasePhotos.map((e) => ToolConfig.loadImgUrl(e.photoUrl ?? "")).toList();
       Navigator.push(context, MaterialPageRoute(builder: (context){
-        return PhotoViewGalleryScreen(
-          images:imgUrls,//传入图片list
-          index: index,//传入当前点击的图片的index
-        );
+        return PhotoViewGalleryScreen(imgUrls, index);
       }));
     }
 
@@ -429,7 +427,7 @@ class BlackDetailState extends State<BlackDetailPage> {
           itemCount:_releasePhotos.length,
           itemBuilder: (context,index){
             var item = _releasePhotos[index];
-            if (item.isAdd) {
+            if (item.isAdd ?? false) {
               return GestureDetector(
                 child: Container(
                   // width: 20,
@@ -449,7 +447,7 @@ class BlackDetailState extends State<BlackDetailPage> {
               GestureDetector(
                 child: Container(
                   child: CachedNetworkImage(
-                    imageUrl: ToolConfig.loadImgUrl(item.photoUrl),
+                    imageUrl: ToolConfig.loadImgUrl(item.photoUrl ?? ''),
                     placeholder: (context,url) => Container(
                       color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                     ),
@@ -465,7 +463,7 @@ class BlackDetailState extends State<BlackDetailPage> {
                   : Container(
                   child: Stack(
                     children: [
-                      AssetEntityImage(item.image,
+                      AssetEntityImage(item.image!,
                           width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
                           height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
                         fit: BoxFit.cover,
@@ -497,7 +495,7 @@ class BlackDetailState extends State<BlackDetailPage> {
     if (_releasePhotos.length > 6) {
       return;
     }
-    List<AssetEntity> resultList = [];
+    List<AssetEntity>? resultList = [];
     String error = 'No Error Dectected';
     try {
        resultList = await ImagePicker.instance.selectAssets(context, 7 - _releasePhotos.length);
@@ -508,7 +506,7 @@ class BlackDetailState extends State<BlackDetailPage> {
     if (!mounted) return;
 
     setState(() {
-      var photos = resultList.map((e) => ReleasePhotoModel(
+      var photos = resultList?.map((e) => ReleasePhotoModel(
           isAdd: false,
           progress: 0.0,
           complete: false,
@@ -516,7 +514,7 @@ class BlackDetailState extends State<BlackDetailPage> {
           photoKey: comPhotoKey,
           image: e
       )).toList();
-      _releasePhotos.insertAll(0, photos);
+      _releasePhotos.insertAll(0, photos as Iterable<ReleasePhotoModel>);
     });
   }
 
@@ -530,7 +528,9 @@ class BlackDetailState extends State<BlackDetailPage> {
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
         _token = model.token;
-        uploadImgToQiNiu(_token);
+        if (_token != null) {
+          uploadImgToQiNiu(_token!);
+        }
       }
     }, (error) {
       EasyLoading.showToast('获取token失败');
@@ -547,35 +547,37 @@ class BlackDetailState extends State<BlackDetailPage> {
   }
 
   Future<Null> updateImg(ReleasePhotoModel item) async {
-    if (item.isAdd == false) {
-      File file = await item.image.file;
-      storage.putFile(file, _token, options: PutOptions(
-        controller: putController,
-        key: item.photoKey,
-      )).then((value) {
-        // 更新模型的数据
-        _releasePhotos = _releasePhotos.map((e) {
-          var newModel = e;
-          if (e.photoKey == value.key) {
-            newModel.complete = true;
-            newModel.photoUrl = value.key;
+    if (item.isAdd == false && _token != null) {
+      File? file = await item.image?.file;
+      if (file != null) {
+        storage.putFile(file!, _token!, options: PutOptions(
+          controller: putController,
+          key: item.photoKey,
+        )).then((value) {
+          // 更新模型的数据
+          _releasePhotos = _releasePhotos.map((e) {
+            var newModel = e;
+            if (e.photoKey == value.key) {
+              newModel.complete = true;
+              newModel.photoUrl = value.key;
+            }
+            return newModel;
+          }).toList();
+          // 判断_releasePhotos 是不是所有的complete 都变成了true；
+          int isComplete = 0;
+          for (int i = 0; i < _releasePhotos.length; i++) {
+            var item = _releasePhotos[i];
+            if (item.complete == false) {
+              isComplete = 1;
+              break;
+            }
           }
-          return newModel;
-        }).toList();
-        // 判断_releasePhotos 是不是所有的complete 都变成了true；
-        int isComplete = 0;
-        for (int i = 0;i < _releasePhotos.length;i++) {
-          var item = _releasePhotos[i];
-          if (item.complete == false) {
-            isComplete = 1;
-            break;
+          if (isComplete == 0 && _pushInfo != null) { // 说明全部传成功了
+            pushInfo(_pushInfo!);
+            return;
           }
-        }
-        if (isComplete == 0) { // 说明全部传成功了
-          pushInfo(_pushInfo);
-          return;
-        }
-      });
+        });
+      }
     }
   }
 
@@ -603,7 +605,7 @@ class BlackDetailState extends State<BlackDetailPage> {
     dic["desc"] = info.desc;
     dic["imgs"] = imgStr;
     dic["black_type"] = info.black_type;
-    dic["from_userId"] = UserManager.instance.userInfo.id;
+    dic["from_userId"] = UserManager.instance.userInfo?.id ?? 0;
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) { // 发布成功
         EasyLoading.showToast('提交成功，请等待审核');

@@ -36,7 +36,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     // MessagePageModel(icon: 'assets/icons/icon_mi_tui@3x.png',name: '推荐给朋友',type: 0,unreadNum: 0)
   ];
 
-  AppVersionModel appVersionInfo;
+  AppVersionModel? appVersionInfo;
 
   @override
   void initState() {
@@ -69,9 +69,9 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
             CircleAvatar(
               radius: 25,
               backgroundImage:
-              ((userInfo != null && userInfo.avator != null && userInfo.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(userInfo.avator)) :
-              AssetImage('assets/icons/icon_plh.png')),
+              // ((userInfo != null && userInfo.avator != null && userInfo.avator.length > 0) ?
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(userInfo?.avator ?? "")), //:
+              // AssetImage('assets/icons/icon_plh.png')),
               child: Container(
                 alignment: Alignment(0, 0),
                 width: 50,
@@ -79,9 +79,9 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               ),
             ),
             Padding(padding: EdgeInsets.only(left: 10)),
-            Text((userInfo != null && userInfo.username != null && userInfo.username.length > 0) ?
-            userInfo.username : "注册/登录",style:
-            (userInfo != null && userInfo.username != null && userInfo.username.length > 0) ? TextStyle(fontSize: FontUtil.fs(FontSize.content),
+            Text((userInfo != null && userInfo?.username != null && (userInfo?.username?.length ?? 0) > 0) ?
+            userInfo?.username ?? "" : "注册/登录",style:
+            (userInfo != null && userInfo.username != null && (userInfo.username?.length ?? 0) > 0) ? TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content)) : TextStyle(fontSize: FontUtil.fs(FontSize.title),
                 color: ColorsUtil.fromEnmu(ColorEnum.title),fontWeight: FontWeight.bold),
             ),
@@ -191,22 +191,25 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
         var model = data['data'];
         var info = AppVersionModel.fromJson(model);
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
-          // 有新版本，提示
-          var list = datas.map((e) {
-            var newValue = e;
-            if (e.name == "检测更新") {
-              newValue.unreadNum = 1;
-            }
-            return newValue;
-          }).toList();
-          datas = list;
-          setState(() {
+        if (info.version != null) {
+          if (info.version! > int.parse(localVersion)) {
+            // 有新版本，提示
+            var list = datas.map((e) {
+              var newValue = e;
+              if (e.name == "检测更新") {
+                newValue.unreadNum = 1;
+              }
+              return newValue;
+            }).toList();
+            datas = list;
+            setState(() {
 
-          });
-        }else{
+            });
+          }else{
 
+          }
         }
+
 
       }
     }, (error) {

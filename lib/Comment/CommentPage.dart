@@ -19,7 +19,7 @@ class CommentInfoWidget extends StatefulWidget {
   int? toUid;
   ValueChanged? changed;
 
-  CommentInfoWidget({required Key key,this.commentType,this.topicId, this.toUid, this.changed}): super(key:key);
+  CommentInfoWidget(this.commentType,this.topicId, this.toUid, this.changed);
 
   @override
   State<StatefulWidget> createState() {
@@ -515,7 +515,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                         radius: 12,
                         backgroundImage:
                         // (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel!.userInfo?.avator ?? "",bType: ThumbType.thumbNail)),
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel!.userInfo?.avator ?? "", ThumbType.thumbNail)),
                         // AssetImage('assets/icons/icon_plh.png'),
                         child: Container(
                           alignment: Alignment(0, 0),
@@ -675,7 +675,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                         radius: 10,
                         backgroundImage:
                         // (model.replyModel?.fromInfo?.avator != null && (model.replyModel?.fromInfo?.avator?.length ?? 0) > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel?.fromInfo?.avator ?? "",bType: ThumbType.thumbNail)),
+                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel?.fromInfo?.avator ?? "",ThumbType.thumbNail)),
                         // AssetImage('assets/icons/icon_plh.png'),
                         child: Container(
                           alignment: Alignment(0, 0),

@@ -10,9 +10,7 @@ class PhotoViewGalleryScreen extends StatefulWidget {
   String? heroTag;
   PageController? controller;
 
-  PhotoViewGalleryScreen({required Key key,required this.images,required this.index,this.controller,this.heroTag}) : super(key: key){
-    controller=PageController(initialPage: index);
-  }
+  PhotoViewGalleryScreen(this.images, this.index, {this.controller,this.heroTag});
 
   @override
   _PhotoViewGalleryScreenState createState() => _PhotoViewGalleryScreenState();

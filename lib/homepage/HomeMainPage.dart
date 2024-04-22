@@ -15,7 +15,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderStateMixin {
   List tabs = ["推荐","同城","找宠"];
-  TabController _tabController;
+   late TabController _tabController;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _tabController.dispose();
+    _tabController?.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
             },
           ),
         ),
-        bottom: AppBarBottomComponent(tabController: _tabController,tabs: tabs),
+        bottom: AppBarBottomComponent( _tabController, tabs),
         elevation: 0.5,
       ),
       drawer: Container(
@@ -78,9 +78,9 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
         child: TabBarView(
           controller: _tabController,
           children: [
-            KeepAliveWrapper(child: HomePage()),
-            KeepAliveWrapper(child: HomePage(pageType: HomePageType.localPage)),
-            KeepAliveWrapper(child: FindPetPage()),
+            KeepAliveWrapper( HomePage()),
+            KeepAliveWrapper( HomePage(HomePageType.localPage)),
+            KeepAliveWrapper( FindPetPage()),
           ],
         ),
       ),
@@ -90,14 +90,10 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
 
 class AppBarBottomComponent extends StatelessWidget implements PreferredSizeWidget {
 
-  final TabController tabController;
-  final List tabs;
+  TabController tabController;
+  List tabs;
 
-  AppBarBottomComponent({
-    Key key,
-    @required this.tabController,
-    this.tabs
-  }): super(key: key);
+  AppBarBottomComponent(this.tabController, this.tabs);
 
   @override
   Widget build(BuildContext context) {

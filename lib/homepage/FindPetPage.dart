@@ -112,7 +112,7 @@ class FindPetState extends State<FindPetPage> {
                         onPressed: (){
                           lazyAuthToDoThings(context, (){
                             Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return FindPetDetailPage(changed: (value) {
+                              return FindPetDetailPage((value) {
                                 if (value is int) {
                                   if (value == 1) {
                                     findPetListNetworking(1);
@@ -166,9 +166,9 @@ class FindPetState extends State<FindPetPage> {
             child: CircleAvatar(
               radius: 18,
               backgroundImage:
-              ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
-              AssetImage('assets/icons/icon_plh.png')),
+              // ((data.userInfo?.avator != null && (data.userInfo?.avator.length ?? 0) > 0) ?
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator ?? "")),//:
+              // AssetImage('assets/icons/icon_plh.png')),
               //   :
               // AssetImage('assets/icons/icon_plh.png'),
               child: Container(
@@ -179,7 +179,7 @@ class FindPetState extends State<FindPetPage> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
+                return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo?.id ?? 0);
               }));
             },
           ),
@@ -391,7 +391,7 @@ class FindPetState extends State<FindPetPage> {
                 onPressed: (){
                   lazyAuthToDoThings(context, (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return CommentInfoWidget(commentType: CommentType.find_comment,topicId: data.findId,toUid: data.userInfo.id,changed: (value){
+                      return CommentInfoWidget( CommentType.find_comment, data.findId,data.userInfo.id, (value){
                         // clicked(value);
                       },);
                     }));
@@ -538,7 +538,7 @@ class FindPetState extends State<FindPetPage> {
         _findList = _findList.map((e){
           if (e.findId == model.findId) {
             e.getedcontact = true;
-            e.contact_info = contactModel.contact;
+            e.contact_info = contactModel.contact ?? "";
           }
           return e;
         }).toList();
@@ -551,7 +551,7 @@ class FindPetState extends State<FindPetPage> {
         Future.delayed(Duration(milliseconds: 100),(){
           if (data['code'] == 210) { // 未校验手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
+              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo?.phone_number);
             }));
           }else if (data['code'] == 209) { // 未绑定手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){

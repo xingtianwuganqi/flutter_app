@@ -355,7 +355,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
      return RegExp(regexEmail).hasMatch(input);
   }
 
-  static String loadImgUrl(String url,{required ThumbType bType}) {
+  static String loadImgUrl(String url,[ThumbType bType = ThumbType.thumbNail]) {
     var headImg = '';
     if (url.contains("http")) {
       headImg = url;

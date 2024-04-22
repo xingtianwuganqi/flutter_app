@@ -13,7 +13,7 @@ class FindPetDetailPage extends StatefulWidget {
   2.删除数据
    */
   final ValueChanged changed;
-  const FindPetDetailPage({Key key, this.changed}) : super(key: key);
+  const FindPetDetailPage(this.changed);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -345,7 +345,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.8,
                           color: Colors.white,
-                          child: AddressSelectPage(changed: (address) {
+                          child: AddressSelectPage((address) {
                             model.address = address;
                             setState(() {
 

@@ -8,7 +8,7 @@ import '../model/HomePageModel.dart';
 class AddressSelectPage extends StatefulWidget {
 
   final ValueChanged changed;
-  AddressSelectPage({required Key key,required this.changed}): super(key: key);
+  AddressSelectPage( this.changed);
 
   @override
   State<StatefulWidget> createState() {
