@@ -98,7 +98,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   suffixIcon: _originController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _originController.text = null;
+                          _originController.text = "";
                         });
                       }
                   ): null,
@@ -126,7 +126,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   suffixIcon: _pswdController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _pswdController.text = null;
+                          _pswdController.text = "";
                         });
                       }
                   ): null,
@@ -153,7 +153,7 @@ class ChangePswdState extends State<ChangePswdWidget> {
                   suffixIcon: _confirmController.text.length > 0 ? IconButton(icon: Icon(Icons.clear),
                       onPressed: (){
                         setState(() {
-                          _confirmController.text = null;
+                          _confirmController.text = "";
                         });
                       }
                   ): null,

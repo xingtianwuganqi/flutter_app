@@ -125,7 +125,7 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
       dic['phoneNum'] = widget.phoneStr;
     }
     print(dic);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url,dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         var model = data["data"];
@@ -144,7 +144,7 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
       }
     }, (error) {
       EasyLoading.dismiss();
-    },params: dic);
+    });
   }
 
 

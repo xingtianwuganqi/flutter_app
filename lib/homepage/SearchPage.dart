@@ -471,7 +471,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
   Future<Null> searchKeyWordsNetworking() async {
     final url = NetWorkingConfig.path(NetPath.searchkeyword);
-    await NetWorking.get(url, (data) {
+    await NetWorking.get(url, Map(), (data) {
       if (data['code'] == 200) {
         var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();
         datas = keywords;
@@ -480,7 +480,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
         });
       }
-    }, (error) {
+    } as SuccessCallBack, (error) {
       // 失败
     });
 

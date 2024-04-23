@@ -167,7 +167,7 @@ class FindPetState extends State<FindPetPage> {
               radius: 18,
               backgroundImage:
               // ((data.userInfo?.avator != null && (data.userInfo?.avator.length ?? 0) > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator ?? "")),//:
+              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo?.avator ?? "")),//:
               // AssetImage('assets/icons/icon_plh.png')),
               //   :
               // AssetImage('assets/icons/icon_plh.png'),
@@ -188,9 +188,9 @@ class FindPetState extends State<FindPetPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo.username ?? "",style:
+                Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo?.username ?? "",style:
                 TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w600,color: ColorsUtil.fromEnmu(ColorEnum.title)),),),
-                Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time) ?? "",style:
+                Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time ?? '') ?? "",style:
     TextStyle(fontSize: FontUtil.fs(FontSize.time),color: ColorsUtil.fromEnmu(ColorEnum.desc)),)),
               ],
             ),
@@ -335,7 +335,7 @@ class FindPetState extends State<FindPetPage> {
     return Container(
       padding: EdgeInsets.only(left: 46,right: 15,top: 4,bottom: 4),
       alignment: Alignment.centerLeft,
-      child: Text(model.address,style: TextStyle(
+      child: Text(model.address ?? '',style: TextStyle(
         fontSize: FontUtil.fs(FontSize.desc),
         color: ColorsUtil.fromEnmu(ColorEnum.desc),
       ),),
@@ -360,7 +360,7 @@ class FindPetState extends State<FindPetPage> {
                 ),
                 onPressed: (){
                   lazyAuthToDoThings(context, () {
-                    findPetLikeAction(data, data.liked ? 1 : 0);
+                    findPetLikeAction(data, (data.liked ?? false) ? 1 : 0);
                   });
                 },
               )
@@ -375,7 +375,7 @@ class FindPetState extends State<FindPetPage> {
                 ),
                 onPressed: (){
                   lazyAuthToDoThings(context, (){
-                    findPetCollectionAction(data, data.collection ? 1 : 0);
+                    findPetCollectionAction(data, (data.collection ?? false) ? 1 : 0);
                   });
                 },
               )
@@ -391,7 +391,7 @@ class FindPetState extends State<FindPetPage> {
                 onPressed: (){
                   lazyAuthToDoThings(context, (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return CommentInfoWidget( CommentType.find_comment, data.findId,data.userInfo.id, (value){
+                      return CommentInfoWidget( CommentType.find_comment, data.findId,data.userInfo?.id, (value){
                         // clicked(value);
                       },);
                     }));
@@ -465,8 +465,8 @@ class FindPetState extends State<FindPetPage> {
             if (mark == 1) {
               e.likeNum = (e.likeNum ?? 0) + 1;
             }else {
-              if (e.likeNum > 1) {
-                e.likeNum = e.likeNum - 1;
+              if ((e.likeNum ?? 0) > 1) {
+                e.likeNum = (e.likeNum ?? 1) - 1;
               } else {
                 e.likeNum = 0;
               }
@@ -503,8 +503,8 @@ class FindPetState extends State<FindPetPage> {
             if (mark == 1) {
               e.collectionNum = (e.collectionNum ?? 0) + 1;
             }else {
-              if (e.collectionNum > 1) {
-                e.collectionNum = e.collectionNum - 1;
+              if ((e.collectionNum ?? 0) > 1) {
+                e.collectionNum = (e.collectionNum ?? 1) - 1;
               } else {
                 e.collectionNum = 0;
               }

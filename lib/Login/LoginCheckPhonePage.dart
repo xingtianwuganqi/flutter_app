@@ -72,7 +72,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
       "phone_type": deviceInfo
     };
 
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, dic, (data) {
       print(data);
       EasyLoading.dismiss();
       if (data["code"] == 200) {
@@ -86,7 +86,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
       }
     }, (error) {
       EasyLoading.showToast('验证失败');
-    },params: dic);
+    });
 
 
   }

@@ -125,7 +125,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     }else{
       dic['phoneNum'] = _username;
     }
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         var model = data["data"];
@@ -144,7 +144,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       }
     }, (error) {
       EasyLoading.dismiss();
-    },params: dic);
+    });
   }
 
   // Future<String> getDeviceInfo() async{

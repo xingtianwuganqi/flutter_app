@@ -11,9 +11,9 @@ import 'WebviewPage.dart';
 
 class ViolationsListWidget extends StatefulWidget {
 
-  Report_type reportType;
-  int reportId;
-  ViolationsListWidget({Key key,@required this.reportType,@required this.reportId}): super(key: key);
+  Report_type? reportType;
+  int? reportId;
+  ViolationsListWidget({ this.reportType, this.reportId});
 
   @override
   State<StatefulWidget> createState() {
@@ -38,7 +38,7 @@ class ViolationListState extends State<ViolationsListWidget> {
         alignment: Alignment.center,
         child: Row(
           children: [
-            Icon(data.selected ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
+            Icon((data.selected ?? false) ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
             Padding(padding: EdgeInsets.only(left: 10)),
             Text(data.vio_name ?? '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),),
           ],
@@ -156,7 +156,7 @@ class ViolationListState extends State<ViolationsListWidget> {
     }, (error) {
       EasyLoading.dismiss();
 
-    });
+    }, params: {});
   }
   /// 刷新列表
   Void reloadList(int index) {

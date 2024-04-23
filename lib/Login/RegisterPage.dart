@@ -148,7 +148,7 @@ class _RegisterState extends State<RegisterWidget> {
     }else{
       dic['phoneNum'] = _username;
     }
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         var model = data["data"];
@@ -175,7 +175,7 @@ class _RegisterState extends State<RegisterWidget> {
     }, (error) {
       /// 登录失败
       EasyLoading.showToast('登录失败');
-    },params: dic);
+    });
 
   }
 

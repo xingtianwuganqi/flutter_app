@@ -5,38 +5,22 @@ import 'package:flutter_720yun/model/ShowModel.dart';
 import 'CommentModel.dart';
 import 'FindPetListModel.dart';
 import 'UserModel.dart';
-/*
-struct MessageListModel: HandyJSON {
-    var id: Int?
-    var create_time: String?
-    var msg_type: Int?
-    var msg_id: Int?
-    var from_info: UserInfoModel?
-    var to_info: UserInfoModel?
-    var is_read: Int?
-    var topicInfo: HomePageModel?
-    var showInfo: ShowPageModel?
-    var replyInfo: ReplyListModel?
-    var commentInfo: CommentListModel?
-    var reply_type: Int?
-    var reply_id: Int?
-}
- */
+
 class MessageListModel {
-  final int id;
-  final String create_time;
-  final int msg_type;
-  final int msg_id;
-  final UserInfoModel from_info;
-  final UserInfoModel to_info;
-  final bool is_read;
-  final HomePageModel topicInfo;
-  final ShowInfoModel showInfo;
-  final FindPetDetailModel findInfo;
-  final ReplyListModel replyInfo;
-  final MessageCommentModel commentInfo;
-  final int reply_type;
-  final int reply_id;
+  int? id;
+  String? create_time;
+  int? msg_type;
+  int? msg_id;
+  UserInfoModel? from_info;
+  UserInfoModel? to_info;
+  bool? is_read;
+  HomePageModel? topicInfo;
+  ShowInfoModel? showInfo;
+  FindPetDetailModel? findInfo;
+  ReplyListModel? replyInfo;
+  MessageCommentModel? commentInfo;
+  int? reply_type;
+  int? reply_id;
 
   MessageListModel({
     this.id,
@@ -76,12 +60,12 @@ class MessageListModel {
 }
 
 class MessageCommentModel {
-  final int id;
-  final String content;
-  final int topic_id;
-  final int topic_type;
-  final int from_uid;
-  final int to_uid;
+  int? id;
+  String? content;
+  int? topic_id;
+  int? topic_type;
+  int? from_uid;
+  int? to_uid;
 
   MessageCommentModel({
     this.id,
@@ -106,11 +90,11 @@ class MessageCommentModel {
 
 class UnreadModel {
   UnreadModel({this.sys_unread, this.like_unread, this.collec_unread, this.com_unread, this.sys_un_list});
-  final int sys_unread;
-  final int like_unread;
-  final int collec_unread;
-  final int com_unread;
-  final List<SysUnreadMsgModel> sys_un_list;
+  int? sys_unread;
+  int? like_unread;
+  int? collec_unread;
+  int? com_unread;
+  List<SysUnreadMsgModel>? sys_un_list;
   factory UnreadModel.fromJson(Map<String,dynamic> json) {
     return UnreadModel(
       sys_unread: json['sys_unread'],
@@ -142,14 +126,14 @@ class SysUnreadMsgModel {
     this.user_id,
     this.hidden
   });
-  final int id;
-  final String create_time;
-  final int platform;
-  final int system_id;
-  final int version;
-  final int msg_type;
-  final int user_id;
-  final int hidden;
+  int? id;
+  String? create_time;
+  int? platform;
+  int? system_id;
+  int? version;
+  int? msg_type;
+  int? user_id;
+  int? hidden;
 
   factory SysUnreadMsgModel.fromJson(Map<String,dynamic> json) {
     return SysUnreadMsgModel(
@@ -166,11 +150,11 @@ class SysUnreadMsgModel {
 }
 
 class SystemMsgModel {
-  final int id;
-  final String create_time;
-  final String content;
-  final int msg_type;
-  final int user_id;
+  int? id;
+  String? create_time;
+  String? content;
+  int? msg_type;
+  int? user_id;
 
   SystemMsgModel({this.id, this.create_time,this.content,this.msg_type,this.user_id});
   factory SystemMsgModel.fromJson(Map<String,dynamic> json)

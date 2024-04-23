@@ -25,7 +25,7 @@ class ReleaseShowInfoPage extends StatefulWidget {
 
 class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
 
-  GambitModel _gambitModel;
+  late GambitModel _gambitModel;
   FocusNode _contentFocusNode = FocusNode();
   TextEditingController _contentController = TextEditingController();
 
@@ -45,7 +45,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
   // 创建 Controller 对象
   PutController putController = PutController();
   /// 图片的token
-  String _token;
+  late String _token;
   /// 是否已经点击了不再提醒
   bool _isSelectRemind = false;
 
@@ -160,7 +160,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     }
   }
 
-  Future<Widget> showAlert() async{
+  Future<Future> showAlert() async{
     return showDialog(
         context: context,
         builder: (context){
@@ -331,7 +331,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                     children: [
                       Image.asset('assets/icons/icon_show_gb.png',width: 16,height: 16,),
                       Padding(padding: EdgeInsets.only(left: 6)),
-                      Text(_gambitModel.descript,
+                      Text(_gambitModel.descript ?? '',
                         style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
                           color: ColorsUtil.fromEnmu(ColorEnum.system),
                         ),
@@ -372,7 +372,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
           itemCount:_releasePhotos.length,
           itemBuilder: (context,index){
             var item = _releasePhotos[index];
-            if (item.isAdd) {
+            if (item.isAdd ?? false) {
               return GestureDetector(
                 child: Container(
                   // width: 20,
@@ -393,7 +393,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                 child:
                 Stack(
                   children: [
-                    AssetEntityImage(item.image,
+                    AssetEntityImage(item.image!,
                         width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
                         height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
                       fit: BoxFit.cover,
@@ -435,7 +435,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     if (_releasePhotos.length > 6) {
       return;
     }
-    List<AssetEntity> resultList = [];
+    List<AssetEntity>? resultList = [];
     String error = 'No Error Dectected';
     try {
       resultList = await ImagePicker.instance.selectAssets(context, 7 - _releasePhotos.length);
@@ -446,7 +446,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     if (!mounted) return;
 
     setState(() {
-      var photos = resultList.map((e) => ReleasePhotoModel(
+      var photos = resultList?.map((e) => ReleasePhotoModel(
           isAdd: false,
           progress: 0.0,
           complete: false,
@@ -454,7 +454,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
           photoKey: comPhotoKey,
           image: e
       )).toList();
-      _releasePhotos.insertAll(0, photos);
+      _releasePhotos.insertAll(0, photos as Iterable<ReleasePhotoModel>);
     });
   }
 
@@ -497,7 +497,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
       }else if (data['code'] == 210) { // 未校验手机号
         EasyLoading.showToast(data['message'] ?? '未校验手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo?.phone_number);
         }));
       }else{
         EasyLoading.showToast(data['message'] ?? '发布失败');
@@ -515,7 +515,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
       print(data);
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
-        _token = model.token;
+        _token = model.token ?? '';
         uploadImgToQiNiu(_token);
       }
     }, (error) {
@@ -534,35 +534,37 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
 
   Future<Null> updateImg(ReleasePhotoModel item) async {
     if (item.isAdd == false) {
-      final file = await item.image.file;
-      storage.putFile(file, _token, options: PutOptions(
-        controller: putController,
-        key: item.photoKey,
-      )).then((value) {
-        // 上传成功
-        // 更新模型的数据
-        _releasePhotos = _releasePhotos.map((e) {
-          var newModel = e;
-          if (e.photoKey == value.key) {
-            newModel.complete = true;
-            newModel.photoUrl = value.key;
+      var file = await item.image?.file;
+      if (file != null) {
+        storage.putFile(file, _token, options: PutOptions(
+          controller: putController,
+          key: item.photoKey,
+        )).then((value) {
+          // 上传成功
+          // 更新模型的数据
+          _releasePhotos = _releasePhotos.map((e) {
+            var newModel = e;
+            if (e.photoKey == value.key) {
+              newModel.complete = true;
+              newModel.photoUrl = value.key;
+            }
+            return newModel;
+          }).toList();
+          // 判断_releasePhotos 是不是所有的complete 都变成了true；
+          int isComplete = 0;
+          for (int i = 0; i < _releasePhotos.length; i++) {
+            var item = _releasePhotos[i];
+            if (item.complete == false) {
+              isComplete = 1;
+              break;
+            }
           }
-          return newModel;
-        }).toList();
-        // 判断_releasePhotos 是不是所有的complete 都变成了true；
-        int isComplete = 0;
-        for (int i = 0;i < _releasePhotos.length;i++) {
-          var item = _releasePhotos[i];
-          if (item.complete == false) {
-            isComplete = 1;
-            break;
+          if (isComplete == 0) { // 说明全部传成功了
+            releaseShowNetworking();
+            return;
           }
-        }
-        if (isComplete == 0) { // 说明全部传成功了
-          releaseShowNetworking();
-          return;
-        }
-      });
+        });
+      }
     }
   }
 

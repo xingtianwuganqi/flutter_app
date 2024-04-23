@@ -9,8 +9,8 @@ import '../NetWorking/NetWorking.dart';
 import 'ShowInfoListPage.dart';
 
 class ShowInfoSingleWidget extends StatefulWidget {
-  final int showId;
-  final int gambitId;
+  int? showId;
+  int? gambitId;
 
   ShowInfoSingleWidget({this.showId,this.gambitId});
 
@@ -71,11 +71,19 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                   var newModel = e;
                   if (newModel.show_id == showId) {
                     newModel.liked = value.like == 1 ? true : false;
-                    if (newModel.liked) {
-                      newModel.likes_num += 1;
+                    if (newModel.liked ?? false) {
+                      if ((newModel.likes_num ?? 0) > 0) {
+                        var num = newModel.likes_num ?? 0;
+                        num += 1;
+                        newModel.likes_num = num;
+                      }else{
+                        newModel.likes_num = 1;
+                      }
                     }else if (newModel.liked == false){
-                      if(newModel.likes_num > 0) {
-                        newModel.likes_num -= 1;
+                      if((newModel.likes_num ?? 0) > 0) {
+                        var num = newModel.likes_num ?? 1;
+                        num -= 1;
+                        newModel.likes_num = num;
                       }
                     }
                   }
@@ -86,11 +94,19 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                   var newModel = e;
                   if (newModel.show_id == showId) {
                     newModel.collectioned = value.collection == 1 ? true : false;
-                    if (newModel.collectioned) {
-                      newModel.collection_num += 1;
+                    if (newModel.collectioned ?? false) {
+                      if ((newModel.collection_num ?? 0) > 0) {
+                        var num = newModel.collection_num ?? 0;
+                        num += 1;
+                        newModel.collection_num = num;
+                      }else{
+                        newModel.collection_num = 1;
+                      }
                     }else if (newModel.collectioned == false){
-                      if(newModel.collection_num > 0) {
-                        newModel.collection_num -= 1;
+                      if((newModel.collection_num ?? 0) > 0) {
+                        var num = newModel.collection_num ?? 1;
+                        num -= 1;
+                        newModel.collection_num = num;
                       }
                     }
                   }
@@ -141,11 +157,21 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                   var newModel = e;
                   if (newModel.show_id == showId) {
                     newModel.liked = value.like == 1 ? true : false;
-                    if (newModel.liked) {
-                      newModel.likes_num += 1;
+                    if (newModel.liked ?? false) {
+                      if ((newModel.likes_num ?? 0) > 0) {
+                        var num = newModel.likes_num ?? 0;
+                        num += 1;
+                        newModel.likes_num = num;
+                      }else{
+                        newModel.likes_num = 1;
+                      }
                     }else if (newModel.liked == false){
-                      if(newModel.likes_num > 0) {
-                        newModel.likes_num -= 1;
+                      if((newModel.likes_num ?? 0) > 0) {
+                        var num = newModel.likes_num ?? 1;
+                        num -= 1;
+                        newModel.likes_num = num;
+                      }else{
+                        newModel.likes_num = 0;
                       }
                     }
                   }
@@ -156,11 +182,19 @@ class ShowInfoSingleState extends State<ShowInfoSingleWidget> with AutomaticKeep
                   var newModel = e;
                   if (newModel.show_id == showId) {
                     newModel.collectioned = value.collection == 1 ? true : false;
-                    if (newModel.collectioned) {
-                      newModel.collection_num += 1;
+                    if (newModel.collectioned ?? false) {
+                      if ((newModel.collection_num ?? 0) > 0) {
+                        var num = newModel.collection_num ?? 0;
+                        num += 1;
+                        newModel.collection_num = num;
+                      }else{
+                        newModel.collection_num = 1;
+                      }
                     }else if (newModel.collectioned == false){
-                      if(newModel.collection_num > 0) {
-                        newModel.collection_num -= 1;
+                      if((newModel.collection_num ?? 0) > 0) {
+                        var num = newModel.collection_num ?? 1;
+                        num -= 1;
+                        newModel.collection_num = num;
                       }
                     }
                   }

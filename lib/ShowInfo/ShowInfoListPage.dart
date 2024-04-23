@@ -22,8 +22,8 @@ import 'PageControlView.dart';
 
 
 class ShowInfoListWidget extends StatefulWidget {
-  final int showId;
-  final int gambitId;
+  int? showId;
+  int? gambitId;
 
   ShowInfoListWidget({this.showId,this.gambitId});
 
@@ -60,7 +60,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: IconButton(
-          icon: Image.asset('assets/icons/icon_home_write.png'),
+          icon: Image.asset('assets/icons/icon_home_write.png'), onPressed: () {  },
         ),
         backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
         onPressed: (){
@@ -98,12 +98,18 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
                       var newModel = e;
                       if (newModel.show_id == showId) {
                         newModel.liked = value.like == 1 ? true : false;
-                        if (newModel.liked) {
-                          newModel.likes_num += 1;
-                        }else if (newModel.liked == false){
-                          if(newModel.likes_num > 0) {
-                            newModel.likes_num -= 1;
+                        if (newModel.liked ?? false) {
+                          if (newModel.likes_num != null) {
+                            var num = newModel.likes_num ?? 0;
+                            num += 1;
+                            newModel.likes_num = num;
+                          }else{
+                            newModel.likes_num = 1;
                           }
+                        }else if (newModel.liked == false){
+                            var num = newModel.likes_num ?? 1;
+                            num -= 1;
+                            newModel.likes_num = num;
                         }
                       }
                       return newModel;
@@ -113,12 +119,18 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
                       var newModel = e;
                       if (newModel.show_id == showId) {
                         newModel.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.collectioned) {
-                          newModel.collection_num += 1;
-                        }else if (newModel.collectioned == false){
-                          if(newModel.collection_num > 0) {
-                            newModel.collection_num -= 1;
+                        if (newModel.collectioned ?? false) {
+                          if (newModel.collection_num != null) {
+                            var num = newModel.collection_num ?? 0;
+                            num += 1;
+                            newModel.collection_num = num;
+                          }else{
+                            newModel.collection_num = 1;
                           }
+                        }else if (newModel.collectioned == false){
+                          var num = newModel.collection_num ?? 1;
+                          num -= 1;
+                          newModel.collection_num = num;
                         }
                       }
                       return newModel;
@@ -237,8 +249,8 @@ class ShowInfoActionNetworking {
 
 Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged changed) {
   int currentIndex = 0;
-  var imgWidgets = data.imgs.map((e) => Container(
-    child: CachedNetworkImage(imageUrl: ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail),
+  var imgWidgets = data.imgs?.map((e) => Container(
+    child: CachedNetworkImage(imageUrl: ToolConfig.loadImgUrl(e),
         height: double.infinity,
         width: double.infinity,
         fit: BoxFit.contain,
@@ -249,7 +261,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
   )).toList();
   var commentText = '添加评论...';
   if (data.commentInfo != null) {
-    commentText = data.commentInfo.content;
+    commentText = data.commentInfo?.content ?? '';
   }
   return Container(
     child: Column(
@@ -261,9 +273,10 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: (data.user.avator != null && data.user.avator.length > 0) ?
-                CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.user.avator,bType: ThumbType.thumbNail)):
-                AssetImage('assets/icons/icon_plh.png'),
+                backgroundImage:
+                // (data.user.avator != null && data.user.avator.length > 0) ?
+                CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.user?.avator ?? '')),
+                // AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 40,
@@ -275,7 +288,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.user.username ?? "",
+                      Text(data.user?.username ?? "",
                         style: TextStyle(
                           color: ColorsUtil.fromEnmu(ColorEnum.title),
                           fontWeight: FontWeight.w600,
@@ -284,7 +297,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                         overflow: TextOverflow.ellipsis,
                       ),
                       Padding(padding: EdgeInsets.all(3)),
-                      Text( ToolConfig.timeT(data.create_time) ?? "",
+                      Text( ToolConfig.timeT(data.create_time ?? ''),
                           style: TextStyle(
                               color: ColorsUtil.fromEnmu(ColorEnum.desc),
                               fontSize: FontUtil.fs(FontSize.time)),
@@ -355,7 +368,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                     children: [
                       Image.asset('assets/icons/icon_show_gb.png',width: 16,height: 16,),
                       Padding(padding: EdgeInsets.only(left: 6)),
-                      Text((data.gambit_type != null && (data.gambit_type?.descript?.length ?? 0) > 0) ? data.gambit_type.descript:'',
+                      Text((data.gambit_type != null && (data.gambit_type?.descript?.length ?? 0) > 0) ? data.gambit_type?.descript ?? '':'',
                         style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
                           color: ColorsUtil.fromEnmu(ColorEnum.system),
                         ),
@@ -367,7 +380,7 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                 ),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return ShowInfoSingleWidget(gambitId: data.gambit_type.id);
+                    return ShowInfoSingleWidget(gambitId: data.gambit_type?.id);
                   }));
                 },
               ),
@@ -423,8 +436,8 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.8,
                     color: Colors.white,
-                    child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,changed: (commNum) {
-                      changed(data.show_id,commNum);
+                    child: CommentInfoWidget( CommentType.show_comment,data.show_id, data.user?.id, (commNum) {
+                      changed(data.show_id ?? 0,commNum);
                     },),
                   );
                 },
@@ -436,18 +449,18 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
         commentWidget(context,data,(index) {
           if (index == -1) { // 点击了点赞
             var likeMark = data.liked == true ? 0 : 1;
-            ShowInfoActionNetworking.showInfoLikeClickAction(likeMark, data.show_id, (showId, info) {
+            ShowInfoActionNetworking.showInfoLikeClickAction(likeMark, data.show_id ?? 0, (showId, info) {
               changed(showId,info);
             });
           }else if (index == -2) { // 点击了收藏
-            var collectMark = data.collectioned ? 0 : 1;
+            var collectMark = (data.collectioned ?? false) ? 0 : 1;
             print("collectMark");
             print(collectMark);
-            ShowInfoActionNetworking.showInfoCollectClickAction(collectMark, data.show_id, (showId, info) {
+            ShowInfoActionNetworking.showInfoCollectClickAction(collectMark, data.show_id ?? 0, (showId, info) {
               changed(showId,info);
             });
           }else{
-            changed(data.show_id,index);
+            changed(data.show_id ?? 0,index);
           }
         }),
         Divider(thickness: 10,color: Colors.grey[100],)
@@ -507,7 +520,7 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
-                        child: CommentInfoWidget(commentType: CommentType.show_comment,topicId: data.show_id,toUid: data.user.id,changed: (value){
+                        child: CommentInfoWidget(CommentType.show_comment, data.show_id, data.user?.id, (value){
                           clicked(value);
                         }),
                       );
@@ -526,7 +539,7 @@ Widget commentWidget(BuildContext context, ShowInfoModel data,clickChange clicke
 class PageControlWidget extends StatefulWidget {
 
   //类变量,作为调用类时的参数
-  final List<Widget> imgWidget;
+  List<Widget>? imgWidget;
 
   PageControlWidget({this.imgWidget});
   GlobalKey<DWPageViewState> _childViewKey = new GlobalKey<DWPageViewState>();
@@ -550,18 +563,18 @@ class _PageControlState extends State<PageControlWidget> {
         alignment: Alignment.center,
         children: [
           PageView(
-            children: widget.imgWidget,
+            children: widget.imgWidget ?? [],
             onPageChanged: (int index) {
-              widget._childViewKey.currentState.selectedIndex(index);
+              widget._childViewKey.currentState?.selectedIndex(index);
             },
           ),
           Positioned(
             bottom: 20,
             child: DWPageView(
               key: widget._childViewKey,
-              width: (widget.imgWidget.length * 10 + 5).toDouble(),
+              width: ((widget.imgWidget?.length ?? 0) * 10 + 5).toDouble(),
               height: 10,
-              numberOfPages: widget.imgWidget.length > 1 ? widget.imgWidget.length : 0,
+              numberOfPages: (widget.imgWidget?.length ?? 0) > 1 ? widget.imgWidget?.length ?? 0 : 0,
             ),
           )
         ],

@@ -91,16 +91,16 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     }else {
 
       return ListTile(
-        leading: Image.asset(model.icon,width: 22,height: 22,),
+        leading: Image.asset(model.icon ?? '',width: 22,height: 22,),
         title:
         Container(
         transform: Matrix4.translationValues(-25, 0.0, 0.0),
-        child:Text(model.name, style:
+        child:Text(model.name ?? '', style:
             TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content)),
             ),
         ),
-        trailing: model.unreadNum > 0 ? Container(
+        trailing: (model.unreadNum ?? 0) > 0 ? Container(
             height: 16,
             width: 16,
             alignment: Alignment.center,
@@ -146,7 +146,7 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
             }));
           }else if (model.name == "检测更新") {
-            if (model.unreadNum > 0){
+            if ((model.unreadNum ?? 0) > 0){
               // 打开浏览器
               _launchUrl();
             }

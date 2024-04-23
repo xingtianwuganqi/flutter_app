@@ -106,7 +106,7 @@ class TagInfoState extends State<TagInfoPage> {
   Future<Null> tagsInfoNetworking() async {
     EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.tagsInfo);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url,Map(), (data) {
       EasyLoading.dismiss();
       print(data);
       if (data['code'] == 200) {

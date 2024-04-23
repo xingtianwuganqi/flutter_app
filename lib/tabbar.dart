@@ -41,14 +41,14 @@ class tabbarState extends State<tabbar> {
     super.initState();
     // _authUnreadMsgNetworking();
     _loadConfig();
-    var userId = 0;
+    int? userId = 0;
     if (UserManager.instance.userInfo != null) {
-      userId = UserManager.instance.userInfo.id;
+      userId = UserManager.instance.userInfo?.id;
     }
     // pages.add(HomePage());
     pages.add(HomeMainPage());
     pages.add(ShowInfoPageWidget());
-    pages.add(MessagePage(changed: (value){
+    pages.add(MessagePage( (value){
       _unreadNum = value;
       setState(() {
 
