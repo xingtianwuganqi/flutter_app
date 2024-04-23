@@ -61,7 +61,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
       EasyLoading.showToast('请输入手机号码');
       return;
     }
-    String deviceInfo = await ToolConfig.deviceName();
+    String? deviceInfo = await ToolConfig.deviceName();
     final url = NetWorkingConfig.path(NetPath.confirmPhoneInfo);
     /*
     parameter["phone_or_email"] = contact
@@ -78,7 +78,7 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
       if (data["code"] == 200) {
         /// 验证成功
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return LoginChangePswdPage(phoneStr: _username);
+          return LoginChangePswdPage(_username);
         }));
       }else{
         /// 验证失败
@@ -146,12 +146,17 @@ class LoginCheckPhoneState extends State<LoginCheckPhonePage> {
                   )
                       : null ,
                 ),
-                onSaved: (String name) {
-                  _username = name;
+                onSaved: (name) {
+                  _username = name ?? "";
                 },
                 // 校验用户名（不能为空）
                 validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入正确的用户名";
+                  if (v != null) {
+                    return v
+                        .trim()
+                        .isNotEmpty ? null : "请输入正确的用户名";
+                  }
+                  return null;
                 }
             )
           ],

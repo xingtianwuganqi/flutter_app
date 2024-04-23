@@ -19,9 +19,9 @@ import 'dart:io';
 
 class LoginChangePswdPage extends StatefulWidget {
 
-  final String phoneStr;
+  String phoneStr;
 
-  LoginChangePswdPage({Key key,@required this.phoneStr});
+  LoginChangePswdPage(this.phoneStr);
 
   @override
   State<StatefulWidget> createState() {
@@ -49,7 +49,7 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = true;
   var _deviceName = '';
-  UserInfoModel _userModel;
+  late UserInfoModel _userModel;
 
   @override
   void initState() {
@@ -209,8 +209,8 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
                   )
                       : null ,
                 ),
-                onSaved: (String name) {
-                  _username = name;
+                onSaved: (name) {
+                  _username = name ?? "";
                 },
 
             ), TextFormField(
@@ -243,12 +243,15 @@ class LoginChangePswdState extends State<LoginChangePswdPage> {
                   },
                 )),
               ),
-              onSaved: (String name) {
-                _password = name;
+              onSaved: (name) {
+                _password = name ?? "";
               },
               // 校验用户名（不能为空）
               validator: (v) {
-                return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                if (v != null) {
+                  return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                }
+                return null;
               },
             )
           ],

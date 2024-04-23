@@ -47,7 +47,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _proSelect = true;
   var _deviceName = '';
-  UserInfoModel _userModel;
+  late UserInfoModel _userModel;
 
   @override
   void initState() {
@@ -109,7 +109,6 @@ class _LoginWidgetState extends State<LoginWidget> {
       EasyLoading.showToast('请输入6位或6位以上密码');
       return;
     }
-    String deviceInfo = await ToolConfig.deviceName();
     final url = NetWorkingConfig.path(NetPath.login);
     /*
     parameter["phoneNum"] = phone
@@ -608,12 +607,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                 )
                     : null ,
               ),
-              onSaved: (String name) {
-                _username = name;
+              onSaved: (name) {
+                _username = name ?? "";
               },
             // 校验用户名（不能为空）
               validator: (v) {
-              return v.trim().isNotEmpty ? null : "请输入正确的用户名";
+                if (v != null) {
+                  return v
+                      .trim()
+                      .isNotEmpty ? null : "请输入正确的用户名";
+                }
+                return null;
               }
             ), TextFormField(
               obscureText: !_isShowPwd,
@@ -645,12 +649,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                   },
                 )),
               ),
-              onSaved: (String name) {
-                _password = name;
+              onSaved: (name) {
+                _password = name ?? '';
               },
           // 校验用户名（不能为空）
               validator: (v) {
-                return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                if (v != null) {
+                  return v
+                      .trim()
+                      .isNotEmpty ? null : "请输入6位或6位以上密码";
+                }
+                return null;
               },
             )
           ],

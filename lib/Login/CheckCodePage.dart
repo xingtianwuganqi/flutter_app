@@ -208,7 +208,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             // 跳转到注册页
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context){
-                  return RegisterWidget(phone: _phone);
+                  return RegisterWidget(_phone);
                 })
             );
           });
@@ -218,7 +218,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             // 跳转到注册页
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context){
-                  return LoginChangePswdPage(phoneStr: _phone);
+                  return LoginChangePswdPage(_phone);
                 })
             );
           });
@@ -441,7 +441,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             onPressed: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context){
-                    return RegisterWidget();
+                    return RegisterWidget(null);
                   })
               );
             },
