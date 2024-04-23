@@ -141,7 +141,7 @@ class ViolationListState extends State<ViolationsListWidget> {
   Future<Null> listNetworking() async {
     EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.violations);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, {}, (data) {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
         var models = data['data'];
@@ -156,11 +156,10 @@ class ViolationListState extends State<ViolationsListWidget> {
     }, (error) {
       EasyLoading.dismiss();
 
-    }, params: {});
+    });
   }
   /// 刷新列表
-  Void reloadList(int index) {
-
+  Void? reloadList(int index) {
     for (int i = 0; i < dataSource.length; i ++) {
       var model = dataSource[i];
       if (i == index) {
@@ -177,6 +176,7 @@ class ViolationListState extends State<ViolationsListWidget> {
 
       });
     }
+    return null;
   }
 
   ///提交按钮
@@ -205,10 +205,10 @@ class ViolationListState extends State<ViolationsListWidget> {
         break;
     }
 
-    int violation_id;
+    int? violation_id;
     for (int i = 0; i < dataSource.length; i ++) {
       var model = dataSource[i];
-      if (model.selected) {
+      if (model.selected ?? false) {
         violation_id = model.id;
         break;
       }
@@ -222,7 +222,7 @@ class ViolationListState extends State<ViolationsListWidget> {
     final url = NetWorkingConfig.path(NetPath.report);
     final dic = {"report_type": reType,
       "report_id": widget.reportId ,
-      "user_id": UserManager.instance.userInfo.id,
+      "user_id": UserManager.instance.userInfo?.id,
       "violation_id": violation_id,
       "token": UserManager.instance.token
     };

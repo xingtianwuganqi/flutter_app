@@ -22,9 +22,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 class UserInfoWidget extends StatefulWidget {
 
-  final ValueChanged changed;
+  ValueChanged? changed;
 
-  UserInfoWidget({Key key,this.changed}): super(key: key);
+  UserInfoWidget({this.changed});
 
   @override
   State<StatefulWidget> createState() {
@@ -54,7 +54,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
     UserPageModel('assets/icons/icon_mi_about.png', '关于我们',0),
   ];
 
-  AppVersionModel appVersionInfo;
+  late AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
   // 是不是点击了检测更新
@@ -137,12 +137,13 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.white,
-                backgroundImage: context.watch<UserProviderModel>().isLogin ?
-                ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-                CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
-                    AssetImage('assets/icons/icon_plh.png')
-                ) :
-                AssetImage('assets/icons/icon_plh.png'),
+                backgroundImage:
+                // context.watch<UserProviderModel>().isLogin ?
+                // ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
+                CachedNetworkImageProvider(ToolConfig.loadImgUrl(UserManager.instance.userInfo?.avator ?? "")),
+                    // AssetImage('assets/icons/icon_plh.png')
+                // ) :
+                // AssetImage('assets/icons/icon_plh.png'),
                 child: Container(
                     alignment: Alignment(0, .5),
                     width: 60,
@@ -150,7 +151,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 ),
               ),
               title: context.watch<UserProviderModel>().isLogin ?
-              Text(UserManager.instance.userInfo.username ?? "",
+              Text(UserManager.instance.userInfo?.username ?? "",
                 style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),) :
               Text('注册/登录',style: TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w700,color: Colors.white),),
               trailing:  Icon(Icons.keyboard_arrow_right,color: Colors.white),
@@ -190,7 +191,9 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context){
                             return SettingPageWidget(changed: (value){
-                              widget.changed(value);
+                              if (widget.changed != null) {
+                                widget.changed!(value);
+                              }
                             });
                           })
                       );
@@ -243,13 +246,13 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       }));
     }else if (data.title == "检测更新") {
       if (data.num == 1) {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context){
-            return uploadAlert();
-          },
-        );
+        // showModalBottomSheet(
+        //   context: context,
+        //   isScrollControlled: true,
+        //   builder: (context){
+        //     return uploadAlert();
+        //   },
+        // );
       }else{
         isTap = true;
         uploadNetWorking();
@@ -266,7 +269,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
         var info = AppVersionModel.fromJson(model);
         appVersionInfo = info;
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
+        if ((info.version ?? 0) > int.parse(localVersion)) {
           var list = listData.map((e) {
             var newValue = e;
             if (e.title == "检测更新") {
@@ -275,7 +278,9 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
             return newValue;
           }).toList();
           listData = list;
-          widget.changed(info.version);
+          if (widget.changed != null) {
+            widget.changed!(info.version);
+          }
           setState(() {
 
           });
@@ -314,64 +319,64 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
   // }
 
   /// 下载安卓更新包
-  Future<File> downloadAndroid(String url) async {
-    /// 创建存储文件
-    Directory storageDir = await getExternalStorageDirectory();
-    String storagePath = storageDir.path;
-
-    var dic = new Map<String, dynamic>.from(paramDic);
-    var localVersion = dic['appVersion'];
-
-    File file = new File('$storagePath/zmtmv$localVersion.apk');
-
-    if (!file.existsSync()) {
-      file.createSync();
-    }
-
-    try {
-      /// 发起下载请求
-      Response response = await Dio().get(url,
-          onReceiveProgress: showDownloadProgress,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-          ));
-      file.writeAsBytesSync(response.data);
-      return file;
-    } catch (e) {
-      Printer.printMapJsonLog(e);
-    }
-  }
-
-  // 安装apk
-  Future<Null> installApk(String url) async {
-    File _apkFile = await downloadAndroid(url);
-    String _apkFilePath = _apkFile.path;
-
-    if (_apkFilePath.isEmpty) {
-      Printer.printMapJsonLog('make sure the apk file is set');
-      return;
-    }
-
-    // InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
-    //     .then((result) {
-    //   Printer.printMapJsonLog('install apk $result');
-    //   EasyLoading.dismiss();
-    // }).catchError((error) {
-    //   Printer.printMapJsonLog('install apk error: $error');
-    //   EasyLoading.dismiss();
-    // });
-  }
-
-  /// 展示下载进度
-  void showDownloadProgress(num received, num total) {
-    if (total != -1) {
-      double _progress =
-      double.parse('${(received / total).toStringAsFixed(2)}');
-      EasyLoading.showProgress(_progress);
-    }
-  }
-
+  // Future<File> downloadAndroid(String url) async {
+  //   /// 创建存储文件
+  //   Directory? storageDir = await getExternalStorageDirectory();
+  //   String storagePath = storageDir?.path ?? '';
+  //
+  //   var dic = new Map<String, dynamic>.from(paramDic);
+  //   var localVersion = dic['appVersion'];
+  //
+  //   File file = new File('$storagePath/zmtmv$localVersion.apk');
+  //
+  //   if (!file.existsSync()) {
+  //     file.createSync();
+  //   }
+  //
+  //   try {
+  //     /// 发起下载请求
+  //     Response response = await Dio().get(url,
+  //         onReceiveProgress: showDownloadProgress,
+  //         options: Options(
+  //           responseType: ResponseType.bytes,
+  //           followRedirects: false,
+  //         ));
+  //     file.writeAsBytesSync(response.data);
+  //     return file;
+  //   } catch (e) {
+  //     Printer.printMapJsonLog(e);
+  //   }
+  // }
+  //
+  // // 安装apk
+  // Future<Null> installApk(String url) async {
+  //   File _apkFile = await downloadAndroid(url);
+  //   String _apkFilePath = _apkFile.path;
+  //
+  //   if (_apkFilePath.isEmpty) {
+  //     Printer.printMapJsonLog('make sure the apk file is set');
+  //     return;
+  //   }
+  //
+  //   // InstallPlugin.installApk(_apkFilePath, "com.rescue.flutter_720yun")
+  //   //     .then((result) {
+  //   //   Printer.printMapJsonLog('install apk $result');
+  //   //   EasyLoading.dismiss();
+  //   // }).catchError((error) {
+  //   //   Printer.printMapJsonLog('install apk error: $error');
+  //   //   EasyLoading.dismiss();
+  //   // });
+  // }
+  //
+  // /// 展示下载进度
+  // void showDownloadProgress(num received, num total) {
+  //   if (total != -1) {
+  //     double _progress =
+  //     double.parse('${(received / total).toStringAsFixed(2)}');
+  //     EasyLoading.showProgress(_progress);
+  //   }
+  // }
+  //
   Widget rightIcon(int num) {
     return Container(
       height: 40,
@@ -394,56 +399,56 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       ),
     );
   }
-
-  Widget uploadAlert() {
-    return Container(
-      width: double.infinity,
-      height: 160,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 40,
-            padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
-            child: Text('有新版本更新啦，快快下载使用吧！',style: TextStyle(
-              fontSize: FontUtil.fs(FontSize.content),
-              color: ColorsUtil.fromEnmu(ColorEnum.content),
-            ),),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 40,
-              width: MediaQuery.of(context).size.width - 40,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Colors.redAccent
-              ),
-            child: TextButton(onPressed: (){
-              Navigator.pop(context);
-              installApk(NetWorkingConfig.path(NetPath.appdownload));
-            }, child: Container(
-                child: Text('立刻更新',style: TextStyle(
-                  fontSize: FontUtil.fs(FontSize.content),
-                  color: Colors.white,
-                ),),
-
-            ),
-              // style: ButtonStyle(
-              //   backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-              //
-              // ),
-
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          )
-        ],
-      ),
-    );
-  }
+  //
+  // Widget uploadAlert() {
+  //   return Container(
+  //     width: double.infinity,
+  //     height: 160,
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           height: 20,
+  //         ),
+  //         Container(
+  //           height: 40,
+  //           padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+  //           child: Text('有新版本更新啦，快快下载使用吧！',style: TextStyle(
+  //             fontSize: FontUtil.fs(FontSize.content),
+  //             color: ColorsUtil.fromEnmu(ColorEnum.content),
+  //           ),),
+  //         ),
+  //         SizedBox(
+  //           height: 20,
+  //         ),
+  //         Container(
+  //           height: 40,
+  //             width: MediaQuery.of(context).size.width - 40,
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.all(Radius.circular(20)),
+  //                 color: Colors.redAccent
+  //             ),
+  //           child: TextButton(onPressed: (){
+  //             Navigator.pop(context);
+  //             installApk(NetWorkingConfig.path(NetPath.appdownload));
+  //           }, child: Container(
+  //               child: Text('立刻更新',style: TextStyle(
+  //                 fontSize: FontUtil.fs(FontSize.content),
+  //                 color: Colors.white,
+  //               ),),
+  //
+  //           ),
+  //             // style: ButtonStyle(
+  //             //   backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+  //             //
+  //             // ),
+  //
+  //           ),
+  //         ),
+  //         SizedBox(
+  //           height: 40,
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

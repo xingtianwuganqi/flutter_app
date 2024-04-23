@@ -13,7 +13,7 @@ class UserPublishWidget extends StatefulWidget {
 class UserPublishState extends State<UserPublishWidget>  with SingleTickerProviderStateMixin {
 
   List<String> tabs = ["我发布的领养","我发布的秀宠"];
-  TabController _tabController; //需要定义一个Controller
+  late TabController _tabController; //需要定义一个Controller
 
   @override
   void initState() {

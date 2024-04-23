@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
-  final String url;
-  final String filePath;
-  WebViewPage({Key key, this.url, this.filePath}): super(key: key);
+  String? url;
+  String? filePath;
+  WebViewPage({this.url, this.filePath});
   @override
   WebViewPageState createState() => WebViewPageState();
 }
 
 class WebViewPageState extends State<WebViewPage> {
 
-  String _webTitle;
-  WebViewController _controller;
+  late String _webTitle;
+  late WebViewController _controller;
 
 
   @override

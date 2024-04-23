@@ -148,7 +148,7 @@ class SuggestionState extends State<SuggesstionWidget> {
   }
 
   Future<Null> suggestionNetworking() async{
-    String deviceInfo = await ToolConfig.deviceName();
+    String? deviceInfo = await ToolConfig.deviceName();
     final url = NetWorkingConfig.path(NetPath.suggestion);
     final dic = {
       'token': UserManager.instance.token,
