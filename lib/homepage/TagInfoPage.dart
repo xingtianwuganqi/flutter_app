@@ -5,10 +5,10 @@ import 'package:flutter_720yun/model/HomePageModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class TagInfoPage extends StatefulWidget {
-  final ValueChanged<List<TagInfoModel>> changed;
-  final List<TagInfoModel> tags;
+  ValueChanged<List<TagInfoModel>> changed;
+  List<TagInfoModel> tags;
 
-  TagInfoPage({Key key,@required this.changed,this.tags}): super(key: key);
+  TagInfoPage(this.tags, this.changed);
 
   @override
   State<StatefulWidget> createState() {
@@ -53,11 +53,11 @@ class TagInfoState extends State<TagInfoPage> {
               children: List.generate(dataSource.length, (index) {
                 var data = dataSource[index];
                 return RawChip(
-                  label: Text(data.tag_name,
-                    style: TextStyle(color: data.isSelect ? Colors.white : ColorsUtil.fromEnmu(ColorEnum.mark)),),
-                  backgroundColor: data.isSelect ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.tableBack),
+                  label: Text(data.tag_name ?? "",
+                    style: TextStyle(color: (data.isSelect ?? false) ? Colors.white : ColorsUtil.fromEnmu(ColorEnum.mark)),),
+                  backgroundColor: (data.isSelect ?? false) ? ColorsUtil.fromEnmu(ColorEnum.system) : ColorsUtil.fromEnmu(ColorEnum.tableBack),
                   onPressed: (){
-                    if (!data.isSelect) {
+                    if (!(data.isSelect ?? false)) {
                       if (judgeDataCanAppend(data) == true) {
                         data.isSelect = true;
                         _filters.add(data);

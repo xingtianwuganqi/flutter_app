@@ -246,7 +246,7 @@ class SearchPageState extends State<SearchPageWidget> {
                       children: List.generate(datas.length, (index) {
                         var data = datas[index];
                         return RawChip(
-                          label: Text(data.keyword,
+                          label: Text(data.keyword ?? '',
                               style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
                           backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           onPressed: (){
@@ -254,7 +254,7 @@ class SearchPageState extends State<SearchPageWidget> {
                             _searchController.value = _searchController.value.copyWith(
                               text: data.keyword,
                               selection:
-                              TextSelection(baseOffset: data.keyword.length, extentOffset: data.keyword.length),
+                              TextSelection(baseOffset: data.keyword?.length ?? 0, extentOffset: data.keyword?.length ?? 0),
                               composing: TextRange.empty,
                             );
                             beginSearch(1);
@@ -276,7 +276,7 @@ class SearchPageState extends State<SearchPageWidget> {
     if (keyword.length > 0) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       try{
-        List<String> keywords = prefs.getStringList('searchKeyWords');
+        List<String>? keywords = prefs.getStringList('searchKeyWords');
         if (keywords != null) {
           // 有值的话先移除
           if (keywords.contains(keyword)) {
@@ -317,7 +317,7 @@ class SearchPageState extends State<SearchPageWidget> {
   void readSearchHistory() async{
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> keywords = prefs.getStringList('searchKeyWords');
+      List<String>? keywords = prefs.getStringList('searchKeyWords');
       if (keywords != null) {
         setState(() {
           searchHistory = keywords;
@@ -370,7 +370,7 @@ class SearchPageState extends State<SearchPageWidget> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topic_id);
+                    return TopicDetailWidget(data.topic_id ?? 0);
                   }));
                 },
                 child: homePageItemWidget(context,data,(topicId,value) {
@@ -379,11 +379,20 @@ class SearchPageState extends State<SearchPageWidget> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.liked = value.like == 1 ? true : false;
-                        if (newModel.liked) {
-                          newModel.likes_num += 1;
+                        if (newModel.liked ?? false) {
+                          if (newModel.likes_num != null) {
+                            var num = newModel.likes_num ?? 0;
+                            num += 1;
+                            newModel.likes_num = num;
+                          }else{
+                            newModel.likes_num = 1;
+                          }
+
                         }else if (newModel.liked == false){
-                          if(newModel.likes_num > 0) {
-                            newModel.likes_num -= 1;
+                          var num = newModel.likes_num ?? 0;
+                          if (num > 0) {
+                            num -= 1;
+                            newModel.likes_num = num;
                           }
                         }
                       }
@@ -394,11 +403,19 @@ class SearchPageState extends State<SearchPageWidget> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.collectioned) {
-                          newModel.collection_num += 1;
+                        if (newModel.collectioned ?? false) {
+                          if (newModel.collection_num != null) {
+                            var num = newModel.collection_num ?? 0;
+                            num += 1;
+                            newModel.collection_num = num;
+                          }else{
+                            newModel.collection_num = 1;
+                          }
                         }else if (newModel.collectioned == false){
-                          if(newModel.collection_num > 0) {
-                            newModel.collection_num -= 1;
+                          var num = newModel.collection_num ?? 0;
+                          if (num > 0) {
+                            num -= 1;
+                            newModel.collection_num = num;
                           }
                         }
                       }
