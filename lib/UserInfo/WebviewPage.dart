@@ -22,7 +22,7 @@ class WebViewPageState extends State<WebViewPage> {
   void initState() {
     super.initState();
     // Enable hybrid composition.
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override
@@ -36,34 +36,35 @@ class WebViewPageState extends State<WebViewPage> {
         color: Colors.white,
         width: double.infinity,
         height: double.infinity,
-        child:  WebView(
-          backgroundColor: Colors.white,
-          initialUrl: widget.url != null ? widget.url : "",
-          //JS执行模式 是否允许JS执行
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (controller) {
-            _controller = controller;
-            if (widget.filePath != null) {
-              _loadHtmlFromAssets();
-            }
-          },
-          onPageFinished: (url) {
-            _controller.runJavascriptReturningResult("document.title").then((result){
-              setState(() {
-                _webTitle = result;
-              });
-            }
-            );
-          },
-        ),
+        child: Container()
+        // WebView(
+        //   backgroundColor: Colors.white,
+        //   initialUrl: widget.url != null ? widget.url : "",
+        //   //JS执行模式 是否允许JS执行
+        //   javascriptMode: JavascriptMode.unrestricted,
+        //   onWebViewCreated: (controller) {
+        //     _controller = controller;
+        //     if (widget.filePath != null) {
+        //       _loadHtmlFromAssets();
+        //     }
+        //   },
+        //   onPageFinished: (url) {
+        //     _controller.runJavascriptReturningResult("document.title").then((result){
+        //       setState(() {
+        //         _webTitle = result;
+        //       });
+        //     }
+        //     );
+        //   },
+        // ),
       ),
     );
   }
 
   _loadHtmlFromAssets() async {
-    String fileHtmlContents = await rootBundle.loadString(widget.filePath);
-    _controller.loadUrl(Uri.dataFromString(fileHtmlContents,
-        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    // String fileHtmlContents = await rootBundle.loadString(widget.filePath);
+    // _controller.loadUrl(Uri.dataFromString(fileHtmlContents,
+    //     mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+    //     .toString());
   }
 }

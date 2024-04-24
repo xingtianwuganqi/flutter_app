@@ -16,9 +16,9 @@ import 'package:flutter_printer/flutter_printer.dart';
 import 'dart:io';
 
 class SettingPageWidget extends StatefulWidget {
-  final ValueChanged changed;
+  ValueChanged? changed;
 
-  SettingPageWidget({Key key,this.changed}): super(key: key);
+  SettingPageWidget({this.changed});
 
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +39,7 @@ class SettingPageState extends State<SettingPageWidget> {
 // 是不是点击了检测更新
   bool isTap = false;
 
-  AppVersionModel appVersionInfo;
+  late AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
 
@@ -181,7 +181,7 @@ class SettingPageState extends State<SettingPageWidget> {
         var info = AppVersionModel.fromJson(model);
         appVersionInfo = info;
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
+        if ((info.version ?? 0) > int.parse(localVersion)) {
           var list = datas.map((e) {
             var newValue = e;
             if (e.title == "检测更新") {
@@ -208,45 +208,45 @@ class SettingPageState extends State<SettingPageWidget> {
   }
 
   /// 下载安卓更新包
-  Future<File> downloadAndroid(String url) async {
-    /// 创建存储文件
-    Directory storageDir = await getExternalStorageDirectory();
-    String storagePath = storageDir.path;
-
-    var dic = new Map<String, dynamic>.from(paramDic);
-    var localVersion = dic['appVersion'];
-
-    File file = new File('$storagePath/zmtmv$localVersion.apk');
-
-    if (!file.existsSync()) {
-      file.createSync();
-    }
-
-    try {
-      /// 发起下载请求
-      Response response = await Dio().get(url,
-          onReceiveProgress: showDownloadProgress,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-          ));
-      file.writeAsBytesSync(response.data);
-      return file;
-    } catch (e) {
-      Printer.printMapJsonLog(e);
-    }
-  }
-
-  // 安装apk
-  Future<Null> installApk(String url) async {
-    File _apkFile = await downloadAndroid(url);
-    String _apkFilePath = _apkFile.path;
-
-    if (_apkFilePath.isEmpty) {
-      Printer.printMapJsonLog('make sure the apk file is set');
-      return;
-    }
-  }
+  // Future<File> downloadAndroid(String url) async {
+  //   /// 创建存储文件
+  //   Directory storageDir = await getExternalStorageDirectory();
+  //   String storagePath = storageDir.path;
+  //
+  //   var dic = new Map<String, dynamic>.from(paramDic);
+  //   var localVersion = dic['appVersion'];
+  //
+  //   File file = new File('$storagePath/zmtmv$localVersion.apk');
+  //
+  //   if (!file.existsSync()) {
+  //     file.createSync();
+  //   }
+  //
+  //   try {
+  //     /// 发起下载请求
+  //     Response response = await Dio().get(url,
+  //         onReceiveProgress: showDownloadProgress,
+  //         options: Options(
+  //           responseType: ResponseType.bytes,
+  //           followRedirects: false,
+  //         ));
+  //     file.writeAsBytesSync(response.data);
+  //     return file;
+  //   } catch (e) {
+  //     Printer.printMapJsonLog(e);
+  //   }
+  // }
+  //
+  // // 安装apk
+  // Future<Null> installApk(String url) async {
+  //   File _apkFile = await downloadAndroid(url);
+  //   String _apkFilePath = _apkFile.path;
+  //
+  //   if (_apkFilePath.isEmpty) {
+  //     Printer.printMapJsonLog('make sure the apk file is set');
+  //     return;
+  //   }
+  // }
 
   /// 展示下载进度
   void showDownloadProgress(num received, num total) {
@@ -309,7 +309,7 @@ class SettingPageState extends State<SettingPageWidget> {
             ),
             child: TextButton(onPressed: (){
               Navigator.pop(context);
-              installApk(NetWorkingConfig.path(NetPath.appdownload));
+              // installApk(NetWorkingConfig.path(NetPath.appdownload));
             }, child: Container(
               child: Text('立刻更新',style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),

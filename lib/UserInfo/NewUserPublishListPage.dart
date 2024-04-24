@@ -140,7 +140,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
           ),
         );
       },itemCount: publishList.length,
-        physics: CustomBouncingScroll(),
+        physics: CustomBouncingScroll(null),
         padding: EdgeInsets.only(top: 15),
       ),
       firstRefresh: isFirstLoad,
@@ -359,16 +359,16 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 class CustomBouncingScroll extends BouncingScrollPhysics {
 
   /// Creates scroll physics that bounce back from the edge.
-
-  const CustomBouncingScroll({required ScrollPhysics parent}) : super(parent: parent);
+  ScrollPhysics? parent;
+  CustomBouncingScroll(parent);
 
   @override
-
-  CustomBouncingScroll applyTo(ScrollPhysics ancestor) {
-
-    return CustomBouncingScroll(parent: buildParent(ancestor));
-
-  }
+  //
+  // CustomBouncingScroll applyTo(ScrollPhysics ancestor) {
+  //
+  //   return CustomBouncingScroll(ancestor);
+  //
+  // }
 
 // 重构弹性范围，只有当上滑的时候才有弹性，下拉去除
 
