@@ -32,21 +32,29 @@
   <component name="ChangeListManager">
     <list default="true" id="725bf871-54f8-419d-9695-e48fcc0c56f7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/.symlinks/plugins/sqflite" beforeDir="false" afterPath="$PROJECT_DIR$/ios/.symlinks/plugins/sqflite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Local Podspecs/Flutter.podspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Local Podspecs/Flutter.podspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Local Podspecs/sqflite.podspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Local Podspecs/sqflite.podspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/FMDB.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/FMDB.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/FMDB.xcscheme" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/Flutter.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/Flutter.xcscheme" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/Pods-Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/Pods-Runner.xcscheme" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/path_provider.xcscheme" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/sqflite.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/sqflite.xcscheme" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/xcschememanagement.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Pods.xcodeproj/xcuserdata/jingjun.xcuserdatad/xcschemes/xcschememanagement.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.release.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB-dummy.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB-prefix.pch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.debug.xcconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/FMDB/FMDB.release.xcconfig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.debug.xcconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Flutter/Flutter.release.xcconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-acknowledgements.markdown" afterDir="false" />
@@ -66,6 +74,7 @@
       <change beforePath="$PROJECT_DIR$/ios/Pods/Target Support Files/sqflite/sqflite.release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Pods/Target Support Files/sqflite/sqflite.release.xcconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
