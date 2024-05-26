@@ -166,11 +166,8 @@ class FindPetState extends State<FindPetPage> {
             child: CircleAvatar(
               radius: 18,
               backgroundImage:
-              // ((data.userInfo?.avator != null && (data.userInfo?.avator.length ?? 0) > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo?.avator ?? "")),//:
-              // AssetImage('assets/icons/icon_plh.png')),
-              //   :
-              // AssetImage('assets/icons/icon_plh.png'),
+                  ToolConfig.loadImage(data.userInfo?.avator ?? ""),
+              backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
               child: Container(
                 alignment: Alignment(0, 0),
                 width: 36,

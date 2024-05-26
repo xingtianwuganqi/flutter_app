@@ -106,9 +106,7 @@ class _HomePageState extends State<HomePage> {
           bottom: 20,
             right: 20,
             child: FloatingActionButton(
-              child: IconButton(
-                icon: Image.asset('assets/icons/icon_home_write.png'), onPressed: () {  },
-              ),
+              child: Image.asset('assets/icons/icon_home_write.png'),
               backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
@@ -511,7 +509,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
               changed(data.topic_id ?? 0,comIndex);
             }
           }),
-          Divider(height: 1,),
+          Divider(height: 1,color: ColorsUtil.hexColor(0xEEEEEE),),
         ],
       ),
     // ),
@@ -534,12 +532,8 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           child: CircleAvatar(
             radius: 18,
             backgroundImage:
-            // isLoadingImg ?
-            // ((data.userInfo != null && data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo?.avator ?? '')),
-            // AssetImage('assets/icons/icon_plh.png')),
-            //   :
-            // AssetImage('assets/icons/icon_plh.png'),
+            ToolConfig.loadImage(data.userInfo?.avator ?? ''),
+            backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
             child: Container(
               alignment: Alignment(0, 0),
               width: 36,
@@ -1086,7 +1080,7 @@ Widget addressWidget(HomePageModel data) {
   );
 }
 
-Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, clickChange clicked) {
+Widget commentWidget(double leftNum,BuildContext context, HomePageModel? data, clickChange clicked) {
   return Container(
     padding: EdgeInsets.only(left: leftNum,right: 15),
     height: 40,
@@ -1095,7 +1089,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon: (data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
-              label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
+              label: Text((data?.likes_num ?? 0) > (0) ? data!.likes_num.toString() : "点赞",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1110,7 +1104,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon: (data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
-              label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
+              label: Text((data?.collection_num ?? 0) > (0) ? data!.collection_num.toString() : "收藏",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1126,7 +1120,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_sh_commen.png'),
-              label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
+              label: Text((data?.commNum ?? 0) > (0) ? data!.commNum.toString() : "评论",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1135,7 +1129,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               onPressed: (){
                 lazyAuthToDoThings(context, (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CommentInfoWidget( CommentType.topic_comment, data.topic_id, data.userInfo?.id, (value){
+                    return CommentInfoWidget( CommentType.topic_comment, data?.topic_id, data?.userInfo?.id, (value){
                       clicked(value);
                     },);
                   }));

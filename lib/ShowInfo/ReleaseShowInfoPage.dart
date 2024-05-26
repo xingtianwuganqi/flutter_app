@@ -25,7 +25,7 @@ class ReleaseShowInfoPage extends StatefulWidget {
 
 class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
 
-  late GambitModel _gambitModel;
+  GambitModel? _gambitModel;
   FocusNode _contentFocusNode = FocusNode();
   TextEditingController _contentController = TextEditingController();
 
@@ -188,7 +188,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                    return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                                   }));
                                 },
                             ),
@@ -331,7 +331,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
                     children: [
                       Image.asset('assets/icons/icon_show_gb.png',width: 16,height: 16,),
                       Padding(padding: EdgeInsets.only(left: 6)),
-                      Text(_gambitModel.descript ?? '',
+                      Text(_gambitModel?.descript ?? '',
                         style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
                           color: ColorsUtil.fromEnmu(ColorEnum.system),
                         ),
@@ -479,7 +479,7 @@ class ReleaseShowInfoState extends State<ReleaseShowInfoPage> {
     final url = NetWorkingConfig.path(NetPath.releaseShowInfo);
     var dic = new Map<String, dynamic>.from(paramDic);
     dic['instruction'] = _contentController.text.trim();
-    dic['gambit_id'] = _gambitModel == null ? null : _gambitModel.id.toString();
+    dic['gambit_id'] = _gambitModel == null ? null : _gambitModel?.id.toString();
     dic['imgs'] = imgStr;
 
     await NetWorking.formDataPost(url, dic, (data) {

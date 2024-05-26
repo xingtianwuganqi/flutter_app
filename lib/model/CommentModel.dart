@@ -30,6 +30,11 @@ class CommentInfoModel {
   });
 
   factory CommentInfoModel.fromJson(Map<String,dynamic> json) {
+    var reply_count = json['reply_count'] ?? 0;
+    var reply_length = (json['replys'] as List).length;
+    print('=======');
+    print(reply_count);
+    print(reply_length);
     return CommentInfoModel(
       comment_id: json['comment_id'],
       create_time: json['create_time'],
@@ -38,7 +43,7 @@ class CommentInfoModel {
       content: json['content'] as String,
       from_uid: json['from_uid'],
       replys: (json['replys'] as List).map((e) => ReplyListModel.fromJson(e)).toList(),//
-      isOpend: (json['reply_count'] ?? 0) > json['replys'].length ? false : true,
+      isOpend: reply_count > reply_length ? true : false,
       showReply: [],
       userInfo: UserInfoModel.fromJson(json['userInfo']),
       reply_count: json['reply_count'] ?? 0,

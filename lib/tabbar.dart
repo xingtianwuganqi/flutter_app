@@ -267,7 +267,7 @@ class tabbarState extends State<tabbar> {
                    ),
                      recognizer: _tgr1..onTap = () {
                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                         return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                         return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                        }));
                    }
                    ),
@@ -284,7 +284,7 @@ class tabbarState extends State<tabbar> {
                      Navigator.push(context, MaterialPageRoute(builder: (context){
                        // return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
                        String filePath = 'assets/files/privacyPolicy.html';
-                       return WebViewPage(filePath: filePath);
+                       return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                      }));                   }
                    ),
                    TextSpan(text: userPrivateProtocol,style:TextStyle(

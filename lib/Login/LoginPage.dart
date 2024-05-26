@@ -743,7 +743,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                      return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                     }));
                     },
                 ),
@@ -755,7 +755,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ..onTap = () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
                         String filePath = 'assets/files/privacyPolicy.html';
-                        return WebViewPage(filePath: filePath);
+                        return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                       }));
                     },
                 ),

@@ -14,10 +14,10 @@ import '../model/CommentModel.dart';
 
 class CommentInfoWidget extends StatefulWidget {
 
-  CommentType? commentType;
-  int? topicId;
-  int? toUid;
-  ValueChanged? changed;
+  final CommentType? commentType;
+  final int? topicId;
+  final int? toUid;
+  final ValueChanged? changed;
 
   CommentInfoWidget(this.commentType,this.topicId, this.toUid, this.changed);
 
@@ -325,7 +325,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
           var comInfo = dataSource[i];
           if (comInfo.comment_id == model?.comment_id) {
             comInfo.replys?.addAll(moreReply as Iterable<ReplyListModel>);
-            if (models.length > 0) {
+            if (models.length > 0 && (comInfo.reply_count ?? 0) > 0) {
               comInfo.next_page = comInfo.next_page ?? 0 + 1;
               comInfo.isOpend = comInfo.reply_count == (comInfo.replys?.length ?? 0);
             }
@@ -356,11 +356,11 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
       var com = ComRepListModel(type: 3,commentModel: model);
       listData.add(com);
     }
-    if (listData.length > 0 && widget.changed != null) {
-      if (widget.changed != null) {
-        widget.changed!(listData.length);
-      }
-    }
+    // if (listData.length > 0 && widget.changed != null) {
+    //   if (widget.changed != null) {
+    //     widget.changed!(listData.length);
+    //   }
+    // }
   }
 
   /// 发表评论
@@ -405,10 +405,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
         setState(() {
           // 清空输入框
           _focusNode.unfocus();
-          // _comController.clear();
-          // _replyComModel = null;
-          // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
+        if (widget.changed != null) {
+          widget.changed!(listData.length);
+        }
       }else if (data['code'] == 209) { // 未绑定手机号
         EasyLoading.showToast(data['message'] ?? '未绑定手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -460,10 +460,10 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
         setState(() {
           // 清空输入框
           _focusNode.unfocus();
-          // _comController.clear();
-          // _replyComModel = null;
-          // _tapType = ComTapTypeInfo(tapType: ComTapType.comment,name: '请输入评论');
         });
+        if (widget.changed != null) {
+          widget.changed!(listData.length);
+        }
       }else if (data['code'] == 209) { // 未绑定手机号
         EasyLoading.showToast(data['message'] ?? '未绑定手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -514,9 +514,8 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                       child: CircleAvatar(
                         radius: 12,
                         backgroundImage:
-                        // (model.commentModel.userInfo.avator != null && model.commentModel.userInfo.avator.length > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.commentModel!.userInfo?.avator ?? "", ThumbType.thumbNail)),
-                        // AssetImage('assets/icons/icon_plh.png'),
+                         ToolConfig.loadImage(model.commentModel!.userInfo?.avator ?? ""),
+                        backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
                         child: Container(
                           alignment: Alignment(0, 0),
                           width: 24,
@@ -674,9 +673,7 @@ class CommentState extends State<CommentInfoWidget> with WidgetsBindingObserver{
                       child: CircleAvatar(
                         radius: 10,
                         backgroundImage:
-                        // (model.replyModel?.fromInfo?.avator != null && (model.replyModel?.fromInfo?.avator?.length ?? 0) > 0) ?
-                        CachedNetworkImageProvider(ToolConfig.loadImgUrl(model.replyModel?.fromInfo?.avator ?? "",ThumbType.thumbNail)),
-                        // AssetImage('assets/icons/icon_plh.png'),
+                        ToolConfig.loadImage(model.replyModel?.fromInfo?.avator ?? ""),
                         child: Container(
                           alignment: Alignment(0, 0),
                           width: 20,

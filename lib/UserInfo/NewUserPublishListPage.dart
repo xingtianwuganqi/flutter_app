@@ -236,12 +236,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                           CircleAvatar(
                             radius: 10,
                             backgroundImage:
-                            // isLoadingImg ?
-                            // ((avator != null && avator.length > 0) ?
-                            CachedNetworkImageProvider(ToolConfig.loadImgUrl(avator ?? '')),
-                            // AssetImage('assets/icons/icon_plh.png')),
-                            //   :
-                            // AssetImage('assets/icons/icon_plh.png'),
+                            ToolConfig.loadImage(avator ?? ''),
                             child: Container(
                               alignment: Alignment(0, 0),
                               width: 20,

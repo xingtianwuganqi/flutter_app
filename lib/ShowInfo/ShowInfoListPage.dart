@@ -59,9 +59,7 @@ class ShowInfoListState extends State<ShowInfoListWidget> with AutomaticKeepAliv
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: IconButton(
-          icon: Image.asset('assets/icons/icon_home_write.png'), onPressed: () {  },
-        ),
+        child: Image.asset('assets/icons/icon_home_write.png'),
         backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
         onPressed: (){
           lazyAuthToDoThings(context, (){
@@ -274,9 +272,8 @@ Widget showInfoItem(BuildContext context, ShowInfoModel data,commentInfoChanged 
               CircleAvatar(
                 radius: 20,
                 backgroundImage:
-                // (data.user.avator != null && data.user.avator.length > 0) ?
-                CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.user?.avator ?? '')),
-                // AssetImage('assets/icons/icon_plh.png'),
+                ToolConfig.loadImage(data.user?.avator ?? ''),
+                backgroundColor: ColorsUtil.fromEnmu(ColorEnum.lineColor),
                 child: Container(
                   alignment: Alignment(0, .5),
                   width: 40,

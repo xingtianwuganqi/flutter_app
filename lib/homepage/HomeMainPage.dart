@@ -102,11 +102,8 @@ class AppBarBottomComponent extends StatelessWidget implements PreferredSizeWidg
       alignment: Alignment.centerLeft,
       child: TabBar(
         controller: tabController, // 4 需要配置 controller！！！
-        // isScrollable: true,
         tabs:tabs.map((e) => Tab(text: e)).toList(),
-        // labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
-        // unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.content),
-        labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w800,color: ColorsUtil.fromEnmu(ColorEnum.title)),
+        labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w800,color: ColorsUtil.fromEnmu(ColorEnum.title)),
         unselectedLabelStyle: TextStyle(fontSize: 16,color: ColorsUtil.fromEnmu(ColorEnum.content)),
         indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
         indicatorSize: TabBarIndicatorSize.label,

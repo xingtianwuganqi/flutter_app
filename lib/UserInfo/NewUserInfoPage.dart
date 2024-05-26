@@ -10,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_720yun/UserInfo/EditUserInfoPage.dart';
 // import
 class NewUserInfoPage extends StatefulWidget {
-  MyPageType? pageType;
+  final MyPageType? pageType;
   int? userId;
   NewUserInfoPage({
     this.pageType,
@@ -31,7 +31,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
   bool isShowTitle = false;
 
   /// 请求回来的uerInfo
-  late UserInfoModel otherUserInfo;
+  UserInfoModel? otherUserInfo;
   @override
   void initState() {
     // TODO: implement initState
@@ -150,12 +150,7 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
             radius: 40,
             backgroundColor: Colors.white,
             foregroundImage:
-            // context.watch<UserProviderModel>().isLogin ?
-            // ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(ToolConfig.loadImgUrl(UserManager.instance.userInfo?.avator ?? ''))
-            // ) :
-            // AssetImage('assets/icons/icon_plh.png'),
-            ,
+            ToolConfig.loadImage(UserManager.instance.userInfo?.avator ?? '')
           ),
           title: context.watch<UserProviderModel>().isLogin ?
           Text(UserManager.instance.userInfo?.username ?? "",
@@ -182,14 +177,11 @@ class NewUserInfoPageState extends State<NewUserInfoPage> with SingleTickerProvi
         leading: CircleAvatar(
           radius: 40,
           backgroundColor: Colors.white,
-          foregroundImage:
-          // otherUserInfo != null ?
-          CachedNetworkImageProvider(ToolConfig.loadImgUrl(otherUserInfo?.avator ?? '')),
-          // AssetImage('assets/icons/icon_plh.png'),
+          foregroundImage:ToolConfig.loadImage(otherUserInfo?.avator ?? ''),
           child: null,
         ),
         title: otherUserInfo != null ?
-        Text(otherUserInfo.username ?? "",
+        Text(otherUserInfo?.username ?? "",
           style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),) :
         Text('--',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),fontWeight: FontWeight.w500,color: Colors.white),),
       ),

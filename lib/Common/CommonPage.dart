@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -165,8 +166,8 @@ static func apiBasicParameters() -> [String:Any] {
 // 定义一些公关参数，// 定义为计算属性
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
-  'appVersion': '1.0.2',
-  'androidVersion': '8', // 与pubspec 文件中的version 相同
+  'appVersion': '1.1.0',
+  'androidVersion': '11', // 与pubspec 文件中的version 相同
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 
@@ -219,6 +220,8 @@ class ColorsUtil {
         return ColorsUtil.hexColor(0x707070);
       case ColorEnum.backColor:
         return ColorsUtil.hexColor(0xFAF9FA);
+      case ColorEnum.lineColor:
+        return ColorsUtil.hexColor(0xEEEEEE);
       default:
         return ColorsUtil.hexColor(0x000000);
     }
@@ -237,6 +240,7 @@ enum ColorEnum {
   urlColor,
   iconColor,
   backColor,
+  lineColor,
 }
 
 /// 字体大小
@@ -383,6 +387,15 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     return headImg;
   }
 
+  static ImageProvider? loadImage(String? url) {
+    if (url == null) {
+      return null;
+    }else if (url == '') {
+      return null;
+    }else{
+      return CachedNetworkImageProvider(ToolConfig.loadImgUrl(url));
+    }
+  }
 
 
   static String encryptionString(String codeStr) {

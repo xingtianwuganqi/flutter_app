@@ -138,12 +138,7 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
                 radius: 25,
                 backgroundColor: Colors.white,
                 backgroundImage:
-                // context.watch<UserProviderModel>().isLogin ?
-                // ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-                CachedNetworkImageProvider(ToolConfig.loadImgUrl(UserManager.instance.userInfo?.avator ?? "")),
-                    // AssetImage('assets/icons/icon_plh.png')
-                // ) :
-                // AssetImage('assets/icons/icon_plh.png'),
+                ToolConfig.loadImage(UserManager.instance.userInfo?.avator ?? ""),
                 child: Container(
                     alignment: Alignment(0, .5),
                     width: 60,
@@ -234,15 +229,15 @@ class UserInfoWidgetState extends State<UserInfoWidget> {
       });
     }else if (data.title == '用户协议') {
       Navigator.push(context, MaterialPageRoute(builder: (context){
-        return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+        return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
       }));
     }else if (data.title == '隐私政策') {
       Navigator.push(context, MaterialPageRoute(builder: (context){
-        return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+        return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
       }));
     }else if (data.title == '关于我们') {
       Navigator.push(context, MaterialPageRoute(builder: (context){
-        return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
+        return WebViewPage(NetWorkingConfig.path(NetPath.aboutUs));
       }));
     }else if (data.title == "检测更新") {
       if (data.num == 1) {

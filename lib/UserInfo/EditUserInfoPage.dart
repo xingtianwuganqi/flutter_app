@@ -44,7 +44,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
 
   late String _token;
 
-  late AssetEntity _assetInfo;
+  AssetEntity? _assetInfo;
   late String _avator;
 
   @override
@@ -102,7 +102,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     Widget headImage() {
       if (_assetInfo != null ) {
         return Container(
-          child: AssetEntityImage(_assetInfo,height: 80,width: 80,fit: BoxFit.cover,) ,
+          child: _assetInfo == null ? null : AssetEntityImage(_assetInfo!,height: 80,width: 80,fit: BoxFit.cover,) ,
           decoration: new BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
@@ -113,12 +113,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
           radius: 40,
           backgroundColor: Colors.white,
           backgroundImage:
-          // (UserManager.instance.isLogin ?
-          // ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-          CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo?.avator ?? ""))),
-          // AssetImage('assets/icons/icon_plh.png')
-
-          // Image.asset('assets/icons/icon_plh.png')),
+          ToolConfig.loadImage((UserManager.instance.userInfo?.avator ?? "")),
           child: Container(
             alignment: Alignment(0, .5),
             width: 80,
@@ -271,7 +266,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     EasyLoading.show(status:'上传图片...');
     // 使用 storage 的 putFile
     String photoKey = comPhotoKey;
-    File? file = await _assetInfo.file;
+    File? file = await _assetInfo?.file;
     if (file != null) {
       storage.putFile(file, token, options: PutOptions(
         controller: putController,

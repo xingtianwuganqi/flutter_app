@@ -454,7 +454,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                    return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                                   }));
                                 },
                             ),

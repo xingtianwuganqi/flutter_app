@@ -121,7 +121,7 @@ class ViolationListState extends State<ViolationsListWidget> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                                    return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                                   }));
                               },
                           ),

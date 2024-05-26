@@ -50,9 +50,11 @@ class BlackListState extends State<BlackListPage> {
   }
 
   reportBtnClick() {
-    Navigator.push(context, MaterialPageRoute(builder: (context){
-      return BlackDetailPage(BlackType.create);
-    }));
+    lazyAuthToDoThings(context, {
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return BlackDetailPage(BlackType.create);
+      }))
+    });
   }
 
   Widget refreshBody() {
