@@ -167,7 +167,7 @@ static func apiBasicParameters() -> [String:Any] {
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
   'appVersion': '1.1.0',
-  'androidVersion': '11', // 与pubspec 文件中的version 相同
+  'androidVersion': '12', // 与pubspec 文件中的version 相同
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 
