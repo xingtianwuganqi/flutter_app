@@ -83,59 +83,64 @@ class RescueCollectState extends State<RescueCollectWidget> with AutomaticKeepAl
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            return  GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data.topicInfo,(topicId,value) {
-                if (value is HomeLikeStatusModel) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.liked = value.like == 1 ? true : false;
-                      if (newModel.topicInfo.liked) {
-                        newModel.topicInfo.likes_num += 1;
-                      }else if (newModel.topicInfo.liked == false){
-                        if(newModel.topicInfo.likes_num > 0) {
-                          newModel.topicInfo.likes_num -= 1;
+            if (data.topicInfo != null) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: homePageItemWidget(
+                    context, data.topicInfo!, (topicId, value) {
+                  if (value is HomeLikeStatusModel) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo?.liked =
+                        value.like == 1 ? true : false;
+                        if (newModel.topicInfo?.liked ?? false) {
+                          var num = newModel.topicInfo?.likes_num ?? 0;
+                          newModel.topicInfo?.likes_num = num += 1;
+                        } else if (newModel.topicInfo?.liked == false) {
+                          var num = newModel.topicInfo?.likes_num ?? 1;
+                          newModel.topicInfo?.likes_num = num -= 1;
+
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if (value is HomeCollectionStatusModel){
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
-                      if (newModel.topicInfo.collectioned) {
-                        newModel.topicInfo.collection_num += 1;
-                      }else if (newModel.topicInfo.collectioned == false){
-                        if(newModel.topicInfo.collection_num > 0) {
-                          newModel.topicInfo.collection_num -= 1;
+                      return newModel;
+                    }).toList();
+                  } else if (value is HomeCollectionStatusModel) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo?.collectioned =
+                        value.collection == 1 ? true : false;
+                        if (newModel.topicInfo?.collectioned ?? false) {
+                          var num = newModel.topicInfo?.collection_num ?? 0;
+                          newModel.topicInfo?.collection_num = num += 1;
+                        } else if (newModel.topicInfo?.collectioned == false) {
+                          var num = newModel.topicInfo?.collection_num ?? 0;
+                          newModel.topicInfo?.collection_num = num -= 1;
                         }
                       }
-                    }
-                    return newModel;
-                  }).toList();
-                }else if(value is int) {
-                  homeModels = homeModels.map((e) {
-                    var newModel = e;
-                    if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.commNum = value;
-                    }
-                    return newModel;
-                  }).toList();
-                }
-                setState(() {
+                      return newModel;
+                    }).toList();
+                  } else if (value is int) {
+                    homeModels = homeModels.map((e) {
+                      var newModel = e;
+                      if (newModel.topic_id == topicId) {
+                        newModel.topicInfo?.commNum = value;
+                      }
+                      return newModel;
+                    }).toList();
+                  }
+                  setState(() {
 
-                });
-              }),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return TopicDetailWidget(topicId: data.topic_id);
-                }));
-              },
-            );
-
+                  });
+                }),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return TopicDetailWidget(data.topic_id ?? 0);
+                  }));
+                },
+              );
+            }
           }
       ),
       firstRefresh: isFirstLoad,

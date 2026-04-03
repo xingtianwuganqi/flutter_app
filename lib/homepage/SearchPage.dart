@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_native.dart';
-import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/homepage/HomePage.dart';
@@ -248,7 +246,7 @@ class SearchPageState extends State<SearchPageWidget> {
                       children: List.generate(datas.length, (index) {
                         var data = datas[index];
                         return RawChip(
-                          label: Text(data.keyword,
+                          label: Text(data.keyword ?? '',
                               style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content))),
                           backgroundColor: ColorsUtil.fromEnmu(ColorEnum.defIcon),
                           onPressed: (){
@@ -256,7 +254,7 @@ class SearchPageState extends State<SearchPageWidget> {
                             _searchController.value = _searchController.value.copyWith(
                               text: data.keyword,
                               selection:
-                              TextSelection(baseOffset: data.keyword.length, extentOffset: data.keyword.length),
+                              TextSelection(baseOffset: data.keyword?.length ?? 0, extentOffset: data.keyword?.length ?? 0),
                               composing: TextRange.empty,
                             );
                             beginSearch(1);
@@ -278,7 +276,7 @@ class SearchPageState extends State<SearchPageWidget> {
     if (keyword.length > 0) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       try{
-        List<String> keywords = prefs.getStringList('searchKeyWords');
+        List<String>? keywords = prefs.getStringList('searchKeyWords');
         if (keywords != null) {
           // 有值的话先移除
           if (keywords.contains(keyword)) {
@@ -319,7 +317,7 @@ class SearchPageState extends State<SearchPageWidget> {
   void readSearchHistory() async{
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> keywords = prefs.getStringList('searchKeyWords');
+      List<String>? keywords = prefs.getStringList('searchKeyWords');
       if (keywords != null) {
         setState(() {
           searchHistory = keywords;
@@ -367,14 +365,12 @@ class SearchPageState extends State<SearchPageWidget> {
           itemCount: homeModels.length,
           itemBuilder: (context,index) {
             var data = homeModels[index];
-            if (data.topic_id == -2) {
-              return nativeADWidget();
-            }else{
+
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topic_id);
+                    return TopicDetailWidget(data.topic_id ?? 0);
                   }));
                 },
                 child: homePageItemWidget(context,data,(topicId,value) {
@@ -383,11 +379,20 @@ class SearchPageState extends State<SearchPageWidget> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.liked = value.like == 1 ? true : false;
-                        if (newModel.liked) {
-                          newModel.likes_num += 1;
+                        if (newModel.liked ?? false) {
+                          if (newModel.likes_num != null) {
+                            var num = newModel.likes_num ?? 0;
+                            num += 1;
+                            newModel.likes_num = num;
+                          }else{
+                            newModel.likes_num = 1;
+                          }
+
                         }else if (newModel.liked == false){
-                          if(newModel.likes_num > 0) {
-                            newModel.likes_num -= 1;
+                          var num = newModel.likes_num ?? 0;
+                          if (num > 0) {
+                            num -= 1;
+                            newModel.likes_num = num;
                           }
                         }
                       }
@@ -398,11 +403,19 @@ class SearchPageState extends State<SearchPageWidget> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.collectioned) {
-                          newModel.collection_num += 1;
+                        if (newModel.collectioned ?? false) {
+                          if (newModel.collection_num != null) {
+                            var num = newModel.collection_num ?? 0;
+                            num += 1;
+                            newModel.collection_num = num;
+                          }else{
+                            newModel.collection_num = 1;
+                          }
                         }else if (newModel.collectioned == false){
-                          if(newModel.collection_num > 0) {
-                            newModel.collection_num -= 1;
+                          var num = newModel.collection_num ?? 0;
+                          if (num > 0) {
+                            num -= 1;
+                            newModel.collection_num = num;
                           }
                         }
                       }
@@ -423,7 +436,6 @@ class SearchPageState extends State<SearchPageWidget> {
                 }),
               );
             }
-          }
       ),
       // firstRefresh: isFirstLoad,
       // firstRefreshWidget: SpinKitRing(color: ColorsUtil.fromEnmu(ColorEnum.system),size: 30,lineWidth: 3,),
@@ -459,7 +471,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
   Future<Null> searchKeyWordsNetworking() async {
     final url = NetWorkingConfig.path(NetPath.searchkeyword);
-    await NetWorking.get(url, (data) {
+    await NetWorking.get(url, Map(), (data) {
       if (data['code'] == 200) {
         var keywords = (data['data'] as List).map((e) => SearchKeyWordModel.fromJson(e)).toList();
         datas = keywords;
@@ -468,7 +480,7 @@ class SearchPageState extends State<SearchPageWidget> {
 
         });
       }
-    }, (error) {
+    } as SuccessCallBack, (error) {
       // 失败
     });
 
@@ -492,32 +504,15 @@ class SearchPageState extends State<SearchPageWidget> {
     dic['keyword'] = keyword;
     dic['page'] = _page;
     dic['size'] = 10;
-    await NetWorking.formDataPost(url, dic,(data){
+    await NetWorking.formDataPost(url, dic, (data) {
       print(data);
       if (data['code'] == 200) {
         List<HomePageModel> datas = [];
         var models = data['data'];
-        for (int i = 0;i < models.length; i++ ){
+        for (int i = 0; i < models.length; i++) {
           datas.add(new HomePageModel.fromJson(models[i]));
         }
-        if (_page == 1) {
-          ATNativeManager.nativeAdReady(
-            placementID: Configuration.nativePlacementID,
-          ).then((value) {
-            if (value == true) {
-              if (datas.length > 5) {
-                datas.insert(5, HomePageModel(topic_id: -2));
-              }else{
-                datas.add(HomePageModel(topic_id: -2));
-              }
-              print("广告加载完毕");
-              setState(() {
-
-              });
-            }
-          });
-        }
-        _page == 1 ?  homeModels = datas : homeModels = homeModels + datas;
+        _page == 1 ? homeModels = datas : homeModels = homeModels + datas;
         if (datas.length > 0) {
           _page += 1;
         }
@@ -525,67 +520,11 @@ class SearchPageState extends State<SearchPageWidget> {
         setState(() {
           isFirstLoad = false;
         });
-      }else{
+      } else {
         EasyLoading.showToast(data['message'] ?? '');
       }
-    },(error){
+    }, (error) {
       EasyLoading.showToast('网络出错');
     });
-
   }
-  Widget nativeADWidget() {
-    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
-    return Container(
-      width: double.infinity,
-      height: 100 + imageH,
-      child: PlatformNativeWidget(Configuration.nativePlacementID, {
-        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth(), 340,
-            backgroundColorStr: '#FFFFFF'
-        ),
-        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
-            40, 40,
-            x: 15, y: 40, backgroundColorStr: 'clearColor'),
-        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160,
-          20,
-          x: 61,
-          y: 40,
-          textSize: 15,
-        ),
-        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160, 20,
-          x: 61, y:60,
-          textSize: 15,
-          textColorStr: "#999999",
-        ),
-        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
-          80,
-          36,
-          x: topSizeTool.getWidth() - 95,
-          y: 40,
-          textSize: 15,
-          textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1",
-          textAlignmentStr: "center",
-        ),
-        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
-            x: 61, y: 86, backgroundColorStr: '#000000'),
-        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
-            20, 10,
-            x: 10,
-            y: 10,
-            backgroundColorStr: '#00000000'),
-        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
-          20,
-          20,
-          x: topSizeTool.getWidth() - 35,
-          y: 10,
-        ),
-      },sceneID: Configuration.nativeSceneID),
-    );
-  }
-
-
 }

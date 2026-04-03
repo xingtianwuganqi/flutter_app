@@ -16,9 +16,9 @@ import 'package:flutter_printer/flutter_printer.dart';
 import 'dart:io';
 
 class SettingPageWidget extends StatefulWidget {
-  final ValueChanged changed;
+  ValueChanged? changed;
 
-  SettingPageWidget({Key key,this.changed}): super(key: key);
+  SettingPageWidget({this.changed});
 
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +39,7 @@ class SettingPageState extends State<SettingPageWidget> {
 // 是不是点击了检测更新
   bool isTap = false;
 
-  AppVersionModel appVersionInfo;
+  late AppVersionModel appVersionInfo;
   ScrollController _scrollController = ScrollController();
 
 
@@ -54,14 +54,14 @@ class SettingPageState extends State<SettingPageWidget> {
           padding: EdgeInsets.only(left: 5,right: 5),
           child: ListTile(
               title: Container(
-                  transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                  transform: Matrix4.translationValues(-10, 0.0, 0.0),
                   child: Text(data.title,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.black)),
                 ),
               leading: Image.asset(data.icon),
               trailing: Icon(Icons.keyboard_arrow_right)
           ),
         ),
-        Divider(height: .0,)
+        Divider(height: .0,color: ColorsUtil.fromEnmu(ColorEnum.lineColor),)
       ];
       if (data.title == '退出登录'){
         return Container(
@@ -71,7 +71,7 @@ class SettingPageState extends State<SettingPageWidget> {
           child: Text(data.title, style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: Colors.black)),
         );
       }else if (data.icon == 'line') {
-        return Divider(thickness: 10.0,color: Colors.grey[100]);
+        return Divider(thickness: 10.0,color: ColorsUtil.fromEnmu(ColorEnum.lineColor));
       }else{
         return Container(
           color: Colors.white,
@@ -119,20 +119,20 @@ class SettingPageState extends State<SettingPageWidget> {
                   });
                 }else if (data.title == '领养说明') {
                   Navigator.push(context,MaterialPageRoute(builder: (context){
-                    return WebViewPage(url: NetWorkingConfig.path(NetPath.instruction));
+                    return WebViewPage(NetWorkingConfig.path(NetPath.instruction));
                   }));
                 }
                 else if (data.title == '用户协议') {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                    return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                   }));
                 }else if (data.title == '隐私政策') {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                    return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                   }));
                 }else if (data.title == '关于我们') {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
+                    return WebViewPage(NetWorkingConfig.path(NetPath.aboutUs));
                   }));
                 }else if (data.title == "检测更新") {
                   if (data.num == 1) {
@@ -181,7 +181,7 @@ class SettingPageState extends State<SettingPageWidget> {
         var info = AppVersionModel.fromJson(model);
         appVersionInfo = info;
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
+        if ((info.version ?? 0) > int.parse(localVersion)) {
           var list = datas.map((e) {
             var newValue = e;
             if (e.title == "检测更新") {
@@ -205,47 +205,6 @@ class SettingPageState extends State<SettingPageWidget> {
     }, (error) {
 
     });
-  }
-
-  /// 下载安卓更新包
-  Future<File> downloadAndroid(String url) async {
-    /// 创建存储文件
-    Directory storageDir = await getExternalStorageDirectory();
-    String storagePath = storageDir.path;
-
-    var dic = new Map<String, dynamic>.from(paramDic);
-    var localVersion = dic['appVersion'];
-
-    File file = new File('$storagePath/zmtmv$localVersion.apk');
-
-    if (!file.existsSync()) {
-      file.createSync();
-    }
-
-    try {
-      /// 发起下载请求
-      Response response = await Dio().get(url,
-          onReceiveProgress: showDownloadProgress,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-          ));
-      file.writeAsBytesSync(response.data);
-      return file;
-    } catch (e) {
-      Printer.printMapJsonLog(e);
-    }
-  }
-
-  // 安装apk
-  Future<Null> installApk(String url) async {
-    File _apkFile = await downloadAndroid(url);
-    String _apkFilePath = _apkFile.path;
-
-    if (_apkFilePath.isEmpty) {
-      Printer.printMapJsonLog('make sure the apk file is set');
-      return;
-    }
   }
 
   /// 展示下载进度
@@ -309,7 +268,7 @@ class SettingPageState extends State<SettingPageWidget> {
             ),
             child: TextButton(onPressed: (){
               Navigator.pop(context);
-              installApk(NetWorkingConfig.path(NetPath.appdownload));
+              // installApk(NetWorkingConfig.path(NetPath.appdownload));
             }, child: Container(
               child: Text('立刻更新',style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class DWPageView extends StatefulWidget {
   DWPageView({
     // 宽度 必传
-    this.width,
+    required this.width,
     // 高度 必传
-    this.height,
+    required this.height,
     // 总页数 必传
-    this.numberOfPages,
+    required this.numberOfPages,
     // 当前页数
     this.currentPage = 0,
     // 未选颜色 默认灰色
@@ -29,7 +29,7 @@ class DWPageView extends StatefulWidget {
     // 排序的方向 默认横着排序
     this.scrollDirection = Axis.horizontal,
 
-    Key key,
+    required Key key,
   }) : super( key: key);
 
   final int numberOfPages;
@@ -54,7 +54,7 @@ class DWPageView extends StatefulWidget {
 
 class DWPageViewState extends State<DWPageView> {
   ScrollController _scrollController = new ScrollController();
-  int _currentPage;
+  late int _currentPage;
 
   @override
   void initState() {

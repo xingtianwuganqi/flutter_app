@@ -4,25 +4,25 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'UserModel.dart';
 class HomePageModel {
-  final  int topic_id;
-  final  String content;
-  final  UserInfoModel userInfo;
-  final  List<String> imgs;
-  final  String create_time;
-  final  String update_time;
-  final  int views_num;
-  int likes_num;
-  int collection_num;
-  int commNum;
-  final  String address_info;
-  bool is_complete;
-  final  List<int> tags;
-  bool liked;
-  bool collectioned;
-  final  int user;
-  final  List<TagModel> tagInfos;
-  String contact_info;
-  bool getedcontact;
+  int? topic_id;
+  String? content;
+  UserInfoModel? userInfo;
+  List<String>? imgs;
+  String? create_time;
+  String? update_time;
+  int? views_num;
+  int? likes_num;
+  int? collection_num;
+  int? commNum;
+  String? address_info;
+  bool? is_complete;
+  List<int>? tags;
+  bool? liked;
+  bool? collectioned;
+  int? user;
+  List<TagModel>? tagInfos;
+  String? contact_info;
+  bool? getedcontact;
 
   HomePageModel({
     this.topic_id,
@@ -72,8 +72,8 @@ class HomePageModel {
 }
 
 class TagModel {
-  final int id;
-  final String tag_name;
+  int? id;
+  String? tag_name;
   
   TagModel({
     this.id,
@@ -89,8 +89,8 @@ class TagModel {
 }
 
 class SearchKeyWordModel {
-  final int id;
-  final String keyword;
+  int? id;
+  String? keyword;
 
   SearchKeyWordModel({
     this.id,
@@ -105,29 +105,13 @@ class SearchKeyWordModel {
   }
 }
 
-/*
-struct ReleasePhotoModel: HandyJSON, Equatable {
-
-var image: UIImage?
-var isAdd: Bool = false // 是不是添加的图片
-var progress: Float = 0
-var complete: Bool = false
-var photoKey: String = "\(Tool.shared.getTime())/\(String.et.random(ofLength: 8)).jpeg"
-var photoUrl: String = ""
-
-static func == (lhs: Self, rhs: Self) -> Bool {
-return lhs.photoKey == rhs.photoKey
-}
-}
- */
-
 class ReleasePhotoModel {
-  bool isAdd = false;
-  double progress = 0.0;
-  bool complete = false;
-  String photoKey = '';
-  String photoUrl = '';
-  AssetEntity image;
+  bool? isAdd = false;
+  double? progress = 0.0;
+  bool? complete = false;
+  String? photoKey = '';
+  String? photoUrl = '';
+  AssetEntity? image;
 
   ReleasePhotoModel({
     this.isAdd,
@@ -142,10 +126,10 @@ class ReleasePhotoModel {
 
 class TagInfoModel {
   TagInfoModel({this.id,this.tag_name, this.isSelect, this.tag_type});
-  final int id;
-  final String tag_name;
-  final int tag_type;
-  bool  isSelect = false;
+  int? id;
+  String? tag_name;
+  int? tag_type;
+  bool?  isSelect = false;
 
   factory TagInfoModel.fromJson(Map<String,dynamic> json) {
     return TagInfoModel(
@@ -158,11 +142,11 @@ class TagInfoModel {
 }
 
 class CountryModel {
-  final List<ProvinceModel> children;
-  final String id;
-  final String pid;
-  final String value;
-  bool isSelect = false;
+  List<ProvinceModel>? children;
+  String? id;
+  String? pid;
+  String? value;
+  bool? isSelect = false;
   CountryModel({this.children,this.id,this.pid,this.value,this.isSelect});
 
   factory CountryModel.fromJson(Map<String,dynamic> json) {
@@ -177,11 +161,11 @@ class CountryModel {
 }
 
 class ProvinceModel {
-  final List<CityModel> children;
-  final String id;
-  final String pid;
-  final String value;
-  bool isSelect = false;
+  List<CityModel> ?children;
+  String? id;
+  String? pid;
+  String? value;
+  bool? isSelect = false;
   ProvinceModel({this.children,this.id,this.pid,this.value,this.isSelect});
 
   factory ProvinceModel.fromJson(Map<String,dynamic> json) {
@@ -196,11 +180,11 @@ class ProvinceModel {
 }
 
 class CityModel {
-  final List<AreaModel> children;
-  final String id;
-  final String pid;
-  final String value;
-  bool isSelect = false;
+  List<AreaModel>? children;
+  String? id;
+  String? pid;
+  String? value;
+  bool? isSelect = false;
   CityModel({this.children,this.id,this.pid,this.value,this.isSelect});
 
   factory CityModel.fromJson(Map<String,dynamic> json) {
@@ -215,10 +199,10 @@ class CityModel {
 }
 
 class AreaModel {
-  final String id;
-  final String pid;
-  final String value;
-  bool isSelect = false;
+  String? id;
+  String? pid;
+  String? value;
+  bool? isSelect = false;
 
   AreaModel({this.id,this.pid,this.value,this.isSelect});
   factory AreaModel.fromJson(Map<String,dynamic> json) {
@@ -232,10 +216,10 @@ class AreaModel {
 }
 
 class NewProvinceModel {
-  final String code;
-  final String name;
-  final List<NewCityModel> children;
-  bool isSelect = false;
+  String? code;
+  String? name;
+  List<NewCityModel>? children;
+  bool? isSelect = false;
 
   NewProvinceModel({this.code,this.name,this.children,this.isSelect});
 
@@ -252,10 +236,10 @@ class NewProvinceModel {
 
 
 class NewCityModel {
-  final String code;
-  final String name;
-  final List<NewAreaModel> children;
-  bool isSelect = false;
+  String? code;
+  String? name;
+  List<NewAreaModel>? children;
+  bool? isSelect = false;
 
   NewCityModel({this.code,this.name,this.children,this.isSelect});
 
@@ -279,9 +263,9 @@ class NewCityModel {
 }
 
 class NewAreaModel {
-  final String code;
-  final String name;
-  bool isSelect = false;
+  String? code;
+  String? name;
+  bool? isSelect = false;
 
   NewAreaModel({this.code,this.name,this.isSelect});
   factory NewAreaModel.fromJson(Map<String,dynamic> json) {
@@ -295,7 +279,7 @@ class NewAreaModel {
 
 
 class UploadImgTokenModel {
-  final String token;
+  String? token;
   UploadImgTokenModel({this.token});
   factory UploadImgTokenModel.formJson(Map<String,dynamic> json) {
     return UploadImgTokenModel(
@@ -305,8 +289,8 @@ class UploadImgTokenModel {
 }
 
 class HomeLikeStatusModel {
-  final int like;
-  final int mark;
+  int? like;
+  int? mark;
   HomeLikeStatusModel({this.like,this.mark});
   factory HomeLikeStatusModel.fromJson(Map<String,dynamic> json) {
     return HomeLikeStatusModel(
@@ -322,8 +306,8 @@ var collection: Int?
     var mark: Int?
 
  */
-  final int collection;
-  final int mark;
+  int? collection;
+  int? mark;
   HomeCollectionStatusModel({this.collection,this.mark});
   factory HomeCollectionStatusModel.fromJson(Map<String,dynamic> json) {
     return HomeCollectionStatusModel(
@@ -334,7 +318,7 @@ var collection: Int?
 }
 
 class ContactModel {
-  final String contact;
+  String? contact;
   ContactModel({this.contact});
   factory ContactModel.fromJson(Map<String,dynamic> json) {
     return ContactModel(
@@ -344,8 +328,8 @@ class ContactModel {
 }
 
 class ImgIndexModel {
-  final String url;
-  final int index;
+  String? url;
+  int? index;
 
   ImgIndexModel({this.url,this.index});
   //
@@ -355,8 +339,8 @@ class ImgIndexModel {
 }
 
 class CityListModel {
-  final String code;
-  final String name;
+  String? code;
+  String? name;
 
   CityListModel({this.code, this.name});
 

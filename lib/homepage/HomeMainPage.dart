@@ -15,7 +15,7 @@ class HomeMainPage extends StatefulWidget {
 
 class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderStateMixin {
   List tabs = ["推荐","同城","找宠"];
-  TabController _tabController;
+   late TabController _tabController;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _tabController.dispose();
+    _tabController?.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
             },
           ),
         ),
-        bottom: AppBarBottomComponent(tabController: _tabController,tabs: tabs),
+        bottom: AppBarBottomComponent( _tabController, tabs),
         elevation: 0.5,
       ),
       drawer: Container(
@@ -78,9 +78,9 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
         child: TabBarView(
           controller: _tabController,
           children: [
-            KeepAliveWrapper(child: HomePage()),
-            KeepAliveWrapper(child: HomePage(pageType: HomePageType.localPage)),
-            KeepAliveWrapper(child: FindPetPage()),
+            KeepAliveWrapper( HomePage()),
+            KeepAliveWrapper( HomePage(HomePageType.localPage)),
+            KeepAliveWrapper( FindPetPage()),
           ],
         ),
       ),
@@ -90,14 +90,10 @@ class HomeMainPageState extends State<HomeMainPage> with SingleTickerProviderSta
 
 class AppBarBottomComponent extends StatelessWidget implements PreferredSizeWidget {
 
-  final TabController tabController;
-  final List tabs;
+  TabController tabController;
+  List tabs;
 
-  AppBarBottomComponent({
-    Key key,
-    @required this.tabController,
-    this.tabs
-  }): super(key: key);
+  AppBarBottomComponent(this.tabController, this.tabs);
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +102,8 @@ class AppBarBottomComponent extends StatelessWidget implements PreferredSizeWidg
       alignment: Alignment.centerLeft,
       child: TabBar(
         controller: tabController, // 4 需要配置 controller！！！
-        // isScrollable: true,
         tabs:tabs.map((e) => Tab(text: e)).toList(),
-        // labelColor: ColorsUtil.fromEnmu(ColorEnum.title),
-        // unselectedLabelColor: ColorsUtil.fromEnmu(ColorEnum.content),
-        labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w800,color: ColorsUtil.fromEnmu(ColorEnum.title)),
+        labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w800,color: ColorsUtil.fromEnmu(ColorEnum.title)),
         unselectedLabelStyle: TextStyle(fontSize: 16,color: ColorsUtil.fromEnmu(ColorEnum.content)),
         indicatorColor: ColorsUtil.fromEnmu(ColorEnum.system),
         indicatorSize: TabBarIndicatorSize.label,

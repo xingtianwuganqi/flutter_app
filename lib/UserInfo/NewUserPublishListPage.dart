@@ -12,11 +12,11 @@ import 'package:provider/provider.dart';
 import '../Common/SingletonPage.dart';
 
 class NewUserPublishListPage extends StatefulWidget {
-  final MyPageType pageType;
-  final int netType; // 1:领养，2:秀宠;
-  int userId;
+  MyPageType? pageType;
+  int? netType; // 1:领养，2:秀宠;
+  int? userId;
 
-  NewUserPublishListPage({Key key,@required this.pageType, @required this.netType, this.userId}): super(key: key);
+  NewUserPublishListPage({this.pageType, this.netType, this.userId});
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +47,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
     Provider.of<UserProviderModel>(context,listen: false).addListener(() {
       if (widget.pageType == MyPageType.myPage) {
         if (Provider.of<UserProviderModel>(context,listen: false).user != null) {
-          widget.userId = Provider.of<UserProviderModel>(context,listen: false).user.id;
+          widget.userId = Provider.of<UserProviderModel>(context,listen: false).user?.id;
           listNetworking(pageNum);
         }else{
           print('退出登录');
@@ -125,7 +125,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
               if (widget.netType == 1) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context){
-                      return TopicDetailWidget(topicId: model.topic_id,pageType: MyPageType.myPage,statusChanged: (value) {
+                      return TopicDetailWidget(model.topic_id, MyPageType.myPage, (value) {
                         updateRescueList(value);
                       },);
                     })
@@ -140,7 +140,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
           ),
         );
       },itemCount: publishList.length,
-        physics: CustomBouncingScroll(),
+        physics: CustomBouncingScroll(null),
         padding: EdgeInsets.only(top: 15),
       ),
       firstRefresh: isFirstLoad,
@@ -159,8 +159,8 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 
   Widget rescuePublishItem(model) {
 
-    HomePageModel homeModel;
-    ShowInfoModel showModel;
+    HomePageModel? homeModel;
+    ShowInfoModel? showModel;
     if (model is HomePageModel) {
       homeModel = model;
     }else if (model is ShowInfoModel){
@@ -169,10 +169,10 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 
     var imgContentH = (MediaQuery.of(context).size.width - 40) / 2;
     var img = ToolConfig.loadImgUrl(model.imgs[0]);
-    var content = widget.netType == 1 ? homeModel.content : showModel.instruction;
-    var avator = widget.netType == 1 ? homeModel.userInfo.avator : showModel.user.avator;
-    var username = widget.netType == 1 ? homeModel.userInfo.username : showModel.user.username;
-    var complete = widget.netType == 1 ? homeModel.is_complete : false;
+    var content = widget.netType == 1 ? homeModel?.content : showModel?.instruction;
+    var avator = widget.netType == 1 ? homeModel?.userInfo?.avator : showModel?.user?.avator;
+    var username = widget.netType == 1 ? homeModel?.userInfo?.username : showModel?.user?.username;
+    var complete = widget.netType == 1 ? homeModel?.is_complete : false;
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
       child: Container(
@@ -222,7 +222,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                     Container(
                       padding: EdgeInsets.only(left: 10,right: 10),
                       alignment: Alignment.centerLeft,
-                      child: Text(content,maxLines: 1,overflow: TextOverflow.ellipsis,
+                      child: Text(content ??'',maxLines: 1,overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.title),
                             fontSize: FontUtil.fs(FontSize.content)),
                       ),
@@ -236,12 +236,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                           CircleAvatar(
                             radius: 10,
                             backgroundImage:
-                            // isLoadingImg ?
-                            ((avator != null && avator.length > 0) ?
-                            CachedNetworkImageProvider(ToolConfig.loadImgUrl(avator)) :
-                            AssetImage('assets/icons/icon_plh.png')),
-                            //   :
-                            // AssetImage('assets/icons/icon_plh.png'),
+                            ToolConfig.loadImage(avator ?? ''),
                             child: Container(
                               alignment: Alignment(0, 0),
                               width: 20,
@@ -250,7 +245,7 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 10),
-                            child:Text(username),
+                            child:Text(username ?? ''),
                           )
                         ],
                       ),
@@ -359,16 +354,16 @@ class NewUserPublishListPageState extends State<NewUserPublishListPage> with Aut
 class CustomBouncingScroll extends BouncingScrollPhysics {
 
   /// Creates scroll physics that bounce back from the edge.
-
-  const CustomBouncingScroll({ScrollPhysics parent}) : super(parent: parent);
+  ScrollPhysics? parent;
+  CustomBouncingScroll(parent);
 
   @override
-
-  CustomBouncingScroll applyTo(ScrollPhysics ancestor) {
-
-    return CustomBouncingScroll(parent: buildParent(ancestor));
-
-  }
+  //
+  // CustomBouncingScroll applyTo(ScrollPhysics ancestor) {
+  //
+  //   return CustomBouncingScroll(ancestor);
+  //
+  // }
 
 // 重构弹性范围，只有当上滑的时候才有弹性，下拉去除
 

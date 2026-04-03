@@ -6,12 +6,6 @@
 
 #import "GeneratedPluginRegistrant.h"
 
-#if __has_include(<anythink_sdk/AnythinkSdkPlugin.h>)
-#import <anythink_sdk/AnythinkSdkPlugin.h>
-#else
-@import anythink_sdk;
-#endif
-
 #if __has_include(<device_info/FLTDeviceInfoPlugin.h>)
 #import <device_info/FLTDeviceInfoPlugin.h>
 #else
@@ -54,14 +48,14 @@
 @import sqflite;
 #endif
 
-#if __has_include(<url_launcher_ios/FLTURLLauncherPlugin.h>)
-#import <url_launcher_ios/FLTURLLauncherPlugin.h>
+#if __has_include(<url_launcher_ios/URLLauncherPlugin.h>)
+#import <url_launcher_ios/URLLauncherPlugin.h>
 #else
 @import url_launcher_ios;
 #endif
 
-#if __has_include(<video_player_avfoundation/FLTVideoPlayerPlugin.h>)
-#import <video_player_avfoundation/FLTVideoPlayerPlugin.h>
+#if __has_include(<video_player_avfoundation/FVPVideoPlayerPlugin.h>)
+#import <video_player_avfoundation/FVPVideoPlayerPlugin.h>
 #else
 @import video_player_avfoundation;
 #endif
@@ -75,7 +69,6 @@
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
-  [AnythinkSdkPlugin registerWithRegistrar:[registry registrarForPlugin:@"AnythinkSdkPlugin"]];
   [FLTDeviceInfoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTDeviceInfoPlugin"]];
   [FilePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FilePickerPlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
@@ -83,8 +76,8 @@
   [PhotoManagerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PhotoManagerPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
-  [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
-  [FLTVideoPlayerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTVideoPlayerPlugin"]];
+  [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
+  [FVPVideoPlayerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FVPVideoPlayerPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
 }
 

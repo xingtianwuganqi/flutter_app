@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_banner.dart';
-import 'package:anythink_sdk/at_platformview/at_banner_platform_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +6,9 @@ import 'package:flutter_720yun/CommonWidget/PhotoViewGalleryScreen.dart';
 import 'package:flutter_720yun/Login/CheckCodePage.dart';
 import 'package:flutter_720yun/UserInfo/WebviewPage.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
-import 'package:flutter_720yun/manager/banner_sdk.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../NetWorking/NetWorking.dart';
 import '../configuration_sdk.dart';
-import '../manager/listenerManager.dart';
 import '../model/HomePageModel.dart';
 import 'package:dio/dio.dart';
 import '../Common/CommonPage.dart';
@@ -23,16 +19,15 @@ import 'TopicShareWidget.dart';
 
 class TopicDetailWidget extends StatefulWidget {
 
-  final int topicId;
-  MyPageType pageType = MyPageType.otherPage;
+  int topicId;
+  MyPageType? pageType = MyPageType.otherPage;
   // 反向传值
-  ValueChanged statusChanged;
-  TopicDetailWidget({
-    Key key,
-    @required this.topicId,
-    this.pageType,
-    this.statusChanged,
-  });
+  ValueChanged? statusChanged;
+  TopicDetailWidget(
+      this.topicId,
+    [this.pageType = MyPageType.otherPage, this.statusChanged = null]
+
+  );
 
   @override
   State<StatefulWidget> createState() {
@@ -43,7 +38,7 @@ class TopicDetailWidget extends StatefulWidget {
 
 class TopicDetailState extends State<TopicDetailWidget> {
 
-  HomePageModel homeModel;
+  HomePageModel? homeModel;
 
   TapGestureRecognizer _protocolRecognizer = new TapGestureRecognizer();
   TapGestureRecognizer _moreRecognizer = new TapGestureRecognizer();
@@ -56,25 +51,6 @@ class TopicDetailState extends State<TopicDetailWidget> {
     super.initState();
     homePageListNetWroking();
     addViewHistoryNetWorking();
-    _checkReadyToShow();
-  }
-
-  _checkReadyToShow() {
-    ATBannerManager.bannerAdReady(
-
-      placementID: Configuration.bannerPlacementID,
-    ).then((value) {
-      if (value) {
-        setState(() {
-          flag = true;
-        });
-
-      } else {
-        print('flutter banner no cache');
-        BannerManager.loadBannerWith();
-      }
-
-    });
   }
 
   @override
@@ -85,7 +61,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
   }
 
   /// 用户信息
-  Widget userInfoWidget(HomePageModel data) {
+  Widget userInfoWidget(HomePageModel? data) {
 
     return Container(
       padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
@@ -93,9 +69,9 @@ class TopicDetailState extends State<TopicDetailWidget> {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: (data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)):
-            AssetImage('assets/icons/icon_plh.png'),
+            backgroundImage:
+            ToolConfig.loadImage(data?.userInfo?.avator ?? ''),
+            backgroundColor: ColorsUtil.fromEnmu(ColorEnum.tableBack),
             child: Container(
               alignment: Alignment(0, .5),
               width: 40,
@@ -111,7 +87,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(data.userInfo.username ?? "",
+                      Text(data?.userInfo?.username ?? "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.title),
@@ -120,7 +96,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Padding(padding: EdgeInsets.all(3)),
-                      Text((data.address_info ?? "") + "  " + (ToolConfig.timeT(data.create_time)),// ?? "")
+                      Text((data?.address_info ?? "") + "  " + (ToolConfig.timeT(data?.create_time ?? '')),// ?? "")
                           style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
                               fontSize: FontUtil.fs(FontSize.desc)),
                           maxLines: 2,
@@ -136,12 +112,12 @@ class TopicDetailState extends State<TopicDetailWidget> {
   }
 
   /// 便签文字区
-  Widget textInfoWidget(HomePageModel data) {
+  Widget textInfoWidget(HomePageModel? data) {
     /// 标签
     List<Widget> tags = [];
-    if (data.tagInfos != null ) {
-      if (data.tagInfos.isNotEmpty) {
-        tags = data.tagInfos.map((e) => Container(
+    if (data?.tagInfos != null ) {
+      if (data?.tagInfos != null && (data?.tagInfos?.length ?? 0) > 0) {
+        tags = data!.tagInfos!.map((e) => Container(
           decoration: BoxDecoration(
               color: ColorsUtil.fromEnmu(ColorEnum.system),
               borderRadius: BorderRadius.all(Radius.circular(3.0))
@@ -177,7 +153,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
           Container(
             padding: EdgeInsets.only(left: 15,right: 15,top: 2,bottom: 2),
             alignment: Alignment.centerLeft,
-            child: Text((data.content ?? '').trim(),
+            child: Text((data?.content ?? '').trim(),
               maxLines: null,
               style: TextStyle(
                 fontSize: FontUtil.fs(FontSize.content),
@@ -230,7 +206,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
             recognizer: _protocolRecognizer
             ..onTap = (){
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return WebViewPage(url: NetWorkingConfig.baseUrl() + '/api/prevention/');
+              return WebViewPage(NetWorkingConfig.baseUrl() + '/api/prevention/');
             }));
           },
           children: [
@@ -251,26 +227,26 @@ class TopicDetailState extends State<TopicDetailWidget> {
     );
   }
 
-  List<Widget> imageWidgets(HomePageModel model) {
-    if (model != null && model.imgs != null && (model.imgs.length > 0)) {
+  List<Widget> imageWidgets(HomePageModel? model) {
+    if (model != null && model.imgs != null && ((model.imgs?.length ?? 0) > 0)) {
       List<Widget> data = [];
       List<ImgIndexModel> imgs = [];
       List<ImgIndexModel> originImgs = [];
-      for (int i = 0;i < model.imgs.length;i ++ ) {
-        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs[i],bType: ThumbType.thumbNail),index: i);
+      for (int i = 0;i < model.imgs!.length;i ++ ) {
+        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs![i]),index: i);
         imgs.add(img);
       }
 
-      for (int i = 0;i < model.imgs.length;i ++ ) {
-        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs[i]),index: i);
+      for (int i = 0;i < model.imgs!.length;i ++ ) {
+        var img = new ImgIndexModel(url: ToolConfig.loadImgUrl(model.imgs![i]),index: i);
         originImgs.add(img);
       }
       void tapClick(int index) {
         var imgUrls = originImgs.map((e) => e.url).toList();
           Navigator.push(context, MaterialPageRoute(builder: (context){
           return PhotoViewGalleryScreen(
-          images:imgUrls,//传入图片list
-          index: index,//传入当前点击的图片的index
+          imgUrls,//传入图片list
+          index,//传入当前点击的图片的index
           );
         }));
       }
@@ -282,7 +258,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                     padding: EdgeInsets.only(
                         left: 15, right: 15, top: 5, bottom: 5),
                     child: CachedNetworkImage(
-                      imageUrl: e.url,
+                      imageUrl: e.url ?? '',
                       fit: BoxFit.contain,
                       placeholder: (context, url) =>
                           Container(
@@ -291,7 +267,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
                     ),
                   ),
                   onTap: () {
-                    tapClick(e.index);
+                    tapClick(e.index ?? 0);
                   },
                 );
               }
@@ -303,12 +279,12 @@ class TopicDetailState extends State<TopicDetailWidget> {
       }
       data.add(userInfoWidget(homeModel));
       data.add(textInfoWidget(homeModel));
-      data += imgWidgets;
+      data += imgWidgets ?? [];
       data.add(Container(
         padding: EdgeInsets.only(left: 15,right: 15),
         height: 90,
         width: double.infinity,
-        child: _getBannerView(),
+        child: Container(),
       ));
       return data;
     }else{
@@ -317,25 +293,15 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   }
 
-  Widget _getBannerView() {
-    if (!flag) {
-      return Container();
-    } else {
-      return PlatformBannerWidget(
-          Configuration.bannerPlacementID,sceneID: Configuration.bannerSceneID
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var contactInfo = '点击获取联系方式';
     // 已经完成领养
-    if (homeModel != null && homeModel.is_complete == true) {
+    if (homeModel?.is_complete == true) {
       contactInfo = '已完成领养';
     }else{
-      if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info != null) {
-        contactInfo = homeModel.contact_info;
+      if (homeModel?.getedcontact == true && homeModel?.contact_info != null) {
+        contactInfo = homeModel?.contact_info ?? '';
       }
     }
 
@@ -343,11 +309,11 @@ class TopicDetailState extends State<TopicDetailWidget> {
       var desc = "";
       var buttonStr = "";
       String isComplete = "0";
-      if (homeModel != null && homeModel.is_complete) {
+      if (homeModel != null && homeModel?.is_complete == true) {
         desc = "点击未完成领养，即代表宠物未被领养，他人可以获取你的联系方式，确定改成未完成领养吗？";
         buttonStr = "未完成领养";
         isComplete = "0";
-      }else if (homeModel != null && homeModel.is_complete == false) {
+      }else if (homeModel != null && homeModel?.is_complete == false) {
         desc = "点击完成领养，即代表宠物已被领养，他人将无法获取你的联系方式，确定改成完成领养吗？";
         buttonStr = '完成领养';
         isComplete = "1";
@@ -440,14 +406,14 @@ class TopicDetailState extends State<TopicDetailWidget> {
                             ),
                             onPressed: () {
                               lazyAuthToDoThings(context, (){
-                                if (homeModel != null && homeModel.is_complete == true) {
+                                if (homeModel != null && homeModel?.is_complete == true) {
                                   EasyLoading.showToast('已完成领养');
                                 }else{
-                                  if (homeModel != null && homeModel.getedcontact == true && homeModel.contact_info != null) {
+                                  if (homeModel != null && homeModel?.getedcontact == true && homeModel?.contact_info != null) {
                                     /// 已经获取了联系方式
                                     //复制
                                     Future.delayed(Duration(milliseconds: 100),(){
-                                      Clipboard.setData(ClipboardData(text: homeModel.contact_info));
+                                      Clipboard.setData(ClipboardData(text: homeModel?.contact_info ?? ''));
                                     });
                                     EasyLoading.showToast('已复制');
                                     return;
@@ -464,17 +430,17 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
                     commentWidget(15,context,homeModel,(comIndex) {
                       if (comIndex == -1) { // 点赞
-                        var liked = homeModel.liked == true ?  0 :  1;
-                        HomeNetworking.homeLikeClickAction(liked, homeModel.topic_id, (topicId,value) {
+                        var liked = homeModel?.liked == true ?  0 :  1;
+                        HomeNetworking.homeLikeClickAction(liked, homeModel?.topic_id ?? 0, (topicId,value) {
                           updateState(topicId,value);
                         });
                       }else if (comIndex == -2) { // 收藏
-                        var collected = homeModel.collectioned == true ?  0 :  1;
-                        HomeNetworking.homeCollectClickAction(collected, homeModel.topic_id, (topicId,value) {
+                        var collected = homeModel?.collectioned == true ?  0 :  1;
+                        HomeNetworking.homeCollectClickAction(collected, homeModel?.topic_id ?? 0, (topicId,value) {
                           updateState(topicId,value);
                         });
                       }else{
-                        updateState(homeModel.topic_id, comIndex);
+                        updateState(homeModel?.topic_id ?? 0, comIndex);
                       }
                     }),
                   ],
@@ -487,7 +453,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
     );
   }
 
-  Future<Widget> showAlert() async{
+  Future<Future> showAlert() async{
     return showDialog(
         context: context,
         builder: (context){
@@ -517,32 +483,48 @@ class TopicDetailState extends State<TopicDetailWidget> {
 
   void updateState(int topicId,dynamic value) {
     if (value is HomeLikeStatusModel) {
-        if (homeModel.topic_id == topicId) {
-          homeModel.liked = value.like == 1 ? true : false;
-          if (homeModel.liked) {
-            homeModel.likes_num += 1;
-          }else if (homeModel.liked == false){
-            if(homeModel.likes_num > 0) {
-              homeModel.likes_num -= 1;
+        if (homeModel?.topic_id == topicId) {
+          homeModel?.liked = value.like == 1 ? true : false;
+          if (homeModel?.liked ?? false) {
+            if (homeModel?.likes_num != null) {
+              var num = homeModel?.likes_num ?? 0;
+              num = num + 1;
+              homeModel?.likes_num = num;
+            }else{
+              homeModel?.likes_num = 1;
+            }
+          }else if (homeModel?.liked == false){
+            if ((homeModel?.likes_num ?? 0) > 0) {
+              var num = homeModel?.likes_num ?? 0;
+              num -= 1;
+              homeModel?.likes_num = num;
             }
           }
         }
     }else if (value is HomeCollectionStatusModel){
       // homeModels = homeModels.map((e) {
       //   var newModel = e;
-        if (homeModel.topic_id == topicId) {
-          homeModel.collectioned = value.collection == 1 ? true : false;
-          if (homeModel.collectioned) {
-            homeModel.collection_num += 1;
-          }else if (homeModel.collectioned == false){
-            if(homeModel.collection_num > 0) {
-              homeModel.collection_num -= 1;
+        if (homeModel?.topic_id == topicId) {
+          homeModel?.collectioned = value.collection == 1 ? true : false;
+          if (homeModel?.collectioned ?? false) {
+            if (homeModel?.collection_num != null) {
+              var num = homeModel?.collection_num ?? 0;
+              num = num + 1;
+              homeModel?.collection_num = num;
+            }else{
+              homeModel?.collection_num = 1;
+            }
+          }else if (homeModel?.collectioned == false){
+            if ((homeModel?.collection_num ?? 0) > 0) {
+              var num = homeModel?.collection_num ?? 0;
+              num -= 1;
+              homeModel?.collection_num = num;
             }
           }
         }
     }else if (value is int) {
-      if (homeModel.topic_id == topicId) {
-        homeModel.commNum = value;
+      if (homeModel?.topic_id == topicId) {
+        homeModel?.commNum = value;
       }
     }
     setState(() {
@@ -595,8 +577,8 @@ class TopicDetailState extends State<TopicDetailWidget> {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
         var model = ContactModel.fromJson(data['data']);
-        homeModel.getedcontact = true;
-        homeModel.contact_info = model.contact;
+        homeModel?.getedcontact = true;
+        homeModel?.contact_info = model.contact;
         setState(() {
 
         });
@@ -606,7 +588,7 @@ class TopicDetailState extends State<TopicDetailWidget> {
         Future.delayed(Duration(milliseconds: 100),(){
           if (data['code'] == 210) { // 未校验手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
+              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo?.phone_number);
             }));
           }else if (data['code'] == 209) { // 未绑定手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -640,11 +622,11 @@ class TopicDetailState extends State<TopicDetailWidget> {
     await NetWorking.formDataPost(url, dic, (data) {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
-        String contact = homeModel.contact_info;
-        homeModel.is_complete = isComplete == "1" ? true : false;
-        homeModel.contact_info = contact;
+        String contact = homeModel?.contact_info ?? "";
+        homeModel?.is_complete = isComplete == "1" ? true : false;
+        homeModel?.contact_info = contact;
         if (widget.statusChanged != null) {
-          widget.statusChanged(homeModel);
+          widget.statusChanged!(homeModel);
         }
         setState(() {
 

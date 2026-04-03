@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,30 +23,27 @@ class UserManager {
   // 工厂模式
   factory UserManager() =>_getInstance();
   static UserManager get instance => _getInstance();
-  static UserManager _instance;
+  static UserManager _instance = UserManager._internal();
 
   UserManager._internal() {
-  // 初始化
-
+    // 初始化
   }
 
+
   static UserManager _getInstance() {
-    if (_instance == null) {
-      _instance = new UserManager._internal();
-    }
     return _instance;
   }
 
-  UserInfoModel userInfo;
+  UserInfoModel? userInfo;
   String get token => userInfo?.token ?? "";
   bool get isLogin => (userInfo?.token?.length ?? 0) > 0;
 
   Future getUserInfo() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String data = prefs.getString('userInfo');
+      String? data = prefs.getString('userInfo');
       if (data != null) {
-        Map json = jsonDecode(data);
+        Map<String,dynamic> json = jsonDecode(data);
         userInfo = UserInfoModel.fromJson(json);
       }
     }catch(e){
@@ -74,17 +72,21 @@ class UserManager {
     prefs.clear();
     UserManager.instance.userInfo = null;
     Future.delayed(Duration(seconds: 1),(){
-      BuildContext context = navigatorKey.currentState.overlay.context;
+      BuildContext? context = navigatorKey.currentState?.overlay?.context;
       // 退出登录的通知
-      Provider.of<UserProviderModel>(context, listen: false).user = null;
-      // 退出到首页
-      Navigator.of(context).popUntil((route) => route.isFirst);
+      if (context != null) {
+        Provider
+            .of<UserProviderModel>(context, listen: false)
+            .user = null;
+        // 退出到首页
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
     });
   }
 
   Future<bool> getSaveRescueRemind(String info) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isSave = prefs.getBool(info);
+    bool? isSave = prefs.getBool(info);
     if (isSave != null  && isSave == true) {
       return true;
     }else{
@@ -111,14 +113,16 @@ class UserManager {
 // }
 
 class UserProviderModel extends ChangeNotifier  {
-  UserInfoModel _user;
+  UserInfoModel? _user;
   UserProviderModel(this._user);
-  UserInfoModel get user => _user;
+  UserInfoModel? get user => _user;
   bool get isLogin => (_user?.token?.length ?? 0) > 0;
-  set user(UserInfoModel value) {
+  set user(UserInfoModel? value) {
     _user = value;
     UserManager.instance.userInfo = _user;
-    UserManager.instance.saveUserInfo(_user);
+    if (_user != null) {
+      UserManager.instance.saveUserInfo(_user!);
+    }
     print('_user');
     print(_user);
     notifyListeners();
@@ -162,8 +166,8 @@ static func apiBasicParameters() -> [String:Any] {
 // 定义一些公关参数，// 定义为计算属性
 Map<String,dynamic> get paramDic => {
   'appType': 'android',
-  'appVersion': '1.0.2',
-  'androidVersion': '8', // 与pubspec 文件中的version 相同
+  'appVersion': '1.1.0',
+  'androidVersion': '12', // 与pubspec 文件中的version 相同
   'token': UserManager.instance.token != null ? UserManager.instance.token : '',
 };
 
@@ -216,6 +220,8 @@ class ColorsUtil {
         return ColorsUtil.hexColor(0x707070);
       case ColorEnum.backColor:
         return ColorsUtil.hexColor(0xFAF9FA);
+      case ColorEnum.lineColor:
+        return ColorsUtil.hexColor(0xEEEEEE);
       default:
         return ColorsUtil.hexColor(0x000000);
     }
@@ -234,6 +240,7 @@ enum ColorEnum {
   urlColor,
   iconColor,
   backColor,
+  lineColor,
 }
 
 /// 字体大小
@@ -329,7 +336,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 
 
 
-  static Future<String> deviceName() async{
+  static Future<String?> deviceName() async{
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
     try {
       if (Platform.isAndroid) {
@@ -342,16 +349,17 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     } on PlatformException {
       return 'platform version null';
     }
+    return null;
   }
 
-  static bool isEmail(String input) {
+  static bool isEmail(String? input) {
      if (input == null || input.isEmpty) return false;
      // 邮箱正则
      String regexEmail = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
      return RegExp(regexEmail).hasMatch(input);
   }
 
-  static String loadImgUrl(String url,{ThumbType bType}) {
+  static String loadImgUrl(String url,[ThumbType bType = ThumbType.thumbNail]) {
     var headImg = '';
     if (url.contains("http")) {
       headImg = url;
@@ -379,6 +387,15 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     return headImg;
   }
 
+  static ImageProvider? loadImage(String? url) {
+    if (url == null) {
+      return null;
+    }else if (url == '') {
+      return null;
+    }else{
+      return CachedNetworkImageProvider(ToolConfig.loadImgUrl(url));
+    }
+  }
 
 
   static String encryptionString(String codeStr) {
@@ -424,7 +441,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
     // for
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> datas = prefs.getStringList('system_read');
+      List<String>? datas = prefs.getStringList('system_read');
       if (datas != null) {
         // 如果有已读，看保存的已读是不是当前的消息
         for (var i = 0;i < unreadList.length; i ++) {
@@ -448,7 +465,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
         for (var i = 0;i < unreadList.length; i ++) {
           var unreadInfo = unreadList[i];
           if ((unreadInfo.platform == 0 || unreadInfo.platform == 2) && paramDic['androidVersion'].toInt() > unreadInfo.version) {
-            if (datas.contains(unreadInfo.id.toString())) {
+            if (datas?.contains(unreadInfo.id.toString()) ?? false) {
               break;
             }else{
               unreadDatas.add(unreadInfo.id.toString());
@@ -471,7 +488,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
   static Future<Null> setSystemUnread(List<SystemMsgModel> unreadList) async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> datas = prefs.getStringList('system_unread');
+      List<String>? datas = prefs.getStringList('system_unread');
       if (datas != null) {
         List<String> readArr = [];
         var sysListInfo = unreadList.map((e) => e.id.toString()).toList();
@@ -500,7 +517,7 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
   static Future<int> getUserGreenStatus() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      int data = prefs.getInt('user_agree');
+      int? data = prefs.getInt('user_agree');
       if (data != null && data == 1) {
         return 1;
       }else{
@@ -521,9 +538,9 @@ print([difference.inDays, difference.inHours]);//d1与d2相差的天数与小时
 /// 空白页
 // ignore: must_be_immutable
 class EmptyPage extends StatelessWidget {
-  String image;
-  String title;
-  String desc;
+  String? image;
+  String? title;
+  String? desc;
   Function() obj;
   EmptyPage(this.obj,{this.title='暂无数据',this.desc='请点击重试',this.image});
 
@@ -549,13 +566,13 @@ class EmptyPage extends StatelessWidget {
           width: 45,
           child: Image.asset('assets/icons/icon_complete.png'),
         ),
-        Text(title,style: TextStyle(
+        Text(title ?? "",style: TextStyle(
           color: ColorsUtil.fromEnmu(ColorEnum.content),
           fontSize: FontUtil.fs(FontSize.content),
         ),
         ),
         Padding(padding: EdgeInsets.only(top: 10)),
-        Text(desc,style: TextStyle(
+        Text(desc ?? "",style: TextStyle(
           color: ColorsUtil.fromEnmu(ColorEnum.desc),
           fontSize: FontUtil.fs(FontSize.desc),
         ),
@@ -563,13 +580,13 @@ class EmptyPage extends StatelessWidget {
       ];
     }else{
       centerWidgets = [
-        Text(title,style: TextStyle(
+        Text(title ?? "",style: TextStyle(
           color: ColorsUtil.fromEnmu(ColorEnum.content),
           fontSize: FontUtil.fs(FontSize.content),
         ),
         ),
         Padding(padding: EdgeInsets.only(top: 10)),
-        Text(desc,style: TextStyle(
+        Text(desc ?? "",style: TextStyle(
           color: ColorsUtil.fromEnmu(ColorEnum.desc),
           fontSize: FontUtil.fs(FontSize.desc),
         ),
@@ -595,25 +612,16 @@ class DeviceInfo {
   // 工厂模式
   factory DeviceInfo() =>_getInstance();
   static DeviceInfo get instance => _getInstance();
-  static DeviceInfo _instance;
-
-  DeviceInfo._internal() {
-    // 初始化
-
-  }
+  static DeviceInfo _instance = DeviceInfo();
 
   static DeviceInfo _getInstance() {
-    if (_instance == null) {
-      _instance = new DeviceInfo._internal();
-    }
     return _instance;
   }
 
-  Map<String, dynamic> _deviceData;
+  late Map<String, dynamic>? _deviceData;
 
-
-  Future<String> initPlatformState() async {
-    Map<String, dynamic> deviceData;
+  Future<String?> initPlatformState() async {
+    Map<String, dynamic>? deviceData;
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
 
     try {
@@ -633,7 +641,7 @@ class DeviceInfo {
     // setState(() {
     _deviceData = deviceData;
     // });
-    return deviceData['model'];
+    return deviceData?['model'];
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
@@ -689,7 +697,7 @@ class DeviceInfo {
 
 class TestNotification extends Notification {
   TestNotification({
-    @required this.count,
+    required this.count,
   });
 
   final int count;

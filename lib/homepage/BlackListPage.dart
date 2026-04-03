@@ -50,9 +50,11 @@ class BlackListState extends State<BlackListPage> {
   }
 
   reportBtnClick() {
-    Navigator.push(context, MaterialPageRoute(builder: (context){
-      return BlackDetailPage(blackType: BlackType.create);
-    }));
+    lazyAuthToDoThings(context, {
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return BlackDetailPage(BlackType.create);
+      }))
+    });
   }
 
   Widget refreshBody() {
@@ -69,7 +71,7 @@ class BlackListState extends State<BlackListPage> {
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return BlackDetailPage(blackType: BlackType.detail,blackId: data.id);
+                  return BlackDetailPage(BlackType.detail,blackId: data.id);
                 }));
               },
               child: blackItem(data)
@@ -98,7 +100,7 @@ class BlackListState extends State<BlackListPage> {
           height: 60,
           child: Row(
             children: [
-              (model.wx_num != null && model.wx_num.length > 0) ?
+              (model.wx_num != null && (model.wx_num?.length ?? 0) > 0) ?
               Padding(
                 padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
                 child: Column(
@@ -106,7 +108,7 @@ class BlackListState extends State<BlackListPage> {
                     Container(
                       alignment: Alignment.center,
                       height: 20,
-                      child: Text(model.contact,
+                      child: Text(model.contact ?? "",
                         maxLines:1,
                         overflow:TextOverflow.ellipsis,
                         style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
@@ -117,7 +119,7 @@ class BlackListState extends State<BlackListPage> {
                     Container(
                       alignment: Alignment.center,
                       height: 20,
-                      child: Text(model.wx_num,
+                      child: Text(model.wx_num ?? "",
                           maxLines:1,
                           overflow:TextOverflow.ellipsis,
                           style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
@@ -130,7 +132,7 @@ class BlackListState extends State<BlackListPage> {
               ): Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(left: 15,right: 15),
-                  child: Text(model.contact,
+                  child: Text(model.contact ?? "",
                       maxLines:1,
                       overflow:TextOverflow.ellipsis,
                       style: TextStyle(fontSize: FontUtil.fs(FontSize.content),

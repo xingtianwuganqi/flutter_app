@@ -9,14 +9,10 @@ class ImagePicker {
   static ImagePicker get instance => _getInstance();
 
   // 静态变量_instance，存储唯一对象
-  static ImagePicker _instance;
+  static ImagePicker _instance = ImagePicker._internal();
 
   // 获取对象
   static ImagePicker _getInstance() {
-    if (_instance == null) {
-      // 使用私有的构造方法来创建对象
-      _instance = ImagePicker._internal();
-    }
     return _instance;
   }
 
@@ -27,11 +23,11 @@ class ImagePicker {
     //初始化...
   }
 
-  Future<List<AssetEntity>> selectAssets(context, num) async {
+  Future<List<AssetEntity>?> selectAssets(context, num) async {
     AssetPickerConfig config = AssetPickerConfig(
       maxAssets: num
     );
-    final List<AssetEntity> result = await  AssetPicker.pickAssets(
+    final List<AssetEntity>? result = await  AssetPicker.pickAssets(
         context,
       pickerConfig: config
     );
@@ -62,15 +58,15 @@ class EventBus {
   //添加订阅者
   void on(eventName, EventCallback f) {
     _emap[eventName] ??=  <EventCallback>[];
-    _emap[eventName].add(f);
+    _emap[eventName]?.add(f);
   }
 
   //移除订阅者
-  void off(eventName, [EventCallback f]) {
+  void off(eventName, [EventCallback? f]) {
     var list = _emap[eventName];
     if (eventName == null || list == null) return;
     if (f == null) {
-      _emap[eventName] = null;
+      _emap[eventName] = f as List<EventCallback>;
     } else {
       list.remove(f);
     }

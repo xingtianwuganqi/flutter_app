@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rescue.flutter_720yun">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <!--    <uses-permission android:name="android.permission.INTERNET"/>-->
 <!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
@@ -75,19 +74,19 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
-            android:authorities="${applicationId}.TTMultiProvider"
-            android:exported="false" />
-        <provider
-            android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
-            android:authorities="${applicationId}.TTFileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/anythink_bk_tt_file_path" />
-        </provider>
+<!--        <provider-->
+<!--            android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"-->
+<!--            android:authorities="${applicationId}.TTMultiProvider"-->
+<!--            android:exported="false" />-->
+<!--        <provider-->
+<!--            android:name="com.bytedance.sdk.openadsdk.TTFileProvider"-->
+<!--            android:authorities="${applicationId}.TTFileProvider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/anythink_bk_tt_file_path" />-->
+<!--        </provider>-->
 
         <meta-data android:name="flutterEmbedding" android:value="2" />
     </application>

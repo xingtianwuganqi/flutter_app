@@ -48,7 +48,7 @@ class _CheckCodeState extends State<CheckCodePage> {
   FocusNode _focusNodePassWord = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _userPhoneController;
+  late TextEditingController _userPhoneController;
   TextEditingController _userCodeController = new TextEditingController();
 
   //表单状态
@@ -66,7 +66,7 @@ class _CheckCodeState extends State<CheckCodePage> {
   var timeStatus = false;
 
   ///声明变量
-  Timer _timer;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -123,7 +123,6 @@ class _CheckCodeState extends State<CheckCodePage> {
           _timer.cancel();
         }
         timeStatus = false;
-        _timeNum = null;
         _timeNum = 61;
         print('time is');
         print(_timeNum);
@@ -209,7 +208,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             // 跳转到注册页
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context){
-                  return RegisterWidget(phone: _phone);
+                  return RegisterWidget(_phone);
                 })
             );
           });
@@ -219,7 +218,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             // 跳转到注册页
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context){
-                  return LoginChangePswdPage(phoneStr: _phone);
+                  return LoginChangePswdPage(_phone);
                 })
             );
           });
@@ -314,12 +313,17 @@ class _CheckCodeState extends State<CheckCodePage> {
                   )
                       : null ,
                 ),
-                onSaved: (String name) {
-                  _phone = name;
+                onSaved: (name) {
+                  if (name != null) {
+                    _phone = name;
+                  }
                 },
                 // 校验用户名（不能为空）
                 validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入正确手机号";
+                  if (v != null) {
+                    return v.trim().isNotEmpty ? null : "请输入正确手机号";
+                  }
+                  return null;
                 }
             ),
             Stack(
@@ -341,12 +345,20 @@ class _CheckCodeState extends State<CheckCodePage> {
                     ),
                     prefixIcon: Icon(Icons.lock_outline,color: ColorsUtil.fromEnmu(ColorEnum.mark),),
                   ),
-                  onSaved: (String name) {
-                    _code = name;
+                  onSaved: (name) {
+                    if (name != null) {
+                      _code = name;
+                    }
                   },
                   // 校验用户名（不能为空）
                   validator: (v) {
-                    return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                    if (v != null) {
+                      return v
+                          .trim()
+                          .isNotEmpty ? null : "请输入6位或6位以上密码";
+                    }else{
+                      return null;
+                    }
                   },
                 ),
                 Positioned(
@@ -370,7 +382,7 @@ class _CheckCodeState extends State<CheckCodePage> {
                           return;
                         }
                         if (widget.fromType == CodeFromType.register) {
-                          if (_userPhoneController.text == null || _userPhoneController.text.length == 0) {
+                          if (_userPhoneController.text.length == 0) {
                             EasyLoading.showToast("请输入手机号");
                             return;
                           }
@@ -429,7 +441,7 @@ class _CheckCodeState extends State<CheckCodePage> {
             onPressed: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context){
-                    return RegisterWidget();
+                    return RegisterWidget(null);
                   })
               );
             },
@@ -468,7 +480,7 @@ class _CheckCodeState extends State<CheckCodePage> {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                          return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                         }));
                       },
                   ),
@@ -480,7 +492,7 @@ class _CheckCodeState extends State<CheckCodePage> {
                       ..onTap = () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
                           String filePath = 'assets/files/privacyPolicy.html';
-                          return WebViewPage(filePath: filePath);
+                          return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                         }));
                       },
                   ),

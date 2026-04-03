@@ -57,12 +57,13 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
                     var newModel = e;
                     if (newModel.show_id == showId) {
                       newModel.liked = value.like == 1 ? true : false;
-                      if (newModel.liked) {
-                        newModel.likes_num += 1;
+                      if (newModel.liked ?? false) {
+                        var num = newModel.likes_num ?? 0;
+                        newModel.likes_num = num += 1;
                       }else if (newModel.liked == false){
-                        if(newModel.likes_num > 0) {
-                          newModel.likes_num -= 1;
-                        }
+                          var num = newModel.likes_num ?? 1;
+                          newModel.likes_num = num -= 1;
+
                       }
                     }
                     return newModel;
@@ -72,12 +73,12 @@ class ShowPublishState extends State<ShowPublishWidget> with AutomaticKeepAliveC
                     var newModel = e;
                     if (newModel.show_id == showId) {
                       newModel.collectioned = value.collection == 1 ? true : false;
-                      if (newModel.collectioned) {
-                        newModel.collection_num += 1;
+                      if (newModel.collectioned ?? false ) {
+                        var num = newModel.collection_num ?? 0;
+                        newModel.collection_num = num += 1;
                       }else if (newModel.collectioned == false){
-                        if(newModel.collection_num > 0) {
-                          newModel.collection_num -= 1;
-                        }
+                          var num = newModel.collection_num ?? 1;
+                          newModel.collection_num = num -= 1;
                       }
                     }
                     return newModel;

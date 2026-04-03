@@ -11,8 +11,8 @@ class ShowInfoPageWidget extends StatefulWidget {
 }
 
 class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProviderStateMixin {
-  List tabs = ['秀宠','话题'];
-  TabController _tabController; //需要定义一个Controller
+  List tabs = ['秀宠'];
+  late TabController _tabController; //需要定义一个Controller
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class ShowInfoPageState extends State<ShowInfoPageWidget> with SingleTickerProvi
         controller: _tabController,
         children: [
           ShowInfoListWidget(),
-          GambitListWidget(),
+          // GambitListWidget(),
         ],
       ),
     );
