@@ -145,7 +145,7 @@ class CreateGambitState extends State<CreateGambitPage> {
     final url = NetWorkingConfig.path(NetPath.pushGambit);
     final dic = {
       'descript': _comController.text,
-      'user_id': UserManager.instance.userInfo.id,
+      'user_id': UserManager.instance.userInfo?.id,
       'review_type': 1,
       'token': UserManager.instance.token
     };

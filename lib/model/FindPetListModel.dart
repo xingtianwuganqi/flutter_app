@@ -2,31 +2,31 @@ import 'UserModel.dart';
 
 class FindPetListModel {
 
-  int findId;
-  String create_time;
-  String update_time;
-  int pet_type;
+  int? findId;
+  String? create_time;
+  String? update_time;
+  int? pet_type;
 
-  String address;
-  String address_info;
-  int user_id;
-  int is_delete;
-  int effective;
-  String desc;
-  String contact;
-  UserInfoModel userInfo;
-  bool liked;
-  bool collection;
-  int likeNum;
-  int collectionNum;
-  int commNum;
+  String? address;
+  String? address_info;
+  int? user_id;
+  int? is_delete;
+  int? effective;
+  String? desc;
+  String? contact;
+  UserInfoModel? userInfo;
+  bool? liked;
+  bool? collection;
+  int? likeNum;
+  int? collectionNum;
+  int? commNum;
   //
   // // 自定义字段
   // var attribute: NSAttributedString?
-  bool open;
+  bool? open;
   //
-  String contact_info;
-  bool getedcontact;
+  String? contact_info;
+  bool? getedcontact;
   //
   // var id: Int?
 
@@ -81,18 +81,18 @@ class FindPetListModel {
 
 class FindPetDetailModel {
 
-  int id;
-  String create_time;
-  String update_time;
-  int pet_type;
+  int? id;
+  String? create_time;
+  String? update_time;
+  int? pet_type;
 
-  String address;
-  String address_info;
-  int user_id;
-  int is_delete;
-  int effective;
-  String desc;
-  String contact;
+  String? address;
+  String? address_info;
+  int? user_id;
+  int? is_delete;
+  int? effective;
+  String? desc;
+  String? contact;
   //
   // var id: Int?
 

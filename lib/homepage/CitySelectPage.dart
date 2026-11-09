@@ -17,7 +17,7 @@ class CitySelectPage extends StatefulWidget {
 class CitySelectState extends State<CitySelectPage> {
 
   List<CityListModel> _cityList = [];
-  String _cityName;
+  String? _cityName;
 
   @override
   void initState() {
@@ -61,13 +61,13 @@ class CitySelectState extends State<CitySelectPage> {
           }else{
             return GestureDetector(
               child: ListTile(
-                title: Text(info.name,
+                title: Text(info.name ?? '',
                   style: TextStyle(fontSize: FontUtil.fs(FontSize.content),
                       color: ColorsUtil.fromEnmu(ColorEnum.content)),
                 ),
               ),
               onTap: () {
-                  saveUserCity(info.name);
+                  saveUserCity(info.name ?? '');
               },
             );
           }

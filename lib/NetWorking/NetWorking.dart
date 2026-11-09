@@ -9,8 +9,8 @@ import 'package:flutter_printer/flutter_printer.dart';
 
 BaseOptions options = new BaseOptions(
   baseUrl: NetWorkingConfig.baseUrl(),
-  connectTimeout: 10000,
-  receiveTimeout: 5000,
+  connectTimeout: Duration(seconds: 10),
+  receiveTimeout: Duration(seconds: 5),
 );
 
 Dio dio = new Dio(options);
@@ -20,7 +20,7 @@ typedef FailureCallBack = void Function(dynamic error);
 
 class NetWorking {
 
-  static Future get(String url,SuccessCallBack successBack,FailureCallBack failBack,{Map<String,dynamic> params}) async{
+  static Future get(String url, Map<String,dynamic> params, SuccessCallBack successBack,FailureCallBack failBack) async{
     try {
       var response = await dio.get(url,queryParameters: params);
       successBack(response.data);
@@ -29,7 +29,7 @@ class NetWorking {
     }
   }
 
-  static Future post(String url,SuccessCallBack successBack,FailureCallBack failBack,{Map<String,dynamic> params}) async {
+  static Future post(String url, Map<String,dynamic> params,SuccessCallBack successBack,FailureCallBack failBack) async {
     try {
       var response = await dio.post(url,data:params);
       successBack(response.data);
@@ -54,7 +54,7 @@ class NetWorking {
       Printer.printMapJsonLog(e);
       if (e is DioError) {
         // 退出登录
-        if (e.response.statusCode == 403) {
+        if (e.response?.statusCode == 403) {
           EasyLoading.showToast('认证有误,请重新登录');
           UserManager.instance.logout();
         }

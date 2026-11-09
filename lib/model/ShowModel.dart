@@ -4,12 +4,12 @@ import 'MessageModel.dart';
 import 'UserModel.dart';
 
 class GambitModel {
-  final String descript;
-  final int id;
-  final int selected;
-  final String create_time;
-  final int review_type;
-  bool isSelect;
+  String? descript;
+  int? id;
+  int? selected;
+  String? create_time;
+  int? review_type;
+  bool? isSelect;
 
   GambitModel({this.descript, this.id, this.selected,this.create_time,this.review_type,this.isSelect});
 
@@ -27,21 +27,21 @@ class GambitModel {
 }
 
 class ShowInfoModel {
-  final int show_id;
-  final UserInfoModel user;
-  final List<String> imgs;
-  final int views_num;
-  int likes_num;
-  int collection_num;
-  int comments_num;
-  final String instruction;
-  final int open;
-  bool liked;
-  bool collectioned;
-  final String create_time;
-  final MessageCommentModel commentInfo;
-  final GambitModel gambit_type;
-  int commNum;
+  int? show_id;
+  UserInfoModel? user;
+  List<String>? imgs;
+  int? views_num;
+  int? likes_num;
+  int? collection_num;
+  int? comments_num;
+  String? instruction;
+  int? open;
+  bool? liked;
+  bool? collectioned;
+  String? create_time;
+  MessageCommentModel? commentInfo;
+  GambitModel? gambit_type;
+  int? commNum;
 
   ShowInfoModel({
       this.show_id,

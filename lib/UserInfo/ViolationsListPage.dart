@@ -11,9 +11,9 @@ import 'WebviewPage.dart';
 
 class ViolationsListWidget extends StatefulWidget {
 
-  Report_type reportType;
-  int reportId;
-  ViolationsListWidget({Key key,@required this.reportType,@required this.reportId}): super(key: key);
+  Report_type? reportType;
+  int? reportId;
+  ViolationsListWidget({ this.reportType, this.reportId});
 
   @override
   State<StatefulWidget> createState() {
@@ -38,7 +38,7 @@ class ViolationListState extends State<ViolationsListWidget> {
         alignment: Alignment.center,
         child: Row(
           children: [
-            Icon(data.selected ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
+            Icon((data.selected ?? false) ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
             Padding(padding: EdgeInsets.only(left: 10)),
             Text(data.vio_name ?? '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content)),),
           ],
@@ -121,7 +121,7 @@ class ViolationListState extends State<ViolationsListWidget> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                                    return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                                   }));
                               },
                           ),
@@ -141,7 +141,7 @@ class ViolationListState extends State<ViolationsListWidget> {
   Future<Null> listNetworking() async {
     EasyLoading.show();
     final url = NetWorkingConfig.path(NetPath.violations);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, {}, (data) {
       EasyLoading.dismiss();
       if (data['code'] == 200) {
         var models = data['data'];
@@ -159,8 +159,7 @@ class ViolationListState extends State<ViolationsListWidget> {
     });
   }
   /// 刷新列表
-  Void reloadList(int index) {
-
+  Void? reloadList(int index) {
     for (int i = 0; i < dataSource.length; i ++) {
       var model = dataSource[i];
       if (i == index) {
@@ -177,6 +176,7 @@ class ViolationListState extends State<ViolationsListWidget> {
 
       });
     }
+    return null;
   }
 
   ///提交按钮
@@ -205,10 +205,10 @@ class ViolationListState extends State<ViolationsListWidget> {
         break;
     }
 
-    int violation_id;
+    int? violation_id;
     for (int i = 0; i < dataSource.length; i ++) {
       var model = dataSource[i];
-      if (model.selected) {
+      if (model.selected ?? false) {
         violation_id = model.id;
         break;
       }
@@ -222,7 +222,7 @@ class ViolationListState extends State<ViolationsListWidget> {
     final url = NetWorkingConfig.path(NetPath.report);
     final dic = {"report_type": reType,
       "report_id": widget.reportId ,
-      "user_id": UserManager.instance.userInfo.id,
+      "user_id": UserManager.instance.userInfo?.id,
       "violation_id": violation_id,
       "token": UserManager.instance.token
     };

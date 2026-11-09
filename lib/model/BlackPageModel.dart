@@ -1,15 +1,15 @@
 import 'package:flutter_720yun/homepage/BlackDetailPage.dart';
 
 class BlackListModel {
-  final int id;
-  final String name;
-  final String contact;
-  final String desc;
-  final String wx_num;
-  final List<String> images;
-  final int black_status;
-  final int from_userId;
-  final int black_type;
+  int? id;
+  String? name;
+  String? contact;
+  String? desc;
+  String? wx_num;
+  List<String>? images;
+  int? black_status;
+  int? from_userId;
+  int? black_type;
 
   BlackListModel({
     this.id,
@@ -39,10 +39,10 @@ class BlackListModel {
 }
 
 class BlackInfoModel {
-  final String desc;
-  final String placeholder;
+  String? desc;
+  String? placeholder;
   dynamic value;
-  final BlackType type;
+  BlackType? type;
 
 
   BlackInfoModel({
@@ -63,12 +63,12 @@ class BlackInfoModel {
 }
 
 class ReleaseReportInfo {
-  final String phone;
-  final String wx_num;
-  final String name;
-  final int black_type;
-  final String desc;
-  final String photos;
+  String? phone;
+  String? wx_num;
+  String? name;
+  int? black_type;
+  String? desc;
+  String? photos;
 
   ReleaseReportInfo({this.phone, this.wx_num, this.name, this.black_type, this.desc, this.photos});
 

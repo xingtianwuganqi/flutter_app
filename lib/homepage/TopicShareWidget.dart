@@ -8,7 +8,7 @@ class TopicShareWidget extends StatelessWidget {
     TopicShareModel(title: "复制链接",img: "icon_share_url"),
   ];
   ValueChanged clickCallBack;
-  TopicShareWidget(this.clickCallBack,{Key key}): super(key: key);
+  TopicShareWidget(this.clickCallBack);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

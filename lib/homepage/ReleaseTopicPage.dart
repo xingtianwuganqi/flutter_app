@@ -51,7 +51,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       // image: null
   )];
 
-  OverlayEntry overlayEntry;
+  late OverlayEntry overlayEntry;
 
   String _addressInfo = '';
 
@@ -61,7 +61,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
   // 创建 Controller 对象
   PutController putController = PutController();
   /// 图片的token
-  String _token;
+  late String _token;
   /// 不再提示
   bool _isSelectRemind = false;
 
@@ -189,7 +189,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                     ),
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return TagInfoPage(tags: tags,changed: (List<TagInfoModel> value) {
+                        return TagInfoPage(tags, (List<TagInfoModel> value) {
                           tags = value;
                           setState(() {
 
@@ -242,7 +242,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                   children: List.generate(tags.length, (index) {
                     var data = tags[index];
                     return RawChip(
-                        label: Text(data.tag_name,
+                        label: Text(data.tag_name ?? "",
                             style: TextStyle(color:  Colors.white)),
                         backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system)
                     );
@@ -253,7 +253,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         ),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context){
-            return TagInfoPage(tags: tags,changed: (List<TagInfoModel> value) {
+            return TagInfoPage(tags, (List<TagInfoModel> value) {
               tags = value;
               setState(() {
 
@@ -282,7 +282,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
           itemCount:_releasePhotos.length,
           itemBuilder: (context,index){
             var item = _releasePhotos[index];
-            if (item.isAdd) {
+            if (item.isAdd ?? false) {
               return GestureDetector(
                 child: Container(
                   // width: 20,
@@ -299,31 +299,36 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                 },
               );
             }else{
-              return Container(
-                child: Stack(
-                  children: [
-                    AssetEntityImage(item.image,
-                        width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
-                        height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                        child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.black54,size: 20,), onPressed: () {
+              if (item.image != null) {
+                return Container(
+                    child: Stack(
+                      children: [
+                        AssetEntityImage(item.image!,
+                          width: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                          height: ((MediaQuery.of(context).size.width - 50) / 3 + 10).toDouble(),
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          child: IconButton(icon: Icon(Icons.cancel_rounded,color: Colors.black54,size: 20,), onPressed: () {
                             // 删除数据
-                          var isRemove = _releasePhotos.remove(_releasePhotos[index]);
-                          if (isRemove) {
-                            setState(() {
+                            var isRemove = _releasePhotos.remove(_releasePhotos[index]);
+                            if (isRemove) {
+                              setState(() {
 
-                            });
-                          }
+                              });
+                            }
 
-                        },),
-                      top: -10,
-                      right: -10,
-                    ),
-                  ],
-                )
-              );
+                          },),
+                          top: -10,
+                          right: -10,
+                        ),
+                      ],
+                    )
+                );
+              }else{
+                return Container();
+              }
+
             }
 
           }),
@@ -395,7 +400,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.8,
                   color: Colors.white,
-                  child: AddressSelectPage(changed: (address) {
+                  child: AddressSelectPage((address) {
                     _addressInfo = address;
                     setState(() {
 
@@ -421,7 +426,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     );
   }
 
-  Future<Widget> showAlert() async{
+  Future<Future> showAlert() async{
     return showDialog(
         context: context,
         builder: (context){
@@ -449,7 +454,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+                                    return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                                   }));
                                 },
                             ),
@@ -521,7 +526,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     if (_releasePhotos.length > 6) {
       return;
     }
-    List<AssetEntity> resultList = [];
+    List<AssetEntity>? resultList = [];
     String error = 'No Error Dectected';
     try {
       resultList = await ImagePicker.instance.selectAssets(context, 7 - _releasePhotos.length);
@@ -532,7 +537,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
     if (!mounted) return;
 
     setState(() {
-      var photos = resultList.map((e) => ReleasePhotoModel(
+      var photos = resultList?.map((e) => ReleasePhotoModel(
         isAdd: false,
         progress: 0.0,
         complete: false,
@@ -540,7 +545,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
         photoKey: comPhotoKey,
         image: e
       )).toList();
-      _releasePhotos.insertAll(0, photos);
+      _releasePhotos.insertAll(0, photos as Iterable<ReleasePhotoModel>);
     });
   }
 
@@ -597,7 +602,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       }else if (data['code'] == 210) { // 未校验手机号
         EasyLoading.showToast(data['message'] ?? '未校验手机号');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo.phone_number);
+          return CheckCodePage(CodeFromType.checkPhone, phone: UserManager.instance.userInfo?.phone_number);
         }));
       }else{
         EasyLoading.showToast(data['message'] ?? '发布失败');
@@ -616,7 +621,7 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
       print(data);
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
-        _token = model.token;
+        _token = model.token ?? "";
         uploadImgToQiNiu(_token);
       }
     }, (error) {
@@ -635,34 +640,36 @@ class ReleaseTopicState extends State<ReleaseTopicPage> {
 
   Future<Null> updateImg(ReleasePhotoModel item) async {
     if (item.isAdd == false) {
-      File file = await item.image.file;
-      storage.putFile(file, _token, options: PutOptions(
-        controller: putController,
-        key: item.photoKey,
-      )).then((value) {
-        // 更新模型的数据
-        _releasePhotos = _releasePhotos.map((e) {
-          var newModel = e;
-          if (e.photoKey == value.key) {
-            newModel.complete = true;
-            newModel.photoUrl = value.key;
+      File? file = await item.image?.file;
+      if (file != null) {
+        storage.putFile(file, _token, options: PutOptions(
+          controller: putController,
+          key: item.photoKey,
+        )).then((value) {
+          // 更新模型的数据
+          _releasePhotos = _releasePhotos.map((e) {
+            var newModel = e;
+            if (e.photoKey == value.key) {
+              newModel.complete = true;
+              newModel.photoUrl = value.key;
+            }
+            return newModel;
+          }).toList();
+          // 判断_releasePhotos 是不是所有的complete 都变成了true；
+          int isComplete = 0;
+          for (int i = 0; i < _releasePhotos.length; i++) {
+            var item = _releasePhotos[i];
+            if (item.complete == false) {
+              isComplete = 1;
+              break;
+            }
           }
-          return newModel;
-        }).toList();
-        // 判断_releasePhotos 是不是所有的complete 都变成了true；
-        int isComplete = 0;
-        for (int i = 0;i < _releasePhotos.length;i++) {
-          var item = _releasePhotos[i];
-          if (item.complete == false) {
-            isComplete = 1;
-            break;
+          if (isComplete == 0) { // 说明全部传成功了
+            releaseTopicNetworking();
+            return;
           }
-        }
-        if (isComplete == 0) { // 说明全部传成功了
-          releaseTopicNetworking();
-          return;
-        }
-      });
+        });
+      }
     }
   }
 

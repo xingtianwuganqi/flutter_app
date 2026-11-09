@@ -11,16 +11,15 @@ import '../model/MessageModel.dart';
 import '../homepage/TopicDetail.dart';
 class MessageListWidget extends StatefulWidget {
 
-  final String title;
-  final int msgType;
-  final ValueChanged changed;
+  String title;
+  int msgType;
+  ValueChanged changed;
 
   MessageListWidget(
       this.title,
       this.msgType,
       this.changed,
-      {Key key}
-      ) : super(key: key);
+      );
 
   @override
   State<StatefulWidget> createState() {
@@ -58,9 +57,7 @@ class MessageListState extends State<MessageListWidget> {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundImage: (data.from_info != null && data.from_info.avator != null && data.from_info.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.from_info.avator,bType: ThumbType.thumbNail)) :
-              AssetImage('assets/icons/icon_plh.png'),
+              backgroundImage: ToolConfig.loadImage(data.from_info?.avator ?? ''),
               child: Container(
                 alignment: Alignment(0, .5),
                 width: 40,
@@ -72,7 +69,7 @@ class MessageListState extends State<MessageListWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(data.from_info != null ? data.from_info.username ?? "" : "",
+                    Text(data.from_info != null ? data.from_info?.username ?? "" : "",
                       style: TextStyle(
                         color: ColorsUtil.fromEnmu(ColorEnum.title),
                         fontSize: FontUtil.fs(FontSize.content),
@@ -81,7 +78,7 @@ class MessageListState extends State<MessageListWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Padding(padding: EdgeInsets.all(3)),
-                    Text( ToolConfig.timeT(data.create_time) ?? "",
+                    Text( ToolConfig.timeT(data.create_time ?? ''),
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.desc),
                             fontSize: FontUtil.fs(FontSize.time)),
@@ -137,7 +134,7 @@ class MessageListState extends State<MessageListWidget> {
       );
     }else if (data.msg_type == 3 || data.msg_type == 4 || data.msg_type == 7 || data.msg_type == 8 || data.msg_type == 12 || data.msg_type == 13) {
       if (data.reply_type == 1) {
-        return Text('评论说：' + (data.commentInfo != null ? data.commentInfo.content ?? "" : "")  ,
+        return Text('评论说：' + (data.commentInfo != null ? data.commentInfo?.content ?? "" : "")  ,
           textAlign: TextAlign.left,
           style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
@@ -145,7 +142,7 @@ class MessageListState extends State<MessageListWidget> {
           ),
         );
       }else {
-        return Text('回复说：' + (data.replyInfo != null ? data.replyInfo.content ?? "" : ""),
+        return Text('回复说：' + (data.replyInfo != null ? data.replyInfo?.content ?? "" : ""),
           textAlign: TextAlign.left,
           style: TextStyle(
               fontSize: FontUtil.fs(FontSize.content),
@@ -163,9 +160,9 @@ class MessageListState extends State<MessageListWidget> {
       /// 标签
       List<Widget> tags = [];
 
-      if (data.topicInfo.tagInfos != null ) {
-        if (data.topicInfo.tagInfos.isNotEmpty) {
-          tags = data.topicInfo.tagInfos.map((e) => Container(
+      if (data.topicInfo?.tagInfos != null ) {
+        if ((data.topicInfo?.tagInfos?.length ?? 0) > 0) {
+          tags = data.topicInfo!.tagInfos!.map((e) => Container(
             decoration: BoxDecoration(
                 color: ColorsUtil.fromEnmu(ColorEnum.system),
                 borderRadius: BorderRadius.all(Radius.circular(3.0))
@@ -189,7 +186,7 @@ class MessageListState extends State<MessageListWidget> {
             Container(
               color: Colors.white,
               margin: EdgeInsets.only(left: 1,top: 1,bottom: 1),
-              child: (data.topicInfo.imgs != null) ?  CachedNetworkImage(imageUrl: ToolConfig.loadImgUrl((data.topicInfo.imgs.first ?? '')) ,width: 78,height: 78,fit: BoxFit.cover,) : Image.asset('assets/icons/icon_plh.png',fit: BoxFit.cover,width: 78,height: 78),
+              child: (data.topicInfo?.imgs != null) ?  CachedNetworkImage(imageUrl: ToolConfig.loadImgUrl((data.topicInfo?.imgs?.first ?? '')) ,width: 78,height: 78,fit: BoxFit.cover,) : Image.asset('assets/icons/icon_plh.png',fit: BoxFit.cover,width: 78,height: 78),
             ),
             Expanded(
                 child: Column(
@@ -211,7 +208,7 @@ class MessageListState extends State<MessageListWidget> {
                         child: Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 6,bottom: 5,left: 10,right: 10),
-                          child: Text(data.topicInfo != null ? data.topicInfo.content ?? '' : '',
+                          child: Text(data.topicInfo != null ? data.topicInfo?.content ?? '' : '',
                             style: TextStyle(
                               fontSize: FontUtil.fs(FontSize.desc),
                               color: ColorsUtil.fromEnmu(ColorEnum.desc)
@@ -237,8 +234,8 @@ class MessageListState extends State<MessageListWidget> {
             Container(
               color: Colors.white,
               margin: EdgeInsets.only(left: 1,top: 1,bottom: 1),
-              child: (data.showInfo.imgs != null) ? CachedNetworkImage(
-                imageUrl: (ToolConfig.loadImgUrl((data.showInfo.imgs.first ?? ''),bType: ThumbType.thumbNail)),
+              child: (data.showInfo?.imgs != null) ? CachedNetworkImage(
+                imageUrl: ToolConfig.loadImgUrl((data.showInfo?.imgs?.first ?? '')),
                 width: 78,
                 height: 78,
                 fit: BoxFit.cover,) :  Image.asset('assets/icons/icon_plh.png',fit: BoxFit.cover,width: 78,height: 78),
@@ -247,7 +244,7 @@ class MessageListState extends State<MessageListWidget> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
-                  child: Text((data.showInfo.instruction != null) ? data.showInfo.instruction : '' ,
+                  child: Text((data.showInfo?.instruction != null) ? data.showInfo?.instruction ?? "" : '' ,
                     style: TextStyle(
                         fontSize: FontUtil.fs(FontSize.desc),
                         color: ColorsUtil.fromEnmu(ColorEnum.desc)
@@ -276,7 +273,7 @@ class MessageListState extends State<MessageListWidget> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
-                  child: Text((data.findInfo.desc != null) ? data.findInfo.desc : '' ,
+                  child: Text((data.findInfo?.desc != null) ? data.findInfo?.desc ?? '' : '' ,
                     style: TextStyle(
                         fontSize: FontUtil.fs(FontSize.desc),
                         color: ColorsUtil.fromEnmu(ColorEnum.desc)
@@ -289,6 +286,8 @@ class MessageListState extends State<MessageListWidget> {
           ],
         ),
       );
+    }else{
+      return Container();
     }
   }
   
@@ -346,12 +345,12 @@ class MessageListState extends State<MessageListWidget> {
                   if (data.showInfo != null) {
                     /// 跳转到秀宠
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return ShowInfoSingleWidget(showId: data.showInfo.show_id);
+                        return ShowInfoSingleWidget(showId: data.showInfo?.show_id ?? 0);
                       }));
                   }else{
                     /// 跳转到领养
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return TopicDetailWidget(topicId:data.topicInfo.topic_id);
+                      return TopicDetailWidget(data.topicInfo?.topic_id ?? 0);
                     }));
                   }
                 },

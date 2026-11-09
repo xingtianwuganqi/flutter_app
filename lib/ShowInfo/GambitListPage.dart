@@ -38,7 +38,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: IconButton(
-          icon: Image.asset('assets/icons/icon_home_write.png'),
+          icon: Image.asset('assets/icons/icon_home_write.png'), onPressed: () {  },
         ),
         backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
         onPressed: (){
@@ -72,13 +72,14 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
                   leading: Image.asset('assets/icons/icon_show_gb.png'),
                   title: Container(
                     transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                    child: Text(data.descript != null ? data.descript : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                    child: Text(data.descript != null ? data.descript ?? '' : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
                     ),
                     trailing:  Icon(Icons.keyboard_arrow_right,color: ColorsUtil.fromEnmu(ColorEnum.mark))
                   ),
                   onTap:() {
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return ShowInfoSingleWidget(gambitId: data.id);
+                      // return ShowInfoSingleWidget(gambitId: data.id);
+                      return ShowInfoSingleWidget(showId: data.id);
                     }));
                 },),
                 Divider(height: 0.5,
@@ -99,7 +100,7 @@ class GambitListState extends State<GambitListWidget> with AutomaticKeepAliveCli
 
   Future<Null> GambitListNetWroking() async {
     final url = NetWorkingConfig.path(NetPath.gambitlist);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, {}, (data) {
       print(data);
       if (data['code'] == 200) {
         List<GambitModel> datas = [];

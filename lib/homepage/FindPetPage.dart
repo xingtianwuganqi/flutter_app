@@ -1,4 +1,3 @@
-import 'package:anythink_sdk/at_interstitial.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_720yun/Common/CommonPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/FindPetDetailPage.dart';
-import 'package:flutter_720yun/manager/interstitial_sdk.dart';
 import 'package:flutter_720yun/model/FindPetListModel.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -39,17 +37,6 @@ class FindPetState extends State<FindPetPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    hasInterstitialAdReady();
-  }
-
-  hasInterstitialAdReady() async {
-    await ATInterstitialManager.hasInterstitialAdReady(
-      placementID: Configuration.interstitialPlacementID,
-    ).then((value) {
-      if (value == true) {
-        InterstitialManager.showSceneInterstitialAd();
-      }
-    });
   }
 
   @override
@@ -125,7 +112,7 @@ class FindPetState extends State<FindPetPage> {
                         onPressed: (){
                           lazyAuthToDoThings(context, (){
                             Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return FindPetDetailPage(changed: (value) {
+                              return FindPetDetailPage((value) {
                                 if (value is int) {
                                   if (value == 1) {
                                     findPetListNetworking(1);
@@ -179,11 +166,8 @@ class FindPetState extends State<FindPetPage> {
             child: CircleAvatar(
               radius: 18,
               backgroundImage:
-              ((data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
-              AssetImage('assets/icons/icon_plh.png')),
-              //   :
-              // AssetImage('assets/icons/icon_plh.png'),
+                  ToolConfig.loadImage(data.userInfo?.avator ?? ""),
+              backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
               child: Container(
                 alignment: Alignment(0, 0),
                 width: 36,
@@ -192,7 +176,7 @@ class FindPetState extends State<FindPetPage> {
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
+                return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo?.id ?? 0);
               }));
             },
           ),
@@ -201,9 +185,9 @@ class FindPetState extends State<FindPetPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo.username ?? "",style:
+                Padding(padding: EdgeInsets.only(left: 10,bottom: 2),child:  Text(data.userInfo?.username ?? "",style:
                 TextStyle(fontSize: FontUtil.fs(FontSize.title),fontWeight: FontWeight.w600,color: ColorsUtil.fromEnmu(ColorEnum.title)),),),
-                Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time) ?? "",style:
+                Padding(padding: EdgeInsets.only(left: 10,top: 2),child:  Text(ToolConfig.timeT(data.update_time ?? '') ?? "",style:
     TextStyle(fontSize: FontUtil.fs(FontSize.time),color: ColorsUtil.fromEnmu(ColorEnum.desc)),)),
               ],
             ),
@@ -348,7 +332,7 @@ class FindPetState extends State<FindPetPage> {
     return Container(
       padding: EdgeInsets.only(left: 46,right: 15,top: 4,bottom: 4),
       alignment: Alignment.centerLeft,
-      child: Text(model.address,style: TextStyle(
+      child: Text(model.address ?? '',style: TextStyle(
         fontSize: FontUtil.fs(FontSize.desc),
         color: ColorsUtil.fromEnmu(ColorEnum.desc),
       ),),
@@ -373,7 +357,7 @@ class FindPetState extends State<FindPetPage> {
                 ),
                 onPressed: (){
                   lazyAuthToDoThings(context, () {
-                    findPetLikeAction(data, data.liked ? 1 : 0);
+                    findPetLikeAction(data, (data.liked ?? false) ? 1 : 0);
                   });
                 },
               )
@@ -388,7 +372,7 @@ class FindPetState extends State<FindPetPage> {
                 ),
                 onPressed: (){
                   lazyAuthToDoThings(context, (){
-                    findPetCollectionAction(data, data.collection ? 1 : 0);
+                    findPetCollectionAction(data, (data.collection ?? false) ? 1 : 0);
                   });
                 },
               )
@@ -404,7 +388,7 @@ class FindPetState extends State<FindPetPage> {
                 onPressed: (){
                   lazyAuthToDoThings(context, (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return CommentInfoWidget(commentType: CommentType.find_comment,topicId: data.findId,toUid: data.userInfo.id,changed: (value){
+                      return CommentInfoWidget( CommentType.find_comment, data.findId,data.userInfo?.id, (value){
                         // clicked(value);
                       },);
                     }));
@@ -478,8 +462,8 @@ class FindPetState extends State<FindPetPage> {
             if (mark == 1) {
               e.likeNum = (e.likeNum ?? 0) + 1;
             }else {
-              if (e.likeNum > 1) {
-                e.likeNum = e.likeNum - 1;
+              if ((e.likeNum ?? 0) > 1) {
+                e.likeNum = (e.likeNum ?? 1) - 1;
               } else {
                 e.likeNum = 0;
               }
@@ -516,8 +500,8 @@ class FindPetState extends State<FindPetPage> {
             if (mark == 1) {
               e.collectionNum = (e.collectionNum ?? 0) + 1;
             }else {
-              if (e.collectionNum > 1) {
-                e.collectionNum = e.collectionNum - 1;
+              if ((e.collectionNum ?? 0) > 1) {
+                e.collectionNum = (e.collectionNum ?? 1) - 1;
               } else {
                 e.collectionNum = 0;
               }
@@ -551,7 +535,7 @@ class FindPetState extends State<FindPetPage> {
         _findList = _findList.map((e){
           if (e.findId == model.findId) {
             e.getedcontact = true;
-            e.contact_info = contactModel.contact;
+            e.contact_info = contactModel.contact ?? "";
           }
           return e;
         }).toList();
@@ -564,7 +548,7 @@ class FindPetState extends State<FindPetPage> {
         Future.delayed(Duration(milliseconds: 100),(){
           if (data['code'] == 210) { // 未校验手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo.phone_number);
+              return CheckCodePage(CodeFromType.checkPhone,phone: UserManager.instance.userInfo?.phone_number);
             }));
           }else if (data['code'] == 209) { // 未绑定手机号
             Navigator.push(context, MaterialPageRoute(builder: (context){

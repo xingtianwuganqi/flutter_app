@@ -87,18 +87,18 @@ class BrowseListState extends State<BrowseListWidget> {
             var data = hisModels[index];
             return  GestureDetector(
               behavior: HitTestBehavior.opaque,
-              child: homePageItemWidget(context, data.topicInfo,(topicId,value){
+              child: homePageItemWidget(context, data.topicInfo!,(topicId,value){
                 if (value is HomeLikeStatusModel) {
                   hisModels = hisModels.map((e) {
                     var newModel = e;
                     if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.liked = value.like == 1 ? true : false;
-                      if (newModel.topicInfo.liked) {
-                        newModel.topicInfo.likes_num += 1;
-                      }else if (newModel.topicInfo.liked == false){
-                        if(newModel.topicInfo.likes_num > 0) {
-                          newModel.topicInfo.likes_num -= 1;
-                        }
+                      newModel.topicInfo?.liked = value.like == 1 ? true : false;
+                      if (newModel.topicInfo?.liked ?? false) {
+                        var num = newModel.topicInfo?.likes_num ?? 0;
+                        newModel.topicInfo?.likes_num = num += 1;
+                      }else if (newModel.topicInfo?.liked == false){
+                          var num = newModel.topicInfo?.likes_num ?? 1;
+                          newModel.topicInfo?.likes_num = num -= 1;
                       }
                     }
                     return newModel;
@@ -107,13 +107,13 @@ class BrowseListState extends State<BrowseListWidget> {
                   hisModels = hisModels.map((e) {
                     var newModel = e;
                     if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.collectioned = value.collection == 1 ? true : false;
-                      if (newModel.topicInfo.collectioned) {
-                        newModel.topicInfo.collection_num += 1;
-                      }else if (newModel.topicInfo.collectioned == false){
-                        if(newModel.topicInfo.collection_num > 0) {
-                          newModel.topicInfo.collection_num -= 1;
-                        }
+                      newModel.topicInfo?.collectioned = value.collection == 1 ? true : false;
+                      if (newModel.topicInfo?.collectioned ?? false) {
+                        var num = newModel.topicInfo?.collection_num ?? 0;
+                        newModel.topicInfo?.collection_num = num += 1;
+                      }else if (newModel.topicInfo?.collectioned == false){
+                        var num = newModel.topicInfo?.collection_num ?? 1;
+                        newModel.topicInfo?.collection_num = num -= 1;
                       }
                     }
                     return newModel;
@@ -122,7 +122,7 @@ class BrowseListState extends State<BrowseListWidget> {
                   hisModels = hisModels.map((e) {
                     var newModel = e;
                     if (newModel.topic_id == topicId) {
-                      newModel.topicInfo.commNum = value;
+                      newModel.topicInfo?.commNum = value;
                     }
                     return newModel;
                   }).toList();
@@ -133,7 +133,7 @@ class BrowseListState extends State<BrowseListWidget> {
               }),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return TopicDetailWidget(topicId: data.topicInfo.topic_id);
+                  return TopicDetailWidget(data.topicInfo?.topic_id ?? 0);
                 }));
               },
             );

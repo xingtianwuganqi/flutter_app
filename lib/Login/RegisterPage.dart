@@ -13,8 +13,8 @@ import '../Common/CommonPage.dart';
 import '../tabbar.dart';
 
 class RegisterWidget extends StatefulWidget {
-  final String phone;
-  RegisterWidget({this.phone});
+  String? phone;
+  RegisterWidget(this.phone);
 
   @override
   State<StatefulWidget> createState() {
@@ -31,7 +31,7 @@ class _RegisterState extends State<RegisterWidget> {
   FocusNode _focusNodeConfirm  = new FocusNode();
 
   //用户名输入框控制器，此控制器可以监听用户名输入框操作
-  TextEditingController _userNameController;
+  late TextEditingController _userNameController;
   TextEditingController _userPswdController = new TextEditingController();
   TextEditingController _confirmController  = new TextEditingController();
 
@@ -44,8 +44,8 @@ class _RegisterState extends State<RegisterWidget> {
   var _isShowPwd = false;//是否显示密码
   var _isShowClear = false;//是否显示输入框尾部的清除按钮
   var _isShowConfirm = false;
-  var _proSelect = true;
-  UserInfoModel _userModel;
+  var _proSelect = false;
+  late UserInfoModel _userModel;
 
   @override
   void initState() {
@@ -53,8 +53,8 @@ class _RegisterState extends State<RegisterWidget> {
     super.initState();
     _userNameController = new TextEditingController(text: widget.phone);
     // 如果有默认值则赋值
-    if (widget.phone != null && widget.phone.length > 0) {
-      _username = widget.phone;
+    if (widget.phone != null && (widget.phone?.length ?? 0) > 0) {
+      _username = widget.phone ?? '';
     }
     startSet();
 
@@ -124,7 +124,6 @@ class _RegisterState extends State<RegisterWidget> {
       EasyLoading.showToast('确认密码与密码不一致');
       return;
     }
-    String deviceInfo = await ToolConfig.deviceName();
     final url = NetWorkingConfig.path(NetPath.register);
     /*
                 parameter["phoneNum"] = phone
@@ -149,7 +148,7 @@ class _RegisterState extends State<RegisterWidget> {
     }else{
       dic['phoneNum'] = _username;
     }
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, dic, (data) {
       EasyLoading.dismiss();
       if (data["code"] == 200) {
         var model = data["data"];
@@ -176,7 +175,7 @@ class _RegisterState extends State<RegisterWidget> {
     }, (error) {
       /// 登录失败
       EasyLoading.showToast('登录失败');
-    },params: dic);
+    });
 
   }
 
@@ -242,12 +241,17 @@ class _RegisterState extends State<RegisterWidget> {
                   )
                       : null ,
                 ),
-                onSaved: (String name) {
-                  _username = name;
+                onSaved: (name) {
+                  _username = name ?? '';
                 },
                 // 校验用户名（不能为空）
                 validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入正确的用户名";
+                  if (v != null) {
+                    return v
+                        .trim()
+                        .isNotEmpty ? null : "请输入正确的用户名";
+                  }
+                  return null;
                 }
             ), TextFormField(
               obscureText: !_isShowPwd,
@@ -279,12 +283,17 @@ class _RegisterState extends State<RegisterWidget> {
                     }
                 )),
               ),
-              onSaved: (String name) {
-                _password = name;
+              onSaved: (name) {
+                _password = name ?? '';
               },
               // 校验用户名（不能为空）
               validator: (v) {
-                return v.trim().isNotEmpty ? null : "请输入6位或6位以上密码";
+                if (v != null) {
+                  return v
+                      .trim()
+                      .isNotEmpty ? null : "请输入6位或6位以上密码";
+                }
+                return null;
               },
             ),TextFormField(
                 obscureText: !_isShowConfirm,
@@ -317,12 +326,17 @@ class _RegisterState extends State<RegisterWidget> {
                       }
                   )),
                 ),
-                onSaved: (String name) {
-                  _username = name;
+                onSaved: (name) {
+                  _username = name ?? '';
                 },
                 // 校验用户名（不能为空）
                 validator: (v) {
-                  return v.trim().isNotEmpty ? null : "请输入正确的";
+                  if (v != null) {
+                    return v
+                        .trim()
+                        .isNotEmpty ? null : "请输入正确的";
+                  }
+                  return null;
                 }
             )
           ],
@@ -370,7 +384,7 @@ class _RegisterState extends State<RegisterWidget> {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+                          return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
                         }));
                       },
                   ),
@@ -382,7 +396,7 @@ class _RegisterState extends State<RegisterWidget> {
                       ..onTap = () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
                           String filePath = 'assets/files/privacyPolicy.html';
-                          return WebViewPage(filePath: filePath);
+                          return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
                         }));
                       },
                   ),

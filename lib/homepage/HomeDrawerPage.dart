@@ -7,10 +7,8 @@ import 'package:flutter_720yun/UserInfo/BrowseListPage.dart';
 import 'package:flutter_720yun/UserInfo/UserCollectionPage.dart';
 import 'package:flutter_720yun/NetWorking/NetWorking.dart';
 import 'package:flutter_720yun/homepage/BlackListPage.dart';
-import 'package:flutter_720yun/router_home.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../UserInfo/SupportUsPage.dart';
 import '../model/UserModel.dart';
 
 class HomeDrawerPage extends StatefulWidget {
@@ -33,12 +31,12 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     MessagePageModel(icon: 'assets/icons/icon_mi_xy.png',name: '用户协议',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_pravicy.png',name: '隐私政策',type: 0,unreadNum: 0),
     MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '关于我们',type: 0,unreadNum: 0),
-    MessagePageModel(icon: 'assets/icons/icon_mi_help.png',name: '支持我们',type: 0,unreadNum: 0),
+    // MessagePageModel(icon: 'assets/icons/icon_mi_help.png',name: '支持我们',type: 0,unreadNum: 0),
     // MessagePageModel(icon: 'assets/icons/icon_mi_about.png',name: '广告',type: 0,unreadNum: 0),
     // MessagePageModel(icon: 'assets/icons/icon_mi_tui@3x.png',name: '推荐给朋友',type: 0,unreadNum: 0)
   ];
 
-  AppVersionModel appVersionInfo;
+  AppVersionModel? appVersionInfo;
 
   @override
   void initState() {
@@ -71,9 +69,8 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
             CircleAvatar(
               radius: 25,
               backgroundImage:
-              ((userInfo != null && userInfo.avator != null && userInfo.avator.length > 0) ?
-              CachedNetworkImageProvider(ToolConfig.loadImgUrl(userInfo.avator)) :
-              AssetImage('assets/icons/icon_plh.png')),
+                ToolConfig.loadImage(userInfo?.avator ?? ""),
+              backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
               child: Container(
                 alignment: Alignment(0, 0),
                 width: 50,
@@ -81,9 +78,9 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
               ),
             ),
             Padding(padding: EdgeInsets.only(left: 10)),
-            Text((userInfo != null && userInfo.username != null && userInfo.username.length > 0) ?
-            userInfo.username : "注册/登录",style:
-            (userInfo != null && userInfo.username != null && userInfo.username.length > 0) ? TextStyle(fontSize: FontUtil.fs(FontSize.content),
+            Text((userInfo != null && userInfo.username != null && (userInfo.username?.length ?? 0) > 0) ?
+            userInfo.username ?? "" : "注册/登录",style:
+            (userInfo != null && userInfo.username != null && (userInfo.username?.length ?? 0) > 0) ? TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content)) : TextStyle(fontSize: FontUtil.fs(FontSize.title),
                 color: ColorsUtil.fromEnmu(ColorEnum.title),fontWeight: FontWeight.bold),
             ),
@@ -93,16 +90,16 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
     }else {
 
       return ListTile(
-        leading: Image.asset(model.icon,width: 22,height: 22,),
+        leading: Image.asset(model.icon ?? '',width: 22,height: 22,),
         title:
         Container(
-        transform: Matrix4.translationValues(-25, 0.0, 0.0),
-        child:Text(model.name, style:
+        transform: Matrix4.translationValues(-10, 0.0, 0.0),
+        child:Text(model.name ?? '', style:
             TextStyle(fontSize: FontUtil.fs(FontSize.content),
                 color: ColorsUtil.fromEnmu(ColorEnum.content)),
             ),
         ),
-        trailing: model.unreadNum > 0 ? Container(
+        trailing: (model.unreadNum ?? 0) > 0 ? Container(
             height: 16,
             width: 16,
             alignment: Alignment.center,
@@ -132,33 +129,33 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
             }));
           }else if (model.name == '领养说明') {
             Navigator.push(context,MaterialPageRoute(builder: (context){
-              return WebViewPage(url: NetWorkingConfig.path(NetPath.instruction));
+              return WebViewPage(NetWorkingConfig.path(NetPath.instruction));
             }));
           }
           else if (model.name == '用户协议') {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return WebViewPage(url: NetWorkingConfig.path(NetPath.userAgreen));
+              return WebViewPage(NetWorkingConfig.path(NetPath.userAgreen));
             }));
           }else if (model.name == '隐私政策') {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return WebViewPage(url: NetWorkingConfig.path(NetPath.pravicy));
+              return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
             }));
           }else if (model.name == '关于我们') {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return WebViewPage(url: NetWorkingConfig.path(NetPath.aboutUs));
+              return WebViewPage(NetWorkingConfig.path(NetPath.aboutUs));
             }));
           }else if (model.name == "检测更新") {
-            if (model.unreadNum > 0){
+            if ((model.unreadNum ?? 0) > 0){
               // 打开浏览器
               _launchUrl();
             }
           }else if (model.name == "支持我们") {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return SupportUsPage();
+              return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
             }));
           }else if (model.name == "广告") {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return AdTestPage();
+              return WebViewPage(NetWorkingConfig.path(NetPath.pravicy));
             }));
           }else if (model.name == "推荐给朋友") {
             // Share.share('https://www.pgyer.com/pPyO');
@@ -193,22 +190,25 @@ class HomeDrawerPageState extends State<HomeDrawerPage> {
         var model = data['data'];
         var info = AppVersionModel.fromJson(model);
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
-          // 有新版本，提示
-          var list = datas.map((e) {
-            var newValue = e;
-            if (e.name == "检测更新") {
-              newValue.unreadNum = 1;
-            }
-            return newValue;
-          }).toList();
-          datas = list;
-          setState(() {
+        if (info.version != null) {
+          if (info.version! > int.parse(localVersion)) {
+            // 有新版本，提示
+            var list = datas.map((e) {
+              var newValue = e;
+              if (e.name == "检测更新") {
+                newValue.unreadNum = 1;
+              }
+              return newValue;
+            }).toList();
+            datas = list;
+            setState(() {
 
-          });
-        }else{
+            });
+          }else{
 
+          }
         }
+
 
       }
     }, (error) {

@@ -17,7 +17,7 @@ class UserCollectionWidget extends StatefulWidget {
 class UserCollectionState extends State<UserCollectionWidget> with SingleTickerProviderStateMixin {
 
   List<String> tabs = ["我收藏的领养","我收藏的秀宠"];
-  TabController _tabController; //需要定义一个Controller
+  late TabController _tabController; //需要定义一个Controller
 
   @override
   void initState() {

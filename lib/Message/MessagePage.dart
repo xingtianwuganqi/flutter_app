@@ -11,9 +11,9 @@ import 'MessageSystemPage.dart';
 
 class MessagePage extends StatefulWidget {
 
-  final ValueChanged changed;
+  ValueChanged changed;
 
-  MessagePage({Key key,@required this.changed});
+  MessagePage(this.changed);
 
   @override
   State<StatefulWidget> createState() {
@@ -67,9 +67,9 @@ class MessagePageState extends State<MessagePage> with RouteAware {
   @override
   void deactivate() {
     super.deactivate();
-    var bool = ModalRoute.of(context).isCurrent;
+    var bool = ModalRoute.of(context)?.isCurrent;
     print('============');
-    if (bool) {
+    if (bool ?? false) {
       _authUnreadMsgNetworking();
     }
 
@@ -111,7 +111,7 @@ class MessagePageState extends State<MessagePage> with RouteAware {
                 if (data.type != 0) {
                   lazyAuthToDoThings(context, () {
                     Navigator.push(context,MaterialPageRoute(builder: (context) {
-                      return MessageListWidget(data.name, data.type,(value) {
+                      return MessageListWidget(data.name ?? '', data.type ?? 0,(value) {
                         _authUnreadMsgNetworking();
                       });
                     }));
@@ -146,10 +146,10 @@ class MessagePageState extends State<MessagePage> with RouteAware {
             // Text(model.name,style: TextStyle(fontSize: 14,color: Colors.black)),
             Container(
               transform: Matrix4.translationValues(-5, 0.0, 0.0),
-              child: Text(model.name,style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
+              child: Text(model.name ?? '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
             ),
-            leading: Image.asset(model.icon),
-            trailing: rightIcon(model.unreadNum),
+            leading: Image.asset(model.icon ?? ''),
+            trailing: rightIcon(model.unreadNum ?? 0),
           ),
           new Divider(height: 0.5,indent: 70,color: ColorsUtil.fromEnmu(ColorEnum.defIcon),),
         ],
@@ -187,11 +187,11 @@ class MessagePageState extends State<MessagePage> with RouteAware {
       if (data['code'] == 200) {
         var model = UnreadModel.fromJson(data['data']);
         // 先判断是否是当前平台
-        var sysunread = await ToolConfig.getSystemUnreadNumber(model.sys_un_list);
+        var sysunread = await ToolConfig.getSystemUnreadNumber(model.sys_un_list ?? []);
         datas[0].unreadNum = sysunread;
-        datas[1].unreadNum = model.like_unread;
-        datas[2].unreadNum = model.collec_unread;
-        datas[3].unreadNum = model.com_unread;
+        datas[1].unreadNum = model.like_unread ?? 0;
+        datas[2].unreadNum = model.collec_unread ?? 0;
+        datas[3].unreadNum = model.com_unread ?? 0;
         var num = sysunread + (model.collec_unread ?? 0) + (model.like_unread ?? 0) + (model.com_unread ?? 0);
         widget.changed(num);
         setState(() {
@@ -207,10 +207,10 @@ class MessagePageState extends State<MessagePage> with RouteAware {
 }
 
 class MessagePageModel {
-  final String icon;
-  final String name;
-  final int type;
-  int unreadNum;
+  String? icon;
+  String? name;
+  int? type;
+  int? unreadNum;
   MessagePageModel({
     this.icon,
     this.name,

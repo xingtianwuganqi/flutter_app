@@ -8,7 +8,7 @@ import '../model/HomePageModel.dart';
 class AddressSelectPage extends StatefulWidget {
 
   final ValueChanged changed;
-  AddressSelectPage({Key key,@required this.changed}): super(key: key);
+  AddressSelectPage( this.changed);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,16 +20,16 @@ class AddressSelectPage extends StatefulWidget {
 
 class AddressSelectState extends State<AddressSelectPage> with SingleTickerProviderStateMixin {
   List tabs = ['请选择','',''];
-  TabController _tabController; //需要定义一个Controller
+  late TabController _tabController; //需要定义一个Controller
   // CountryModel _countryModel;
 
-  NewProvinceModel _provinceModel;
-  NewCityModel _cityModel;
-  NewAreaModel _areaModel;
+  late NewProvinceModel? _provinceModel;
+  late NewCityModel? _cityModel;
+  late NewAreaModel? _areaModel;
 
-  List<NewProvinceModel> _provinceArr;
-  List<NewCityModel> _cityArr;
-  List<NewAreaModel> _areaArr;
+  late List<NewProvinceModel> _provinceArr;
+  late List<NewCityModel> _cityArr;
+  late List<NewAreaModel> _areaArr;
 
 
   @override
@@ -102,10 +102,11 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
         controller: _tabController,
         physics: NeverScrollableScrollPhysics(), //禁止滑动
         children: [
-          CityPage(citys: _provinceArr,changed: (value) {
-            _provinceModel = value;
-            _cityArr = _provinceModel.children;
-            tabs[0] = _provinceModel.name;
+
+          CityPage( _provinceArr,(value) {
+            _provinceModel = value as NewProvinceModel?;
+            _cityArr = _provinceModel?.children ?? [];
+            tabs[0] = _provinceModel?.name;
             tabs[1] = '请选择';
             _tabController.animateTo(1);
 
@@ -116,11 +117,11 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
             });
 
 
-          },),
-          CityPage(citys: _cityArr,changed: (value) {
-            _cityModel = value;
-            _areaArr = _cityModel.children;
-            tabs[1] = _cityModel.name;
+          }),
+          CityPage(_cityArr, (value) {
+            _cityModel = value as NewCityModel?;
+            _areaArr = _cityModel?.children ?? [];
+            tabs[1] = _cityModel?.name;
             tabs[2] = '请选择';
             _tabController.animateTo(2);
             Future.delayed(Duration(milliseconds: 500), (){
@@ -129,19 +130,19 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
               });
             });
             // 如果没有area，则退出
-            if (_cityModel.children == null || _cityModel.children.length == 0) {
+            if (_cityModel?.children == null || _cityModel?.children?.length == 0) {
               Future.delayed(Duration(milliseconds: 700),(){
-                var address = _provinceModel.name + '.' + _cityModel.name;
+                var address = (_provinceModel?.name ?? '') + '.' + (_cityModel?.name ?? '');
                 widget.changed(address);
                 Navigator.pop(context);
               });
             }
 
           }),
-          CityPage(citys: _areaArr,changed: (value) {
-            _areaModel = value;
+          CityPage(_areaArr, (value) {
+            _areaModel = value as NewAreaModel?;
             // 完成选择，退出
-            tabs[2] = _areaModel.name;
+            tabs[2] = _areaModel?.name;
             Future.delayed(Duration(milliseconds: 500),(){
               setState(() {
 
@@ -149,7 +150,7 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
             });
 
             Future.delayed(Duration(milliseconds: 700),(){
-              var address = _provinceModel.name + '.' + _cityModel.name + '.' + _areaModel.name;
+              var address = (_provinceModel?.name ?? "") + '.' + (_cityModel?.name ?? '') + '.' + (_areaModel?.name ?? '');
               widget.changed(address);
               Navigator.pop(context);
             });
@@ -174,9 +175,10 @@ class AddressSelectState extends State<AddressSelectPage> with SingleTickerProvi
 
 class CityPage<T> extends StatefulWidget {
 
-  final ValueChanged<T> changed;
-  final List<T> citys;
-  CityPage({Key key, this.citys,this.changed}): super(key: key);
+  List<T>? citys;
+  ValueChanged<T>? changed;
+
+  CityPage(this.citys, this.changed);
 
   @override
   State<StatefulWidget> createState() {
@@ -191,16 +193,16 @@ class CityState extends State<CityPage> {
     // TODO: implement build
     return Scaffold(
       body: ListView.builder(
-        itemCount: (widget.citys != null) ? widget.citys.length : 0,
+        itemCount: (widget.citys != null) ? (widget.citys?.length ?? 0) : 0,
           itemBuilder: (context,index){
           var name = '';
-          var data = widget.citys[index];
+          var data = widget.citys?[index];
           if (data is NewProvinceModel) {
-            name = data.name;
+            name = data.name ?? "";
           }else if (data is NewCityModel) {
-            name = data.name;
+            name = data.name ?? "";
           }else if (data is NewAreaModel) {
-            name = data.name;
+            name = data.name ?? '';
           }
           return Column(
             children: [
@@ -214,7 +216,9 @@ class CityState extends State<CityPage> {
                   child: Text(name),
                 ),
                 onTap: () {
-                  widget.changed(widget.citys[index]);
+                  if (widget.changed != null) {
+                    widget.changed!(widget.citys?[index]);
+                  }
                 },
               ),
               Divider(color: ColorsUtil.fromEnmu(ColorEnum.tableBack),)

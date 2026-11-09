@@ -12,8 +12,7 @@ class MessageSystemPage extends StatefulWidget {
   final ValueChanged changed;
   MessageSystemPage(
       this.changed,
-      {Key key}
-      ) : super(key: key);
+      );
 
   @override
   State<StatefulWidget> createState() {
@@ -78,7 +77,7 @@ class MessageSystemState extends State<MessageSystemPage> {
           Expanded(child: Text('公告',style: TextStyle(fontSize: FontUtil.fs(FontSize.title),
               color: ColorsUtil.fromEnmu(ColorEnum.title),fontWeight: FontWeight.w600),
           )),
-          Text(ToolConfig.timeT(data.create_time),style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
+          Text(ToolConfig.timeT(data.create_time ?? ''),style: TextStyle(fontSize: FontUtil.fs(FontSize.desc),
             color: ColorsUtil.fromEnmu(ColorEnum.desc)),
           )
         ],
@@ -96,7 +95,7 @@ class MessageSystemState extends State<MessageSystemPage> {
             padding: EdgeInsets.only(left: 15,right: 15,top: 3,bottom: 10),
             child:
             LinkText(
-              data.content,
+              data.content ?? '',
               textStyle: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.content),
                   fontSize: FontUtil.fs(FontSize.content)
               ),

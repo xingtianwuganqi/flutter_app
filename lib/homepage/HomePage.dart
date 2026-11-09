@@ -1,5 +1,3 @@
-import 'package:anythink_sdk/at_native.dart';
-import 'package:anythink_sdk/at_platformview/at_native_platform_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_720yun/homepage/CitySelectPage.dart';
 import 'package:flutter_720yun/homepage/ReleaseTopicPage.dart';
 import 'package:flutter_720yun/homepage/SearchPage.dart';
 import 'package:flutter_720yun/homepage/TopicDetail.dart';
-import 'package:flutter_720yun/manager/native_sdk.dart';
 import 'package:flutter_720yun/model/CommentModel.dart';
 import 'package:flutter_720yun/model/UserModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -34,9 +31,9 @@ enum HomePageType {
 
 
 class HomePage extends StatefulWidget {
-  final HomePageType pageType;
+  HomePageType pageType;
 
-  const HomePage({Key key, this.pageType=HomePageType.homePageList }) : super(key: key);
+  HomePage([this.pageType=HomePageType.homePageList]);
 
   @override
   State<StatefulWidget> createState() {
@@ -54,9 +51,9 @@ class _HomePageState extends State<HomePage> {
 
   ///加载图片的标识
   bool isLoadingImage = true;
-  AppVersionModel appVersionInfo;
+  AppVersionModel? appVersionInfo;
 
-  String _cityName;
+  late String _cityName;
 
   @override
   void initState() {
@@ -109,9 +106,7 @@ class _HomePageState extends State<HomePage> {
           bottom: 20,
             right: 20,
             child: FloatingActionButton(
-              child: IconButton(
-                icon: Image.asset('assets/icons/icon_home_write.png'),
-              ),
+              child: Image.asset('assets/icons/icon_home_write.png'),
               backgroundColor: ColorsUtil.fromEnmu(ColorEnum.system),
               onPressed: (){
                 lazyAuthToDoThings(context, (){
@@ -181,8 +176,6 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               );
-            }else if (data.topic_id == -2){
-              return nativeADWidget();
             }else{
               return  GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -192,11 +185,21 @@ class _HomePageState extends State<HomePage> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.liked = value.like == 1 ? true : false;
-                        if (newModel.liked) {
-                          newModel.likes_num += 1;
+                        if (newModel.liked ?? false) {
+                          if (newModel.likes_num != null) {
+                            if (newModel.likes_num != null) {
+                              var num = newModel.likes_num ?? 0;
+                              num += 1;
+                              newModel.likes_num = num;
+                            }else{
+                              newModel.likes_num = 1;
+                            }
+                          }
                         }else if (newModel.liked == false){
-                          if(newModel.likes_num > 0) {
-                            newModel.likes_num -= 1;
+                          if((newModel.likes_num ?? 0) > 0) {
+                            var num = newModel.likes_num ?? 0;
+                            num -= 1;
+                            newModel.likes_num = num;
                           }
                         }
                       }
@@ -207,11 +210,21 @@ class _HomePageState extends State<HomePage> {
                       var newModel = e;
                       if (newModel.topic_id == topicId) {
                         newModel.collectioned = value.collection == 1 ? true : false;
-                        if (newModel.collectioned) {
-                          newModel.collection_num += 1;
+                        if (newModel.collectioned ?? false) {
+                          if (newModel.collection_num != null) {
+                            if (newModel.collection_num != null) {
+                              var num = newModel.collection_num ?? 0;
+                              num += 1;
+                              newModel.collection_num = num;
+                            }else{
+                              newModel.collection_num = 1;
+                            }
+                          }
                         }else if (newModel.collectioned == false){
-                          if(newModel.collection_num > 0) {
-                            newModel.collection_num -= 1;
+                          if ((newModel.collection_num ?? 0) > 0) {
+                            var num = newModel.collection_num ?? 0;
+                            num -= 1;
+                            newModel.collection_num = num;
                           }
                         }
                       }
@@ -232,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                 }),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TopicDetailWidget(topicId: data.topic_id);
+                    return TopicDetailWidget(data.topic_id ?? 0);
                   }));
                 },
               );
@@ -358,60 +371,6 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  Widget nativeADWidget() {
-    var imageH = (topSizeTool.getWidth() - 76) * 0.6;
-    return Container(
-      width: double.infinity,
-      height: 100 + imageH,
-      child: PlatformNativeWidget(Configuration.nativePlacementID, {
-        ATNativeManager.parent(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth(), 340,
-            backgroundColorStr: '#FFFFFF'
-        ),
-        ATNativeManager.appIcon(): ATNativeManager.createNativeSubViewAttribute(
-            40, 40,
-            x: 15, y: 40, backgroundColorStr: 'clearColor'),
-        ATNativeManager.mainTitle(): ATNativeManager.createNativeSubViewAttribute(
-          topSizeTool.getWidth() - 160,
-          20,
-          x: 61,
-          y: 40,
-          textSize: 15,
-        ),
-        ATNativeManager.desc(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 160, 20,
-            x: 61, y:60,
-          textSize: 15,
-          textColorStr: "#999999",
-        ),
-        ATNativeManager.cta(): ATNativeManager.createNativeSubViewAttribute(
-          80,
-          36,
-          x: topSizeTool.getWidth() - 95,
-          y: 40,
-          textSize: 15,
-          textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1",
-          textAlignmentStr: "center",
-        ),
-        ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
-            topSizeTool.getWidth() - 76, (topSizeTool.getWidth() - 76) * 0.6,
-            x: 61, y: 86, backgroundColorStr: '#000000'),
-        ATNativeManager.adLogo(): ATNativeManager.createNativeSubViewAttribute(
-            20, 10,
-            x: 10,
-            y: 10,
-            backgroundColorStr: '#00000000'),
-        ATNativeManager.dislike(): ATNativeManager.createNativeSubViewAttribute(
-          20,
-          20,
-          x: topSizeTool.getWidth() - 35,
-          y: 10,
-        ),
-      },sceneID: Configuration.nativeSceneID),
-    );
-  }
-
   Future<void> getUserCity() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var cityName = prefs.getString("userLocalCity");
@@ -429,7 +388,7 @@ class _HomePageState extends State<HomePage> {
         var model = data['data'];
         var info = AppVersionModel.fromJson(model);
         var localVersion = dic['androidVersion'];
-        if (info.version > int.parse(localVersion)) {
+        if ((info.version ?? 0) > int.parse(localVersion)) {
           // 有新版本，提示
           appVersionInfo = info;
           setState(() {
@@ -527,7 +486,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
         children: [
           userInfoWidget(context,data,fromInfo: fromInfo,clicked: (value) {
             if (value == -3) {
-              HomeNetworking.homeCompleteNetWorking(data.topic_id, (id, info) {
+              HomeNetworking.homeCompleteNetWorking(data.topic_id ?? 0, (id, info) {
                 changed(id,info);
               });
             }
@@ -536,21 +495,21 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
           imagesWidget(context,data),
           addressWidget(data),
           commentWidget(60, context, data, (comIndex){
-            if (comIndex == -1) { // 点赞
+            if (comIndex == -1 ) { // 点赞
               var liked = data.liked == true ?  0 :  1;
-              HomeNetworking.homeLikeClickAction(liked, data.topic_id, (topicId,value) {
+              HomeNetworking.homeLikeClickAction(liked, data.topic_id ?? 0, (topicId,value) {
                 changed(topicId,value);
               });
-            }else if (comIndex == -2) { // 收藏
+            }else if (comIndex == -2 && data.topic_id != null) { // 收藏
               var collected = data.collectioned == true ?  0 :  1;
-              HomeNetworking.homeCollectClickAction(collected, data.topic_id, (topicId,value) {
+              HomeNetworking.homeCollectClickAction(collected, data.topic_id ?? 0, (topicId,value) {
                 changed(topicId,value);
               });
             }else {
-              changed(data.topic_id,comIndex);
+              changed(data.topic_id ?? 0,comIndex);
             }
           }),
-          Divider(height: 1,),
+          Divider(height: 1,color: ColorsUtil.hexColor(0xEEEEEE),),
         ],
       ),
     // ),
@@ -563,7 +522,7 @@ Widget homePageItemWidget(BuildContext context, HomePageModel data,commentInfoCh
 }
 
 /// 用户信息
-Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange clicked}) {
+Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo = '',clickChange? clicked}) {
   
   return Container(
     padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 0),
@@ -573,12 +532,8 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           child: CircleAvatar(
             radius: 18,
             backgroundImage:
-            // isLoadingImg ?
-            ((data.userInfo != null && data.userInfo.avator != null && data.userInfo.avator.length > 0) ?
-            CachedNetworkImageProvider(ToolConfig.loadImgUrl(data.userInfo.avator,bType: ThumbType.thumbNail)) :
-            AssetImage('assets/icons/icon_plh.png')),
-            //   :
-            // AssetImage('assets/icons/icon_plh.png'),
+            ToolConfig.loadImage(data.userInfo?.avator ?? ''),
+            backgroundColor: ColorsUtil.hexColor(0xEEEEEE),
             child: Container(
               alignment: Alignment(0, 0),
               width: 36,
@@ -587,7 +542,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
           ),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo.id);
+              return NewUserInfoPage(pageType: MyPageType.otherPage,userId: data.userInfo?.id ?? 0);
             }));
           },
         ),
@@ -600,7 +555,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(data.userInfo != null ? data.userInfo.username ?? "" : "",
+                    Text(data.userInfo != null ? data.userInfo?.username ?? "" : "",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: ColorsUtil.fromEnmu(ColorEnum.title),
@@ -608,7 +563,7 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                             fontSize: FontUtil.fs(FontSize.title)),
                         overflow: TextOverflow.ellipsis),
                     Padding(padding: EdgeInsets.all(3)),
-                    Text(ToolConfig.timeT(data.create_time) ?? "",
+                    Text(ToolConfig.timeT(data.create_time ?? '') ?? "",
                         style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
                             fontSize: FontUtil.fs(FontSize.time)),
                         overflow: TextOverflow.ellipsis)
@@ -638,13 +593,15 @@ Widget userInfoWidget(BuildContext context, HomePageModel data, {String fromInfo
                     fromInfo == 'publish' ?
                     TextButton(onPressed: (){
                       Navigator.pop(context);
-                      clicked(-3);
+                      if (clicked != null) {
+                        clicked(-3);
+                      }
                     }, child: Text('完成领养',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)) :
                     TextButton(onPressed: (){
                       Navigator.pop(context);
                       lazyAuthToDoThings(context, (){
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id);
+                          return ViolationsListWidget(reportType: Report_type.rescue_page,reportId: data.topic_id ?? 0);
                         }));
                       });
                     }, child: Text('投诉举报',style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
@@ -669,8 +626,8 @@ Widget textInfoWidget(HomePageModel data) {
   List<Widget> tags = [];
 
   if (data.tagInfos != null ) {
-    if (data.tagInfos.isNotEmpty) {
-      tags = data.tagInfos.map((e) => Container(
+    if (data.tagInfos!.isNotEmpty) {
+      tags = data.tagInfos!.map((e) => Container(
         decoration: BoxDecoration(
             color: ColorsUtil.fromEnmu(ColorEnum.system),
             borderRadius: BorderRadius.all(Radius.circular(3.0))
@@ -749,24 +706,24 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
     return Container();
   }
 
-  var imgs = data.imgs.map((e) {
-    return ToolConfig.loadImgUrl(e,bType: ThumbType.thumbNail);
+  var imgs = data.imgs!.map((e) {
+    return ToolConfig.loadImgUrl(e,);
   }).toList();
 
-  var originImgs = data.imgs.map((e) => ToolConfig.loadImgUrl(e)).toList();
+  var originImgs = data.imgs!.map((e) => ToolConfig.loadImgUrl(e)).toList();
 
   void tapClick(int index) {
     Navigator.push(context, MaterialPageRoute(builder: (context){
       return PhotoViewGalleryScreen(
-        images:originImgs,//传入图片list
-        index: index,//传入当前点击的图片的index
+        originImgs,//传入图片list
+        index,//传入当前点击的图片的index
       );
     }));
   }
   // var imgContentW = MediaQuery.of(context).size.height - 80;
 
-  if (data.imgs?.length >= 4) {
-    var num = data.imgs.length - 4;
+  if ((data.imgs?.length ?? 0) >= 4) {
+    var num = (data.imgs?.length ?? 0) - 4;
     return Container(
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
       height: imgContentH,
@@ -1014,7 +971,7 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
         ],
       ),
     );
-  }else if (data.imgs.length == 2) {
+  }else if (data.imgs?.length == 2) {
     return Container(
 
       padding: EdgeInsets.only(left: 60,right: 20,top: 5,bottom: 5),
@@ -1105,6 +1062,8 @@ Widget imagesWidget(BuildContext context, HomePageModel data) {
   //       color: ColorsUtil.fromEnmu(ColorEnum.defIcon),
   //     )
   //   );
+  }else{
+    return Container();
   }
 }
 
@@ -1112,7 +1071,7 @@ Widget addressWidget(HomePageModel data) {
   return Container(
     padding: EdgeInsets.only(left: 60,right: 15,top: 5,bottom: 5),
     alignment: Alignment.centerLeft,
-    child: Text(data.address_info,
+    child: Text(data.address_info ?? '',
       style: TextStyle(
         fontSize: FontUtil.fs(FontSize.desc),
         color: ColorsUtil.fromEnmu(ColorEnum.desc),
@@ -1121,7 +1080,7 @@ Widget addressWidget(HomePageModel data) {
   );
 }
 
-Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, clickChange clicked) {
+Widget commentWidget(double leftNum,BuildContext context, HomePageModel? data, clickChange clicked) {
   return Container(
     padding: EdgeInsets.only(left: leftNum,right: 15),
     height: 40,
@@ -1130,7 +1089,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon: (data?.liked ?? false) ? Image.asset('assets/icons/icon_zan_se.png') : Image.asset('assets/icons/icon_zan_un.png'),
-              label: Text((data?.likes_num ?? 0) > (0) ? data.likes_num.toString() : "点赞",
+              label: Text((data?.likes_num ?? 0) > (0) ? data!.likes_num.toString() : "点赞",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1145,7 +1104,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon: (data?.collectioned ?? false) ? Image.asset('assets/icons/icon_collection_se.png') : Image.asset('assets/icons/icon_collection_un.png'),
-              label: Text((data?.collection_num ?? 0) > (0) ? data.collection_num.toString() : "收藏",
+              label: Text((data?.collection_num ?? 0) > (0) ? data!.collection_num.toString() : "收藏",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1161,7 +1120,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
         Expanded(
             child: TextButton.icon(
               icon:Image.asset('assets/icons/icon_sh_commen.png'),
-              label: Text((data?.commNum ?? 0) > (0) ? data.commNum.toString() : "评论",
+              label: Text((data?.commNum ?? 0) > (0) ? data!.commNum.toString() : "评论",
                 style: TextStyle(
                   fontSize: FontUtil.fs(FontSize.time),
                   color: ColorsUtil.fromEnmu(ColorEnum.mark),
@@ -1170,7 +1129,7 @@ Widget commentWidget(double leftNum,BuildContext context, HomePageModel data, cl
               onPressed: (){
                 lazyAuthToDoThings(context, (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CommentInfoWidget(commentType: CommentType.topic_comment,topicId: data.topic_id,toUid: data.userInfo.id,changed: (value){
+                    return CommentInfoWidget( CommentType.topic_comment, data?.topic_id, data?.userInfo?.id, (value){
                       clicked(value);
                     },);
                   }));

@@ -7,9 +7,9 @@ import '../Common/CommonPage.dart';
 
 class GambitSelectPage extends StatefulWidget {
 
-  final ValueChanged changed;
-  final GambitModel defGambit;
-  GambitSelectPage({Key key,this.defGambit,@required this.changed}): super(key: key);
+  ValueChanged? changed;
+  GambitModel? defGambit;
+  GambitSelectPage({this.defGambit,@required this.changed});
 
   @override
   State<StatefulWidget> createState() {
@@ -64,9 +64,9 @@ class GambitSelectState extends State<GambitSelectPage> {
                       leading: Image.asset('assets/icons/icon_show_gb.png'),
                       title: Container(
                         transform: Matrix4.translationValues(-25, 0.0, 0.0),
-                        child: Text(data.descript != null ? data.descript : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
+                        child: Text(data.descript != null ? data.descript ?? '' : '',style: TextStyle(fontSize: FontUtil.fs(FontSize.content),color: ColorsUtil.fromEnmu(ColorEnum.content))),
                       ),
-                      trailing:  Icon(data.isSelect ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
+                      trailing:  Icon((data.isSelect ?? false) ? Icons.lens : Icons.lens_outlined,size: 20,color: ColorsUtil.fromEnmu(ColorEnum.system),),
                     ),
                     onTap: () {
                       selectGambitAction(data);
@@ -92,17 +92,21 @@ class GambitSelectState extends State<GambitSelectPage> {
     gambitList = gambitList.map((e) {
       var newModel = e;
       if (e.id == model.id) {
-        newModel.isSelect = !newModel.isSelect;
+        newModel.isSelect = !(newModel.isSelect ?? false);
         return newModel;
       }else{
         newModel.isSelect = false;
         return newModel;
       }
     }).toList();
-    if (model.isSelect) {
-      widget.changed(model);
+    if (model.isSelect ?? false) {
+      if (widget.changed != null) {
+        widget.changed!(model);
+      }
     }else{
-      widget.changed(null);
+      if (widget.changed != null) {
+        widget.changed!(null);
+      }
     }
     setState(() {
 
@@ -111,14 +115,14 @@ class GambitSelectState extends State<GambitSelectPage> {
 
   Future<Null> GambitListNetWroking() async {
     final url = NetWorkingConfig.path(NetPath.gambitlist);
-    await NetWorking.post(url, (data) {
+    await NetWorking.post(url, {}, (data) {
       print(data);
       if (data['code'] == 200) {
         List<GambitModel> datas = [];
         var models = data['data'];
         for (int i = 0;i < models.length; i++ ){
           var model = new GambitModel.fromJson(models[i]);
-          if (widget.defGambit != null && model.id == widget.defGambit.id) {
+          if (widget.defGambit != null && model.id == widget.defGambit?.id) {
             model.isSelect = true;
           }else{
             model.isSelect = false;

@@ -13,7 +13,7 @@ class FindPetDetailPage extends StatefulWidget {
   2.删除数据
    */
   final ValueChanged changed;
-  const FindPetDetailPage({Key key, this.changed}) : super(key: key);
+  const FindPetDetailPage(this.changed);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -120,7 +120,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
               Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
               TextButton(onPressed: (){
                 Navigator.pop(context);
-                updateEffectiveNetworking(model.effective);
+                updateEffectiveNetworking(model.effective ?? 0);
               }, child: Text(action,style: TextStyle(fontSize: FontUtil.fs(FontSize.title)),)),
               Divider(height: 0.5,color: ColorsUtil.fromEnmu(ColorEnum.tableBack),),
               TextButton(onPressed: (){
@@ -329,7 +329,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
                     alignment: Alignment.centerLeft,
                     height: 49,
                     child:
-                    Text((model.address == null || model.address.length == 0) ? '请选择地址' : model.address ?? "", style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
+                    Text((model.address == null || model.address?.length == 0) ? '请选择地址' : model.address ?? "", style: TextStyle(color: ColorsUtil.fromEnmu(ColorEnum.desc),
                       fontSize: FontUtil.fs(FontSize.content),
 
                     )
@@ -345,7 +345,7 @@ class FindPetDetailState extends State<FindPetDetailPage> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.8,
                           color: Colors.white,
-                          child: AddressSelectPage(changed: (address) {
+                          child: AddressSelectPage((address) {
                             model.address = address;
                             setState(() {
 
@@ -507,15 +507,15 @@ class FindPetDetailState extends State<FindPetDetailPage> {
   }
 
   void checkDataSources() {
-    if (model.desc == null || model.desc.length == 0) {
+    if (model.desc == null || model.desc?.length == 0) {
       EasyLoading.showToast("请填写简单描述");
       return;
     }
-    if (model.address == null || model.address.length == 0) {
+    if (model.address == null || model.address?.length == 0) {
       EasyLoading.showToast("请选择地址");
       return;
     }
-    if (model.contact == null || model.contact.length == 0) {
+    if (model.contact == null || model.contact?.length == 0) {
       EasyLoading.showToast("请填写联系方式");
       return;
     }
@@ -537,9 +537,9 @@ class FindPetDetailState extends State<FindPetDetailPage> {
         pageType = EditPageType.detail;
         model = FindPetDetailModel.fromJson(data['data']);
         // 赋初始值
-        petType = model.pet_type;
-        descController.text = model.desc;
-        contactController.text = model.contact;
+        petType = model.pet_type ?? 0;
+        descController.text = model.desc ?? '';
+        contactController.text = model.contact ?? '';
       }else{
         pageType = EditPageType.create;
       }

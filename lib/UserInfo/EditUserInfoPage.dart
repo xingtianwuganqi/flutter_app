@@ -20,8 +20,8 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 
 class EditUserWidget extends StatefulWidget {
-  String from;
-  EditUserWidget({Key key,this.from}): super(key: key);
+  String? from;
+  EditUserWidget({this.from});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -42,10 +42,10 @@ class EditUserWidgetState extends State<EditUserWidget> {
   // 创建 Controller 对象
   PutController putController = PutController();
 
-  String _token;
+  late String _token;
 
-  AssetEntity _assetInfo;
-  String _avator;
+  AssetEntity? _assetInfo;
+  late String _avator;
 
   @override
   void initState() {
@@ -61,8 +61,8 @@ class EditUserWidgetState extends State<EditUserWidget> {
     });
 
     if (UserManager.instance.isLogin) {
-      _nicknameController.text = UserManager.instance.userInfo.username;
-      _avator = UserManager.instance.userInfo.avator;
+      _nicknameController.text = UserManager.instance.userInfo?.username ?? '';
+      _avator = UserManager.instance.userInfo?.avator ?? '';
     }
 
     // 添加任务进度监听
@@ -102,7 +102,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     Widget headImage() {
       if (_assetInfo != null ) {
         return Container(
-          child: AssetEntityImage(_assetInfo,height: 80,width: 80,fit: BoxFit.cover,) ,
+          child: _assetInfo == null ? null : AssetEntityImage(_assetInfo!,height: 80,width: 80,fit: BoxFit.cover,) ,
           decoration: new BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
@@ -113,12 +113,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
           radius: 40,
           backgroundColor: Colors.white,
           backgroundImage:
-          (UserManager.instance.isLogin ?
-          ((UserManager.instance.userInfo.avator != null && UserManager.instance.userInfo.avator.length > 0) ?
-          CachedNetworkImageProvider(ToolConfig.loadImgUrl((UserManager.instance.userInfo.avator ?? ""),bType: ThumbType.thumbNail)) :
-          AssetImage('assets/icons/icon_plh.png')
-          ):
-          Image.asset('assets/icons/icon_plh.png')),
+          ToolConfig.loadImage((UserManager.instance.userInfo?.avator ?? "")),
           child: Container(
             alignment: Alignment(0, .5),
             width: 80,
@@ -233,7 +228,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
   }
 //  选择头像
   Future<void> loadAssets() async {
-    List<AssetEntity> resultList = [];
+    List<AssetEntity>? resultList = [];
     String error = 'No Error Dectected';
     try {
       resultList = await ImagePicker.instance.selectAssets(context, 1);
@@ -242,8 +237,10 @@ class EditUserWidgetState extends State<EditUserWidget> {
     }
     if (!mounted) return;
 
-    if (resultList.length > 0 ){
-      _assetInfo = resultList.first;
+    if ((resultList?.length ?? 0) > 0 ){
+      if (resultList?.first != null) {
+        _assetInfo = resultList!.first;
+      }
     }
     setState(() {
 
@@ -256,7 +253,7 @@ class EditUserWidgetState extends State<EditUserWidget> {
     await NetWorking.formDataPost(url, dic, (data) {
       if (data['code'] == 200) {
         var model = UploadImgTokenModel.formJson(data['data']);
-        _token = model.token;
+        _token = model.token ?? '';
         uploadImgToQiNiu(_token);
       }
     }, (error) {
@@ -269,15 +266,19 @@ class EditUserWidgetState extends State<EditUserWidget> {
     EasyLoading.show(status:'上传图片...');
     // 使用 storage 的 putFile
     String photoKey = comPhotoKey;
-    File file = await _assetInfo.file;
-    storage.putFile(file, token, options: PutOptions(
-      controller: putController,
-      key: photoKey,
-    )).then((value) {
-      // 上传成功
-      _avator = value.key;
-      updateUserInfoNetworking(_avator);
-    });
+    File? file = await _assetInfo?.file;
+    if (file != null) {
+      storage.putFile(file, token, options: PutOptions(
+        controller: putController,
+        key: photoKey,
+      )).then((value) {
+        // 上传成功
+        if (value.key != null) {
+          _avator = value.key!;
+          updateUserInfoNetworking(_avator);
+        }
+      });
+    }
   }
 
   Future<Null> updateUserInfoNetworking(String avator) async {
